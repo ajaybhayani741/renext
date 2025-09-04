@@ -19,6 +19,9 @@ const InspectionForm = ({
   onSaveClick,
   activeKeys,
   onActiveKeysChange,
+  onSelectUser,
+  selectedUsers,
+  onUserClear,
 }) => {
   const { t } = useTranslations()
 
@@ -91,12 +94,12 @@ const InspectionForm = ({
       <JobUserSelect
         {...{
           selectTitle: 'job_SelectHostel',
+          roleId: hostel,
           apiPayload: { roleId: hostel },
-          // userData: selectedUsers?.[val?.roleId],
-          userData: [],
-          // onSelectUser,
-          // selectedUsers,
-          // onUserClear,
+          userData: selectedUsers?.[hostel],
+          onSelectUser,
+          selectedUsers,
+          onUserClear,
         }}
       />
 

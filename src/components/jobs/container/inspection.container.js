@@ -1,24 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { notifyMethod } from '../../../App'
 import usePromise from '../../../hooks/usePromise'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import { setPopupMessageModel } from '../../../redux/app/reducer'
-import { setJobActiveTab } from '../../../redux/jobs/reducer'
-import pathName from '../../../routing/pathName.constant'
 import { useFormFn } from '../../../shared/antd/ANTDForm'
 import { userWiseRole } from '../../../utils/constant'
 import { dayJs } from '../../../utils/dayjs'
 import debounce from '../../../utils/debounce'
 import { entries, include, isEqual, values } from '../../../utils/javascript'
-import {
-  addJobPostApi,
-  removeEquipmentApi,
-  updateJobPatchApi,
-} from '../jobs.api'
-import { tabKeys as jobTabKeys } from '../jobs.description'
+import { removeEquipmentApi } from '../jobs.api'
 import data from '../recoveryJobDataUpload.xlsx'
 
 const inspection = ({
@@ -34,13 +26,16 @@ const inspection = ({
 }) => {
   const { t } = useTranslations()
   const form = useFormFn()
+  // eslint-disable-next-line no-unused-vars
   const { navigate, params } = useRouter()
   const { dispatch } = useRedux()
   // eslint-disable-next-line no-unused-vars
   const { createPromise, resolvePromise } = usePromise()
   const [jobId, setJobId] = useState(null)
   const [current, setCurrent] = useState(0)
+  // eslint-disable-next-line no-unused-vars
   const [loader, setLoader] = useState(false)
+  // eslint-disable-next-line no-unused-vars
   const [isApiRunning, setIsApiRunning] = useState(false)
   const [activeKeys, setActiveKeys] = useState([])
   const [confirmModel, setConfirmModel] = useState({
@@ -67,6 +62,7 @@ const inspection = ({
     setJobId(params?.jobId)
   }
 
+  // eslint-disable-next-line no-unused-vars
   const setPatchCallResponse = respData => {
     const recoverListData = form.getFieldValue('recoverList') || []
     const respRecoverList = respData?.jobElvsResponse || []
@@ -106,73 +102,73 @@ const inspection = ({
     confirm = false,
     isLoading = false,
   } = {}) => {
-    if (isApiRunning && !jobId) return
-    setIsApiRunning(true)
-    const formData = { ...form.getFieldValue() }
-    const payload = {
-      jobType: 'RECOVERY',
-      confirm,
-      jobId,
-      jobCompletionDate: formData.jobCompletionDate.format('DD/MM/YYYY'),
-      managementNumber: formData.managementNumber,
-      remark: formData.remark,
-      scrapSourceId: formData.scrapSourceId,
-    }
+    // if (isApiRunning && !jobId) return
+    // setIsApiRunning(true)
+    // const formData = { ...form.getFieldValue() }
+    // const payload = {
+    //   jobType: 'RECOVERY',
+    //   confirm,
+    //   jobId,
+    //   jobCompletionDate: formData.jobCompletionDate.format('DD/MM/YYYY'),
+    //   managementNumber: formData.managementNumber,
+    //   remark: formData.remark,
+    //   scrapSourceId: formData.scrapSourceId,
+    // }
 
-    setNextBtnLoader(isLoading)
-    if (!payload?.jobId || isComplete) {
-      const response = await addJobPostApi({ payload })
-      setNextBtnLoader(false)
-      if (response?.data?.data) {
-        if (!payload?.jobId && !isComplete) {
-          notifyMethod.success({
-            message: t('msg_JobCreatedSuccessfully', {
-              jobId: response?.data?.data?.id,
-            }),
-          })
-          setJobId(response?.data?.data?.jobId)
-          form.setFieldValue('jobId', response?.data?.data?.jobId)
-        }
-        if (!isComplete) {
-          payload.jobId = response?.data?.data?.jobId
-          const res = await updateJobPatchApi({ payload })
-          setNextBtnLoader(false)
-          setLoader(false)
-          setIsApiRunning(false)
-          if (!res?.data?.data) return false
-          setPatchCallResponse(res?.data?.data)
-        }
-      }
-      setIsApiRunning(false)
-      setLoader(false)
-    } else {
-      const res = await updateJobPatchApi({ payload })
-      setNextBtnLoader(false)
-      setLoader(false)
-      setIsApiRunning(false)
-      if (!res?.data?.data) return false
-      if (res?.data?.data && showMsg) {
-        notifyMethod.success({
-          message: t('msg_JobUpdatedSuccessfully', {
-            jobId: res?.data?.data?.id,
-          }),
-        })
-      }
-      setPatchCallResponse(res?.data?.data)
-    }
+    // setNextBtnLoader(isLoading)
+    // if (!payload?.jobId || isComplete) {
+    //   const response = await addJobPostApi({ payload })
+    //   setNextBtnLoader(false)
+    //   if (response?.data?.data) {
+    //     if (!payload?.jobId && !isComplete) {
+    //       notifyMethod.success({
+    //         message: t('msg_JobCreatedSuccessfully', {
+    //           jobId: response?.data?.data?.id,
+    //         }),
+    //       })
+    //       setJobId(response?.data?.data?.jobId)
+    //       form.setFieldValue('jobId', response?.data?.data?.jobId)
+    //     }
+    //     if (!isComplete) {
+    //       payload.jobId = response?.data?.data?.jobId
+    //       const res = await updateJobPatchApi({ payload })
+    //       setNextBtnLoader(false)
+    //       setLoader(false)
+    //       setIsApiRunning(false)
+    //       if (!res?.data?.data) return false
+    //       setPatchCallResponse(res?.data?.data)
+    //     }
+    //   }
+    //   setIsApiRunning(false)
+    //   setLoader(false)
+    // } else {
+    //   const res = await updateJobPatchApi({ payload })
+    //   setNextBtnLoader(false)
+    //   setLoader(false)
+    //   setIsApiRunning(false)
+    //   if (!res?.data?.data) return false
+    //   if (res?.data?.data && showMsg) {
+    //     notifyMethod.success({
+    //       message: t('msg_JobUpdatedSuccessfully', {
+    //         jobId: res?.data?.data?.id,
+    //       }),
+    //     })
+    //   }
+    //   setPatchCallResponse(res?.data?.data)
+    // }
 
-    if (confirm) {
-      // reportPolling()
-    }
-    if (redirect) {
-      dispatch(
-        setJobActiveTab({
-          status: jobTabKeys.active,
-          type: jobTabKeys.recovery,
-        }),
-      )
-      navigate(pathName.JOBS)
-    }
+    // if (confirm) {
+    //   // reportPolling()
+    // }
+    // if (redirect) {
+    //   dispatch(
+    //     setJobActiveTab({
+    //       status: jobTabKeys.active,
+    //       type: jobTabKeys.recovery,
+    //     }),
+    //   )
+    //   navigate(pathName.JOBS)
+    // }
     return true
   }
 
@@ -350,7 +346,7 @@ const inspection = ({
     const isValid = await validationFn({ onSave: true })
     if (!isValid) return
 
-    setLoader(true)
+    // setLoader(true)
     apiCall({
       showMsg: true,
       redirect,
@@ -414,7 +410,86 @@ const inspection = ({
     resolvePromise(true)
   }
 
-  const hostelAdministrationAttrFn = useCallback(() => ({}), [])
+  const booleanOptions = [
+    { label: 'btn_Yes', value: true },
+    { label: 'btn_No', value: false },
+  ]
+
+  const hostelAdministrationAttrFn = useCallback(
+    () => ({
+      hostelAuthority: {
+        title: 'job_HostelAuthority',
+      },
+      nameOfPrincipal: {
+        label: 'job_NameOfPrincipalHWOSpecialOfficer',
+        inputType: 'input',
+        required: true,
+        md: 12,
+        xs: 24,
+      },
+      isRegular: {
+        label: 'job_WhetherThePrincipalHWOSpecialOfficerIsRegularOrIncharge',
+        inputType: 'select',
+        options: booleanOptions,
+        required: true,
+        md: 12,
+        xs: 24,
+      },
+      wasPresent: {
+        label:
+          'job_WhetherThePrincipalHWOSpecialOfficerWasPresentDuringInspection',
+        inputType: 'select',
+        options: booleanOptions,
+        required: true,
+        md: 12,
+        xs: 24,
+      },
+      staysInHeadquarters: {
+        label: 'job_WhetherThePrincipalHWOSpecialOfficerStaysInTheHeadquarters',
+        inputType: 'select',
+        options: booleanOptions,
+        required: true,
+        md: 12,
+        xs: 24,
+      },
+      noOfStudentsEnrolled: {
+        label: 'job_NumberOfStudentsEnrolled',
+        inputType: 'inputNumber',
+        className: 'w-100',
+        required: true,
+        md: 8,
+        xs: 24,
+      },
+      noOfStudentMarkedAttendance: {
+        label: 'job_NumberOfStudentsMarkedAttendance',
+        inputType: 'inputNumber',
+        className: 'w-100',
+        required: true,
+        md: 8,
+        xs: 24,
+      },
+      noOfStudentActuallyPresent: {
+        label: 'job_NumberOfStudentsActuallyPresentAtTheTimeOfInspection',
+        inputType: 'inputNumber',
+        className: 'w-100',
+        required: true,
+        md: 8,
+        xs: 24,
+      },
+      recordMaintenance: {
+        title: 'job_RecordMaintenance',
+      },
+      isRecordOfAttendanceMaintained: {
+        label: 'job_IsTheRecordOfStaffAttendanceMaintained',
+        inputType: 'select',
+        options: booleanOptions,
+        required: true,
+        md: 12,
+        xs: 24,
+      },
+    }),
+    [],
+  )
   const hostelInfraRoomsAttrFn = useCallback(() => ({}), [])
   const hostelInfraSanitationAttrFn = useCallback(() => ({}), [])
   const medicalCareAttrFn = useCallback(() => ({}), [])

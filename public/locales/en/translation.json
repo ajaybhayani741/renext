@@ -1810,5 +1810,15 @@
   "job_SafetyAndSecurity": "Safety and Security",
   "job_ConductionMeetings": "Conduction Meetings",
   "job_Feedback": "Feedback",
-  "job_SelectHostel": "Select Hostel"
+  "job_SelectHostel": "Select Hostel",
+  "job_HostelAuthority": "Hostel Authority",
+  "job_NameOfPrincipalHWOSpecialOfficer": "Name of Principal/ HWO /Special Officer",
+  "job_WhetherThePrincipalHWOSpecialOfficerIsRegularOrIncharge": "Whether the Principal/HWO/Special Officer is Regular or Incharge",
+  "job_WhetherThePrincipalHWOSpecialOfficerWasPresentDuringInspection": "Whether the Principal/HWO/Special Officer was present during Inspection",
+  "job_WhetherThePrincipalHWOSpecialOfficerStaysInTheHeadquarters": "Whether the Principal/HWO/Special Officer stays in the headquarters",
+  "job_NumberOfStudentsEnrolled": "Number of Students enrolled",
+  "job_NumberOfStudentsMarkedAttendance": "Number of Students marked attendance",
+  "job_NumberOfStudentsActuallyPresentAtTheTimeOfInspection": "Number of Students actually present at the time of inspection",
+  "job_RecordMaintenance": "Record Maintenance",
+  "job_IsTheRecordOfStaffAttendanceMaintained": "Is the record of staff attendance maintained?"
 }

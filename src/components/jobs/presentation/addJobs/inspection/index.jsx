@@ -91,7 +91,7 @@ const InspectionJob = ({ editData }) => {
               name="jobCompletionDate"
               placeholder={t('job_SelectDate')}
               allowClear={false}
-              format={'YYYY/MM/DD'}
+              format={'YYYY/MM/DD HH:mm'}
             />
           </ANTDFormItem>
         </div>
@@ -120,6 +120,7 @@ const InspectionJob = ({ editData }) => {
         onSaveClick={() => handleSave({ redirect: false })}
         activeKeys={activeKeys}
         onActiveKeysChange={onActiveKeysChange}
+        {...{ onSelectUser, selectedUsers, onUserClear }}
       />
     ),
     2: <></>,

@@ -13,6 +13,7 @@ const jobContext = () => {
   const { customer, site } = userWiseRole
   const [selectedUsers, setSelectedUsers] = useState({})
   const [fileList, setFileList] = useState([])
+  const [nextBtnLoader, setNextBtnLoader] = useState(false)
   const userData = JSON.parse(getItem('userData'))
   const { roleId, id: loginUserId } = { ...userData }
 
@@ -135,6 +136,8 @@ const jobContext = () => {
     fileList,
     loginUserId,
     selectedUsers,
+    nextBtnLoader,
+    setNextBtnLoader,
     onSelfUser,
     setFileList,
     onFileUpload,

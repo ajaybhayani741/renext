@@ -9,6 +9,9 @@ const InspectionFormList = ({
   onSaveClick,
   activeKeys,
   onActiveKeysChange,
+  onSelectUser,
+  selectedUsers,
+  onUserClear,
 }) => {
   // const { t } = useTranslations()
 
@@ -72,6 +75,9 @@ const InspectionFormList = ({
                 onSaveClick={onSaveClick}
                 activeKeys={activeKeys?.[index]}
                 onActiveKeysChange={onActiveKeysChange}
+                onSelectUser={onSelectUser}
+                selectedUsers={selectedUsers}
+                onUserClear={onUserClear}
               />
             ))}
             {/* {length(fields) < maxFields && (
