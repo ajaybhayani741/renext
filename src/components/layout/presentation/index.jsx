@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom'
 
 import LanguageSelector from './LanguageSelector'
-import banner from '../../../assets/RetNext_Login_image.png'
+import banner from '../../../assets/auth-side-image.jpg'
 import useRouter from '../../../hooks/useRouter'
 import pathName from '../../../routing/pathName.constant'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'

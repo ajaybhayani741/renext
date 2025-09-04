@@ -1,3 +1,4 @@
+import SettingsTableCard from './SettingsTableCard'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import ANTDForm from '../../../shared/antd/ANTDForm'
@@ -7,7 +8,6 @@ import ANTDTable from '../../../shared/antd/ANTDTable'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
 import FormLayout from '../../common/presentation/FormLayout'
 import johnsTubes from '../container/johnsTubes.container'
-import SettingsTableCard from './SettingsTableCard'
 
 const JohnsTubes = () => {
   const {
@@ -25,7 +25,6 @@ const JohnsTubes = () => {
     onConfirmModelClose,
     onAddModelToggle,
     onSaveClick,
-    cardViewFn,
     isDesktop,
     onEditClick,
     onDeleteClick,

@@ -1,4 +1,9 @@
-import { getMethod, postMethod, patchMethod } from '../../api/methods'
+import {
+  getMethod,
+  postMethod,
+  patchMethod,
+  deleteMethod,
+} from '../../api/methods'
 import API_ROUTES from '../../api/routes'
 
 const {
@@ -49,13 +54,19 @@ const getJobDetailApi = async ({ params }) => {
   return response?.data
 }
 
-const repairJobApi = async ({ payload }) => {
+const addJobPostApi = async ({ payload }) => {
   const response = await postMethod(JOBS_UPDATE, payload)
   return response
 }
-const repairJobPatchApi = async ({ payload }) => {
+
+const updateJobPatchApi = async ({ payload }) => {
   const response = await patchMethod(JOBS_UPDATE, payload)
   return response
+}
+
+const removeEquipmentApi = async ({ payload }) => {
+  const response = await deleteMethod(JOBS_UPDATE, { data: payload })
+  return response?.data
 }
 
 const getEquipmentApi = async ({ params }) => {
@@ -91,8 +102,9 @@ export {
   getErrorCodeApi,
   addErrorCodeApi,
   editErrorCodeApi,
-  repairJobApi,
-  repairJobPatchApi,
+  addJobPostApi,
+  updateJobPatchApi,
+  removeEquipmentApi,
   getEquipmentApi,
   searchEquipmentApi,
   getReportApi,

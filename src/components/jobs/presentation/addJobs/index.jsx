@@ -1,9 +1,11 @@
 import '../../jobs.scss'
 
+import InspectionJob from './inspection'
 import useRouter from '../../../../hooks/useRouter'
 import useTranslations from '../../../../hooks/useTranslations'
 import { ternary } from '../../../../utils/javascript'
 import PageNotFound from '../../../PageNotFound'
+import { tabKeys as jobTabKeys } from '../../jobs.description'
 
 const AddEditJobs = () => {
   const { t } = useTranslations()
@@ -12,6 +14,9 @@ const AddEditJobs = () => {
 
   const getJobComponent = type => {
     switch (type) {
+      case jobTabKeys.inspection:
+        return <InspectionJob />
+
       default:
         return <PageNotFound />
     }

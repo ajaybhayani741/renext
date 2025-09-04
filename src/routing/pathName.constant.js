@@ -1,13 +1,14 @@
 const USER_TXT = '/user'
 
 const ADMIN = 'admin'
-const STORE_OWNER = 'store-owner'
-const STORE = 'store'
-const STORE_MANAGER = 'store-manager'
-const STORE_EMPLOYEE = 'store-employee'
-const VENDOR = 'vendor'
-const CUSTOMER = 'customer'
-const MANUFACTURER = 'manufacturer'
+const STATE_HOSTEL_DEPARTMENT = 'state-hostel-department'
+const STATE_ADMIN_OFFICER = 'state-admin-officer'
+const DISTRICT_COLLECTOR = 'district-collector'
+const DISTRICT_COLLECTOR_ADMIN = 'district-collector-admin'
+const DISTRICT_HOSTEL_DEPARTMENT = 'district-hostel-department'
+const DISTRICT_ADMIN_OFFICER = 'district-admin-officer'
+const INSPECTION_OFFICER = 'inspection-officer'
+const HOSTEL = 'hostel'
 
 //book keeping path
 const BOOK_KEEPING_TXT = '/book-keeping'
@@ -55,13 +56,14 @@ export default pathName
 export {
   USER_TXT,
   ADMIN,
-  STORE_OWNER,
-  STORE_MANAGER,
-  STORE_EMPLOYEE,
-  VENDOR,
-  CUSTOMER,
-  MANUFACTURER,
-  STORE,
+  STATE_HOSTEL_DEPARTMENT,
+  STATE_ADMIN_OFFICER,
+  DISTRICT_COLLECTOR,
+  DISTRICT_COLLECTOR_ADMIN,
+  DISTRICT_HOSTEL_DEPARTMENT,
+  DISTRICT_ADMIN_OFFICER,
+  INSPECTION_OFFICER,
+  HOSTEL,
   BOOK_KEEPING_TXT,
   SCRATCH_TICKET_TRACKING,
   JOHN_TUBES,

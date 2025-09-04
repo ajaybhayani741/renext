@@ -1,24 +1,15 @@
 import { userWiseRole } from '../../utils/constant'
 import { isEqual } from '../../utils/javascript'
 
-const {
-  admin,
-  storeOwner,
-  store,
-  storeManager,
-  storeEmployee,
-  vendor,
-  manufacturer,
-} = userWiseRole
+const { admin, districtHostelDepartment, inspectionOfficer } = userWiseRole
 
 const tabKeys = {
   active: 'active',
   complete: 'complete',
-  shift: 'shift',
-  purchasing: 'purchasing',
+  inspection: 'inspection',
 }
 
-const { active, complete, shift, purchasing } = tabKeys
+const { active, complete, inspection } = tabKeys
 
 const jobTabList = {
   status: [
@@ -33,30 +24,9 @@ const jobTabList = {
   ],
   type: [
     {
-      label: 'job_ShiftJob',
-      key: shift,
-      permission: [
-        admin,
-        storeOwner,
-        store,
-        storeManager,
-        storeEmployee,
-        vendor,
-        manufacturer,
-      ],
-    },
-    {
-      label: 'job_PurchasingJob',
-      key: purchasing,
-      permission: [
-        admin,
-        storeOwner,
-        store,
-        storeManager,
-        storeEmployee,
-        vendor,
-        manufacturer,
-      ],
+      label: 'job_InspectionJob',
+      key: inspection,
+      permission: [admin, districtHostelDepartment, inspectionOfficer],
     },
   ],
 }
@@ -85,15 +55,14 @@ const searchByLabels = {
 }
 
 const payloadType = {
-  [shift]: 'SHIFT_JOB',
+  // [shift]: 'SHIFT_JOB',
   // [purchasing]: 'PURCHASE',
 }
 
-const recoverySteps = [
-  'job_Date',
-  'job_ScrapType',
-  'job_RecoverList',
-  'job_Remarks',
+const inspectionSteps = [
+  'job_NameAndDate',
+  'txt_Details',
+  'job_Findings',
   'job_Confirm',
   'job_Complete',
 ]
@@ -987,75 +956,11 @@ const materialOptions = [
 
 const dummyJobList = ({ jobType, status }) => {
   switch (jobType) {
-    case shift:
+    case inspection:
       if (isEqual(status, active)) {
         return {
-          list: [
-            {
-              id: 1,
-              jobId: 1,
-              employeeInfo: {
-                businessName: 'Varun',
-              },
-              shiftType: 'AM',
-              loginTime: '06:00',
-            },
-          ],
+          list: [],
         }
-      } else {
-        return {
-          list: [
-            {
-              id: 101,
-              jobId: 101,
-              employeeInfo: {
-                businessName: 'Varun',
-              },
-              shiftType: 'AM',
-              loginTime: '06:00',
-              shiftDate: '05/23/2025',
-              logoutTime: '15:00',
-            },
-            {
-              id: 102,
-              jobId: 102,
-              employeeInfo: {
-                businessName: 'Sindhu',
-              },
-              shiftType: 'PM',
-              loginTime: '15:03',
-              shiftDate: '05/23/2025',
-              logoutTime: '21:00',
-            },
-            {
-              id: 103,
-              jobId: 103,
-              employeeInfo: {
-                businessName: 'Varun',
-              },
-              shiftType: 'AM',
-              loginTime: '06:05',
-              shiftDate: '05/22/2025',
-              logoutTime: '15:02',
-            },
-            {
-              id: 104,
-              jobId: 104,
-              employeeInfo: {
-                businessName: 'Sindhu',
-              },
-              shiftType: 'PM',
-              loginTime: '16:00',
-              shiftDate: '05/22/2025',
-              logoutTime: '20:00',
-            },
-          ],
-        }
-      }
-
-    case purchasing:
-      if (isEqual(status, active)) {
-        return { list: [] }
       } else {
         return {
           list: [],
@@ -1211,7 +1116,7 @@ export {
   partSalesPartProducerSteps,
   payloadType,
   processFormSteps,
-  recoverySteps,
+  inspectionSteps,
   recycleFormSteps,
   recycleListAttr,
   recycleScrapSourceOpt,

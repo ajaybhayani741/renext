@@ -20,10 +20,10 @@ const UserManagement = () => {
 
   return (
     <div>
-      <h2 className="page-title c-white">{t(userTitle)}</h2>
+      <h2 className="page-title">{t(userTitle)}</h2>
       <div className="text-end mt-10">
         {permission && (
-          <ANTDButton type="primary" className="btn" onClick={handleAdd}>
+          <ANTDButton type="primary" className="btn mb-10" onClick={handleAdd}>
             {t('btn_Add')}
           </ANTDButton>
         )}

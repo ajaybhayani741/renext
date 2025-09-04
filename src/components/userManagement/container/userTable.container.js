@@ -1,10 +1,8 @@
 import { useCallback, useRef, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
-import { nameParam } from '../../../utils'
 import debounce from '../../../utils/debounce'
-import { entries, notEqual, ternary } from '../../../utils/javascript'
-import { searchUserApi } from '../user.api'
+import { notEqual, ternary } from '../../../utils/javascript'
 
 const userTable = ({ payload, multiSelect, searchByEmail }) => {
   const [viewModel, setViewModel] = useState({ open: false, userDetails: null })
@@ -31,16 +29,22 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
 
   const apiCall = useCallback(async ({ pageNo, value }) => {
     setSearchResult(pre => ({ ...pre, loader: true }))
-    let params = `${pageNo}?${nameParam({
-      roleId: payload?.roleId,
-      searchByEmail,
-    })}=${value}`
-    entries(payload)?.forEach(([key, value]) => {
-      if (value) {
-        params += `&${key}=${value}`
-      }
+    // let params = `${pageNo}?${nameParam({
+    //   roleId: payload?.roleId,
+    //   searchByEmail,
+    // })}=${value}`
+    // entries(payload)?.forEach(([key, value]) => {
+    //   if (value) {
+    //     params += `&${key}=${value}`
+    //   }
+    // })
+    // const result = await searchUserApi({ params })
+    const result = await Promise.resolve({
+      data: {
+        list: [],
+        total: 0,
+      },
     })
-    const result = await searchUserApi({ params })
     setSearchResult({ loader: false, data: result?.data })
   }, [])
 

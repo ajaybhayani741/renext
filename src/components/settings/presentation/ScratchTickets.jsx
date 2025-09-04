@@ -1,3 +1,4 @@
+import SettingsTableCard from './SettingsTableCard'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import ANTDForm from '../../../shared/antd/ANTDForm'
@@ -7,7 +8,6 @@ import ANTDTable from '../../../shared/antd/ANTDTable'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
 import FormLayout from '../../common/presentation/FormLayout'
 import scratchTickets from '../container/scratchTickets.container'
-import SettingsTableCard from './SettingsTableCard'
 
 const ScratchTickets = () => {
   const {
@@ -20,8 +20,8 @@ const ScratchTickets = () => {
     columns,
     addModel,
     boxFormFieldsAttr,
-    companyCode,
-    storeCode,
+    // companyCode,
+    // storeCode,
     handleDeleteBox,
     handleTableChange,
     onConfirmModelClose,
@@ -29,7 +29,7 @@ const ScratchTickets = () => {
     onSaveClick,
     onValuesChange,
     isDesktop,
-    cardViewFn,
+    // cardViewFn,
     onEditClick,
     onDeleteClick,
   } = scratchTickets()

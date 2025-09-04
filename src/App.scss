@@ -25,7 +25,7 @@ body {
 .ant-btn-primary {
   background: var(--color-primary-dark) !important;
   border-color: var(--color-primary-dark) !important;
-  color: var(--color-font) !important;
+  // color: var(--color-font) !important;
 }
 .ant-btn-primary:hover {
   background-color: var(--color-primary-light);
@@ -34,7 +34,7 @@ body {
 .ant-btn {
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 400;
-  color: var(--color-font);
+  // color: var(--color-font);
   &.ant-btn-link {
     color: var(--color-primary) !important;
     span {
@@ -93,23 +93,17 @@ h6 {
 .ant-modal-content {
   padding: 0 !important;
   .ant-modal-close-x {
-    color: var(--color-font);
+    color: var(--color-white);
   }
   .ant-modal-header {
     background: var(--color-primary-dark) !important;
     padding: 15px 25px !important;
     .ant-modal-title {
-      color: var(--color-font);
+      color: var(--color-white);
     }
   }
   .ant-modal-body {
     padding: 0px 25px 20px;
-
-    .ant-form-item-label {
-      label {
-        color: var(--color-black) !important;
-      }
-    }
 
     .ant-pagination {
       .ant-pagination-item-link {
@@ -197,7 +191,7 @@ h6 {
 //   padding: 0 0 2px !important;
 // }
 .ant-form-item-label {
-  padding: 0 0 2px 10px !important;
+  padding: 0 0 2px 5px !important;
   // padding-left: 10px;
   margin-top: 8px;
 
@@ -211,7 +205,6 @@ h6 {
 
   label {
     font-size: 85% !important;
-    color: var(--color-white) !important;
   }
 }
 .ant-form-item-explain-error {

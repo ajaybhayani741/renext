@@ -55,7 +55,7 @@ function App() {
         <ANTDConfigProvider
           theme={{
             token: {
-              colorPrimary: '#6495ed',
+              colorPrimary: '#7f5539',
             },
           }}
         >

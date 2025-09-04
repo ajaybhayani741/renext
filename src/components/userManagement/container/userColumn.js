@@ -2,10 +2,10 @@ import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import { addressFormat } from '../../../utils'
-import { userWiseRole } from '../../../utils/constant'
+import { childUsers } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
-import { include, isEqual, ternary } from '../../../utils/javascript'
+import { include, ternary } from '../../../utils/javascript'
 
 const userColumns = ({
   permission,
@@ -20,9 +20,7 @@ const userColumns = ({
 }) => {
   const { t } = useTranslations()
 
-  const { storeOwner, storeEmployee, store } = userWiseRole
-
-  // const isChildUser = include(childUsers, roleId)
+  const isChildUser = include(childUsers, roleId)
 
   const actionButtons = rowData => (
     <div className="flex-nowrap d-flex">
@@ -81,37 +79,14 @@ const userColumns = ({
       hidden: isBuilding,
     },
     {
-      title: t(
-        isEqual(roleId, storeOwner) ? 'job_CompanyName' : 'user_BusinessName',
-      ),
+      title: t('user_BusinessName'),
       dataIndex: 'businessName',
       key: 'user_BusinessName',
       className: 'business-name',
       render: rowData => {
         return rowData || '-'
       },
-      hidden: isEqual(roleId, storeEmployee),
-    },
-    {
-      title: t('user_CompanyCode'),
-      dataIndex: 'companyCode',
-      key: 'user_CompanyCode',
-      render: rowData => rowData || '-',
-      hidden: !include([storeOwner], roleId),
-    },
-    {
-      title: t('user_EmployeeID'),
-      dataIndex: 'employeeId',
-      key: 'user_EmployeeID',
-      render: rowData => rowData || '-',
-      hidden: !include([storeEmployee], roleId),
-    },
-    {
-      title: t('user_StoreCode'),
-      dataIndex: 'storeCode',
-      key: 'user_EmployeeID',
-      render: rowData => rowData || '-',
-      hidden: !include([store], roleId),
+      hidden: isChildUser,
     },
     {
       title: t('user_Name'),
@@ -119,29 +94,7 @@ const userColumns = ({
       render: rowData => {
         return isBuilding ? rowData?.name : rowData?.lastName
       },
-      hidden: include([store], roleId),
     },
-    // {
-    //   title: t('user_InChargeName'),
-    //   key: 'user_InChargeName',
-    //   dataIndex: 'inchargeName',
-    //   hidden: include(
-    //     [admin, storeOwner, storeEmployee, storeManager, customer],
-    //     roleId,
-    //   ),
-    //   render: rowData => {
-    //     return rowData || '-'
-    //   },
-    // },
-    // {
-    //   title: t('user_Level'),
-    //   key: 'user_Level',
-    //   dataIndex: 'level',
-    //   hidden: !include([storeManager, storeEmployee], roleId),
-    //   render: rowData => {
-    //     return rowData || '-'
-    //   },
-    // },
     {
       title: t('user_Email'),
       dataIndex: 'emailId',
@@ -194,28 +147,11 @@ const userColumns = ({
   }) =>
     [
       {
-        label: isEqual(roleId, storeOwner)
-          ? 'job_CompanyName'
-          : 'user_BusinessName',
+        label: 'user_BusinessName',
         value: businessName,
-        hidden: include([storeEmployee], roleId),
+        hidden: isChildUser,
       },
-      {
-        label: 'user_CompanyCode',
-        value: companyCode,
-        hidden: !include([storeOwner], roleId),
-      },
-      {
-        label: 'user_EmployeeID',
-        value: employeeId,
-        hidden: !include([storeEmployee], roleId),
-      },
-      {
-        label: 'user_StoreCode',
-        value: storeCode,
-        hidden: !include([store], roleId),
-      },
-      { label: 'user_Name', value: lastName, hidden: include([store], roleId) },
+      { label: 'user_Name', value: lastName },
       {
         label: 'user_Email',
         value: emailId,

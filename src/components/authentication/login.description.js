@@ -22,7 +22,7 @@ const formData = t => ({
 const infoBean = {
   androidId: 'string',
   androidVersion: 'string',
-  appName: 'RETNEXT',
+  appName: 'MATNEXT',
   appSignature: 'string',
   appVersion: 'string',
   deviceModel: 'string',

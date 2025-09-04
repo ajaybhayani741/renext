@@ -5,7 +5,6 @@ import ANTDTab from '../../../shared/antd/ANTDTab'
 import dashboard from '../container/dashboard.conainer'
 import { tabKeys } from '../dashboard.description'
 import DashboardContext from '../DashboardContext'
-import Overview from './Overview'
 
 const Dashboard = () => {
   const { t } = useTranslations()
@@ -15,7 +14,7 @@ const Dashboard = () => {
     {
       label: 'dash_Overview',
       key: tabKeys.overview,
-      children: <Overview />,
+      children: <></>,
     },
     {
       label: 'dash_Revenue',

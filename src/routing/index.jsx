@@ -17,14 +17,17 @@ const AuthAddUser = lazy(
 )
 const Profile = lazy(() => import('../components/profile/presentation/index'))
 const JobManagement = lazy(() => import('../components/jobs/presentation'))
-const BookKeeping = lazy(
-  () => import('../components/bookKeeping/presentation/Index'),
+const AddEditJobs = lazy(
+  () => import('../components/jobs/presentation/addJobs'),
 )
-const Settings = lazy(() => import('../components/settings/presentation'))
-const InventoryManagement = lazy(
-  () => import('../components/inventoryManagement/presentation'),
-)
-const Report = lazy(() => import('../components/report/presentation'))
+// const BookKeeping = lazy(
+//   () => import('../components/bookKeeping/presentation/Index'),
+// )
+// const Settings = lazy(() => import('../components/settings/presentation'))
+// const InventoryManagement = lazy(
+//   () => import('../components/inventoryManagement/presentation'),
+// )
+// const Report = lazy(() => import('../components/report/presentation'))
 
 const Routing = () => {
   const routes = useRoutes([
@@ -65,20 +68,12 @@ const Routing = () => {
           element: <JobManagement />,
         },
         {
-          path: pathName.BOOK_KEEPING,
-          element: <BookKeeping />,
+          path: pathName.ADD_JOB,
+          element: <AddEditJobs />,
         },
         {
-          path: pathName.INVENTORY,
-          element: <InventoryManagement />,
-        },
-        {
-          path: pathName.REPORTING,
-          element: <Report />,
-        },
-        {
-          path: pathName.SETTINGS,
-          element: <Settings />,
+          path: pathName.EDIT_JOB,
+          element: <AddEditJobs />,
         },
         { path: '*', element: <PageNotFound /> },
       ],
