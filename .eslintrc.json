@@ -1,0 +1,31 @@
+{
+  "extends": ["react-app", "prettier"],
+  "plugins": ["react", "react-hooks", "simple-import-sort", "prettier"],
+  "rules": {
+    "react-hooks/rules-of-hooks": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "prettier/prettier": 0,
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "always",
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "no-console": "warn",
+    "prefer-arrow-callback": "error",
+    "no-duplicate-imports": "error",
+    "arrow-parens": ["error", "as-needed"],
+    "semi": "off",
+    "react/jsx-key": "error"
+  }
+}

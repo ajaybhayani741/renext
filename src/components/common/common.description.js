@@ -1,0 +1,4 @@
+const FACING_MODE_USER = 'user'
+const FACING_MODE_ENVIRONMENT = 'environment'
+
+export { FACING_MODE_USER, FACING_MODE_ENVIRONMENT }

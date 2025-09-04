@@ -1,0 +1,3 @@
+const SET_SELECTED = 'SET_SELECTED'
+
+export { SET_SELECTED }

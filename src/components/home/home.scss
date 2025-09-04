@@ -1,0 +1,103 @@
+.name-wrapper {
+  margin-bottom: 20px;
+  padding: 6px 10px;
+  background-color: var(--color-primary-medium);
+  font-size: 16px;
+  border-radius: 10px 10px 0 0;
+  color: var(--color-black);
+
+  @media screen and (max-width: 576px) {
+    margin-bottom: 15px;
+  }
+}
+.list-column-wrapper {
+  width: 100%;
+  max-width: 275px;
+  @media screen and (max-width: 991px) {
+    max-width: 50%;
+  }
+  @media screen and (max-width: 576px) {
+    max-width: 100%;
+  }
+}
+.list-column-row {
+  flex-wrap: nowrap;
+  @media screen and (max-width: 991px) {
+    flex-wrap: wrap;
+  }
+}
+.list-columns {
+  width: calc(100% - 14px);
+  border: 1px solid var(--color-primary-dark);
+  border-radius: 10px;
+  margin: 7px;
+
+  @media screen and (max-width: 576px) {
+    margin: 0px 0px 15px;
+    width: 100%;
+  }
+
+  .ant-row {
+    padding: 0 10px 10px 10px;
+    flex-direction: column;
+  }
+  .ant-btn.ant-btn-lg {
+    font-size: 15px;
+    padding: 6px 10px;
+    padding-inline-start: 10px;
+    padding-inline-end: 10px;
+    color: var(--color-font);
+    height: auto;
+    justify-content: flex-start;
+    @media screen and (max-width: 576px) {
+      font-size: 14px;
+    }
+
+    .inner-btn {
+      color: var(--color-font);
+      svg {
+        height: 30px;
+        width: 28px;
+        margin-right: 6px;
+        margin-left: 4px;
+        flex: 0 0 auto;
+        // mix-blend-mode: multiply;
+        color: #fff;
+        @media screen and (max-width: 576px) {
+          height: 25px;
+          width: 23px;
+        }
+      }
+    }
+    &:hover {
+      background: var(--color-primary-dark);
+      color: var(--color-font);
+    }
+  }
+  .ant-badge {
+    width: 100%;
+    padding: 0 10px;
+    margin-bottom: 15px;
+    .ant-badge-count {
+      top: 10px;
+      right: 10px;
+    }
+  }
+  .ant-btn-primary:disabled {
+    background-color: rgb(182, 181, 181);
+    border-color: #d9d9d9;
+    &:hover {
+      background-color: rgb(182, 181, 181);
+      color: var(--color-font);
+    }
+  }
+}
+
+.wrap-text-3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+}

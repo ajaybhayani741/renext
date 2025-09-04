@@ -1,0 +1,42 @@
+.bold-cell-border {
+  .ant-table.ant-table-bordered
+    > .ant-table-container
+    > .ant-table-content
+    > table {
+    tbody,
+    tfoot,
+    .ant-table-summary {
+      > tr > td {
+        border-inline-end: 1px solid #d0d0d0;
+        border-bottom: 1px solid #d0d0d0;
+      }
+    }
+  }
+  .ant-table.ant-table-bordered {
+    .ant-table-container {
+      border-inline-start: 1px solid #d0d0d0;
+    }
+  }
+}
+
+.bold-table-cell-text {
+  table > tbody > tr > td {
+    .ant-input-number-input {
+      font-weight: bold;
+    }
+  }
+}
+
+.input-align-text {
+  .ant-table {
+    .ant-table-row {
+      .ant-table-cell {
+        &:nth-child(2) {
+          b {
+            padding: 0px 11px;
+          }
+        }
+      }
+    }
+  }
+}

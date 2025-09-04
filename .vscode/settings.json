@@ -1,0 +1,62 @@
+{
+    "cSpell.words": [
+      "Aluminium",
+      "ANTD",
+      "Authorised",
+      "Challan",
+      "cpcb",
+      "ctlg",
+      "Drilldown",
+      "IFSC",
+      "localstorage",
+      "pincode",
+      "Poweroff",
+      "processer",
+      "Refurbisher",
+      "refurbishers",
+      "Sider",
+      "spcb",
+      "tabuler"
+    ],
+    "editor.tabSize": 4,
+    "editor.formatOnSave": false,
+    "[javascript]": {
+      "editor.tabSize": 2,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "[javascriptreact]": {
+      "editor.tabSize": 2,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "[typescript]": {
+      "editor.tabSize": 2,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "[typescriptreact]": {
+      "editor.tabSize": 2,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "[json]": {
+      "editor.tabSize": 2,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "[css]": {
+      "editor.tabSize": 2,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "[scss]": {
+      "editor.tabSize": 2,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+  }
+  

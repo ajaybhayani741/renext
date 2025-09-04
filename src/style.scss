@@ -1,0 +1,316 @@
+.d-flex {
+  display: flex;
+}
+.space-between {
+  justify-content: space-between;
+}
+.space-evenly {
+  justify-content: space-evenly;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.flex-column {
+  flex-direction: column;
+}
+
+.align-center {
+  align-items: center;
+}
+.align-end {
+  align-items: flex-end;
+}
+.align-start {
+  align-items: start;
+}
+.align-self-end {
+  align-self: flex-end;
+}
+.align-self-start {
+  align-self: flex-start;
+}
+.gap-10 {
+  gap: 10px;
+}
+.gap-8 {
+  gap: 8px;
+}
+
+.w-100 {
+  width: 100%;
+}
+.w-50 {
+  width: 50%;
+}
+.vh-100 {
+  height: 100vh;
+}
+.h-100 {
+  height: 100%;
+}
+.m-0 {
+  margin: 0;
+}
+.m-3-percent {
+  margin: 0 3%;
+}
+.m-5-percent {
+  margin: 0 5%;
+}
+.mt-5 {
+  margin-top: 5px;
+}
+.mt-10 {
+  margin-top: 10px;
+}
+.mt-15 {
+  margin-top: 15px;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+.mb-20 {
+  margin-bottom: 20px;
+}
+.mb-0 {
+  margin-bottom: 0px;
+}
+.mb-5 {
+  margin-bottom: 5px;
+}
+.mb-10 {
+  margin-bottom: 10px;
+}
+.mb-15 {
+  margin-bottom: 15px;
+}
+.mb-30 {
+  margin-bottom: 30px;
+}
+.mt-30 {
+  margin-top: 30px;
+}
+.mr-5 {
+  margin-right: 5px;
+}
+.mr-10 {
+  margin-right: 10px;
+}
+.mr-15 {
+  margin-right: 15px;
+}
+.mr-auto {
+  margin-right: auto;
+}
+.ml-5 {
+  margin-left: 5px;
+}
+.ml-10 {
+  margin-left: 10px;
+}
+.ml-15 {
+  margin-left: 15px;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mx-3 {
+  margin: auto 3px !important;
+}
+.m-auto {
+  margin: auto;
+}
+.mt-auto {
+  margin-top: auto;
+}
+.p-auto {
+  padding: auto;
+}
+.py-5 {
+  padding: 5px 0px;
+}
+.px-5 {
+  padding: 0px 5px;
+}
+.pl-15 {
+  padding-left: 15px;
+}
+.pr-15 {
+  padding-right: 15px;
+}
+.overflowX-auto {
+  overflow-y: auto;
+}
+.overflowY-auto {
+  overflow-y: auto;
+}
+
+.primary-color {
+  color: var(--color-primary);
+}
+.bg-primary-color {
+  background-color: var(--color-primary);
+}
+.red-color {
+  color: var(--color-red);
+}
+.color-red {
+  color: var(--color-mandatory);
+}
+.green-color {
+  color: var(--color-green);
+}
+.border-black-1 {
+  border: 1px solid var(--color-black);
+}
+.top-border-1 {
+  border-top: 1px solid var(--light-gray);
+}
+.bottom-border-1 {
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.text-end {
+  text-align: right;
+}
+.text-start {
+  text-align: start;
+}
+.text-center {
+  text-align: center;
+}
+.webkit-center {
+  text-align: -webkit-center;
+}
+.justify-content-end {
+  justify-content: end !important;
+}
+
+.vertical-bottom {
+  vertical-align: bottom !important;
+}
+.vertical-middle {
+  vertical-align: middle !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.ellipsify {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.flex-row-reverse {
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-1 {
+  flex: 1 1 0;
+}
+.d-block {
+  display: block;
+}
+.d-inline-block {
+  display: inline-block;
+}
+.fs-12 {
+  font-size: 12px;
+}
+.fs-14 {
+  font-size: 14px;
+}
+.fs-15 {
+  font-size: 15px;
+}
+.fs-17 {
+  font-size: 17px;
+}
+.fs-18 {
+  font-size: 18px;
+}
+.fs-20 {
+  font-size: 20px;
+}
+.fs-22 {
+  font-size: 22px;
+}
+.fs-24 {
+  font-size: 24px;
+}
+.w-nowrap {
+  white-space: nowrap;
+}
+.text-underline {
+  text-decoration: underline;
+}
+.f-weight-600 {
+  font-weight: 600 !important;
+}
+.font-28 {
+  font-size: 28px !important;
+}
+.fs-10 {
+  font-size: 10px;
+}
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+
+.border-radius-10 {
+  border-radius: 10px;
+}
+
+.disabled-illusion {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.text-danger {
+  color: #f32426;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.word-break {
+  word-break: break-word;
+}
+
+.c-white {
+  color: var(--color-white) !important;
+}
+.color-black {
+  color: var(--color-black) !important;
+}
+.red-color-text {
+  color: red;
+}
+.green-color-text {
+  color: green;
+}

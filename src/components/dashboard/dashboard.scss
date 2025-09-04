@@ -1,0 +1,251 @@
+.dashboard-filter-dropdown-wrapper {
+  margin: 15px -20px;
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  background-color: #f5f5f5;
+  padding: 0px 15px;
+}
+
+.dashboard-filter-dropdown {
+  display: flex;
+  margin: 15px -20px;
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  background-color: #f5f5f5;
+  padding: 3px 15px 10px 15px;
+  .filter-selection {
+    padding: 0 5px;
+    width: 34%;
+    margin-top: 5px;
+    label {
+      text-transform: capitalize;
+      margin-bottom: 5px;
+      margin-left: 3px;
+      display: block;
+      font-weight: 500;
+    }
+    .ant-select {
+      max-width: 100%;
+    }
+  }
+}
+.dashboard-number-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 15px 0px 0px 0px;
+
+  .tiles-wrapper {
+    padding: 0 5px;
+    // width: 25%;
+    width: 33.33%;
+    min-height: 150px;
+    // @media screen and (max-width: 1260px) {
+    //   width: 33.33%;
+    // }
+    @media screen and (max-width: 767px) {
+      width: 50%;
+    }
+
+    .ant-card-bordered {
+      border: none;
+    }
+  }
+  .cpcb-tile-wrapper {
+    padding: 0 5px;
+    width: 20%;
+    @media screen and (max-width: 767px) {
+      width: 50%;
+    }
+  }
+  .link-jump {
+    display: flex;
+    justify-content: end;
+    position: relative;
+    svg {
+      position: absolute;
+      z-index: 1;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+  }
+}
+.people-tile {
+  .tiles-wrapper {
+    padding: 0 5px;
+    width: 20%;
+    @media screen and (max-width: 1260px) {
+      width: 20%;
+    }
+  }
+}
+
+.number-tiles {
+  .ant-card-body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+  &.disable {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.dashboard-error-code {
+  font-size: 1.2em;
+  color: rgb(51, 51, 51);
+  font-weight: bold;
+  fill: rgb(51, 51, 51);
+}
+
+.show-clear-icon {
+  .ant-select-arrow {
+    display: none;
+  }
+
+  .ant-select-clear {
+    opacity: 1;
+  }
+}
+
+.no-data-chart {
+  margin-bottom: 10px;
+  height: calc(100% - 10px);
+  min-height: 448px;
+
+  .ant-card-body {
+    height: 100%;
+
+    h3 {
+      font-size: 18px;
+      font-family: Helvetica, Arial, sans-serif;
+      color: #333333;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 4px;
+    }
+    .no-data-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+  }
+}
+.people-tile {
+  background-color: var(--color-primary-medium);
+  .tiles-wrapper {
+    padding-top: 10px;
+  }
+  .dash-icon {
+    border-radius: 100%;
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    img {
+      border-radius: 100%;
+    }
+  }
+}
+
+.fiscal-select-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .target-btn {
+    align-self: flex-end;
+  }
+}
+.target-out-of {
+  background-color: var(--color-primary);
+  border-radius: 12%;
+  text-align: center;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  margin: 0 auto;
+  position: relative;
+  span {
+    display: block;
+  }
+  .out-of {
+    margin: 5px 0;
+    padding: 0 40px;
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      width: 30px;
+      top: 12px;
+      height: 1px;
+      background-color: #fff;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 30px;
+      top: 12px;
+      height: 1px;
+      background-color: #fff;
+    }
+  }
+  .in-tons {
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    z-index: 9;
+  }
+}
+
+.dashboard-collapse.ant-collapse {
+  border-radius: 0;
+  border: none;
+  background-color: transparent;
+  .ant-collapse-item {
+    border-radius: 0;
+    padding: 0;
+    border-bottom: none;
+    .ant-collapse-header {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    .ant-collapse-content {
+      border-radius: 0;
+      background-color: transparent;
+    }
+  }
+}
+
+.material-card {
+  .ant-card-body {
+    text-align: center;
+    padding: 10px 10px;
+
+    .tile-title {
+      background-color: var(--color-primary-light);
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.dashboard-error-code {
+  font-size: 1.2em;
+  color: rgb(51, 51, 51);
+  font-weight: bold;
+  fill: rgb(51, 51, 51);
+}

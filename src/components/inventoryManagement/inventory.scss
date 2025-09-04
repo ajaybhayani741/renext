@@ -1,0 +1,56 @@
+.machine-sidebar-menu {
+  width: 100%;
+  max-width: 200px;
+  min-height: calc(100vh - 342px);
+  flex: 0 0 200px;
+  max-height: calc(100vh - 342px);
+  overflow-y: auto;
+  .ant-menu-item-selected {
+    background-color: var(--color-primary-xlight);
+    color: #fff;
+  }
+}
+
+.machine-wrapper-box {
+  display: flex;
+
+  .scanner-search-wrapper {
+    margin-left: -200px;
+  }
+
+  .machine-detail-box {
+    width: calc(100% - 205px);
+  }
+}
+
+.machine-view-info {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+  .machine-view-box {
+    width: 100%;
+    padding: 0 10px;
+    @media screen and (max-width: 1024px) {
+      width: 100%;
+    }
+    .machine-detail-info {
+      margin-top: 15px;
+    }
+  }
+}
+.machine-detail-row {
+  display: flex;
+  .machine-detail-info {
+    width: 100%;
+    @media screen and (max-width: 480px) {
+      width: 100%;
+    }
+    p {
+      font-weight: 600;
+    }
+    .flag-wrapper {
+      width: 30px;
+      margin-right: 10px;
+    }
+  }
+}
