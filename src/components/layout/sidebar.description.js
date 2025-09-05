@@ -252,7 +252,7 @@ const sidebarMenus = [
     key: DASHBOARD,
     Icon: DashboardIcon,
     label: 'job_Dashboard',
-    sidebar: [admin],
+    sidebar: allUser,
   },
   {
     key: USER_TXT,

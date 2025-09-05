@@ -8,10 +8,12 @@ import {
 } from '../../utils/icons'
 
 const tabKeys = {
-  overview: 'overview',
-  revenue: 'revenue',
-  costOfGoodsSold: 'cogs',
-  profitLoss: 'profit-loss',
+  studentMetrics: 'student-metrics',
+  staffMetrics: 'staff-metrics',
+  infrastructureMetrics: 'infrastructure-metrics',
+  foodSuppliesMetrics: 'food-supplies-metrics',
+  healthSafetyMetrics: 'health-safety-metrics',
+  educationalSupportMetrics: 'educational-support-metrics',
 }
 
 const {

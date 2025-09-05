@@ -1,29 +1,26 @@
 import HightChart from '.'
 import useTranslations from '../../hooks/useTranslations'
 
-const DonutChartRace = ({ data }) => {
+const HCDonutRace = ({ title, subTitle, optionsProps, total = '' }) => {
   const { t } = useTranslations()
+
   const options = {
     title: {
-      text: t('dash_TotalNumberOfStudentsEnrolledVsPresent'),
+      text: t(title),
       align: 'center',
     },
     credits: false,
     subtitle: {
       useHTML: true,
       text: `<span class="d-flex justify-center align-center flex-column">
-          <span style="font-size: 70px">${data?.enrolled + data?.present}</span>
+          <span style="font-size: 70px">${total}</span>
           <span style="font-size: 18px">
-            ${t('dash_TotalStudent')}
+            ${t(subTitle)}
           </span>
         </span>`,
       floating: true,
       verticalAlign: 'middle',
       y: 20,
-    },
-
-    legend: {
-      enabled: false,
     },
 
     tooltip: {
@@ -47,33 +44,23 @@ const DonutChartRace = ({ data }) => {
             fontSize: '16px',
           },
           connectorWidth: 0,
+          formatter: function () {
+            return this.y > 0 ? this.point.name : null
+          },
         },
+        showInLegend: true,
       },
     },
     colors: ['#f7a35c', '#07a107'],
-    series: [
-      {
-        type: 'pie',
-        name: data?.total,
-        data: [
-          [t('Enrolled'), data?.enrolled],
-          [t('Present'), data?.present],
-        ],
-      },
-    ],
+
+    ...optionsProps,
   }
+
   return (
     <>
       <HightChart options={options} />
-      {/* {!data.loader ? (
-      ) : (
-        <NoDataLoaderCard
-          title={t('dash_TotalJobsOpenVSCompleted')}
-          loading={data.loader}
-        />
-      )} */}
     </>
   )
 }
 
-export default DonutChartRace
+export default HCDonutRace

@@ -27,7 +27,6 @@ const HightChart = ({
   options,
   id,
   header,
-  isLoader = false,
   loading = false,
   title,
   ...props
@@ -35,7 +34,7 @@ const HightChart = ({
   return (
     <ANTDCard className="mb-10 chart-card" bordered={false} {...(id && { id })}>
       {header}
-      {isLoader ? (
+      {!loading ? (
         <HighchartsReact
           highcharts={Highcharts}
           options={{ ...options, accessibility: { enabled: false } }}

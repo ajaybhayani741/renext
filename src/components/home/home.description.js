@@ -74,8 +74,8 @@ const home_ActiveJobs = [
 //role-wise listing
 const roleWiseData = {
   [admin]: [],
-  [districtHostelDepartment]: [{ home_ActiveJobs }, { job_InspectionJob }],
-  [inspectionOfficer]: [{ home_ActiveJobs }, { job_InspectionJob }],
+  [districtHostelDepartment]: [{ job_InspectionJob }, { home_ActiveJobs }],
+  [inspectionOfficer]: [{ job_InspectionJob }, { home_ActiveJobs }],
 }
 
 export default roleWiseData

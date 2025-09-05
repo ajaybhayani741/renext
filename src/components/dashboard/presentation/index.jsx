@@ -5,6 +5,12 @@ import ANTDTab from '../../../shared/antd/ANTDTab'
 import dashboard from '../container/dashboard.conainer'
 import { tabKeys } from '../dashboard.description'
 import DashboardContext from '../DashboardContext'
+import EducationalSupportMetrics from './EducationalSupportMetrics'
+import FoodAndSuppliesMetrics from './FoodAndSuppliesMetrics'
+import HealthAndSafetyMetrics from './HealthAndSafetyMetrics'
+import InfrastructureMetrics from './InfrastructureMetrics'
+import StaffMetrics from './StaffMetrics'
+import StudentMetrics from './StudentMetrics'
 
 const Dashboard = () => {
   const { t } = useTranslations()
@@ -12,24 +18,34 @@ const Dashboard = () => {
 
   const tabList = [
     {
-      label: 'dash_Overview',
-      key: tabKeys.overview,
-      children: <></>,
+      label: 'dash_StudentMetrics',
+      key: tabKeys.studentMetrics,
+      children: <StudentMetrics />,
     },
     {
-      label: 'dash_Revenue',
-      key: tabKeys.revenue,
-      children: <></>,
+      label: 'dash_StaffMetrics',
+      key: tabKeys.staffMetrics,
+      children: <StaffMetrics />,
     },
     {
-      label: 'dash_CostOfGoodsSold',
-      key: tabKeys.costOfGoodsSold,
-      children: <></>,
+      label: 'dash_InfrastructureMetrics',
+      key: tabKeys.infrastructureMetrics,
+      children: <InfrastructureMetrics />,
     },
     {
-      label: 'menu_ProfitLoss',
-      key: tabKeys.profitLoss,
-      children: <></>,
+      label: 'dash_FoodSuppliesMetrics',
+      key: tabKeys.foodSuppliesMetrics,
+      children: <FoodAndSuppliesMetrics />,
+    },
+    {
+      label: 'dash_HealthSafetyMetrics',
+      key: tabKeys.healthSafetyMetrics,
+      children: <HealthAndSafetyMetrics />,
+    },
+    {
+      label: 'dash_EducationalSupportMetrics',
+      key: tabKeys.educationalSupportMetrics,
+      children: <EducationalSupportMetrics />,
     },
   ]
 

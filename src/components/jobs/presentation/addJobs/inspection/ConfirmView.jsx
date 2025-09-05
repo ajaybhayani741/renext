@@ -38,14 +38,16 @@ const ConfirmView = ({
       const data = {}
       entries(attributes)?.forEach(([key, item]) => {
         if (item.inputType === 'select') {
-          data[key] = item.options?.find(
-            option => option?.value === values?.[key],
-          )?.label
+          data[key] =
+            item.options?.find(option => option?.value === values?.[key])
+              ?.label || '-'
           data[`${key}Selected`] = values?.[key]
         } else if (item.inputType === 'dateTimePicker') {
           data[key] = dateToString(values?.[key])
+        } else if (item.inputType === 'formUpload') {
+          data[key] = '-'
         } else {
-          data[key] = values?.[key]
+          data[key] = values?.[key] ?? '-'
         }
       })
       return data

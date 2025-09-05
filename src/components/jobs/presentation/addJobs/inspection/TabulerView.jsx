@@ -672,19 +672,21 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
 
   const mapAttributeToTableAttr = attr => {
     const attrList = []
-    // entries(attr)?.forEach(([key, value], ind) => {
-    //   let obj = { title: '', fields: {} }
+    let obj = { title: '', fields: {} }
+    entries(attr)?.forEach(([key, value], ind) => {
+      if (ind === 0 && value?.title) {
+        return (obj.title = value.title)
+      } else if (value?.title) {
+        attrList.push(Object.assign({}, obj))
+        obj = { title: value?.title, fields: {} }
+        return
+      }
 
-    //   if (ind === 0 && value?.title) {
-    //     return (obj.title = value.title)
-    //   } else if (value?.title) {
-    //     attrList.push(Object.assign({}, obj))
-    //     obj = { title: value?.title, fields: {} }
-    //     return
-    //   }
-
-    //   obj.fields[key] = value
-    // })
+      obj.fields[key] = { ...value, editable: false }
+      if (ind === length(entries(attr)) - 1) {
+        attrList.push(Object.assign({}, obj))
+      }
+    })
     return attrList
   }
 

@@ -5,7 +5,7 @@ import useTranslations from '../../../hooks/useTranslations'
 import { getItem } from '../../../utils/localstorage'
 import { getDiscrepanciesApi, getShiftReportApi } from '../dashboard.api'
 
-const overview = () => {
+const studentMetrics = () => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const storeId = selector(state => state?.app?.store?.selected)
@@ -373,4 +373,4 @@ const overview = () => {
   }
 }
 
-export default overview
+export default studentMetrics
