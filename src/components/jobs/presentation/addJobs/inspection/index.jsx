@@ -1,3 +1,5 @@
+import ConfirmView from './ConfirmView'
+import InspectionFormField from './InspectionFormField'
 import InspectionFormList from './InspectionFormList'
 import { ANTDDatePicker } from '../../../../../shared/antd/ANTDDatePicker'
 import ANTDForm, { ANTDFormItem } from '../../../../../shared/antd/ANTDForm'
@@ -47,6 +49,7 @@ const InspectionJob = ({ editData }) => {
     onActiveKeysChange,
     onConfirmModelClose,
     onAcceptConfirmation,
+    findingsAttrFn,
   } = inspection({
     editData,
     selectedUsers,
@@ -123,21 +126,23 @@ const InspectionJob = ({ editData }) => {
         {...{ onSelectUser, selectedUsers, onUserClear }}
       />
     ),
-    2: <></>,
-    // 3: (
-    //   <ConfirmView
-    //     selectedUsers={selectedUsers}
-    //     isDirect={isDirectRecovery}
-    //     isELVnPartsSelected={isELVnPartsSelected}
-    //     scrapSource={scrapSource}
-    //     vehicleCategoryList={vehicleCategoryList}
-    //     providedByList={providedByList}
-    //     elvSourceList={elvSourceList}
-    //     fuelTypeList={fuelTypeList}
-    //     challanPaidTypeList={challanPaidTypeList}
-    //     categoryELVOptions={categoryELVOptions}
-    //   />
-    // ),
+    2: (
+      <>
+        <InspectionFormField
+          {...{
+            attrList: findingsAttrFn(),
+            name: 'findingsRequestDto',
+          }}
+        />
+      </>
+    ),
+    3: (
+      <ConfirmView
+        selectedUsers={selectedUsers}
+        inspectionFormFieldsAttr={inspectionFormFieldsAttr}
+        findingsAttrFn={findingsAttrFn}
+      />
+    ),
     4: (
       <>
         <div className="text-center align-center">

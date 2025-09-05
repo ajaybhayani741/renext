@@ -5,6 +5,7 @@ import {
   deleteMethod,
 } from '../../api/methods'
 import API_ROUTES from '../../api/routes'
+import { apiParams } from '../../utils'
 
 const {
   JOBS,
@@ -17,6 +18,9 @@ const {
   GET_REPORT,
   SHARE_REPORT,
   UPDATE_REPORT,
+  QUICK_EDIT,
+  GET_GEO_TAG,
+  JOB_EDIT_LOG,
 } = API_ROUTES
 
 const getJobListApi = async ({ pageNo, params }) => {
@@ -94,6 +98,30 @@ const updateReportApi = async ({ payload }) => {
   return response?.data
 }
 
+const quickEditAPI = async ({ payload }) => {
+  const response = await patchMethod(QUICK_EDIT, payload)
+  return response
+}
+
+const getGeoTagDataApi = async ({ params }) => {
+  const response = await getMethod(
+    GET_GEO_TAG({ params: apiParams({ params }) }),
+  )
+  return response?.data
+}
+
+const getJobEditLogApi = async ({ params }) => {
+  const response = await getMethod(
+    JOB_EDIT_LOG({ params: apiParams({ params }) }),
+  )
+  return response?.data
+}
+
+const patchJobEditLogApi = async ({ payload }) => {
+  const response = await patchMethod(JOB_EDIT_LOG(), payload)
+  return response?.data
+}
+
 export {
   getJobListApi,
   postJobApi,
@@ -110,4 +138,8 @@ export {
   getReportApi,
   shareCertificateApi,
   updateReportApi,
+  quickEditAPI,
+  getGeoTagDataApi,
+  getJobEditLogApi,
+  patchJobEditLogApi,
 }

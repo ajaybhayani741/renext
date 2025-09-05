@@ -9,9 +9,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 
 import { notifyMethod } from '../../../../../App'
 import usePromise from '../../../../../hooks/usePromise'
-import useRedux from '../../../../../hooks/useRedux'
 import useTranslations from '../../../../../hooks/useTranslations'
-import ANTDCard from '../../../../../shared/antd/ANTDCard'
 import ANTDCollapse from '../../../../../shared/antd/ANTDCollapse'
 import ANTDColumn from '../../../../../shared/antd/ANTDColumn'
 import ANTDForm, {
@@ -25,9 +23,8 @@ import getFormInput from '../../../../../shared/form.description'
 import PopUpConfirm from '../../../../../shared/PopUpConfirm'
 import { getBase64 } from '../../../../../utils'
 import { MAX_FILE_SIZE, userWiseRole } from '../../../../../utils/constant'
-import { getLocation } from '../../../../../utils/customFunctions'
-import { dayJs, formatDate } from '../../../../../utils/dayjs'
-import { MapPin, RewindTimeIcon } from '../../../../../utils/icons'
+import { dayJs } from '../../../../../utils/dayjs'
+import { MapPin } from '../../../../../utils/icons'
 import {
   entries,
   include,
@@ -40,23 +37,10 @@ import {
 } from '../../../../../utils/javascript'
 import { getItem } from '../../../../../utils/localstorage'
 import FormUpload from '../../../../common/presentation/FormUpload'
+import inspectionFieldAttr from '../../../container/inspectionFieldAttr.container'
 import jobContext from '../../../container/jobContext.container'
-import {
-  getGeoTagDataApi,
-  postJobEditLogApi,
-  quickEditAPI,
-} from '../../../jobs.api'
-import {
-  APPROVED,
-  COLLECTION_CENTER,
-  DIRECT_DEALER,
-  DIRECT_INDIVIDUAL,
-  ELV,
-  OEM,
-  PENDING,
-  TEST_VEHICLE_REGISTERED,
-  TEST_VEHICLE_UNREGISTERED,
-} from '../../../jobs.description'
+import { getGeoTagDataApi, quickEditAPI } from '../../../jobs.api'
+import { APPROVED, PENDING } from '../../../jobs.description'
 import EditLogTable from '../../common/EditLogTable'
 import JobUserSelect from '../../common/JobUserSelect'
 
@@ -149,7 +133,7 @@ const CellRender = ({
             '-'
           )
         ) : (
-          rowData?.toString() ?? '-'
+          (rowData?.toString() ?? '-')
         )}
       </span>
       {showEdit && editable && (
@@ -181,47 +165,32 @@ const CellRender = ({
             />
           )}
 
-          {!!editLogStatus?.status && (
+          {/* {!!editLogStatus?.status && (
             <RewindTimeIcon
               className="rewind-icon"
               onClick={() => onEditLogClick(record, editLogStatus?.canApprove)}
             />
-          )}
+          )} */}
         </span>
       )}
     </div>
   )
 }
 
-const TabulerView = ({ elvDetails, userSelectionList, currentForm }) => {
+const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
   const { t } = useTranslations()
   const form = useFormFn()
   const { createPromise, resolvePromise } = usePromise()
-  const { selector } = useRedux()
-  const { fuelTypeList = [], vehicleCategoryList = [] } = selector(
-    state => state?.jobs?.options,
-  )
-  const [data, setData] = useState(elvDetails)
+  const [data, setData] = useState(inspectionDetails)
   const [confirmModel, setConfirmModel] = useState({ open: false })
   const [geoTagData, setGeoTagData] = useState({})
   const locationRef = useRef(null)
   const userData = JSON.parse(getItem('userData'))
   const { roleId } = { ...userData }
-  const {
-    recycler,
-    scrappingFacilityManager,
-    superUser,
-    scrappingFacilityEntryUser,
-    dataEntry,
-    salesUser,
-    categoryUser,
-  } = userWiseRole
+  const { districtHostelDepartment, inspectionOfficer } = userWiseRole
 
   const { onFileUploadOrRemove } = jobContext()
   const [editLogModel, setEditLogModel] = useState({ open: false })
-
-  const vehicleType = data?.basicDetailsResponseDto?.elvScrapTypeKey
-  const sourceType = data?.sourceCommercialDetailsResponseDto?.elvSourceKey
 
   useEffect(() => {
     if (data?.imageList) {
@@ -234,11 +203,11 @@ const TabulerView = ({ elvDetails, userSelectionList, currentForm }) => {
       })
       form.setFieldsValue({ ...tempImageList })
     }
-    const getCurrentLocation = async () => {
-      const data = await getLocation()
-      locationRef.current = data
-    }
-    getCurrentLocation()
+    // const getCurrentLocation = async () => {
+    //   const data = await getLocation()
+    //   locationRef.current = data
+    // }
+    // getCurrentLocation()
 
     //read only fields which are not stored on backend
     setData(prev => {
@@ -312,19 +281,6 @@ const TabulerView = ({ elvDetails, userSelectionList, currentForm }) => {
     },
   }
 
-  const challanDetailsMap = {
-    challanCustomerQuotedPrice:
-      'job_ChallanAmountDeductedFromCustomerQuotedPriceAgainstTotalChallanAmount',
-    challanDealerCommissionPrice:
-      'job_ChallanAmountDeductedFromDealerCommissionPriceAgainstTotalChallanAmount',
-    totalAmount: 'job_TotalChallanValueChallanDeduction',
-  }
-
-  const challanPaidByMap = {
-    challanSourceKey: 'job_ChallanPaidBy',
-    totalChallanAmount: 'job_TotalChallanAmount',
-  }
-
   const onRemove = file => {
     setConfirmModel(prev => ({ ...prev, open: true }))
     return createPromise()
@@ -366,55 +322,52 @@ const TabulerView = ({ elvDetails, userSelectionList, currentForm }) => {
   }
 
   const onSaveClick = async ({ record, detailKey }) => {
-    const fieldValue = form.getFieldValue(record?.key) ?? null
-    const updatedValue = isEqual(record?.inputType, 'dateTimePicker')
-      ? fieldValue?.format('DD/MM/YYYY') || null
-      : fieldValue
-
-    const keyName = record?.apiKey || record?.key
-    const prevValue = data?.[detailKey]?.[keyName]
-    if (isEqual(prevValue, updatedValue)) return
-
-    const payload = {
-      jobId: data?.jobId,
-      scrapId: data?.systemId,
-      keyName,
-      value: nullOrUndefined(updatedValue) ? -1 : updatedValue, // -1 for removing the value as per backend,
-      ...locationRef.current,
-    }
-
-    try {
-      const response = await postJobEditLogApi({ payload })
-      if (response?.data?.success) {
-        if (include([recycler, scrappingFacilityManager, superUser], roleId)) {
-          const { dependentKey, dependentKeyValue } = response?.data
-          modifyDataValue({
-            record,
-            updatedValue,
-            detailKey,
-            dependentData: {
-              [dependentKey]: dependentKeyValue,
-            },
-          })
-        }
-        //disable edit button when pending approval
-        setData(prev => ({
-          ...prev,
-          editLogKeyStatus: {
-            ...prev?.editLogKeyStatus,
-            [keyName]: {
-              ...prev?.editLogKeyStatus?.[keyName],
-              status: include(
-                [recycler, scrappingFacilityManager, superUser],
-                roleId,
-              )
-                ? APPROVED
-                : PENDING,
-            },
-          },
-        }))
-      }
-    } catch (error) {}
+    // const fieldValue = form.getFieldValue(record?.key) ?? null
+    // const updatedValue = isEqual(record?.inputType, 'dateTimePicker')
+    //   ? fieldValue?.format('DD/MM/YYYY') || null
+    //   : fieldValue
+    // const keyName = record?.apiKey || record?.key
+    // const prevValue = data?.[detailKey]?.[keyName]
+    // if (isEqual(prevValue, updatedValue)) return
+    // const payload = {
+    //   jobId: data?.jobId,
+    //   scrapId: data?.systemId,
+    //   keyName,
+    //   value: nullOrUndefined(updatedValue) ? -1 : updatedValue, // -1 for removing the value as per backend,
+    //   ...locationRef.current,
+    // }
+    // try {
+    //   const response = await postJobEditLogApi({ payload })
+    //   if (response?.data?.success) {
+    //     if (include([recycler, scrappingFacilityManager, superUser], roleId)) {
+    //       const { dependentKey, dependentKeyValue } = response?.data
+    //       modifyDataValue({
+    //         record,
+    //         updatedValue,
+    //         detailKey,
+    //         dependentData: {
+    //           [dependentKey]: dependentKeyValue,
+    //         },
+    //       })
+    //     }
+    //     //disable edit button when pending approval
+    //     setData(prev => ({
+    //       ...prev,
+    //       editLogKeyStatus: {
+    //         ...prev?.editLogKeyStatus,
+    //         [keyName]: {
+    //           ...prev?.editLogKeyStatus?.[keyName],
+    //           status: include(
+    //             [recycler, scrappingFacilityManager, superUser],
+    //             roleId,
+    //           )
+    //             ? APPROVED
+    //             : PENDING,
+    //         },
+    //       },
+    //     }))
+    //   }
+    // } catch (error) {}
   }
 
   const onEditLogClick = (record, canApprove) => {
@@ -526,790 +479,6 @@ const TabulerView = ({ elvDetails, userSelectionList, currentForm }) => {
     },
     [data],
   )
-
-  const mapToOption = list =>
-    list?.map(({ key, name, id }) => ({
-      label: t(key || name),
-      value: id,
-    })) || []
-
-  const checkIfAfterOrSameDate = (date1, date2) =>
-    dayJs(date1).isAfter(dayJs(date2)) || dayJs(date1).isSame(dayJs(date2))
-
-  const dateValidator =
-    ({ labelDate1, labelDate2, date2Value }) =>
-    ({ getFieldValue }) => ({
-      validator(_, value) {
-        if (value && date2Value && !checkIfAfterOrSameDate(value, date2Value)) {
-          return Promise.reject(
-            new Error(
-              t('msg_Date1ShouldBeOnOrAfterDate2', {
-                date1: t(labelDate1),
-                date2: t(labelDate2),
-              }),
-            ),
-          )
-        }
-        return Promise.resolve()
-      },
-    })
-
-  const basicDetailsAttr = [
-    {
-      title: '',
-      fields: {
-        elvScrapTypeKey: {
-          label: 'job_VehicleType',
-          inputType: 'select',
-          editable: false,
-        },
-        dateOfReceiptOfVehicle: {
-          label: 'job_DateOfReceiptOfVehicle',
-          inputType: 'dateTimePicker',
-          className: 'w-100',
-          format: 'YYYY/MM/DD',
-          required: true,
-          rules: [
-            dateValidator({
-              labelDate1: 'job_DateOfReceiptOfVehicle',
-              labelDate2: 'job_VehicleDispatchDate',
-              date2Value: formatDate(
-                data?.sourceCommercialDetailsResponseDto?.vehicleDispatchDate,
-                'DD/MM/YYYY',
-              ),
-            }),
-          ],
-        },
-        vehicleCategoryKey: {
-          label: 'job_VehicleCategoryTitle',
-          inputType: 'select',
-          apiKey: 'vehicleCategoryId',
-          options: mapToOption(vehicleCategoryList),
-        },
-        mstiVehicleNo: {
-          label: 'job_RVSFVehicleNo',
-          inputType: 'input',
-          required: true,
-        },
-        ...(!include(
-          [TEST_VEHICLE_UNREGISTERED, TEST_VEHICLE_REGISTERED],
-          vehicleType,
-        ) && {
-          vehicleRegistrationNumber: {
-            label: 'job_VehicleRegistrationNumber',
-            inputType: 'input',
-            rules: [
-              {
-                min: 8,
-                max: 11,
-                message: t(
-                  'msg_VehicleRegistrationNumber8To11CharactersAreAllowed',
-                ),
-              },
-            ],
-          },
-        }),
-        weightAsPerMsti: {
-          label: 'job_WeightAsPerMSTIWeighmentInKG',
-          editable: false,
-        },
-        ...(include(
-          [TEST_VEHICLE_UNREGISTERED, TEST_VEHICLE_REGISTERED],
-          vehicleType,
-        ) && {
-          vehicleLocation: {
-            label: 'inv_Location',
-            inputType: 'input',
-          },
-        }),
-      },
-    },
-  ]
-
-  const preInspectionAttr = [
-    {
-      title: '',
-      fields: {
-        preInspectionCompleted: {
-          label: 'job_PreInspectionCompleted',
-          inputType: 'select',
-          options: [
-            { label: 'btn_Yes', value: true },
-            { label: 'btn_No', value: false },
-          ],
-          required: true,
-          rules: [
-            {
-              validator(_, value) {
-                if (!nullOrUndefined(value) && notEqual(value, true)) {
-                  return Promise.reject(
-                    new Error(t('msg_PleaseCompletePreInspection')),
-                  )
-                }
-                return Promise.resolve()
-              },
-            },
-          ],
-        },
-        dateOfInspection: {
-          label: 'job_DateOfInspection',
-          inputType: 'dateTimePicker',
-          className: 'w-100',
-          format: 'YYYY/MM/DD',
-          required: true,
-          rules: [
-            dateValidator({
-              labelDate1: 'job_DateOfInspection',
-              labelDate2: 'job_DateOfReceiptOfVehicle',
-              date2Value: formatDate(
-                data?.basicDetailsResponseDto?.dateOfReceiptOfVehicle,
-                'DD/MM/YYYY',
-              ),
-            }),
-          ],
-        },
-        remarks: {
-          label: 'job_Remarks',
-          inputType: 'input',
-          rules: [{ max: 300, message: 'Max 300 characters allowed' }],
-        },
-      },
-    },
-  ]
-
-  const form2AndRCDataAttr = [
-    ...(include([ELV, TEST_VEHICLE_REGISTERED], vehicleType)
-      ? [
-          {
-            title: '',
-            fields: {
-              registrationNumber: {
-                label: 'job_RegistrationNumber',
-                inputType: 'input',
-                rules: [
-                  {
-                    min: 8,
-                    max: 11,
-                    message: t(
-                      'msg_VehicleRegistrationNumber8To11CharactersAreAllowed',
-                    ),
-                  },
-                ],
-              },
-              registrationDate: {
-                label: 'job_DateOfRegistration',
-                inputType: 'dateTimePicker',
-                className: 'w-100',
-                format: 'YYYY/MM/DD',
-              },
-              // registrationValidityDate: {
-              //   label: 'job_RegistrationValidity',
-              //   inputType: 'dateTimePicker',
-              //   className: 'w-100',
-              //   format: 'YYYY/MM/DD',
-              // },
-            },
-          },
-          {
-            title: 'job_VehicleDetails',
-            fields: {
-              vehicleRegistrationNumber: {
-                label: 'job_VehicleRegistrationNumber',
-                inputType: 'input',
-                rules: [
-                  {
-                    min: 8,
-                    max: 11,
-                    message: t(
-                      'msg_VehicleRegistrationNumber8To11CharactersAreAllowed',
-                    ),
-                  },
-                ],
-              },
-              vehicleModelName: {
-                label: 'job_Form2RcModelName',
-                inputType: 'input',
-                md: 8,
-                xs: 24,
-              },
-              modelKey: {
-                editable: false,
-                apiKey: 'modelId',
-                label: 'modelName',
-                inputType: 'input',
-                placeholder: t('job_SelectModel'),
-                // producerId: selectedUsers?.[producer]?.[index]?.id,
-                options: [],
-                md: 8,
-                xs: 24,
-              },
-              vehicleChassisNo: {
-                label: 'chassisNo',
-                inputType: 'input',
-                // rules: [
-                //   {
-                //     min: 17,
-                //     max: 17,
-                //     message: t('msg_Only17CharactersAreAllowed'),
-                //   },
-                // ],
-              },
-              vehicleEngineNo: {
-                label: 'engineNo',
-                inputType: 'input',
-              },
-              vehicleManufactureMonthYear: {
-                label: 'monthYearOfManufacture',
-                inputType: 'dateTimePicker',
-                picker: 'month',
-                format: 'MM/YYYY',
-                className: 'w-100',
-              },
-              vehicleFuelTypeKey: {
-                label: 'job_FuelType',
-                inputType: 'select',
-                apiKey: 'vehicleFuelTypeId',
-                options: mapToOption(fuelTypeList),
-              },
-              rtoName: {
-                label: 'RTOName',
-                inputType: 'input',
-              },
-              weightAsPerRc: {
-                label: 'job_WeightAsPerRegistrationCertificateInKG',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-            },
-          },
-          {
-            title: 'job_TransportationDetails',
-            fields: {
-              freight: {
-                label: 'job_Freight',
-                inputType: 'inputNumber',
-              },
-              towingDetails: {
-                label: 'job_TowingDetails',
-                inputType: 'input',
-              },
-              pickedBy: {
-                label: 'job_PickedBy',
-                inputType: 'input',
-              },
-              pickedDate: {
-                label: 'job_PickedDate',
-                inputType: 'dateTimePicker',
-                className: 'w-100',
-                format: 'YYYY/MM/DD',
-              },
-            },
-          },
-          {
-            title: 'job_CustomerPaymentDetails',
-            fields: {
-              bankName: {
-                label: 'job_BankName',
-                inputType: 'input',
-              },
-              branch: {
-                label: 'job_Branch',
-                inputType: 'input',
-              },
-              beneficiary: {
-                label: 'job_Beneficiary',
-                inputType: 'input',
-              },
-              ifsc: {
-                label: 'job_IFSC',
-                inputType: 'input',
-              },
-              accountNumber: {
-                label: 'job_AccountNumber',
-                inputType: 'input',
-              },
-            },
-          },
-          {
-            title: 'job_CODDetails',
-            fields: {
-              certificateOfDepositNo: {
-                label: 'job_CertificateOfDepositNo',
-                inputType: 'input',
-              },
-              certificateOfDepositDate: {
-                label: 'job_CertificateOfDepositDate',
-                inputType: 'dateTimePicker',
-                className: 'w-100',
-                format: 'YYYY/MM/DD',
-              },
-            },
-          },
-        ]
-      : []),
-    ...(include([TEST_VEHICLE_UNREGISTERED], vehicleType)
-      ? [
-          {
-            title: '',
-            fields: {
-              location: {
-                label: 'inv_Location',
-                inputType: 'input',
-              },
-              modelKey: {
-                editable: false,
-                apiKey: 'modelId',
-                label: 'modelName',
-                inputType: 'input',
-                placeholder: t('job_SelectModel'),
-                // producerId: selectedUsers?.[producer]?.[index]?.id,
-                options: [],
-                md: 8,
-                xs: 24,
-              },
-              weightAsPerMaker: {
-                editable: false,
-                label: 'job_WeightAsPerMakerKgs',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              weighmentAtScrapFacilityInKgs: {
-                editable: false,
-                label: 'job_WeightAsPerMSTIWeighmentInKG',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              differenceInWeightAsPerMakerAndScrapFacility: {
-                editable: false,
-                label: 'job_DifferenceInWeightAsPerMakerAndScrapFacility',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              vehicleChassisNo: {
-                label: 'chassisNo',
-                inputType: 'input',
-                // rules: [
-                //   {
-                //     min: 17,
-                //     max: 17,
-                //     message: t('msg_Only17CharactersAreAllowed'),
-                //   },
-                // ],
-              },
-              vehicleEngineNo: {
-                label: 'engineNo',
-                inputType: 'input',
-              },
-              invoiceNo: {
-                label: 'job_InvoiceNo',
-                inputType: 'input',
-              },
-              invoiceDate: {
-                label: 'job_InvoiceDate',
-                inputType: 'dateTimePicker',
-                className: 'w-100',
-                format: 'YYYY/MM/DD',
-              },
-              invoiceAmount: {
-                label: 'job_InvoiceAmount',
-                inputType: 'inputNumber',
-              },
-              gst: {
-                label: 'job_GST',
-                inputType: 'inputNumber',
-              },
-              compensationCess: {
-                label: 'job_CompensationCess',
-                inputType: 'inputNumber',
-              },
-              tcs: {
-                label: 'job_TCS',
-                inputType: 'inputNumber',
-              },
-              totalInvoiceValue: {
-                label: 'job_TotalInvoiceValue',
-                inputType: 'inputNumber',
-              },
-              freight: {
-                label: 'job_Freight',
-                inputType: 'inputNumber',
-              },
-              purchasePrice: {
-                label: 'job_TotalPurchaseValue',
-                inputType: 'inputNumber',
-              },
-              pickedBy: {
-                label: 'job_PickedBy',
-                inputType: 'input',
-              },
-            },
-          },
-        ]
-      : []),
-  ]
-
-  const mstiPaymentDetails = [
-    {
-      title: '',
-      fields: {
-        paymentBank: {
-          label: 'job_PaymentBankName',
-          inputType: 'input',
-        },
-        paymentDate: {
-          label: 'job_PaymentDate',
-          inputType: 'dateTimePicker',
-          className: 'w-100',
-          format: 'YYYY/MM/DD',
-          rules: [
-            dateValidator({
-              labelDate1: 'job_PaymentDate',
-              labelDate2: 'job_DateOfReceiptOfVehicle',
-              date2Value: formatDate(
-                data?.basicDetailsResponseDto?.dateOfReceiptOfVehicle,
-                'DD/MM/YYYY',
-              ),
-            }),
-          ],
-        },
-        paymentAmount: {
-          label: 'job_PaymentAmount',
-          inputType: 'input',
-        },
-        paymentVoucherNo: {
-          label: 'job_PaymentVoucherNo',
-          inputType: 'input',
-        },
-      },
-    },
-  ]
-
-  const vehicleCategoryAttr = [
-    {
-      title: '',
-      fields: {
-        name: {
-          label: 'job_Category',
-          inputType: 'select',
-          editable: false,
-        },
-      },
-    },
-  ]
-
-  const sourceAndCommercialsAttr = [
-    {
-      title: '',
-      fields: {
-        elvSourceKey: {
-          label: 'job_Source',
-          inputType: 'select',
-          editable: false,
-        },
-        ...(include([DIRECT_DEALER, COLLECTION_CENTER], sourceType) && {
-          ...(isEqual(sourceType, COLLECTION_CENTER) && {
-            vehicleReceiptAtCollectionCenterDate: {
-              label: 'job_DateOfReceiptOfVehicleAtCollectionCenter',
-              inputType: 'dateTimePicker',
-              className: 'w-100',
-              format: 'YYYY/MM/DD',
-              required: true,
-            },
-            collectionCenterDealerName: {
-              label: 'job_CollectionCenterDealerName',
-              inputType: 'input',
-            },
-            location: {
-              label: 'inv_Location',
-              inputType: 'input',
-            },
-            vehicleNumber: {
-              label: 'job_VehicleNo',
-              inputType: 'input',
-              required: true,
-              rules: [
-                {
-                  min: 8,
-                  max: 11,
-                  message: t(
-                    'msg_VehicleRegistrationNumber8To11CharactersAreAllowed',
-                  ),
-                },
-              ],
-            },
-            vehicleModelName: {
-              label: 'job_VehicleModel',
-              inputType: 'input',
-              required: true,
-            },
-            vehicleDispatchDate: {
-              label: 'job_VehicleDispatchDate',
-              inputType: 'dateTimePicker',
-              className: 'w-100',
-              format: 'YYYY/MM/DD',
-              required: true,
-              rules: [
-                dateValidator({
-                  labelDate1: 'job_VehicleDispatchDate',
-                  labelDate2: 'job_DateOfReceiptOfVehicleAtCollectionCenter',
-                  date2Value: formatDate(
-                    data?.sourceCommercialDetailsResponseDto
-                      ?.vehicleReceiptAtCollectionCenterDate,
-                    'DD/MM/YYYY',
-                  ),
-                }),
-              ],
-            },
-          }),
-        }),
-      },
-    },
-    ...(include([DIRECT_DEALER, COLLECTION_CENTER], sourceType)
-      ? [
-          {
-            title: 'job_CommercialsDetails',
-            fields: {
-              baseBuyingPrice: {
-                label: 'job_BaseBuyingPrice',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              quotedPrice: {
-                label: 'job_QuotedPrice',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              deductionFromCustomerQuotedPrice: {
-                label: 'job_OtherDeductionFromCustomerQuotedPrice',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              challanDeductions: {
-                label: 'job_ChallanDeductionsTotal',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              purchasePrice: {
-                label: 'job_TotalPurchaseValue',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              netAmountToBePaidToCustomer: {
-                label: 'job_NetAmountNeedToBePaidToTheCustomer',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              dealerCommission: {
-                label: 'job_DealerCommission',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              specialIncentiveToDealer: {
-                label: 'job_SpecialIncentiveToDealer',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              deductionFromDealerCommission: {
-                label: 'job_OtherDeductionFromDealerCommission',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              netAmountToBePaidToDealer: {
-                label:
-                  'job_NetAmountNeedToBePaidToDealerIncludingSpecialIncentive',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              // otherDeductions: {
-              //   label: 'job_OtherDeductions',
-              //   inputType: 'inputNumber',
-              //   className: 'w-100',
-              // },
-            },
-          },
-          // {
-          //   challanDetailsTitle: {
-          //     title: 'job_ChallanDetails',
-          //   },
-          //   challanPaidBy: {
-          //     label: 'job_ChallanPaidBy',
-          //   },
-          //   totalChallanAmount: {
-          //     label: 'job_TotalChallanAmount',
-          //   },
-          // },
-        ]
-      : []),
-
-    ...(include([DIRECT_INDIVIDUAL, OEM], sourceType)
-      ? [
-          {
-            title: 'job_CommercialsDetails',
-            fields: {
-              quotedPrice: {
-                label: 'job_QuotedPrice',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              purchasePrice: {
-                label: 'job_TotalPurchaseValue',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              otherDeductions: {
-                label: 'job_OtherDeductions',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              challanDeductions: {
-                label: 'job_ChallanDeductionsTotal',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              deductionFromCustomerQuotedPrice: {
-                label: 'job_OtherDeductionFromCustomerQuotedPrice',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-              netAmountToBePaidToCustomer: {
-                label: 'job_NetAmountNeedToBePaidToTheCustomer',
-                inputType: 'inputNumber',
-                className: 'w-100',
-              },
-            },
-          },
-        ]
-      : []),
-  ]
-
-  const optionalDetailsAttr = [
-    {
-      title: 'job_VehicleDetails',
-      fields: {
-        cubicCapacity: {
-          label: 'job_CubicCapacity',
-          inputType: 'input',
-        },
-        wheelBase: {
-          label: 'job_WheelBase',
-          inputType: 'input',
-        },
-        seatingCapacity: {
-          label: 'job_SeatingCapacity',
-          inputType: 'input',
-        },
-        color: {
-          label: 'job_Color',
-          inputType: 'input',
-        },
-        stateName: {
-          label: 'stateName',
-          inputType: 'input',
-        },
-      },
-    },
-    {
-      title: 'job_ConsumerDetails',
-      fields: {
-        email: {
-          label: 'user_Email',
-          inputType: 'input',
-        },
-        sonDaughterWifeOf: {
-          label: 'job_SonDaughterWifeOf',
-          inputType: 'input',
-        },
-        address1: {
-          label: 'job_Address1',
-          inputType: 'input',
-        },
-        address2: {
-          label: 'job_Address2',
-          inputType: 'input',
-        },
-        address3: {
-          label: 'job_Address3',
-          inputType: 'input',
-        },
-        city: {
-          label: 'user_City',
-          inputType: 'input',
-        },
-        state: {
-          label: 'user_State',
-          inputType: 'input',
-        },
-        district: {
-          label: 'job_District',
-          inputType: 'input',
-        },
-        pincode: {
-          label: 'user_Pincode',
-          inputType: 'input',
-        },
-        pan: {
-          label: 'job_PAN',
-          inputType: 'input',
-        },
-      },
-    },
-    {
-      title: 'job_VehicleChecks',
-      fields: {
-        noHypothecation: {
-          label: 'job_NoHypothecation',
-          inputType: 'select',
-          options: [
-            { label: 'btn_Yes', value: true },
-            { label: 'btn_No', value: false },
-          ],
-        },
-        ncrbChecks: {
-          label: 'job_NCRBChecks',
-          inputType: 'select',
-          options: [
-            { label: 'btn_Yes', value: true },
-            { label: 'btn_No', value: false },
-          ],
-        },
-        notBlacklisted: {
-          label: 'job_NotBlacklisted',
-          inputType: 'select',
-          options: [
-            { label: 'btn_Yes', value: true },
-            { label: 'btn_No', value: false },
-          ],
-        },
-      },
-    },
-    {
-      title: 'job_VehicleDepositedBy',
-      fields: {
-        vehicleDepositedBy: {
-          label: 'job_VehicleDepositedBy',
-          inputType: 'input',
-        },
-      },
-    },
-    {
-      title: 'job_CustomerPaymentDetails',
-      fields: {
-        confirmAccountNumber: {
-          label: 'job_ConfirmAccountNumber',
-          inputType: 'input',
-        },
-      },
-    },
-    {
-      title: 'job_Commercials',
-      fields: {
-        purchasedFrom: {
-          label: 'job_PurchasedFrom',
-          inputType: 'input',
-        },
-      },
-    },
-  ]
 
   const collapseItemUI = useCallback(
     ({ fieldAttr = [], detailKey, showEdit }) =>
@@ -1446,27 +615,20 @@ const TabulerView = ({ elvDetails, userSelectionList, currentForm }) => {
     }
   }
 
-  const allPermissionRoles = [recycler, scrappingFacilityManager, superUser]
+  const allPermissionRoles = [districtHostelDepartment, inspectionOfficer]
 
   const showEditPermission = ({ section }) => {
     if (notEqual(data?.status, 'RECOVERY_COMPLETED')) return false
 
     switch (section) {
       case 'job_BasicVehicleDetails':
-        return include(
-          [...allPermissionRoles, scrappingFacilityEntryUser],
-          roleId,
-        )
-      case 'job_RCDataAndForm2':
-        return (
-          Boolean(vehicleType) &&
-          include([...allPermissionRoles, dataEntry, categoryUser], roleId)
-        )
+        return include([...allPermissionRoles], roleId)
+
       case 'job_SourceAndCommercials':
-        return include([...allPermissionRoles, salesUser], roleId)
+        return include([...allPermissionRoles], roleId)
 
       case 'job_OptionalDetails':
-        return include([...allPermissionRoles, dataEntry, categoryUser], roleId)
+        return include([...allPermissionRoles], roleId)
 
       default:
         return false
@@ -1495,6 +657,37 @@ const TabulerView = ({ elvDetails, userSelectionList, currentForm }) => {
       : null
   }
 
+  const {
+    hostelAdministrationAttrFn,
+    hostelInfraRoomsAttrFn,
+    hostelInfraSanitationAttrFn,
+    medicalCareAttrFn,
+    educationFacilitiesAttrFn,
+    foodProvisionAttrFn,
+    safetyAndSecurityAttrFn,
+    conductionMeetingsAttrFn,
+    feedbackAttrFn,
+    // findingsAttrFn,
+  } = inspectionFieldAttr()
+
+  const mapAttributeToTableAttr = attr => {
+    const attrList = []
+    // entries(attr)?.forEach(([key, value], ind) => {
+    //   let obj = { title: '', fields: {} }
+
+    //   if (ind === 0 && value?.title) {
+    //     return (obj.title = value.title)
+    //   } else if (value?.title) {
+    //     attrList.push(Object.assign({}, obj))
+    //     obj = { title: value?.title, fields: {} }
+    //     return
+    //   }
+
+    //   obj.fields[key] = value
+    // })
+    return attrList
+  }
+
   return (
     <ANTDForm initialValues={{}} form={form} onValuesChange={onValuesChange}>
       <ANTDCollapse
@@ -1502,176 +695,172 @@ const TabulerView = ({ elvDetails, userSelectionList, currentForm }) => {
         onChange={onFileUploadCollapse}
         items={[
           {
-            label: t('job_BasicVehicleDetails'),
-            key: 'job_BasicVehicleDetails',
+            label: t('job_HostelAdministration'),
+            key: 'hostelAdministrationRequestDto',
             className: 'coll collapse-header',
             children: (
               <>
-                {selectedUserTable('basicDetailsResponseDto')}
+                {selectedUserTable('hostelAdministrationRequestDto')}
                 {collapseItemUI({
-                  fieldAttr: basicDetailsAttr,
-                  detailKey: 'basicDetailsResponseDto',
+                  fieldAttr: mapAttributeToTableAttr(
+                    hostelAdministrationAttrFn(),
+                  ),
+                  detailKey: 'hostelAdministrationRequestDto',
                   showEdit: showEditPermission({
-                    section: 'job_BasicVehicleDetails',
+                    section: 'hostelAdministrationRequestDto',
                   }),
                 })}
               </>
             ),
           },
           {
-            label: t('job_PreInspection'),
-            key: 'job_PreInspection',
+            label: t('job_HostelInfraRooms'),
+            key: 'hostelInfraRoomsRequestDto',
             className: 'coll collapse-header',
             children: (
               <>
+                {selectedUserTable('hostelInfraRoomsRequestDto')}
                 {collapseItemUI({
-                  fieldAttr: preInspectionAttr,
-                  detailKey: 'basicDetailsResponseDto',
+                  fieldAttr: mapAttributeToTableAttr(hostelInfraRoomsAttrFn()),
+                  detailKey: 'hostelInfraRoomsRequestDto',
                   showEdit: showEditPermission({
-                    section: 'job_BasicVehicleDetails',
+                    section: 'hostelInfraRoomsRequestDto',
                   }),
                 })}
               </>
             ),
           },
           {
-            label: t('job_RCDataAndForm2'),
-            key: 'job_RCDataAndForm2',
+            label: t('job_HostelInfraSanitation'),
+            key: 'hostelInfraSanitationRequestDto',
             className: 'coll collapse-header',
             children: (
               <>
-                {selectedUserTable('rcFormTwoDetailsResponseDto')}
+                {selectedUserTable('hostelInfraSanitationRequestDto')}
                 {collapseItemUI({
-                  fieldAttr: form2AndRCDataAttr,
-                  detailKey: 'rcFormTwoDetailsResponseDto',
+                  fieldAttr: mapAttributeToTableAttr(
+                    hostelInfraSanitationAttrFn(),
+                  ),
+                  detailKey: 'hostelInfraSanitationRequestDto',
                   showEdit: showEditPermission({
-                    section: 'job_RCDataAndForm2',
+                    section: 'hostelInfraSanitationRequestDto',
                   }),
                 })}
               </>
             ),
           },
           {
-            label: t('job_MSTIPaymentDetails'),
-            key: 'job_MSTIPaymentDetails',
-            className: 'coll collapse-header',
-            children: include([ELV, TEST_VEHICLE_REGISTERED], vehicleType) ? (
-              <>
-                {collapseItemUI({
-                  fieldAttr: mstiPaymentDetails,
-                  detailKey: 'rcFormTwoDetailsResponseDto',
-                  showEdit: showEditPermission({
-                    section: 'job_RCDataAndForm2',
-                  }),
-                })}
-              </>
-            ) : null,
-          },
-          {
-            label: t('vehicleCategory'),
-            key: 'vehicleCategory',
+            label: t('job_MedicalCare'),
+            key: 'medicalCareRequestDto',
             className: 'coll collapse-header',
             children: (
               <>
+                {selectedUserTable('medicalCareRequestDto')}
                 {collapseItemUI({
-                  fieldAttr: vehicleCategoryAttr,
-                  detailKey: 'category',
+                  fieldAttr: mapAttributeToTableAttr(medicalCareAttrFn()),
+                  detailKey: 'medicalCareRequestDto',
+                  showEdit: showEditPermission({
+                    section: 'medicalCareRequestDto',
+                  }),
                 })}
               </>
             ),
           },
           {
-            label: t('job_SourceAndCommercials'),
-            key: 'job_SourceAndCommercials',
+            label: t('job_EducationFacilities'),
+            key: 'educationFacilitiesRequestDto',
             className: 'coll collapse-header',
-            children:
-              notEqual(vehicleType, TEST_VEHICLE_UNREGISTERED) &&
-              include(
-                [...allPermissionRoles, salesUser, categoryUser],
-                roleId,
-              ) ? (
-                <>
-                  {selectedUserTable('sourceCommercialDetailsResponseDto')}
-                  {collapseItemUI({
-                    fieldAttr: sourceAndCommercialsAttr,
-                    detailKey: 'sourceCommercialDetailsResponseDto',
-                    showEdit: showEditPermission({
-                      section: 'job_SourceAndCommercials',
-                    }),
-                  })}
+            children: (
+              <>
+                {selectedUserTable('educationFacilitiesRequestDto')}
+                {collapseItemUI({
+                  fieldAttr: mapAttributeToTableAttr(
+                    educationFacilitiesAttrFn(),
+                  ),
+                  detailKey: 'educationFacilitiesRequestDto',
+                  showEdit: showEditPermission({
+                    section: 'educationFacilitiesRequestDto',
+                  }),
+                })}
+              </>
+            ),
+          },
+          {
+            label: t('job_FoodProvisions'),
+            key: 'foodProvisionRequestDto',
+            className: 'coll collapse-header',
+            children: (
+              <>
+                {selectedUserTable('foodProvisionRequestDto')}
+                {collapseItemUI({
+                  fieldAttr: mapAttributeToTableAttr(foodProvisionAttrFn()),
+                  detailKey: 'foodProvisionRequestDto',
+                  showEdit: showEditPermission({
+                    section: 'foodProvisionRequestDto',
+                  }),
+                })}
+              </>
+            ),
+          },
+          {
+            label: t('job_SafetyAndSecurity'),
+            key: 'safetyAndSecurityRequestDto',
+            className: 'coll collapse-header',
+            children: (
+              <>
+                {selectedUserTable('safetyAndSecurityRequestDto')}
+                {collapseItemUI({
+                  fieldAttr: mapAttributeToTableAttr(safetyAndSecurityAttrFn()),
+                  detailKey: 'safetyAndSecurityRequestDto',
+                  showEdit: showEditPermission({
+                    section: 'safetyAndSecurityRequestDto',
+                  }),
+                })}
+              </>
+            ),
+          },
+          {
+            label: t('job_ConductionMeetings'),
+            key: 'conductionMeetingsRequestDto',
+            className: 'coll collapse-header',
+            children: (
+              <>
+                {selectedUserTable('conductionMeetingsRequestDto')}
+                {collapseItemUI({
+                  fieldAttr: mapAttributeToTableAttr(
+                    conductionMeetingsAttrFn(),
+                  ),
+                  detailKey: 'conductionMeetingsRequestDto',
+                  showEdit: showEditPermission({
+                    section: 'conductionMeetingsRequestDto',
+                  }),
+                })}
+              </>
+            ),
+          },
+          {
+            label: t('job_Feedback'),
+            key: 'feedbackRequestDto',
+            className: 'coll collapse-header',
+            children: (
+              <>
+                {selectedUserTable('feedbackRequestDto')}
+                {collapseItemUI({
+                  fieldAttr: mapAttributeToTableAttr(feedbackAttrFn()),
+                  detailKey: 'feedbackRequestDto',
+                  showEdit: showEditPermission({
+                    section: 'feedbackRequestDto',
+                  }),
+                })}
+              </>
+            ),
+          },
 
-                  {include([DIRECT_DEALER, COLLECTION_CENTER], sourceType) ? (
-                    <ANTDCard className="mt-10">
-                      {entries(challanPaidByMap)?.map(([key, label]) => (
-                        <tr key={key}>
-                          <td>
-                            <b>{t(label)}</b>
-                          </td>
-                          <td>{`: ${
-                            t(
-                              data?.sourceCommercialDetailsResponseDto?.[key],
-                            ) || '-'
-                          }`}</td>
-                        </tr>
-                      ))}
-                      <table className="w-100">
-                        <tbody>
-                          {length(
-                            data?.sourceCommercialDetailsResponseDto
-                              ?.challanDetailsDtos,
-                          )
-                            ? data?.sourceCommercialDetailsResponseDto?.challanDetailsDtos?.map(
-                                (value, index) => (
-                                  <div
-                                    key={index}
-                                    className="mb-10 grey-card-body"
-                                  >
-                                    <h3 className="primary-color">{`${t(
-                                      'job_Challan',
-                                    )} ${index + 1}`}</h3>
-                                    {entries(challanDetailsMap)?.map(
-                                      ([key, label]) => (
-                                        <tr key={key}>
-                                          <td>
-                                            <b>{t(label)}</b>
-                                          </td>
-                                          <td>{`: ${
-                                            t(value?.[key]) || '-'
-                                          }`}</td>
-                                        </tr>
-                                      ),
-                                    )}
-                                  </div>
-                                ),
-                              )
-                            : null}
-                        </tbody>
-                      </table>
-                    </ANTDCard>
-                  ) : null}
-                </>
-              ) : null,
-          },
-          {
-            label: t('job_OptionalDetails'),
-            key: 'job_OptionalDetails',
-            className: 'coll collapse-header',
-            children: (
-              <>
-                {collapseItemUI({
-                  fieldAttr: optionalDetailsAttr,
-                  detailKey: 'optionalDetailsResponseDto',
-                  showEdit: showEditPermission({
-                    section: 'job_OptionalDetails',
-                  }),
-                })}
-              </>
-            ),
-          },
           {
             label: t('job_FilesUploads'),
             key: 'job_FilesUploads',
             className: 'coll collapse-header',
+            hidden: true,
             children: (
               <>
                 <div className="mt-20 geotagging-details">

@@ -1,14 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { initialErrorCode } from '../../components/jobs/jobs.description'
-
 const initialState = {
   activeTab: {},
-  equipment: {
-    userEinId: null,
-    equipmentIdentificationNumberFreeText: null,
-  },
-  errorCode: initialErrorCode,
 }
 
 const jobsReducer = createSlice({

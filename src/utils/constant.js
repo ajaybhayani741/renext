@@ -596,4 +596,6 @@ const getDummyUser = ({ roleId, userId }) => {
   return userList?.find(user => isEqual(user?.id, userId)) || userList?.[0]
 }
 
-export { childUsers, userDataList, userWiseRole, getDummyUser }
+const MAX_FILE_SIZE = 1024 * 1024 * 5 //5MB
+
+export { childUsers, userDataList, userWiseRole, getDummyUser, MAX_FILE_SIZE }

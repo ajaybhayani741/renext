@@ -604,3 +604,8 @@ h6 {
 .ant-pagination.ant-pagination-mini {
   gap: 3px;
 }
+
+.ant-steps .ant-steps-item-finish .ant-steps-item-icon {
+  background-color: #ffffff;
+  border-color: var(--color-primary);
+}

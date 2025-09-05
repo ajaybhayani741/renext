@@ -28,9 +28,8 @@ const InspectionFormField = ({
 }) => {
   const { t } = useTranslations()
   const form = useFormInstanceFn()
-  const elvSourceId = useWatchFn(['recoverList', index, 'elvSourceId'], form)
-  const recoverListData = useWatchFn(
-    ['recoverList', name, ...(nestedKey ? [nestedKey] : [])],
+  const inspectionListData = useWatchFn(
+    ['inspectionList', name, ...(nestedKey ? [nestedKey] : [])],
     form,
   )
   const lang = getItem('lang')
@@ -70,10 +69,10 @@ const InspectionFormField = ({
             ...restProps
           } = attributes || {}
           const isHidden = isEqual(typeof hidden, 'function')
-            ? hidden(recoverListData)
+            ? hidden(inspectionListData)
             : hidden
           const isDisabled = isEqual(typeof disabled, 'function')
-            ? disabled({ ...recoverListData, elvSourceId, disabledAll })
+            ? disabled({ ...inspectionListData, disabledAll })
             : (disabled ?? disabledAll) //individual field has more precedence than section disabled
           const optionList = options?.map(val => ({
             ...val,
@@ -107,7 +106,7 @@ const InspectionFormField = ({
             restProps.precision = 2 //upto 2 decimal places
           }
           if (isEqual(inputType, 'vehicleModelSelector')) {
-            restProps.fieldName = ['recoverList', ...fieldPath, attrKey]
+            restProps.fieldName = ['inspectionList', ...fieldPath, attrKey]
           }
           const InputComponent = getFormInput({ inputType })
 
@@ -127,7 +126,7 @@ const InspectionFormField = ({
                 key={attrKey}
                 className={colClassName}
               >
-                {render(fieldPath, recoverListData, disabledAll)}
+                {render(fieldPath, inspectionListData, disabledAll)}
               </ANTDColumn>
             )
 
@@ -149,7 +148,13 @@ const InspectionFormField = ({
                       validateTrigger={'onChange'}
                       rules={
                         required
-                          ? [{ required: true }, ...rulesArr]
+                          ? [
+                              {
+                                required: true,
+                                message: t('error_FieldISRequire'),
+                              },
+                              ...rulesArr,
+                            ]
                           : [...rulesArr]
                       }
                       dependencies={dependenciesArr}

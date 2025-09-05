@@ -60,7 +60,7 @@ const InspectionFormList = ({
         </div>
       </ANTDCard>
       <ANTDDivider /> */}
-      <ANTDFormList name={'recoverList'} initialValue={[{}]}>
+      <ANTDFormList name={'inspectionList'} initialValue={[{}]}>
         {(fields, { add, remove }) => (
           <>
             {fields.map(({ key, name }, index) => (

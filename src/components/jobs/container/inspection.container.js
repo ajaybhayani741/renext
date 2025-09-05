@@ -9,9 +9,17 @@ import { useFormFn } from '../../../shared/antd/ANTDForm'
 import { userWiseRole } from '../../../utils/constant'
 import { dayJs } from '../../../utils/dayjs'
 import debounce from '../../../utils/debounce'
-import { entries, include, isEqual, values } from '../../../utils/javascript'
+import {
+  entries,
+  include,
+  isEqual,
+  keys,
+  nullOrUndefined,
+  values,
+} from '../../../utils/javascript'
 import { removeEquipmentApi } from '../jobs.api'
 import data from '../recoveryJobDataUpload.xlsx'
+import inspectionFieldAttr from './inspectionFieldAttr.container'
 
 const inspection = ({
   editData,
@@ -52,6 +60,19 @@ const inspection = ({
   const showSave = isEdit || include([1], current)
   const { consumer, producer, collectionCenter, dealer } = userWiseRole
 
+  const {
+    hostelAdministrationAttrFn,
+    hostelInfraRoomsAttrFn,
+    hostelInfraSanitationAttrFn,
+    medicalCareAttrFn,
+    educationFacilitiesAttrFn,
+    foodProvisionAttrFn,
+    safetyAndSecurityAttrFn,
+    conductionMeetingsAttrFn,
+    feedbackAttrFn,
+    findingsAttrFn,
+  } = inspectionFieldAttr()
+
   useEffect(() => {
     if (isEdit) {
       setEditApiDataToForm()
@@ -64,13 +85,13 @@ const inspection = ({
 
   // eslint-disable-next-line no-unused-vars
   const setPatchCallResponse = respData => {
-    const recoverListData = form.getFieldValue('recoverList') || []
-    const respRecoverList = respData?.jobElvsResponse || []
-    const updatedRecoverList = recoverListData.map((values, index) => ({
+    const inspectionListData = form.getFieldValue('inspectionList') || []
+    const respInspectionList = respData?.jobElvsResponse || []
+    const updatedInspectionList = inspectionListData.map((values, index) => ({
       ...values,
-      systemId: respRecoverList[index]?.systemId,
+      systemId: respInspectionList[index]?.systemId,
     }))
-    form.setFieldValue('recoverList', updatedRecoverList)
+    form.setFieldValue('inspectionList', updatedInspectionList)
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -194,7 +215,7 @@ const inspection = ({
   //     return null
   //   }
 
-  //   const systemId = form.getFieldValue(['recoverList', elvIndex, 'systemId'])
+  //   const systemId = form.getFieldValue(['inspectionList', elvIndex, 'systemId'])
   //   setLoader(true)
   //   if (!jobId || !systemId) {
   //     const isSuccess = await apiCall({})
@@ -214,7 +235,7 @@ const inspection = ({
   //     jobType: 'RECOVERY',
   //     source,
   //     jobId: form.getFieldValue('jobId'),
-  //     scrapId: form.getFieldValue(['recoverList', elvIndex, 'systemId']),
+  //     scrapId: form.getFieldValue(['inspectionList', elvIndex, 'systemId']),
   //     dmsId,
   //   }
 
@@ -256,32 +277,151 @@ const inspection = ({
   // }
 
   const onValuesChange = async value => {
-    // const formValues = form.getFieldValue()
+    const formValues = form.getFieldValue()
 
-    if (value?.recoverList) {
-      // const changeIndex = value.recoverList?.findIndex(val => val)
-      // const changedKey = keys(value?.recoverList?.[changeIndex])?.[0]
-      // const changedValue = value?.recoverList?.[changeIndex]?.[changedKey]
-      // const nestedKey = keys(changedValue)?.[0]
+    if (value?.inspectionList) {
+      const changeIndex = value.inspectionList?.findIndex(val => val)
+      const changedKey = keys(value?.inspectionList?.[changeIndex])?.[0]
+      const changedValue = value?.inspectionList?.[changeIndex]?.[changedKey]
+      const nestedKey = keys(changedValue)?.[0]
       // const nestedChangedValue = changedValue?.[nestedKey]
-      // const updatedValues = formValues?.recoverList || []
+
+      const updatedValues = formValues?.inspectionList || []
+      const nestedUpdatedValues = updatedValues[changeIndex]
+
+      if (isEqual('foodProvisionRequestDto', changedKey)) {
+        if (
+          include(
+            ['riceStockAsPerRegister', 'riceStockGroundBalance'],
+            nestedKey,
+          )
+        ) {
+          const riceStockAsPerRegisterVal =
+            nestedUpdatedValues?.[changedKey]?.riceStockAsPerRegister
+          const riceStockGroundBalanceVal =
+            nestedUpdatedValues?.[changedKey]?.riceStockGroundBalance
+          nestedUpdatedValues[changedKey] = {
+            ...nestedUpdatedValues?.[changedKey],
+            variationInRice:
+              nullOrUndefined(riceStockAsPerRegisterVal) &&
+              nullOrUndefined(riceStockGroundBalanceVal)
+                ? null
+                : (riceStockAsPerRegisterVal || 0) -
+                  (riceStockGroundBalanceVal || 0),
+          }
+        } else if (
+          include(['dalStockAsPerRegister', 'dalStockGroundBalance'], nestedKey)
+        ) {
+          const dalStockAsPerRegisterVal =
+            nestedUpdatedValues?.[changedKey]?.dalStockAsPerRegister
+          const dalStockGroundBalanceVal =
+            nestedUpdatedValues?.[changedKey]?.dalStockGroundBalance
+          nestedUpdatedValues[changedKey] = {
+            ...nestedUpdatedValues?.[changedKey],
+            variationInDal:
+              nullOrUndefined(dalStockAsPerRegisterVal) &&
+              nullOrUndefined(dalStockGroundBalanceVal)
+                ? null
+                : (dalStockAsPerRegisterVal || 0) -
+                  (dalStockGroundBalanceVal || 0),
+          }
+        } else if (
+          include(
+            ['cookingOilStockAsPerRegister', 'cookingOilStockGroundBalance'],
+            nestedKey,
+          )
+        ) {
+          const cookingOilStockAsPerRegisterVal =
+            nestedUpdatedValues?.[changedKey]?.cookingOilStockAsPerRegister
+          const cookingOilStockGroundBalanceVal =
+            nestedUpdatedValues?.[changedKey]?.cookingOilStockGroundBalance
+          nestedUpdatedValues[changedKey] = {
+            ...nestedUpdatedValues?.[changedKey],
+            variationInCookingOil:
+              nullOrUndefined(cookingOilStockAsPerRegisterVal) &&
+              nullOrUndefined(cookingOilStockGroundBalanceVal)
+                ? null
+                : (cookingOilStockAsPerRegisterVal || 0) -
+                  (cookingOilStockGroundBalanceVal || 0),
+          }
+        } else if (
+          include(
+            ['sugarStockAsPerRegister', 'sugarStockGroundBalance'],
+            nestedKey,
+          )
+        ) {
+          const sugarStockAsPerRegisterVal =
+            nestedUpdatedValues?.[changedKey]?.sugarStockAsPerRegister
+          const sugarStockGroundBalanceVal =
+            nestedUpdatedValues?.[changedKey]?.sugarStockGroundBalance
+          nestedUpdatedValues[changedKey] = {
+            ...nestedUpdatedValues?.[changedKey],
+            variationInSugar:
+              nullOrUndefined(sugarStockAsPerRegisterVal) &&
+              nullOrUndefined(sugarStockGroundBalanceVal)
+                ? null
+                : (sugarStockAsPerRegisterVal || 0) -
+                  (sugarStockGroundBalanceVal || 0),
+          }
+        } else if (
+          include(
+            ['idliRavaStockAsPerRegister', 'idliRavaStockGroundBalance'],
+            nestedKey,
+          )
+        ) {
+          const idliRavaStockAsPerRegisterVal =
+            nestedUpdatedValues?.[changedKey]?.idliRavaStockAsPerRegister
+          const idliRavaStockGroundBalanceVal =
+            nestedUpdatedValues?.[changedKey]?.idliRavaStockGroundBalance
+          nestedUpdatedValues[changedKey] = {
+            ...nestedUpdatedValues?.[changedKey],
+            variationInIdliRava:
+              nullOrUndefined(idliRavaStockAsPerRegisterVal) &&
+              nullOrUndefined(idliRavaStockGroundBalanceVal)
+                ? null
+                : (idliRavaStockAsPerRegisterVal || 0) -
+                  (idliRavaStockGroundBalanceVal || 0),
+          }
+        } else if (
+          include(
+            ['ragiMaltStockAsPerRegister', 'ragiMaltStockGroundBalance'],
+            nestedKey,
+          )
+        ) {
+          const ragiMaltStockAsPerRegisterVal =
+            nestedUpdatedValues?.[changedKey]?.ragiMaltStockAsPerRegister
+          const ragiMaltStockGroundBalanceVal =
+            nestedUpdatedValues?.[changedKey]?.ragiMaltStockGroundBalance
+          nestedUpdatedValues[changedKey] = {
+            ...nestedUpdatedValues?.[changedKey],
+            variationInRagiMalt:
+              nullOrUndefined(ragiMaltStockAsPerRegisterVal) &&
+              nullOrUndefined(ragiMaltStockGroundBalanceVal)
+                ? null
+                : (ragiMaltStockAsPerRegisterVal || 0) -
+                  (ragiMaltStockGroundBalanceVal || 0),
+          }
+        }
+      }
+
       // const systemId = form.getFieldValue([
-      //   'recoverList',
+      //   'inspectionList',
       //   changeIndex,
       //   'systemId',
       // ])
       // if (systemId) {
       //   updatedValues[changeIndex].systemId = systemId
       // }
-      // form.setFieldsValue({
-      //   recoverList: updatedValues,
-      // })
+
+      form.setFieldsValue({
+        inspectionList: updatedValues,
+      })
     }
   }
 
   // eslint-disable-next-line no-unused-vars
   const checkUserSelection = () => {
-    const recoverList = form.getFieldValue('recoverList')
+    const inspectionList = form.getFieldValue('inspectionList')
 
     const messages = {
       producer: [],
@@ -289,7 +429,7 @@ const inspection = ({
       collectionCenter: [],
       dealer: [],
     }
-    recoverList?.forEach((value, index) => {
+    inspectionList?.forEach((value, index) => {
       // const checkUser = (role, idx) => selectedUsers?.[role]?.[idx]?.id
 
       // // producer is required for all vehicle types
@@ -366,8 +506,8 @@ const inspection = ({
       prevCollectionCenter.splice(index, 1)
       return clonePrev
     })
-    const recoverList = form.getFieldValue('recoverList')
-    const systemId = recoverList[index]?.systemId
+    const inspectionList = form.getFieldValue('inspectionList')
+    const systemId = inspectionList[index]?.systemId
     if (systemId) {
       const payload = {
         jobId,
@@ -410,95 +550,6 @@ const inspection = ({
     resolvePromise(true)
   }
 
-  const booleanOptions = [
-    { label: 'btn_Yes', value: true },
-    { label: 'btn_No', value: false },
-  ]
-
-  const hostelAdministrationAttrFn = useCallback(
-    () => ({
-      hostelAuthority: {
-        title: 'job_HostelAuthority',
-      },
-      nameOfPrincipal: {
-        label: 'job_NameOfPrincipalHWOSpecialOfficer',
-        inputType: 'input',
-        required: true,
-        md: 12,
-        xs: 24,
-      },
-      isRegular: {
-        label: 'job_WhetherThePrincipalHWOSpecialOfficerIsRegularOrIncharge',
-        inputType: 'select',
-        options: booleanOptions,
-        required: true,
-        md: 12,
-        xs: 24,
-      },
-      wasPresent: {
-        label:
-          'job_WhetherThePrincipalHWOSpecialOfficerWasPresentDuringInspection',
-        inputType: 'select',
-        options: booleanOptions,
-        required: true,
-        md: 12,
-        xs: 24,
-      },
-      staysInHeadquarters: {
-        label: 'job_WhetherThePrincipalHWOSpecialOfficerStaysInTheHeadquarters',
-        inputType: 'select',
-        options: booleanOptions,
-        required: true,
-        md: 12,
-        xs: 24,
-      },
-      noOfStudentsEnrolled: {
-        label: 'job_NumberOfStudentsEnrolled',
-        inputType: 'inputNumber',
-        className: 'w-100',
-        required: true,
-        md: 8,
-        xs: 24,
-      },
-      noOfStudentMarkedAttendance: {
-        label: 'job_NumberOfStudentsMarkedAttendance',
-        inputType: 'inputNumber',
-        className: 'w-100',
-        required: true,
-        md: 8,
-        xs: 24,
-      },
-      noOfStudentActuallyPresent: {
-        label: 'job_NumberOfStudentsActuallyPresentAtTheTimeOfInspection',
-        inputType: 'inputNumber',
-        className: 'w-100',
-        required: true,
-        md: 8,
-        xs: 24,
-      },
-      recordMaintenance: {
-        title: 'job_RecordMaintenance',
-      },
-      isRecordOfAttendanceMaintained: {
-        label: 'job_IsTheRecordOfStaffAttendanceMaintained',
-        inputType: 'select',
-        options: booleanOptions,
-        required: true,
-        md: 12,
-        xs: 24,
-      },
-    }),
-    [],
-  )
-  const hostelInfraRoomsAttrFn = useCallback(() => ({}), [])
-  const hostelInfraSanitationAttrFn = useCallback(() => ({}), [])
-  const medicalCareAttrFn = useCallback(() => ({}), [])
-  const educationFacilitiesAttrFn = useCallback(() => ({}), [])
-  const foodProvisionAttrFn = useCallback(() => ({}), [])
-  const safetyAndSecurityAttrFn = useCallback(() => ({}), [])
-  const conductionMeetingsAttrFn = useCallback(() => ({}), [])
-  const feedbackAttrFn = useCallback(() => ({}), [])
-
   const inspectionFormFieldsAttr = {
     hostelAdministrationAttrFn,
     hostelInfraRoomsAttrFn,
@@ -529,6 +580,7 @@ const inspection = ({
     onActiveKeysChange,
     onConfirmModelClose,
     onAcceptConfirmation,
+    findingsAttrFn,
   }
 }
 
