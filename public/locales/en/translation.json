@@ -1787,14 +1787,10 @@
   "user_StateHostelDepartment": "State Hostel Department",
   "user_StateAdminOfficer": "State Admin Officer",
   "user_DistrictCollector": "District Collector",
-  "user_DistrictCollectorAdmin": "District Collector Admin",
-  "user_DistrictHostelDepartment": "District Hostel Department",
-  "user_DistrictAdminOfficer": "District Admin Officer",
   "user_InspectionOfficer": "Inspection Officer",
   "user_Hostel": "Hostel",
   "user_AssociatedStateHostelDepartment": "Associated State Hostel Department",
   "user_AssociatedDistrictCollector": "Associated District Collector",
-  "user_AssociatedDistrictHostelDepartment": "Associated District Hostel Department",
   "job_InspectionJob": "Inspection Job",
   "job_NameAndDate": "Name and Date",
   "job_Findings": "Findings",
@@ -1985,5 +1981,6 @@
   "dash_ToiletsBathrooms": "Toilets / Bathrooms",
   "dash_HostelsWithElectricalIssues": "Electrical issues reported (hostel-wise count)",
   "dash_HostelsWithOpenWasteDisposal": "Hostels reporting open waste disposal",
-  "dash_HostelsWithoutCleanPremises": "Hostels without clean premises"
+  "dash_HostelsWithoutCleanPremises": "Hostels without clean premises",
+  "job_LocationOfInspection": "Location of Inspection (lat, lng)"
 }

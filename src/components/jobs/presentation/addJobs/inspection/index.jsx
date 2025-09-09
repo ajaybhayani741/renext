@@ -1,8 +1,11 @@
 import ConfirmView from './ConfirmView'
 import InspectionFormField from './InspectionFormField'
 import InspectionFormList from './InspectionFormList'
+import ANTDColumn from '../../../../../shared/antd/ANTDColumn'
 import { ANTDDatePicker } from '../../../../../shared/antd/ANTDDatePicker'
 import ANTDForm, { ANTDFormItem } from '../../../../../shared/antd/ANTDForm'
+import ANTDInput from '../../../../../shared/antd/ANTDInput'
+import ANTDRow from '../../../../../shared/antd/ANTDRow'
 import PopUpConfirm from '../../../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../../../utils/constant'
 import { validationTag } from '../../../../../utils/customFunctions'
@@ -76,28 +79,39 @@ const InspectionJob = ({ editData }) => {
   const displayForm = {
     0: (
       <>
-        <div className="date-management-number">
-          <ANTDFormItem
-            label={t('job_DateOfInspectionAndTime')}
-            name={'jobCompletionDate'}
-            className={`${validationTag(lang)} date-label`}
-            rules={[
-              {
-                required: true,
-                message: t('error_FieldISRequire'),
-              },
-            ]}
-          >
-            <ANTDDatePicker
-              showTime
-              className="w-100"
-              name="jobCompletionDate"
-              placeholder={t('job_SelectDate')}
-              allowClear={false}
-              format={'YYYY/MM/DD HH:mm'}
-            />
-          </ANTDFormItem>
-        </div>
+        <ANTDRow className="date-management-number align-end" gutter={10}>
+          <ANTDColumn md={12} lg={12} sm={24} xs={24}>
+            <ANTDFormItem
+              label={t('job_DateOfInspectionAndTime')}
+              name={'jobCompletionDate'}
+              className={`${validationTag(lang)} date-label`}
+              rules={[
+                {
+                  required: true,
+                  message: t('error_FieldISRequire'),
+                },
+              ]}
+            >
+              <ANTDDatePicker
+                showTime
+                className="w-100"
+                name="jobCompletionDate"
+                placeholder={t('job_SelectDate')}
+                allowClear={false}
+                format={'YYYY/MM/DD HH:mm'}
+              />
+            </ANTDFormItem>
+          </ANTDColumn>
+          <ANTDColumn md={12} lg={12} sm={24} xs={24}>
+            <ANTDFormItem
+              label={t('job_LocationOfInspection')}
+              name={'locationInspection'}
+              className={`date-label`}
+            >
+              <ANTDInput disabled />
+            </ANTDFormItem>
+          </ANTDColumn>
+        </ANTDRow>
         {userSelectionList
           .filter(val => !val.isHidden)
           ?.map(({ isHidden, key, ...val }) => (

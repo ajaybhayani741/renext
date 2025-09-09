@@ -1,7 +1,7 @@
 import { userWiseRole } from '../../utils/constant'
 import { isEqual } from '../../utils/javascript'
 
-const { admin, districtHostelDepartment, inspectionOfficer } = userWiseRole
+const { admin, inspectionOfficer } = userWiseRole
 
 const tabKeys = {
   active: 'active',
@@ -26,7 +26,7 @@ const jobTabList = {
     {
       label: 'job_InspectionJob',
       key: inspection,
-      permission: [admin, districtHostelDepartment, inspectionOfficer],
+      permission: [admin, inspectionOfficer],
     },
   ],
 }

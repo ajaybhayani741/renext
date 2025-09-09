@@ -7,9 +7,6 @@ const userWiseRole = {
   stateHostelDepartment: 2, //consumer
   stateAdminOfficer: 3, //consumerUser
   districtCollector: 4, //Dealer
-  districtCollectorAdmin: 5, //dealerUser
-  districtHostelDepartment: 6, //recycler
-  districtAdminOfficer: 37, //superUser
   inspectionOfficer: 38, //dataEntry
   hostel: 9,
 }
@@ -19,20 +16,11 @@ const {
   stateHostelDepartment,
   stateAdminOfficer,
   districtCollector,
-  districtCollectorAdmin,
-  districtHostelDepartment,
-  districtAdminOfficer,
   inspectionOfficer,
   hostel,
 } = userWiseRole
 
-const childUsers = [
-  stateAdminOfficer,
-  districtCollectorAdmin,
-  districtAdminOfficer,
-  inspectionOfficer,
-  hostel,
-]
+const childUsers = [stateAdminOfficer, inspectionOfficer, hostel]
 
 const userDataList = ({ roleId }) => {
   switch (roleId) {
@@ -230,180 +218,180 @@ const userDataList = ({ roleId }) => {
           },
         ],
       }
-    case districtCollectorAdmin:
-      return {
-        list: [
-          {
-            id: 1,
-            roleId: districtCollectorAdmin,
-            profileUrl: null,
-            lastName: 'Aravind',
-            emailId: 'aravindkumar@gmail.com',
-            phoneNumber: '7834683479',
-            address:
-              'H. No. 4-72, Shivaji Nagar, Bhainsa, Adilabad District, Telangana – 504103',
-            city: '',
-            state: '',
-            country: '',
-            pincode: null,
-            creationDate: 1683708390593,
-            modificationDate: 0,
-          },
-          {
-            id: 2,
-            roleId: districtCollectorAdmin,
-            profileUrl: null,
-            lastName: 'Kruparkar',
-            emailId: 'kruparkarrao@gmail.com',
-            phoneNumber: '7889788909',
-            address:
-              'H. No. 3-98, Old Bus Stand Road, Bhainsa, Telangana – 504103',
-            city: '',
-            state: '',
-            country: '',
-            pincode: null,
-            creationDate: 1683718390593,
-            modificationDate: 0,
-            adminId: 102,
-            inchargeDepartment: 'Sales',
-            inchargePerson: 'Rachell Johnson',
-            parent: {},
-          },
-          {
-            id: 3,
-            roleId: districtCollectorAdmin,
-            profileUrl: null,
-            lastName: 'Shravan kumar ',
-            level: 'Leader',
-            emailId: 'shravankumar@gmail.com',
-            phoneNumber: '8978676709',
-            address:
-              'Plot No. 27, Near Masjid-e-Noor, Nirmal Road, Bhainsa, Adilabad – 504103',
-            city: '',
-            state: '',
-            country: '',
-            pincode: null,
-            creationDate: 1683728390593,
-            modificationDate: 0,
-            adminId: 103,
-            inchargeDepartment: 'Operations',
-            inchargePerson: 'Steven Clarke',
-            parent: {},
-          },
-        ],
-      }
-    case districtHostelDepartment:
-      return {
-        list: [
-          {
-            id: 1,
-            roleId: districtHostelDepartment,
-            profileUrl: null,
-            businessName: 'Nizamadad district hostel department ',
-            lastName: 'Nizamadad',
-            inchargeName: 'Jignesh Patel',
-            emailId: 'nzbhosteldept@gmail.com',
-            phoneNumber: '7867565678',
-            address: 'Nizamabad collectorate office',
-            city: '',
-            state: '',
-            country: '',
-            pincode: null,
-            creationDate: 1683708390593,
-            modificationDate: 0,
-          },
-          {
-            id: 2,
-            roleId: districtHostelDepartment,
-            profileUrl: null,
-            businessName: 'Adilabad district hostel department ',
-            lastName: 'SK Shah',
-            inchargeName: 'SK Shah',
-            emailId: 'adbhosteldept@gmail.com',
-            phoneNumber: '7867678908',
-            address: 'Adilabad collectorate office',
-            city: '',
-            state: '',
-            country: '',
-            pincode: null,
-            creationDate: 1683718390593,
-            modificationDate: 0,
-          },
-          {
-            id: 3,
-            roleId: districtHostelDepartment,
-            profileUrl: null,
-            businessName: 'Kamareddy district hostel department',
-            lastName: 'Jake Usan',
-            inchargeName: 'Jake Usan',
-            emailId: 'kmrhosteldept@gmail.com',
-            phoneNumber: '7899097808',
-            address: 'Kamareddy collectorate office',
-            city: '',
-            state: '',
-            country: '',
-            pincode: null,
-            creationDate: 1683728390593,
-            modificationDate: 0,
-          },
-        ],
-      }
-    case districtAdminOfficer:
-      return {
-        list: [
-          {
-            id: 1,
-            roleId: districtAdminOfficer,
-            profileUrl: null,
-            lastName: 'Kumar harsha',
-            inchargeName: 'Jignesh Patel',
-            emailId: 'kumar.harsha@gmail.com',
-            phoneNumber: '8798879080',
-            address:
-              'Shop No. 12, Gandhi Chowk Market, Bhainsa Town, Adilabad – 504103',
-            city: '',
-            state: '',
-            country: '',
-            pincode: null,
-            creationDate: 1683708390593,
-            modificationDate: 0,
-          },
-          {
-            id: 2,
-            roleId: districtAdminOfficer,
-            profileUrl: null,
-            lastName: 'Harish reddy',
-            inchargeName: 'Jignesh Patel',
-            emailId: 'Harishreddy@gmail.com',
-            phoneNumber: '8734943738',
-            address:
-              'H. No. 2-15, Ambedkar Chowk, Main Road, Bhainsa, Telangana – 504103',
-            city: '',
-            state: '',
-            country: '',
-            pincode: null,
-            creationDate: 1683708390593,
-            modificationDate: 0,
-          },
-          {
-            id: 3,
-            roleId: districtAdminOfficer,
-            profileUrl: null,
-            lastName: 'Anirudh  ',
-            inchargeName: 'Jignesh Patel',
-            emailId: 'Anirudh.007@gmail.com',
-            phoneNumber: '7846577468',
-            address:
-              'H. No. 5-72, Shivaji Nagar, Bhainsa, Adilabad District, Telangana – 504103',
-            city: '',
-            state: '',
-            country: '',
-            pincode: null,
-            creationDate: 1683708390593,
-            modificationDate: 0,
-          },
-        ],
-      }
+    // case districtCollectorAdmin:
+    //   return {
+    //     list: [
+    //       {
+    //         id: 1,
+    //         roleId: districtCollectorAdmin,
+    //         profileUrl: null,
+    //         lastName: 'Aravind',
+    //         emailId: 'aravindkumar@gmail.com',
+    //         phoneNumber: '7834683479',
+    //         address:
+    //           'H. No. 4-72, Shivaji Nagar, Bhainsa, Adilabad District, Telangana – 504103',
+    //         city: '',
+    //         state: '',
+    //         country: '',
+    //         pincode: null,
+    //         creationDate: 1683708390593,
+    //         modificationDate: 0,
+    //       },
+    //       {
+    //         id: 2,
+    //         roleId: districtCollectorAdmin,
+    //         profileUrl: null,
+    //         lastName: 'Kruparkar',
+    //         emailId: 'kruparkarrao@gmail.com',
+    //         phoneNumber: '7889788909',
+    //         address:
+    //           'H. No. 3-98, Old Bus Stand Road, Bhainsa, Telangana – 504103',
+    //         city: '',
+    //         state: '',
+    //         country: '',
+    //         pincode: null,
+    //         creationDate: 1683718390593,
+    //         modificationDate: 0,
+    //         adminId: 102,
+    //         inchargeDepartment: 'Sales',
+    //         inchargePerson: 'Rachell Johnson',
+    //         parent: {},
+    //       },
+    //       {
+    //         id: 3,
+    //         roleId: districtCollectorAdmin,
+    //         profileUrl: null,
+    //         lastName: 'Shravan kumar ',
+    //         level: 'Leader',
+    //         emailId: 'shravankumar@gmail.com',
+    //         phoneNumber: '8978676709',
+    //         address:
+    //           'Plot No. 27, Near Masjid-e-Noor, Nirmal Road, Bhainsa, Adilabad – 504103',
+    //         city: '',
+    //         state: '',
+    //         country: '',
+    //         pincode: null,
+    //         creationDate: 1683728390593,
+    //         modificationDate: 0,
+    //         adminId: 103,
+    //         inchargeDepartment: 'Operations',
+    //         inchargePerson: 'Steven Clarke',
+    //         parent: {},
+    //       },
+    //     ],
+    //   }
+    // case districtHostelDepartment:
+    //   return {
+    //     list: [
+    //       {
+    //         id: 1,
+    //         roleId: districtHostelDepartment,
+    //         profileUrl: null,
+    //         businessName: 'Nizamadad district hostel department ',
+    //         lastName: 'Nizamadad',
+    //         inchargeName: 'Jignesh Patel',
+    //         emailId: 'nzbhosteldept@gmail.com',
+    //         phoneNumber: '7867565678',
+    //         address: 'Nizamabad collectorate office',
+    //         city: '',
+    //         state: '',
+    //         country: '',
+    //         pincode: null,
+    //         creationDate: 1683708390593,
+    //         modificationDate: 0,
+    //       },
+    //       {
+    //         id: 2,
+    //         roleId: districtHostelDepartment,
+    //         profileUrl: null,
+    //         businessName: 'Adilabad district hostel department ',
+    //         lastName: 'SK Shah',
+    //         inchargeName: 'SK Shah',
+    //         emailId: 'adbhosteldept@gmail.com',
+    //         phoneNumber: '7867678908',
+    //         address: 'Adilabad collectorate office',
+    //         city: '',
+    //         state: '',
+    //         country: '',
+    //         pincode: null,
+    //         creationDate: 1683718390593,
+    //         modificationDate: 0,
+    //       },
+    //       {
+    //         id: 3,
+    //         roleId: districtHostelDepartment,
+    //         profileUrl: null,
+    //         businessName: 'Kamareddy district hostel department',
+    //         lastName: 'Jake Usan',
+    //         inchargeName: 'Jake Usan',
+    //         emailId: 'kmrhosteldept@gmail.com',
+    //         phoneNumber: '7899097808',
+    //         address: 'Kamareddy collectorate office',
+    //         city: '',
+    //         state: '',
+    //         country: '',
+    //         pincode: null,
+    //         creationDate: 1683728390593,
+    //         modificationDate: 0,
+    //       },
+    //     ],
+    //   }
+    // case districtAdminOfficer:
+    //   return {
+    //     list: [
+    //       {
+    //         id: 1,
+    //         roleId: districtAdminOfficer,
+    //         profileUrl: null,
+    //         lastName: 'Kumar harsha',
+    //         inchargeName: 'Jignesh Patel',
+    //         emailId: 'kumar.harsha@gmail.com',
+    //         phoneNumber: '8798879080',
+    //         address:
+    //           'Shop No. 12, Gandhi Chowk Market, Bhainsa Town, Adilabad – 504103',
+    //         city: '',
+    //         state: '',
+    //         country: '',
+    //         pincode: null,
+    //         creationDate: 1683708390593,
+    //         modificationDate: 0,
+    //       },
+    //       {
+    //         id: 2,
+    //         roleId: districtAdminOfficer,
+    //         profileUrl: null,
+    //         lastName: 'Harish reddy',
+    //         inchargeName: 'Jignesh Patel',
+    //         emailId: 'Harishreddy@gmail.com',
+    //         phoneNumber: '8734943738',
+    //         address:
+    //           'H. No. 2-15, Ambedkar Chowk, Main Road, Bhainsa, Telangana – 504103',
+    //         city: '',
+    //         state: '',
+    //         country: '',
+    //         pincode: null,
+    //         creationDate: 1683708390593,
+    //         modificationDate: 0,
+    //       },
+    //       {
+    //         id: 3,
+    //         roleId: districtAdminOfficer,
+    //         profileUrl: null,
+    //         lastName: 'Anirudh  ',
+    //         inchargeName: 'Jignesh Patel',
+    //         emailId: 'Anirudh.007@gmail.com',
+    //         phoneNumber: '7846577468',
+    //         address:
+    //           'H. No. 5-72, Shivaji Nagar, Bhainsa, Adilabad District, Telangana – 504103',
+    //         city: '',
+    //         state: '',
+    //         country: '',
+    //         pincode: null,
+    //         creationDate: 1683708390593,
+    //         modificationDate: 0,
+    //       },
+    //     ],
+    //   }
     case inspectionOfficer:
       return {
         list: [

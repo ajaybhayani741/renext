@@ -396,16 +396,13 @@
 }
 
 .date-management-number {
-  max-width: 50%;
+  max-width: 100%;
   width: 100%;
   margin: 0 auto;
   @media screen and (max-width: 1199px) {
-    max-width: 70%;
+    max-width: 100%;
   }
   .date-label {
-    label {
-      margin-bottom: 6px;
-    }
     .ant-row {
       flex-direction: column;
       align-items: center;

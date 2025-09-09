@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import usePromise from '../../../hooks/usePromise'
 import useRedux from '../../../hooks/useRedux'
@@ -7,6 +7,7 @@ import useTranslations from '../../../hooks/useTranslations'
 import { setPopupMessageModel } from '../../../redux/app/reducer'
 import { useFormFn } from '../../../shared/antd/ANTDForm'
 import { userWiseRole } from '../../../utils/constant'
+import { getLocation } from '../../../utils/customFunctions'
 import { dayJs } from '../../../utils/dayjs'
 import debounce from '../../../utils/debounce'
 import {
@@ -20,6 +21,7 @@ import {
 import { removeEquipmentApi } from '../jobs.api'
 import data from '../recoveryJobDataUpload.xlsx'
 import inspectionFieldAttr from './inspectionFieldAttr.container'
+import { getItem } from '../../../utils/localstorage'
 
 const inspection = ({
   editData,
@@ -50,6 +52,7 @@ const inspection = ({
     open: false,
     description: '',
   })
+  const locationRef = useRef(null)
   const inspectionInitialValues = {
     jobCompletionDate: dayJs(new Date()),
     managementNumber: '',
@@ -58,7 +61,9 @@ const inspection = ({
   }
   const isEdit = !!params?.jobId
   const showSave = isEdit || include([1], current)
-  const { consumer, producer, collectionCenter, dealer } = userWiseRole
+  const { consumer, producer, collectionCenter, dealer, inspectionOfficer } =
+    userWiseRole
+  const userData = JSON.parse(getItem('userData'))
 
   const {
     hostelAdministrationAttrFn,
@@ -77,6 +82,19 @@ const inspection = ({
     if (isEdit) {
       setEditApiDataToForm()
     }
+    setSelectedUsers({
+      ...selectedUsers,
+      [inspectionOfficer]: [userData],
+    })
+    const getCurrentLocation = async () => {
+      const data = await getLocation()
+      locationRef.current = data
+      form.setFieldsValue({
+        ...form.getFieldsValue(),
+        locationInspection: `${data?.latitude?.toFixed(4)}, ${data?.longitude?.toFixed(4)}`,
+      })
+    }
+    getCurrentLocation()
   }, [])
 
   const setEditApiDataToForm = async () => {

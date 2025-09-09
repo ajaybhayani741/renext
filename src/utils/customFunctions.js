@@ -155,6 +155,24 @@ const deepClone = value => {
   return value
 }
 
+const getLocation = async () => {
+  return new Promise((resolve, reject) => {
+    if (navigator?.geolocation) {
+      const showPosition = async position => {
+        const currentLocation = {
+          latitude: position?.coords?.latitude,
+          longitude: position?.coords?.longitude,
+        }
+        resolve(currentLocation)
+      }
+      const positionError = error => {}
+      navigator?.geolocation?.getCurrentPosition(showPosition, positionError)
+    } else {
+      reject()
+    }
+  })
+}
+
 export {
   b64toFile,
   fieldContactFormat,
@@ -164,4 +182,5 @@ export {
   numberFormat,
   fixedNumber,
   deepClone,
+  getLocation,
 }

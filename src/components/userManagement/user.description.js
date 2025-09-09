@@ -9,9 +9,6 @@ import {
   STATE_HOSTEL_DEPARTMENT,
   STATE_ADMIN_OFFICER,
   DISTRICT_COLLECTOR,
-  DISTRICT_COLLECTOR_ADMIN,
-  DISTRICT_HOSTEL_DEPARTMENT,
-  DISTRICT_ADMIN_OFFICER,
   INSPECTION_OFFICER,
   HOSTEL,
 } from '../../routing/pathName.constant'
@@ -25,7 +22,6 @@ const userRelationKey = {
 
 const associateKey = {
   user_StateHostelDepartment: 'user_AssociatedStateHostelDepartment',
-  user_DistrictHostelDepartment: 'user_AssociatedDistrictHostelDepartment',
   user_DistrictCollector: 'user_AssociatedDistrictCollector',
 }
 
@@ -34,9 +30,6 @@ const {
   stateHostelDepartment,
   stateAdminOfficer,
   districtCollector,
-  districtCollectorAdmin,
-  districtHostelDepartment,
-  districtAdminOfficer,
   inspectionOfficer,
   hostel,
 } = userWiseRole
@@ -46,9 +39,6 @@ const userTranslationKey = {
   [stateHostelDepartment]: 'user_StateHostelDepartment',
   [stateAdminOfficer]: 'user_StateAdminOfficer',
   [districtCollector]: 'user_DistrictCollector',
-  [districtCollectorAdmin]: 'user_DistrictCollectorAdmin',
-  [districtHostelDepartment]: 'user_DistrictHostelDepartment',
-  [districtAdminOfficer]: 'user_DistrictAdminOfficer',
   [inspectionOfficer]: 'user_InspectionOfficer',
   [hostel]: 'user_Hostel',
 }
@@ -58,9 +48,6 @@ const roleIdByPath = {
   [STATE_HOSTEL_DEPARTMENT]: stateHostelDepartment,
   [STATE_ADMIN_OFFICER]: stateAdminOfficer,
   [DISTRICT_COLLECTOR]: districtCollector,
-  [DISTRICT_COLLECTOR_ADMIN]: districtCollectorAdmin,
-  [DISTRICT_HOSTEL_DEPARTMENT]: districtHostelDepartment,
-  [DISTRICT_ADMIN_OFFICER]: districtAdminOfficer,
   [INSPECTION_OFFICER]: inspectionOfficer,
   [HOSTEL]: hostel,
 }
