@@ -1982,5 +1982,16 @@
   "dash_HostelsWithElectricalIssues": "Electrical issues reported (hostel-wise count)",
   "dash_HostelsWithOpenWasteDisposal": "Hostels reporting open waste disposal",
   "dash_HostelsWithoutCleanPremises": "Hostels without clean premises",
-  "job_LocationOfInspection": "Location of Inspection (lat, lng)"
+  "job_LocationOfInspection": "Location of Inspection (lat, lng)",
+  "dash_Students": "Students",
+  "dash_RegularInCharge": "Is Regular/In-charge",
+  "dash_StayInHeadquarters": "Stays in Headquarters",
+  "dash_ListOfSchools": "List of Schools",
+  "dash_ExportToPDFExcel": "Export To PDF/Excel",
+  "dash_Staff": "Staff",
+  "dash_Boarder": "Boarder",
+  "dash_Sick": "Sick",
+  "dash_BoarderMovement": "Boarder Movement",
+  "dash_VisitorRegister": "Visitor Register",
+  "dash_OtherRecords": "All Other Records"
 }

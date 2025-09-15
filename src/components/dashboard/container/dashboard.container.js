@@ -1,25 +1,28 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import useRedux from '../../../hooks/useRedux'
+import useRouter from '../../../hooks/useRouter'
 import { setFiscalYear } from '../../../redux/app/reducer'
+import { DASHBOARD_TXT } from '../../../routing/pathName.constant'
 import { dayJs } from '../../../utils/dayjs'
-import { include, isEqual, values } from '../../../utils/javascript'
-import { tabKeys } from '../dashboard.description'
+import { cardKeys } from '../dashboard.description'
 
 const dashboard = () => {
   const { dispatch, selector } = useRedux()
+  const { navigate } = useRouter()
   const { value: fiscalYear, dateRange } = selector(
     state => state?.app?.fiscalYear,
   )
+  // eslint-disable-next-line no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams({
-    tab: tabKeys.overview,
+    tab: cardKeys.overview,
   })
-  const [activeTab, setActiveTab] = useState(() => {
-    const tab = searchParams.get('tab')
-    const tabArr = values(tabKeys)
-    return include(tabArr, tab) ? tab : tabKeys.overview
-  })
+  // const [activeTab, setActiveTab] = useState(() => {
+  //   const tab = searchParams.get('tab')
+  //   const tabArr = values(cardKeys)
+  //   return include(tabArr, tab) ? tab : cardKeys.overview
+  // })
 
   useEffect(() => {
     const cachedStoreString = sessionStorage.getItem('fiscalYear')
@@ -64,36 +67,40 @@ const dashboard = () => {
     sessionStorage.setItem('fiscalYear', JSON.stringify(cachedStoreData))
   }, [dateRange, fiscalYear])
 
-  const handleTabChange = tab => {
-    setActiveTab(tab)
-    setSearchParams(searchParams => {
-      searchParams.set('tab', tab)
-      return searchParams
-    })
+  // const handleTabChange = tab => {
+  //   setActiveTab(tab)
+  //   setSearchParams(searchParams => {
+  //     searchParams.set('tab', tab)
+  //     return searchParams
+  //   })
+  // }
+
+  // const getFilterValue = ({ setFilterValue }) => {
+  //   if (
+  //     isEqual(
+  //       dateRange?.from,
+  //       dayJs().subtract(5, 'month').format('DD/MM/YYYY'),
+  //     )
+  //   ) {
+  //     setFilterValue('6M')
+  //   } else if (
+  //     isEqual(dateRange?.from, dayJs().month(3).date(1).format('DD/MM/YYYY'))
+  //   ) {
+  //     setFilterValue('YTD')
+  //   } else if (
+  //     isEqual(dateRange?.from, dayJs().subtract(1, 'year').format('DD/MM/YYYY'))
+  //   ) {
+  //     setFilterValue('1Y')
+  //   } else {
+  //     setFilterValue('')
+  //   }
+  // }
+
+  const handleCardSelect = key => {
+    navigate(`${DASHBOARD_TXT}/${key}`)
   }
 
-  const getFilterValue = ({ setFilterValue }) => {
-    if (
-      isEqual(
-        dateRange?.from,
-        dayJs().subtract(5, 'month').format('DD/MM/YYYY'),
-      )
-    ) {
-      setFilterValue('6M')
-    } else if (
-      isEqual(dateRange?.from, dayJs().month(3).date(1).format('DD/MM/YYYY'))
-    ) {
-      setFilterValue('YTD')
-    } else if (
-      isEqual(dateRange?.from, dayJs().subtract(1, 'year').format('DD/MM/YYYY'))
-    ) {
-      setFilterValue('1Y')
-    } else {
-      setFilterValue('')
-    }
-  }
-
-  return { activeTab, handleTabChange, getFilterValue }
+  return { handleCardSelect }
 }
 
 export default dashboard

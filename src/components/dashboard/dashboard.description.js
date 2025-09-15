@@ -7,13 +7,19 @@ import {
   dash_smelter,
 } from '../../utils/icons'
 
-const tabKeys = {
-  studentMetrics: 'student-metrics',
-  staffMetrics: 'staff-metrics',
-  infrastructureMetrics: 'infrastructure-metrics',
-  foodSuppliesMetrics: 'food-supplies-metrics',
-  healthSafetyMetrics: 'health-safety-metrics',
-  educationalSupportMetrics: 'educational-support-metrics',
+const cardKeys = {
+  hostelAuthority: 'hostel-authority',
+  students: 'students',
+  recordMaintenance: 'record-maintenance',
+  staffDetails: 'staff-details',
+  hostelInfraRooms: 'hostel-infra-rooms',
+  hostelInfraSanitation: 'hostel-infra-sanitation',
+  medicalCare: 'medical-care',
+  educationFacilities: 'education-facilities',
+  foodProvisions: 'food-provisions',
+  safetyAndSecurity: 'safety-and-security',
+  conductionMeetings: 'conduction-meetings',
+  feedback: 'feedback',
 }
 
 const {
@@ -243,16 +249,85 @@ const dealerPaymentData = [
   },
 ]
 
+const cardList = [
+  {
+    label: 'job_HostelAdministration',
+    subLabel: 'job_HostelAuthority',
+    key: cardKeys.hostelAuthority,
+  },
+  {
+    label: 'job_HostelAdministration',
+    subLabel: 'dash_Students',
+    key: cardKeys.students,
+  },
+  {
+    label: 'job_HostelAdministration',
+    subLabel: 'job_RecordMaintenance',
+    key: cardKeys.recordMaintenance,
+  },
+  {
+    label: 'job_HostelAdministration',
+    subLabel: 'job_StaffDetails',
+    key: cardKeys.staffDetails,
+  },
+  {
+    label: 'job_HostelInfraRooms',
+    key: cardKeys.hostelInfraRooms,
+  },
+  {
+    label: 'job_HostelInfraSanitation',
+    key: cardKeys.hostelInfraSanitation,
+  },
+  {
+    label: 'job_MedicalCare',
+    key: cardKeys.medicalCare,
+  },
+  {
+    label: 'job_EducationFacilities',
+    key: cardKeys.educationFacilities,
+  },
+  {
+    label: 'job_FoodProvisions',
+    key: cardKeys.foodProvisions,
+  },
+  {
+    label: 'job_SafetyAndSecurity',
+    key: cardKeys.safetyAndSecurity,
+  },
+  {
+    label: 'job_ConductionMeetings',
+    key: cardKeys.conductionMeetings,
+  },
+  {
+    label: 'job_Feedback',
+    key: cardKeys.feedback,
+  },
+]
+
 export {
-  tabKeys,
-  numberTileList,
-  filterKeys,
-  payloadFieldKeys,
-  seriesTitle,
-  colorByRegion,
+  cardKeys,
+  cardList,
   chartHeading,
-  peopleTileList,
+  colorByRegion,
   cpcbTilesList,
-  otherCpcbTiles,
   dealerPaymentData,
+  filterKeys,
+  numberTileList,
+  otherCpcbTiles,
+  payloadFieldKeys,
+  peopleTileList,
+  seriesTitle,
 }
+
+export const schoolsList = [
+  { name: 'Ekalavya Model Residential School' },
+  { name: 'Govt. BC Hostel' },
+  { name: 'Govt. BC College' },
+  { name: 'Govt. ST Ashram School' },
+  { name: 'Govt. ST Hostel' },
+  { name: 'Govt. ST PMH' },
+  { name: 'Govt. ST Hostel' },
+  { name: 'Ekalavya Model Residential School' },
+  { name: 'Govt. BC Hostel' },
+  { name: 'Govt. BC College' },
+]

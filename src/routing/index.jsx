@@ -1,8 +1,9 @@
 import { lazy, memo } from 'react'
 import { Navigate, useRoutes } from 'react-router-dom'
 
-import pathName from './pathName.constant'
+import pathName, { DASHBOARD_TXT } from './pathName.constant'
 import ProtectedRoute from './PrivateRoute'
+import DashboardView from '../components/dashboard/presentation/DashboardView'
 import PageNotFound from '../components/PageNotFound'
 import UserManagement from '../components/userManagement/presentation'
 
@@ -48,8 +49,13 @@ const Routing = () => {
           element: <Home />,
         },
         {
-          path: pathName.DASHBOARD,
+          path: DASHBOARD_TXT,
+          index: true,
           element: <Dashboard />,
+        },
+        {
+          path: pathName.DASHBOARD,
+          element: <DashboardView />,
         },
         {
           path: pathName.USER,

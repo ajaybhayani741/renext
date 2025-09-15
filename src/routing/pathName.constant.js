@@ -1,4 +1,5 @@
 const USER_TXT = '/user'
+const DASHBOARD_TXT = '/dashboard'
 
 const ADMIN = 'admin'
 const STATE_HOSTEL_DEPARTMENT = 'state-hostel-department'
@@ -43,7 +44,7 @@ const pathName = {
   INVENTORY: `${INVENTORY_TXT}/:type`,
   ADD_JOB: '/jobs/:jobType/add',
   EDIT_JOB: '/jobs/:jobType/edit/:jobId',
-  DASHBOARD: '/dashboard',
+  DASHBOARD: `${DASHBOARD_TXT}/:type`,
   BOOK_KEEPING: `${BOOK_KEEPING_TXT}/:type`,
   REPORTING: `${REPORTING_TXT}/:type`,
   SETTINGS: `/settings`,
@@ -52,6 +53,7 @@ export default pathName
 
 export {
   USER_TXT,
+  DASHBOARD_TXT,
   ADMIN,
   STATE_HOSTEL_DEPARTMENT,
   STATE_ADMIN_OFFICER,

@@ -6,6 +6,7 @@ import pathName, {
   STATE_ADMIN_OFFICER,
   STATE_HOSTEL_DEPARTMENT,
   USER_TXT,
+  DASHBOARD_TXT,
 } from '../../routing/pathName.constant'
 import { userWiseRole } from '../../utils/constant'
 import {
@@ -20,7 +21,7 @@ import {
 } from '../../utils/icons'
 import { userRelationKey } from '../userManagement/user.description'
 
-const { HOME, DASHBOARD, JOBS } = pathName
+const { HOME, JOBS } = pathName
 
 const {
   admin,
@@ -167,7 +168,7 @@ const sidebarMenus = [
     sidebar: allUser,
   },
   {
-    key: DASHBOARD,
+    key: DASHBOARD_TXT,
     Icon: DashboardIcon,
     label: 'job_Dashboard',
     sidebar: allUser,
