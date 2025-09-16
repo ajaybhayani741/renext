@@ -43,6 +43,7 @@ const HightChart = ({
       ) : (
         <NoDataLoaderCard title={title} loading={loading} />
       )}
+      {title && <h2 className="chart-title">{title}</h2>}
     </ANTDCard>
   )
 }

@@ -2,158 +2,94 @@ import { useMemo } from 'react'
 
 import HightChart from '.'
 import useTranslations from '../../hooks/useTranslations'
-import { isEqual, ternary } from '../../utils/javascript'
+import { isEqual } from '../../utils/javascript'
 
-const ColumnComparison = ({ data, onScroll, activeFilter }) => {
-  const { list = [] } = { ...data }
+const ColumnComparison = ({
+  chartData,
+  handleChartClick,
+  seriesData,
+  title,
+  name = null,
+}) => {
   const { t } = useTranslations()
-  const title = t('inv_ComparisonofPaymentDonetoCustomerAndDealer')
-
-  const chartData = {
-    category: [t('dash_Oct'), t('dash_Nov'), t('dash_Dec')],
-    customer: [60, 50, 30],
-    dealer: [50, 42, 22],
-  }
-
   const options = useMemo(
     () => ({
       chart: {
         type: 'column',
-        scrollablePlotArea: {
-          minWidth: chartData?.category.length * 180,
-          scrollPositionX: 0,
-        },
       },
-      maxLength: 3,
-      credits: false,
-      title: {
-        text: title,
-        align: 'left',
-      },
-      subtitle: {
-        text: '',
-        align: 'left',
-      },
+      title: { text: '' },
       plotOptions: {
-        series: {
-          grouping: false,
-          borderWidth: 0,
-        },
         column: {
+          borderWidth: 0,
           pointWidth: 50,
+          pointPadding: 0,
+          groupPadding: 0.1,
+          grouping: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            style: {
+              fontWeight: 'bold',
+              fontSize: '14px',
+              textOutline: 'none',
+            },
+          },
+        },
+        series: {
           point: {
             events: {
-              click: e => {
-                // handleClick()
-              },
+              click: e => handleChartClick(e, name || title),
             },
           },
         },
       },
       tooltip: {
         shared: true,
-        pointFormat:
-          '<span style="color:{point.color}">\u25CF</span> ' +
-          '{series.name}: <b>{point.y}</b><br/>',
+        formatter: function () {
+          return `<b>${this.x}</b><br/>${this?.points?.map(p => `${p?.point?.series?.name || p?.point?.custom?.label}: <b>${p.y}</b>`)}`
+        },
       },
+      legend: {
+        symbolRadius: 0,
+        itemStyle: {
+          cursor: 'default',
+        },
+        labelFormatter: function () {
+          if (this.name) return this.name
+          if (isEqual(this.color, '#eabf9f'))
+            return `${t('dash_Government')} / ${t('btn_Yes')}`
+          if (isEqual(this.color, '#f1725d'))
+            return `${t('dash_Private')} / ${t('btn_No')}`
+          return ''
+        },
+      },
+      colors: ['#eabf9f', '#f1725d'],
       xAxis: {
-        type: 'category',
         categories: chartData?.category,
+        labels: {
+          style: {
+            fontSize: '14px',
+          },
+        },
       },
-      yAxis: [
-        {
-          title: {
-            text: ' ',
-            // text: t('dash_JobsCreatedVsCompleted'),
-          },
-          showFirstLabel: false,
+      yAxis: {
+        min: 0,
+        title: {
+          text: '',
         },
-      ],
-      series: [
-        {
-          zIndex: 2,
-          pointPlacement: -0.15,
-          color: '#07a107',
-          linkedTo: 'main',
-          showInLegend: true,
-          name: t('user_Customer'),
-          dataLabels: [
-            {
-              enabled: true,
-              inside: true,
-              style: {
-                fontSize: '14px',
-              },
-              formatter: function () {
-                return ternary(isEqual(this.y, 0), null, this.y)
-              },
-            },
-          ],
-          data: chartData?.customer,
-        },
-        {
-          zIndex: 1.5,
-          pointPlacement: 0.06,
-          name: t('user_Dealer'),
-          color: '#95ceff',
-          id: 'main',
-          dataSorting: {
-            enabled: true,
-            matchByName: true,
-          },
-          dataLabels: [
-            {
-              enabled: true,
-              inside: true,
-              style: {
-                fontSize: '14px',
-              },
-              formatter: function () {
-                return ternary(isEqual(this.y, 0), null, this.y)
-              },
-            },
-          ],
-          data: chartData?.dealer,
-        },
-        // {
-        //   zIndex: 0.1,
-        //   pointPlacement: 0.25,
-        //   name: t('dash_FossilFuel'),
-        //   color: 'red',
-        //   id: 'main1',
-        //   dataSorting: {
-        //     enabled: true,
-        //     matchByName: true,
-        //   },
-        //   dataLabels: [
-        //     {
-        //       enabled: true,
-        //       inside: true,
-        //       style: {
-        //         fontSize: '14px',
-        //       },
-        //       formatter: function () {
-        //         return ternary(isEqual(this.y, 0), null, this.y)
-        //       },
-        //     },
-        //   ],
-        //   data: chartData?.Hydrogen,
-        // },
-      ],
+        gridLineColor: '#eee',
+      },
+      series: seriesData,
       exporting: {
         allowHTML: true,
       },
     }),
-    [list],
+    [seriesData],
   )
 
   return (
     <>
-      <HightChart options={options} id="column-comparison" />
-      {/* {length(list) && !loader ? (
-      ) : (
-        <NoDataLoaderCard title={title} loading={loader} />
-      )} */}
+      <HightChart options={options} id="column-comparison" title={title} />
     </>
   )
 }

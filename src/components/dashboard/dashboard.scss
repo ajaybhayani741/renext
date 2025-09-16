@@ -251,9 +251,9 @@
 }
 
 .dashboard-view {
-  padding: 15px 0px;
+  padding: 5px 0px;
   .breadCrumb {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     .ant-breadcrumb {
       font-size: 18px;
       a {
@@ -270,9 +270,11 @@
   }
   .dashboard-wrapper {
     .chart-view {
-      width: 50%;
-      @media screen and (max-width: 1086px) {
-        width: 100%;
+      .chart-title {
+        color: var(--color-white);
+        font-size: 18px;
+        background-color: var(--color-primary);
+        border-radius: 5px;
       }
     }
   }
@@ -333,6 +335,10 @@
     align-items: center;
     justify-content: center;
     min-height: 120px;
-    background-color: #f5d4be;
+    background-color: var(--color-primary-xlight);
   }
+}
+
+.highcharts-legend-item {
+  pointer-events: none !important;
 }

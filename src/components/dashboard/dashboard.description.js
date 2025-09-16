@@ -331,3 +331,165 @@ export const schoolsList = [
   { name: 'Govt. BC Hostel' },
   { name: 'Govt. BC College' },
 ]
+
+export const hostelsList = [
+  {
+    hostel: { name: 'Ekalavya Model Residential School' },
+    total_students: 100,
+  },
+  { hostel: { name: 'Govt. BC Hostel' }, total_students: 200 },
+  { hostel: { name: 'Govt. BC College' }, total_students: 320 },
+  { hostel: { name: 'Govt. ST Ashram School' }, total_students: 250 },
+  { hostel: { name: 'Govt. ST Hostel' }, total_students: 290 },
+  { hostel: { name: 'Govt. ST PMH' }, total_students: 190 },
+  { hostel: { name: 'Govt. ST Hostel' }, total_students: 450 },
+  {
+    hostel: { name: 'Ekalavya Model Residential School' },
+    total_students: 470,
+  },
+  { hostel: { name: 'Govt. BC Hostel' }, total_students: 520 },
+  { hostel: { name: 'Govt. BC College' }, total_students: 380 },
+]
+
+export const axisOptionsList = {
+  xAxis: {
+    type: 'linear',
+    title: {
+      text: '',
+    },
+    tickPositions: [],
+    labels: {
+      formatter: function () {
+        return this.value // show plain numbers instead of time
+      },
+    },
+    minRange: 10,
+  },
+  yAxis: [
+    {
+      // Primary yAxis
+      title: {
+        text: '',
+      },
+      lineWidth: 2,
+      opposite: false,
+    },
+    {
+      // Secondary yAxis
+      title: {
+        text: '',
+      },
+      lineWidth: 2,
+      visible: false,
+    },
+  ],
+}
+
+export const staffDetailsCharts = {
+  dash_TotalNumberOfWorkersOnPayroll: {
+    xAxisText: 'job_NumberOfWorkersOnPayroll',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 1200,
+    modalTitle: false,
+  },
+  dash_TotalNumberOfCooksEnrolled: {
+    xAxisText: 'job_NumberOfCooksEnrolled',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 1010,
+    modalTitle: false,
+  },
+  dash_TotalNumberOfKamatiEnrolled: {
+    xAxisText: 'job_NumberOfKamatiEnrolled',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 940,
+    modalTitle: false,
+  },
+  dash_TotalNumberOfWatchmenEnrolled: {
+    xAxisText: 'job_NumberOfWatchmenEnrolled',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 200,
+    modalTitle: false,
+  },
+  dash_TotalNumberOfScavengersAvailable: {
+    xAxisText: 'job_NumberOfScavengersAvailable',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 350,
+    modalTitle: false,
+  },
+  dash_TotalNumberOfScavengersRequired: {
+    xAxisText: 'job_NumberOfScavengersRequired',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 220,
+    modalTitle: false,
+  },
+}
+
+export const hostelInfraRoomsCharts = {
+  dash_TotalNumberOfLivingRooms: {
+    xAxisText: 'job_NumberOfLivingRooms',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 370,
+    modalTitle: false,
+  },
+  dash_LocationBedsMattresses: {
+    xAxisText: [
+      'dash_LocationGovtPrivate',
+      'dash_AreBedsAvailableForAll',
+      'dash_AreMattressesAvailableForAll',
+      'dash_IsAccommodationSufficient',
+    ],
+    yAxisText: '',
+    total: 1200,
+    chartType: 'column',
+    modalTitle: true,
+  },
+  job_WorkingLightsCount: {
+    xAxisText: 'dash_TubelightsBulbsInWorking',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 1280,
+    modalTitle: false,
+  },
+  job_WorkingFansCount: {
+    xAxisText: 'dash_FansInWorking',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 990,
+    modalTitle: false,
+  },
+}
+
+export const hostelInfraSanitationCharts = {
+  dash_WasteManagement: {
+    type: 'columnCompare',
+    xAxisText: '',
+    yAxisText: 'dash_NumberOfHostels',
+    md: 24,
+    modalTitle: true,
+  },
+  dash_TotalToiletsAvailable: {
+    type: 'rangeFrequency',
+    xAxisText: 'dash_NumberOfToiletsAvailable',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 1010,
+    modalTitle: false,
+  },
+  job_PercentageOfTotalToiletsFunctioning: {
+    type: 'rangeFrequency',
+    xAxisText: 'dash_PercentageOfToiletsFunctioning',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 85,
+    modalTitle: false,
+  },
+  dash_ToiletsSufficiency: {
+    type: 'columnCompare',
+    xAxisText: '',
+    yAxisText: 'dash_NumberOfHostels',
+    modalTitle: true,
+  },
+  job_DrinkingWater: {
+    type: 'pie',
+    xAxisText: 'job_NumberOfScavengersAvailable',
+    yAxisText: 'dash_NumberOfHostels',
+    modalTitle: true,
+    total: 350,
+  },
+}

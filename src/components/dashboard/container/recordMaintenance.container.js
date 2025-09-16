@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import useTranslations from '../../../hooks/useTranslations'
 import { schoolsList } from '../dashboard.description'
@@ -9,6 +9,12 @@ const recordMaintenance = () => {
     selected: false,
     chartData: null,
   })
+  const [seriesData, setSeriesData] = useState(null)
+  const title = t('job_RecordMaintenance')
+
+  useEffect(() => {
+    getSeriesData()
+  }, [])
 
   const chartData = {
     category: [
@@ -37,87 +43,25 @@ const recordMaintenance = () => {
         value: data?.y,
       },
       list: [...schoolsList],
-      title: 'dash_RecordMaintenance',
+      title: 'job_RecordMaintenance',
+      modalTitle: true,
     })
   }
 
-  const options = useMemo(
-    () => ({
-      chart: {
-        type: 'column',
+  const getSeriesData = () => {
+    setSeriesData([
+      {
+        name: t('btn_Yes'),
+        data: [85, 45, 45, 45, 45, 45],
+        // pointPlacement: -0.13,
       },
-      title: { text: '' },
-      plotOptions: {
-        column: {
-          borderWidth: 0,
-          pointWidth: 50,
-          pointPadding: 0,
-          groupPadding: 0.1,
-          grouping: true,
-          dataLabels: {
-            enabled: true,
-            style: {
-              fontWeight: 'bold',
-              fontSize: '14px',
-              textOutline: 'none',
-            },
-          },
-        },
-        series: {
-          cursor: 'pointer',
-          point: {
-            events: {
-              click: handleChartClick,
-            },
-          },
-        },
+      {
+        name: t('btn_No'),
+        data: [15, 55, 55, 55, 55, 55],
+        // pointPlacement: 0.12,
       },
-      tooltip: {
-        shared: true,
-        pointFormat:
-          '<span style="color:{point.color}">\u25CF</span> ' +
-          '{series.name}: <b>{point.y}</b><br/>',
-      },
-      legend: {
-        align: 'right',
-        verticalAlign: 'middle',
-        layout: 'vertical',
-        symbolRadius: 0,
-      },
-      colors: ['#eabf9f', '#f1725d'],
-      xAxis: {
-        categories: chartData?.category,
-        labels: {
-          style: {
-            fontSize: '14px',
-          },
-        },
-      },
-      yAxis: {
-        min: 0,
-        title: {
-          text: '',
-        },
-        gridLineColor: '#eee',
-      },
-      series: [
-        {
-          name: t('btn_Yes'),
-          data: [85, 45, 45, 45, 45, 45],
-          // pointPlacement: -0.13,
-        },
-        {
-          name: t('btn_No'),
-          data: [15, 55, 55, 55, 55, 55],
-          // pointPlacement: 0.12,
-        },
-      ],
-      exporting: {
-        allowHTML: true,
-      },
-    }),
-    [],
-  )
+    ])
+  }
 
   const handleCloseModal = () => {
     setSelectedColumn({
@@ -127,7 +71,14 @@ const recordMaintenance = () => {
     })
   }
 
-  return { options, selectedColumn, handleCloseModal }
+  return {
+    title,
+    chartData,
+    handleChartClick,
+    seriesData,
+    selectedColumn,
+    handleCloseModal,
+  }
 }
 
 export default recordMaintenance

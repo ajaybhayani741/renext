@@ -12,7 +12,6 @@ import {
   isArray,
   isEqual,
   notEqual,
-  ternary,
   values,
 } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
@@ -159,26 +158,10 @@ const jobs = () => {
   }, [searchBy])
 
   const currentColumns = useMemo(() => {
-    const {
-      jobId,
-      employeeName,
-      shiftDate,
-      shiftType,
-      loginTime,
-      logoutTime,
-      shiftTime,
-    } = columnKeys
+    const { jobId } = columnKeys
 
     return [
       jobId,
-      employeeName,
-      shiftType,
-      loginTime,
-      ...ternary(
-        isEqual(status, tabKeys.complete),
-        [shiftDate, logoutTime, shiftTime],
-        [],
-      ),
       // For dynamic columns by role or active tab
       // ...ternary(isEqual(roleId, userWiseRole.admin), ['extra'], []),
       // ...ternary(isEqual(type, tabKeys.quote), ['extra2'], []),

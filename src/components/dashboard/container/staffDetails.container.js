@@ -1,81 +1,104 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { schoolsList } from '../dashboard.description'
+import useTranslations from '../../../hooks/useTranslations'
+import { entries } from '../../../utils/javascript'
+import {
+  axisOptionsList,
+  hostelsList,
+  staffDetailsCharts,
+} from '../dashboard.description'
 
 const staffDetails = () => {
+  const { t } = useTranslations()
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
-  const data = [
-    [Date.UTC(2025, 0, 1), 30],
-    [Date.UTC(2025, 0, 5), 50],
-    [Date.UTC(2025, 0, 10), 70],
-    [Date.UTC(2025, 0, 15), 20],
-    [Date.UTC(2025, 0, 20), 90],
-    [Date.UTC(2025, 0, 25), 40],
-    [Date.UTC(2025, 1, 1), 60],
-    [Date.UTC(2025, 1, 5), 100],
-    [Date.UTC(2025, 1, 10), 80],
-    [Date.UTC(2025, 1, 15), 120],
-  ]
+  const [seriesData, setSeriesData] = useState(null)
+  const [axisOptions, setAxisOptions] = useState(null)
+  // const [totalData, setTotalData] = useState(null)
+  const title = t('dash_StaffDetails')
 
-  const handleChartClick = e => {
+  useEffect(() => {
+    getSeriesData()
+  }, [])
+
+  const handleChartClick = (e, name) => {
     const data = e.point
     setSelectedColumn({
       selected: true,
       chartData: {
         category: data?.category,
-        type: data?.series?.name,
         value: data?.y,
       },
-      list: [...schoolsList],
+      list: [...hostelsList],
+      title: 'dash_Students',
+      modalTitle: staffDetailsCharts?.[name]?.modalTitle,
     })
   }
 
-  const options = useMemo(
-    () => ({
-      chart: {
-        type: 'column', // bar chart
-      },
-      title: {
-        text: '',
-      },
-      xAxis: {
-        title: { text: 'Number of students' },
-        type: 'datetime',
-      },
-      yAxis: {
-        title: { text: 'Number of hostels' },
-      },
-      series: [
-        {
-          name: 'Students',
-          data: data,
-        },
-      ],
-      navigator: {
-        enabled: true, // bottom slider
-      },
-      scrollbar: {
-        enabled: true, // horizontal scroll bar
-      },
-      rangeSelector: {
-        enabled: false, // buttons like 1m, 3m
-      },
-      plotOptions: {
-        series: {
-          cursor: 'pointer',
-          point: {
-            events: {
-              click: handleChartClick,
-            },
+  const getSeriesData = () => {
+    let tempOptions = {}
+    let tempSeriesData = {}
+    // let tempTotalData = {}
+    entries(staffDetailsCharts).forEach(([key, value]) => {
+      tempOptions[key] = {
+        xAxis: {
+          ...axisOptionsList?.xAxis,
+          title: {
+            text: t(value?.xAxisText),
           },
+          tickPositions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
         },
-      },
-    }),
-    [],
-  )
+        yAxis: axisOptionsList?.yAxis?.map(axis => ({
+          ...axis,
+          title: {
+            text: t(value?.yAxisText),
+          },
+        })),
+      }
+      tempSeriesData[key] = [
+        {
+          type: 'column',
+          data: [
+            [5, 45],
+            [10, 37],
+            [15, 28],
+            [20, 17],
+            [25, 39],
+            [30, 18],
+            [35, 90],
+            [40, 78],
+            [45, 74],
+            [50, 18],
+            [55, 17],
+            [60, 16],
+          ],
+        },
+        {
+          type: 'spline',
+          data: [
+            [5, 45],
+            [10, 37],
+            [15, 28],
+            [20, 17],
+            [25, 39],
+            [30, 18],
+            [35, 90],
+            [40, 78],
+            [45, 74],
+            [50, 18],
+            [55, 17],
+            [60, 16],
+          ],
+        },
+      ]
+      // tempTotalData[key] = 1100
+    })
+    setSeriesData(tempSeriesData)
+    setAxisOptions(tempOptions)
+    // setTotalData(tempTotalData)
+  }
 
   const handleCloseModal = () => {
     setSelectedColumn({
@@ -85,7 +108,14 @@ const staffDetails = () => {
     })
   }
 
-  return { options, selectedColumn, handleCloseModal }
+  return {
+    title,
+    axisOptions,
+    seriesData,
+    selectedColumn,
+    handleChartClick,
+    handleCloseModal,
+  }
 }
 
 export default staffDetails

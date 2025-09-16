@@ -36,22 +36,16 @@ const columnKeys = {
   read: 'read',
   all: 'txt_All',
   jobId: 'job_Id',
-  employeeName: 'job_EmployeeName',
-  shiftDate: 'job_ShiftDate',
-  shiftType: 'job_ShiftType',
-  loginTime: 'job_LoginTime',
-  logoutTime: 'job_LogoutTime',
-  shiftTime: 'job_ShiftTime',
 }
 
 const searchByKeys = {
   employeeName: 'EMPLOYEE_NAME',
 }
 
-const { employeeName } = searchByKeys
+// const { employeeName } = searchByKeys
 
 const searchByLabels = {
-  [employeeName]: 'job_EmployeeName',
+  // [employeeName]: 'job_EmployeeName',
 }
 
 const payloadType = {

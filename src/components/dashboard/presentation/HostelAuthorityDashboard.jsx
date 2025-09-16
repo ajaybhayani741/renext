@@ -1,13 +1,31 @@
 import DashboardWrapper from './DashboardWrapper'
+import ANTDColumn from '../../../shared/antd/ANTDColumn'
+import ColumnComparison from '../../charts/ColumnComparison'
 import hostelAuthority from '../container/hostelAuthority.container'
 
 const HostelAuthorityDashboard = () => {
-  const { options, selectedColumn, handleCloseModal } = hostelAuthority()
+  const {
+    title,
+    chartData,
+    handleChartClick,
+    seriesData,
+    selectedColumn,
+    handleCloseModal,
+  } = hostelAuthority()
 
   return (
-    <DashboardWrapper
-      {...{ chartOptions: { options }, data: selectedColumn, handleCloseModal }}
-    />
+    <DashboardWrapper {...{ handleCloseModal, selectedColumn }}>
+      <ANTDColumn xs={24} md={12}>
+        <ColumnComparison
+          {...{
+            chartData,
+            handleChartClick,
+            seriesData,
+            title,
+          }}
+        />
+      </ANTDColumn>
+    </DashboardWrapper>
   )
 }
 

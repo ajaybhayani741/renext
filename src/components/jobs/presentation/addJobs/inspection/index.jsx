@@ -71,8 +71,9 @@ const InspectionJob = ({ editData }) => {
   const userSelectionList = [
     {
       key: 'inspector',
-      selectTitle: 'job_SelectInspectionOfficer',
+      selectTitle: 'user_InspectionOfficer',
       roleId: inspectionOfficer,
+      readOnly: true,
     },
   ]
 

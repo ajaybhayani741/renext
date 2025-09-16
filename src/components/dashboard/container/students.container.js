@@ -1,93 +1,37 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import useTranslations from '../../../hooks/useTranslations'
+import { axisOptionsList, hostelsList } from '../dashboard.description'
 
 const students = () => {
-  // const { t } = useTranslations()
-  // const [range, setRange] = useState([0, 250])
+  const { t } = useTranslations()
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
+  const [seriesData, setSeriesData] = useState(null)
+  const [axisOptions, setAxisOptions] = useState({ ...axisOptionsList })
+  const title = t('dash_TotalNumberOfStudents')
 
-  const hostelData = [
-    { hostel: 'Hostel A', students: 120 },
-    { hostel: 'Hostel B', students: 90 },
-    { hostel: 'Hostel C', students: 150 },
-    { hostel: 'Hostel D', students: 70 },
-    { hostel: 'Hostel E', students: 200 },
-    { hostel: 'Hostel F', students: 40 },
-  ]
+  useEffect(() => {
+    getSeriesData()
+  }, [])
 
-  const frequencies = {}
-  hostelData.forEach(h => {
-    const s = h.students
-    frequencies[s] = (frequencies[s] || 0) + 1
-  })
+  const handleChartClick = e => {
+    const data = e.point
+    setSelectedColumn({
+      selected: true,
+      chartData: {
+        category: data?.category,
+        value: data?.y,
+      },
+      list: [...hostelsList],
+      title: 'dash_Students',
+    })
+  }
 
-  // const categories = Object.keys(frequencies)
-  //   .map(Number)
-  //   .sort((a, b) => a - b)
-  // const counts = categories.map(c => frequencies[c])
-
-  const options = {
-    rangeSelector: {
-      enabled: false,
-    },
-
-    chart: {
-      zooming: {
-        type: 'xy',
-      },
-    },
-    credits: false,
-    xAxis: {
-      type: 'linear',
-      title: {
-        text: 'No. of students',
-      },
-      tickPositions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-      labels: {
-        formatter: function () {
-          return this.value // show plain numbers instead of time
-        },
-      },
-    },
-    yAxis: [
-      {
-        // Primary yAxis
-        title: {
-          text: 'No. of Hostel',
-        },
-        lineWidth: 2,
-        opposite: false,
-      },
-      {
-        // Secondary yAxis
-        title: {
-          text: 'No. of Hostel',
-        },
-        lineWidth: 2,
-        visible: false,
-      },
-    ],
-    navigator: {
-      enabled: true,
-      xAxis: {
-        type: 'linear',
-        labels: {
-          formatter: function () {
-            return this.value // plain numbers in the slider
-          },
-        },
-      },
-    },
-    tooltip: {
-      shared: true,
-    },
-    legend: {
-      align: 'left',
-      verticalAlign: 'top',
-    },
-    series: [
+  const getSeriesData = () => {
+    setSeriesData([
       {
         type: 'column',
         data: [
@@ -107,7 +51,6 @@ const students = () => {
       },
       {
         type: 'spline',
-        name: 'Hostel',
         data: [
           [5, 45],
           [10, 37],
@@ -123,7 +66,22 @@ const students = () => {
           [60, 16],
         ],
       },
-    ],
+    ])
+    setAxisOptions(prev => ({
+      xAxis: {
+        ...prev?.xAxis,
+        title: {
+          text: 'No. of students',
+        },
+        tickPositions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+      },
+      yAxis: prev?.yAxis?.map(axis => ({
+        ...axis,
+        title: {
+          text: 'No. of Hostel',
+        },
+      })),
+    }))
   }
 
   const handleCloseModal = () => {
@@ -134,7 +92,14 @@ const students = () => {
     })
   }
 
-  return { options, selectedColumn, handleCloseModal }
+  return {
+    title,
+    axisOptions,
+    seriesData,
+    selectedColumn,
+    handleChartClick,
+    handleCloseModal,
+  }
 }
 
 export default students

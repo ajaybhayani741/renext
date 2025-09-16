@@ -420,6 +420,30 @@ const inspection = ({
                   (ragiMaltStockGroundBalanceVal || 0),
           }
         }
+      } else if (isEqual('hostelInfraSanitationRequestDto', changedKey)) {
+        if (
+          include(
+            ['numberOfToiletsAvailable', 'numberOfToiletsFunctioning'],
+            nestedKey,
+          )
+        ) {
+          const numberOfToiletsAvailable =
+            nestedUpdatedValues?.[changedKey]?.numberOfToiletsAvailable
+          const numberOfToiletsFunctioning =
+            nestedUpdatedValues?.[changedKey]?.numberOfToiletsFunctioning
+          nestedUpdatedValues[changedKey] = {
+            ...nestedUpdatedValues?.[changedKey],
+            percentageOfToiletFunctioning:
+              nullOrUndefined(numberOfToiletsAvailable) ||
+              nullOrUndefined(numberOfToiletsFunctioning)
+                ? null
+                : (
+                    ((numberOfToiletsFunctioning || 0) /
+                      (numberOfToiletsAvailable || 0)) *
+                    100
+                  ).toFixed(2),
+          }
+        }
       }
 
       // const systemId = form.getFieldValue([

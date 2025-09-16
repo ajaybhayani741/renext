@@ -1,18 +1,36 @@
-import React from 'react'
-
 import DashboardWrapper from './DashboardWrapper'
+import ANTDColumn from '../../../shared/antd/ANTDColumn'
+import FrequencyBarRange from '../../charts/FrequencyBarRange'
 import students from '../container/students.container'
 
 const StudentsDashboard = () => {
-  const { options, selectedColumn, handleCloseModal } = students()
+  const {
+    title,
+    axisOptions,
+    seriesData,
+    selectedColumn,
+    handleChartClick,
+    handleCloseModal,
+  } = students()
   return (
     <DashboardWrapper
       {...{
-        chartOptions: { options, constructorType: 'stockChart' },
-        data: selectedColumn,
+        selectedColumn,
         handleCloseModal,
+        chartClassName: 'w-100',
       }}
-    />
+    >
+      <ANTDColumn xs={24} md={12}>
+        <FrequencyBarRange
+          {...{
+            axisOptions,
+            handleChartClick,
+            seriesData,
+            title: `${title}: ${1200}`,
+          }}
+        />
+      </ANTDColumn>
+    </DashboardWrapper>
   )
 }
 

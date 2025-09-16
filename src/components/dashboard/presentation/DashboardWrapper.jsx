@@ -1,31 +1,37 @@
-import React from 'react'
-
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDModal from '../../../shared/antd/ANTDModal'
+import ANTDRow from '../../../shared/antd/ANTDRow'
 import ANTDTable from '../../../shared/antd/ANTDTable'
-import HightChart from '../../charts/index'
+import { length } from '../../../utils/javascript'
 import dashboardWrapper from '../container/dashboardWrapper.container'
 
 const DashboardWrapper = ({
-  chartOptions,
-  data,
+  children,
+  selectedColumn,
   handleCloseModal,
   chartClassName,
 }) => {
   const { t } = useTranslations()
-  const { columns } = dashboardWrapper()
+  const { columns } = dashboardWrapper({ title: selectedColumn?.title })
 
   return (
     <div className="dashboard-wrapper">
-      <div className={chartClassName ?? 'chart-view'}>
-        <HightChart {...chartOptions} />
-      </div>
-      {data?.selected && (
+      <ANTDRow
+        gutter={[16, 12]}
+        className={`${chartClassName ?? ''} text-center chart-view`}
+      >
+        {children}
+      </ANTDRow>
+      {selectedColumn?.selected && (
         <ANTDModal
-          title={`${t(data?.chartData?.category)} (${data?.chartData?.type})`}
+          title={
+            selectedColumn?.modalTitle
+              ? `${t(selectedColumn?.chartData?.category)} ${selectedColumn?.chartData?.type ? `(${selectedColumn?.chartData?.type})` : ''}`
+              : t('txt_Details')
+          }
           centered
-          open={data?.selected}
+          open={selectedColumn?.selected}
           onCancel={handleCloseModal}
           footer={false}
         >
@@ -36,7 +42,14 @@ const DashboardWrapper = ({
           </div>
           <ANTDTable
             columns={columns}
-            dataSource={data?.list || []}
+            dataSource={
+              length(selectedColumn?.list)
+                ? selectedColumn?.list?.map((item, ind) => ({
+                    ...item,
+                    key: ind,
+                  }))
+                : []
+            }
             pagination={false}
             size="small"
           ></ANTDTable>

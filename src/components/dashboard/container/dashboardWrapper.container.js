@@ -1,11 +1,23 @@
 import useTranslations from '../../../hooks/useTranslations'
+import { include } from '../../../utils/javascript'
 
-const dashboardWrapper = () => {
+const dashboardWrapper = ({ title }) => {
   const { t } = useTranslations()
+  const condition = include(
+    [
+      'job_HostelAuthority',
+      'job_RecordMaintenance',
+      'dash_LocationBedsMattresses',
+      'dash_WasteManagement',
+      'dash_ToiletsSufficiency',
+      'job_DrinkingWater',
+    ],
+    title,
+  )
 
   const columns = [
     {
-      title: t('dash_ListOfSchools'),
+      title: condition ? t('dash_ListOfSchools') : t('user_Hostel'),
       key: 'id',
       colSpan: 2,
       render: (_, __, index) => {
@@ -16,22 +28,24 @@ const dashboardWrapper = () => {
       title: '',
       dataIndex: 'name',
       key: 'name',
+      colSpan: 0,
       render: rowData => (rowData ? `${rowData}` : '-'),
-      // hidden: true,
+      hidden: !condition,
     },
     {
-      title: t('user_Hostel'),
+      title: '',
       dataIndex: ['hostel', 'name'],
       key: 'hostel',
+      colSpan: 0,
       render: rowData => (rowData ? `${rowData}` : '-'),
-      hidden: true,
+      hidden: condition,
     },
     {
       title: t('dash_Students'),
       dataIndex: 'total_students',
       key: 'students',
       render: rowData => (rowData ? `${rowData}` : '-'),
-      hidden: true,
+      hidden: condition,
     },
   ].filter(item => !item.hidden)
 

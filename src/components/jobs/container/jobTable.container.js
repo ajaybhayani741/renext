@@ -4,8 +4,7 @@ import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
-import { dayJs, DISPLAY_DATE_FORMAT, estDateFormat } from '../../../utils/dayjs'
-import { include, isEqual, length, ternary } from '../../../utils/javascript'
+import { include, length, ternary } from '../../../utils/javascript'
 import { columnKeys } from '../jobs.description'
 
 const jobTable = ({
@@ -28,13 +27,6 @@ const jobTable = ({
       </ANTDButton>
     </>
   )
-
-  function formatMillis(ms) {
-    const totalMinutes = Math.floor(ms / 60000)
-    const hours = Math.floor(totalMinutes / 60)
-    const minutes = totalMinutes % 60
-    return `${hours?.toString()?.padStart(2, '0')}:${minutes?.toString()?.padStart(2, '0')}`
-  }
 
   const allColumns = useMemo(
     () => [
@@ -76,54 +68,6 @@ const jobTable = ({
         dataIndex: 'id',
         // sorter: true,
         ellipsis: true,
-      },
-      {
-        title: t('job_EmployeeName'),
-        key: columnKeys.employeeName,
-        dataIndex: ['userInfo', 'lastName'],
-        ellipsis: true,
-        render: rowData => rowData || '-',
-      },
-      {
-        title: t('job_ShiftDate'),
-        key: columnKeys.shiftDate,
-        dataIndex: 'creationDate',
-        render: rowData => {
-          return rowData ? dayJs(rowData).format(DISPLAY_DATE_FORMAT) : '-'
-        },
-      },
-      {
-        title: t('job_ShiftType'),
-        key: columnKeys.shiftType,
-        dataIndex: 'shiftType',
-        render: rowData => {
-          return rowData || '-'
-        },
-      },
-      {
-        title: `${t('job_LoginTime')} (EST)`,
-        key: columnKeys.loginTime,
-        dataIndex: 'logInTime',
-        render: rowData => {
-          return rowData ? estDateFormat(dayJs(rowData)).format(`HH:mm`) : '-'
-        },
-      },
-      {
-        title: `${t('job_LogoutTime')} (EST)`,
-        key: columnKeys.logoutTime,
-        dataIndex: 'logOutTime',
-        render: rowData => {
-          return rowData ? estDateFormat(dayJs(rowData)).format(`HH:mm`) : '-'
-        },
-      },
-      {
-        title: t('job_ShiftTime'),
-        key: columnKeys.shiftTime,
-        render: rowData => {
-          return rowData
-            ? formatMillis(rowData?.logOutTime - rowData?.logInTime)
-            : '-'
-        },
       },
       // {
       //   title: t('job_Status'),
@@ -168,33 +112,7 @@ const jobTable = ({
     active,
     ...jobData
   }) => {
-    return [
-      { label: 'job_Id', value: id },
-      { label: 'job_EmployeeName', value: userInfo?.lastName },
-      {
-        label: 'job_ShiftDate',
-        value: creationDate
-          ? dayJs(creationDate).format(DISPLAY_DATE_FORMAT)
-          : '-',
-      },
-      {
-        label: 'job_ShiftType',
-        value: jobData?.shiftType,
-      },
-      {
-        label: `${t('job_LoginTime')} (EST)`,
-        value: logInTime
-          ? estDateFormat(dayJs(logInTime)).format(`HH:mm`)
-          : '-',
-      },
-      {
-        label: `${t('job_LogoutTime')} (EST)`,
-        value: logOutTime
-          ? estDateFormat(dayJs(logOutTime)).format(`HH:mm`)
-          : '-',
-        hidden: !isEqual(active, false),
-      },
-    ].filter(item => !item.hidden)
+    return [{ label: 'job_Id', value: id }].filter(item => !item.hidden)
   }
 
   return {

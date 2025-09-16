@@ -433,6 +433,13 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
+      percentageOfToiletFunctioning: {
+        label: 'job_PercentageOfTotalToiletsFunctioning',
+        inputType: 'input',
+        disabled: true,
+        md: 12,
+        xs: 24,
+      },
       areToiletsSufficient: {
         label: 'job_AreToiletsSufficient',
         inputType: 'select',
