@@ -7,6 +7,7 @@ import ANTDCollapse from '../../../../../shared/antd/ANTDCollapse'
 import { userWiseRole } from '../../../../../utils/constant'
 import { include, length } from '../../../../../utils/javascript'
 import { getItem } from '../../../../../utils/localstorage'
+import { userRelationKey } from '../../../../userManagement/user.description'
 import JobUserSelect from '../../common/JobUserSelect'
 
 const InspectionForm = ({
@@ -95,7 +96,10 @@ const InspectionForm = ({
         {...{
           selectTitle: 'job_SelectHostel',
           roleId: hostel,
-          apiPayload: { roleId: hostel },
+          apiPayload: {
+            roleId: hostel,
+            relationType: userRelationKey.associate,
+          },
           userData: selectedUsers?.[hostel],
           onSelectUser,
           selectedUsers,

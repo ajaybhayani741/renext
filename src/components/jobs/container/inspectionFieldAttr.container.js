@@ -8,14 +8,14 @@ const inspectionFieldAttr = () => {
       hostelAuthority: {
         title: 'job_HostelAuthority',
       },
-      nameOfPrincipal: {
+      principalHwoSpecialOfficerName: {
         label: 'job_NameOfPrincipalHWOSpecialOfficer',
         inputType: 'input',
         required: true,
         md: 12,
         xs: 24,
       },
-      isRegular: {
+      principalIsRegularOrIncharge: {
         label: 'job_WhetherThePrincipalHWOSpecialOfficerIsRegularOrIncharge',
         inputType: 'select',
         options: booleanOptions,
@@ -23,7 +23,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      wasPresent: {
+      principalPresentDuringInspection: {
         label:
           'job_WhetherThePrincipalHWOSpecialOfficerWasPresentDuringInspection',
         inputType: 'select',
@@ -32,7 +32,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      staysInHeadquarters: {
+      principalStaysInHeadquarters: {
         label: 'job_WhetherThePrincipalHWOSpecialOfficerStaysInTheHeadquarters',
         inputType: 'select',
         options: booleanOptions,
@@ -40,7 +40,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      noOfStudentsEnrolled: {
+      numberOfStudentsEnrolled: {
         label: 'job_NumberOfStudentsEnrolled',
         inputType: 'inputNumber',
         className: 'w-100',
@@ -48,7 +48,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      noOfStudentMarkedAttendance: {
+      numberOfStudentsMarkedAttendance: {
         label: 'job_NumberOfStudentsMarkedAttendance',
         inputType: 'inputNumber',
         className: 'w-100',
@@ -56,7 +56,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      noOfStudentActuallyPresent: {
+      studentsActuallyPresentDuringInspection: {
         label: 'job_NumberOfStudentsActuallyPresentAtTheTimeOfInspection',
         inputType: 'inputNumber',
         className: 'w-100',
@@ -67,7 +67,7 @@ const inspectionFieldAttr = () => {
       recordMaintenance: {
         title: 'job_RecordMaintenance',
       },
-      isRecordOfAttendanceMaintained: {
+      staffAttendanceRecordMaintained: {
         label: 'job_IsTheRecordOfStaffAttendanceMaintained',
         inputType: 'select',
         options: booleanOptions,
@@ -75,7 +75,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      isBoarderAttendanceRecordMaintained: {
+      boarderAttendanceRecordMaintained: {
         label: 'job_IsTheRecordOfBoarderAttendanceMaintained',
         inputType: 'select',
         options: booleanOptions,
@@ -83,7 +83,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      isSickBoarderRecordMaintained: {
+      sickBoardersRecordMaintained: {
         label: 'job_IsTheRecordOfSickBoardersMaintained',
         inputType: 'select',
         options: booleanOptions,
@@ -91,7 +91,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      isBoarderMovementRecordMaintained: {
+      boarderMovementRecordMaintained: {
         label: 'job_IsTheRecordOfBoarderMovementMaintained',
         inputType: 'select',
         options: booleanOptions,
@@ -99,7 +99,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      isVisitorRegisterMaintained: {
+      visitorRegisterMaintained: {
         label: 'job_IsVisitorRegisterMaintained',
         inputType: 'select',
         options: booleanOptions,
@@ -107,7 +107,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      areAllOtherRecordsMaintained: {
+      allOtherRecordsMaintainedRegularly: {
         label: 'job_AreAllOtherRecordsMaintainedRegularly',
         inputType: 'select',
         options: booleanOptions,
@@ -118,7 +118,7 @@ const inspectionFieldAttr = () => {
       staffDetails: {
         title: 'job_StaffDetails',
       },
-      workersOnPayroll: {
+      numberOfWorkersOnPayroll: {
         label: 'job_NumberOfWorkersOnPayroll',
         inputType: 'inputNumber',
         required: true,
@@ -126,7 +126,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      cooksEnrolled: {
+      numberOfCooksEnrolled: {
         label: 'job_NumberOfCooksEnrolled',
         inputType: 'inputNumber',
         required: true,
@@ -134,7 +134,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      cooksPresent: {
+      numberOfCooksPresent: {
         label: 'job_NumberOfCooksPresent',
         inputType: 'inputNumber',
         required: true,
@@ -142,7 +142,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      kamatiEnrolled: {
+      numberOfKamatiEnrolled: {
         label: 'job_NumberOfKamatiEnrolled',
         inputType: 'inputNumber',
         required: true,
@@ -150,7 +150,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      kamatiPresent: {
+      numberOfKamatiPresent: {
         label: 'job_NumberOfKamatiPresent',
         inputType: 'inputNumber',
         required: true,
@@ -158,7 +158,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      watchmenEnrolled: {
+      numberOfWatchmenAttendersEnrolled: {
         label: 'job_NumberOfWatchmenEnrolled',
         inputType: 'inputNumber',
         required: true,
@@ -166,7 +166,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      watchmenPresent: {
+      numberOfWatchmenAttendersPresent: {
         label: 'job_NumberOfWatchmenPresent',
         inputType: 'inputNumber',
         required: true,
@@ -174,7 +174,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      scavengersAvailable: {
+      numberOfScavengersAvailable: {
         label: 'job_NumberOfScavengersAvailable',
         inputType: 'inputNumber',
         required: true,
@@ -182,7 +182,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      scavengersRequired: {
+      numberOfScavengersRequired: {
         label: 'job_NumberOfScavengersRequired',
         inputType: 'inputNumber',
         required: true,
@@ -202,8 +202,8 @@ const inspectionFieldAttr = () => {
         label: 'job_HostelLocationType',
         inputType: 'select',
         options: [
-          { label: 'Government', value: 'GOVERNMENT' },
-          { label: 'Private', value: 'PRIVATE' },
+          { label: 'dash_Government', value: 'GOVERNMENT' },
+          { label: 'dash_Private', value: 'PRIVATE' },
         ],
         required: true,
         md: 12,
@@ -217,7 +217,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      bedsAvailable: {
+      bedsAvailableForAllBoarders: {
         label: 'job_BedsAvailableForAllBoarders',
         inputType: 'select',
         options: booleanOptions,
@@ -225,19 +225,19 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      bedType: {
+      typeOfBedsAvailable: {
         label: 'job_TypeOfBedsAvailable',
         inputType: 'select',
         options: [
-          { label: 'Single beds', value: 'SINGLE' },
-          { label: 'Bunker beds', value: 'BUNKER' },
-          { label: 'No beds available', value: 'NONE' },
+          { label: 'job_SingleBeds', value: 'SINGLE_BED' },
+          { label: 'job_BunkerBeds', value: 'BUNKER_BED' },
+          { label: 'job_NoBedsAvailable', value: 'NO_BED_AVAILABLE' },
         ],
         required: true,
         md: 12,
         xs: 24,
       },
-      mattressesAvailable: {
+      mattressesAvailableForBoarders: {
         label: 'job_MattressesAvailableForBoarders',
         inputType: 'select',
         options: booleanOptions,
@@ -265,11 +265,11 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         mode: 'multiple',
         options: [
-          { label: 'Broken/No doors', value: 'DOORS' },
-          { label: 'Broken/No glass', value: 'GLASS' },
-          { label: 'Broken/No grill', value: 'GRILL' },
-          { label: 'Broken/No mesh', value: 'MESH' },
-          { label: 'None', value: 'NONE' },
+          { label: 'job_BrokenNoDoors', value: 'BROKEN_NO_DOORS' },
+          { label: 'job_BrokenNoGlass', value: 'BROKEN_NO_GLASS' },
+          { label: 'job_BrokenNoGrill', value: 'BROKEN_NO_GRILL' },
+          { label: 'job_BrokenNoMesh', value: 'BROKEN_NO_MESH' },
+          { label: 'txt_None', value: 'NONE' },
         ],
         required: true,
         md: 12,
@@ -278,7 +278,7 @@ const inspectionFieldAttr = () => {
       electricity: {
         title: 'job_Electricity',
       },
-      workingLights: {
+      totalTubelightsBulbsWorking: {
         label: 'job_WorkingLightsCount',
         inputType: 'inputNumber',
         required: true,
@@ -286,7 +286,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      properLighting: {
+      properLightingArrangementsMade: {
         label: 'job_ProperLightingArrangements',
         inputType: 'select',
         options: booleanOptions,
@@ -294,7 +294,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      workingFans: {
+      totalFansWorking: {
         label: 'job_WorkingFansCount',
         inputType: 'inputNumber',
         required: true,
@@ -302,7 +302,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      properVentilation: {
+      properVentilationArrangementsMade: {
         label: 'job_ProperVentilationArrangements',
         inputType: 'select',
         options: booleanOptions,
@@ -317,22 +317,22 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      electricalIssues: {
+      electricalIssuesPresent: {
         label: 'job_ElectricalIssuesPresent',
         inputType: 'select',
         mode: 'multiple',
         options: [
-          { label: 'Wiring Issues', value: 'WIRING' },
-          { label: 'Phase Overload', value: 'PHASE' },
-          { label: 'Lighting & Fan issues', value: 'LIGHTING' },
-          { label: 'Others', value: 'OTHERS' },
-          { label: 'No issues', value: 'NONE' },
+          { label: 'job_WiringIssues', value: 'WIRING_ISSUES' },
+          { label: 'job_PhaseOverload', value: 'PHASE_OVERLOAD' },
+          { label: 'job_LightingFanIssues', value: 'LIGHTING_AND_FAN_ISSUES' },
+          { label: 'dash_Others', value: 'OTHERS' },
+          { label: 'job_NoIssues', value: 'NO_ISSUES' },
         ],
         required: true,
         md: 12,
         xs: 24,
       },
-      electricalRepairsDescription: {
+      electrificationRepairsRequired: {
         label: 'job_ElectricalRepairsDescription',
         inputType: 'textArea',
         maxLength: 1000,
@@ -347,7 +347,7 @@ const inspectionFieldAttr = () => {
       solidWasteManagement: {
         title: 'job_SolidWasteManagement',
       },
-      isWasteRegularlyCleared: {
+      gpMunicipalityClearingSolidWasteRegularly: {
         label: 'job_IsWasteRegularlyCleared',
         inputType: 'select',
         options: booleanOptions,
@@ -355,7 +355,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      isWasteDisposedInOpenArea: {
+      wasteDisposedInOpenAreaDuringVisit: {
         label: 'job_IsWasteDisposedInOpenArea',
         inputType: 'select',
         options: booleanOptions,
@@ -366,7 +366,7 @@ const inspectionFieldAttr = () => {
       liquidWasteManagement: {
         title: 'job_LiquidWasteManagement',
       },
-      isWaterSeparatelyDrained: {
+      greyBlackWaterSeparatelyDrained: {
         label: 'job_IsWaterSeparatelyDrained',
         inputType: 'select',
         options: booleanOptions,
@@ -374,7 +374,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      isSepticTankCleanedRegularly: {
+      septicTankCleanedRegularly: {
         label: 'job_IsSepticTankCleanedRegularly',
         inputType: 'select',
         options: booleanOptions,
@@ -382,7 +382,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      isStagnantWaterPresent: {
+      stagnantWaterOnGround: {
         label: 'job_IsStagnantWaterPresent',
         inputType: 'select',
         options: booleanOptions,
@@ -390,7 +390,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      areSoakPitsAvailable: {
+      soakPitsInHostel: {
         label: 'job_AreSoakPitsAvailable',
         inputType: 'select',
         options: booleanOptions,
@@ -398,7 +398,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      sufficientDistanceBetweenSepticTankAndBoreWell: {
+      sufficientDistanceSepticTankBorewell: {
         label: 'job_SufficientDistanceBetweenSepticTankAndBoreWell',
         inputType: 'select',
         options: booleanOptions,
@@ -406,7 +406,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      arePremisesClean: {
+      hostelPremisesKeptClean: {
         label: 'job_ArePremisesClean',
         inputType: 'select',
         options: booleanOptions,
@@ -440,7 +440,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      areToiletsSufficient: {
+      numberOfToiletsSufficient: {
         label: 'job_AreToiletsSufficient',
         inputType: 'select',
         options: booleanOptions,
@@ -464,7 +464,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      areBathroomsSufficient: {
+      numberOfBathroomsSufficient: {
         label: 'job_AreBathroomsSufficient',
         inputType: 'select',
         options: booleanOptions,
@@ -472,7 +472,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      toiletBathroomIssues: {
+      toiletsBathroomsIssuesRepairs: {
         label: 'job_ToiletBathroomIssues',
         inputType: 'textArea',
         required: true,
@@ -480,7 +480,7 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      toiletBathroomPhoto1: {
+      toiletsBathroomsPhoto1: {
         label: 'job_ToiletBathroomPhoto1',
         inputType: 'formUpload',
         acceptFileTypes: '.png,.jpg,.jpeg',
@@ -489,7 +489,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      toiletBathroomPhoto2: {
+      toiletsBathroomsPhoto2: {
         label: 'job_ToiletBathroomPhoto2',
         inputType: 'formUpload',
         acceptFileTypes: '.png,.jpg,.jpeg',
@@ -506,16 +506,19 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         mode: 'multiple',
         options: [
-          { label: 'Tap- Municipality/Mission Bhageeratha', value: 'TAP' },
-          { label: 'Bore Well', value: 'BORE_WELL' },
-          { label: 'Open Well', value: 'OPEN_WELL' },
-          { label: 'RO Plant', value: 'RO_PLANT' },
+          {
+            label: 'job_TapMunicipalityMissionBhageeratha',
+            value: 'TAP_MUNICIPALITY_MISSION_BHAGEERATHA',
+          },
+          { label: 'job_BoreWell', value: 'BORE_WELL' },
+          { label: 'job_OpenWell', value: 'OPEN_WELL' },
+          { label: 'job_ROPlant', value: 'RO_PLANT' },
         ],
         required: true,
         md: 12,
         xs: 24,
       },
-      drinkingWaterIssues: {
+      drinkingWaterIssuesRepairs: {
         label: 'job_DrinkingWaterIssues',
         inputType: 'textArea',
         required: true,
@@ -528,37 +531,43 @@ const inspectionFieldAttr = () => {
   )
   const medicalCareAttrFn = useCallback(
     () => ({
-      sickBoarderRecordsStatus: {
+      sickBoardersDetailsEnteredRecords: {
         label: 'job_SickBoarderRecordsStatus',
         inputType: 'select',
         options: [
-          { label: 'job_SickBoarderRecordsStatus_Yes', value: 'YES' },
-          { label: 'job_SickBoarderRecordsStatus_No', value: 'NO' },
+          {
+            label: 'job_SickBoarderRecordsStatus_Yes',
+            value: 'YES_RECORDS_ENTERED_CORRECTLY',
+          },
+          {
+            label: 'job_SickBoarderRecordsStatus_No',
+            value: 'NO_RECORDS_ENTERED_CORRECTLY',
+          },
           { label: 'job_SickBoarderRecordsStatus_None', value: 'NONE' },
         ],
         required: true,
         md: 12,
         xs: 24,
       },
-      staffNurseAvailability: {
+      staffNurseAvailableInHostel: {
         label: 'job_StaffNurseAvailability',
         inputType: 'select',
         options: [
           { label: 'job_StaffNurseAvailability_Available', value: 'AVAILABLE' },
           {
             label: 'job_StaffNurseAvailability_ANMVisits',
-            value: 'ANM_VISITS',
+            value: 'NOT_AVAILABLE_BUT_PHC_NURSE_VISITS',
           },
           {
             label: 'job_StaffNurseAvailability_NotAvailable',
-            value: 'NOT_AVAILABLE',
+            value: 'NOT_AVAILABLE_NO_PHC_NURSE_VISITS',
           },
         ],
         required: true,
         md: 12,
         xs: 24,
       },
-      medicalOfficerVisits: {
+      medicalOfficerRegularVisits: {
         label: 'job_MedicalOfficerVisits',
         inputType: 'select',
         options: booleanOptions,
@@ -566,7 +575,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      firstAidKitAvailability: {
+      firstAidKitAvailableInHostel: {
         label: 'job_FirstAidKitAvailability',
         inputType: 'select',
         options: booleanOptions,
@@ -574,7 +583,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      distanceToNearestPHC: {
+      distanceToNearestPhcKm: {
         label: 'job_DistanceToNearestPHC',
         inputType: 'inputNumber',
         required: true,
@@ -582,7 +591,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      medicalFeedback: {
+      medicalCareFeedback: {
         label: 'job_MedicalFeedback',
         inputType: 'textArea',
         required: true,
@@ -595,7 +604,7 @@ const inspectionFieldAttr = () => {
   )
   const educationFacilitiesAttrFn = useCallback(
     () => ({
-      textbooksSupplied: {
+      boardersSuppliedTextbooks: {
         label: 'job_TextbooksSupplied',
         inputType: 'select',
         options: booleanOptions,
@@ -603,7 +612,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      notebooksSupplied: {
+      boardersSuppliedNotebooks: {
         label: 'job_NotebooksSupplied',
         inputType: 'select',
         options: booleanOptions,
@@ -611,7 +620,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      uniformsSupplied: {
+      boardersSuppliedUniforms: {
         label: 'job_UniformsSupplied',
         inputType: 'select',
         options: booleanOptions,
@@ -619,14 +628,14 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      trunkBoxesSupplied: {
+      boardersSuppliedTrunkBoxes: {
         label: 'job_TrunkBoxesSupplied',
         inputType: 'select',
         options: booleanOptions,
         md: 12,
         xs: 24,
       },
-      platesGlassesSupplied: {
+      boardersSuppliedPlatesGlasses: {
         label: 'job_PlatesGlassesSupplied',
         inputType: 'select',
         options: booleanOptions,
@@ -634,7 +643,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      schoolBagsSupplied: {
+      boardersSuppliedSchoolBags: {
         label: 'job_SchoolBagsSupplied',
         inputType: 'select',
         options: booleanOptions,
@@ -642,7 +651,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      beddingMaterialSupplied: {
+      boardersSuppliedBeddingMaterial: {
         label: 'job_BeddingMaterialSupplied',
         inputType: 'select',
         options: booleanOptions,
@@ -650,7 +659,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      cosmeticChargesLastPaid: {
+      cosmeticChargesLastPaidUptoDate: {
         label: 'job_CosmeticChargesLastPaid',
         inputType: 'dateTimePicker',
         className: 'w-100',
@@ -667,7 +676,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      teachingAsPerLessonPlan: {
+      teachingAsPerAnnualLessonPlan: {
         label: 'job_TeachingAsPerLessonPlan',
         inputType: 'select',
         options: booleanOptions,
@@ -675,7 +684,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      distanceToSchool: {
+      distanceToSchoolKm: {
         label: 'job_DistanceToSchool',
         inputType: 'inputNumber',
         className: 'w-100',
@@ -710,9 +719,9 @@ const inspectionFieldAttr = () => {
         label: 'job_LPGCylindersAvailable',
         inputType: 'select',
         options: [
-          { label: 'No', value: 'NO' },
-          { label: 'Yes - Sufficient', value: 'YES_SUFFICIENT' },
-          { label: 'Yes - But not sufficient', value: 'YES_INSUFFICIENT' },
+          { label: 'btn_No', value: 'NO' },
+          { label: 'job_YesSufficient', value: 'YES_SUFFICIENT' },
+          { label: 'job_YesInSufficient', value: 'YES_INSUFFICIENT' },
         ],
         required: true,
         md: 12,
@@ -758,7 +767,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      riceStockAsPerRegister: {
+      riceStockRegisterKg: {
         label: 'job_RiceStockAsPerRegister',
         inputType: 'inputNumber',
         required: true,
@@ -766,7 +775,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      riceStockGroundBalance: {
+      riceStockGroundBalanceKg: {
         label: 'job_RiceStockGroundBalance',
         inputType: 'inputNumber',
         required: true,
@@ -782,7 +791,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      dalStockAsPerRegister: {
+      dalStockRegisterKg: {
         label: 'job_DalStockAsPerRegister',
         inputType: 'inputNumber',
         required: true,
@@ -790,7 +799,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      dalStockGroundBalance: {
+      dalStockGroundBalanceKg: {
         label: 'job_DalStockGroundBalance',
         inputType: 'inputNumber',
         required: true,
@@ -806,7 +815,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      cookingOilStockAsPerRegister: {
+      cookingOilStockRegisterKg: {
         label: 'job_CookingOilStockAsPerRegister',
         inputType: 'inputNumber',
         required: true,
@@ -814,7 +823,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      cookingOilStockGroundBalance: {
+      cookingOilStockGroundBalanceKg: {
         label: 'job_CookingOilStockGroundBalance',
         inputType: 'inputNumber',
         required: true,
@@ -830,7 +839,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      sugarStockAsPerRegister: {
+      sugarStockRegisterKg: {
         label: 'job_SugarStockAsPerRegister',
         inputType: 'inputNumber',
         required: true,
@@ -838,7 +847,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      sugarStockGroundBalance: {
+      sugarStockGroundBalanceKg: {
         label: 'job_SugarStockGroundBalance',
         inputType: 'inputNumber',
         required: true,
@@ -854,7 +863,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      idliRavaStockAsPerRegister: {
+      idliRavaStockRegister: {
         label: 'job_IdliRavaStockAsPerRegister',
         inputType: 'inputNumber',
         required: true,
@@ -878,7 +887,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      ragiMaltStockAsPerRegister: {
+      ragiMaltStockRegisterKg: {
         label: 'job_RagiMaltStockAsPerRegister',
         inputType: 'inputNumber',
         required: true,
@@ -886,7 +895,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      ragiMaltStockGroundBalance: {
+      ragiMaltStockGroundBalanceKg: {
         label: 'job_RagiMaltStockGroundBalance',
         inputType: 'inputNumber',
         required: true,
@@ -902,7 +911,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      ragiMaltDailyConsumption: {
+      ragiMaltConsumptionDailyKg: {
         label: 'job_RagiMaltDailyConsumption',
         inputType: 'inputNumber',
         required: true,
@@ -910,7 +919,7 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      milkQuantityAsPerRegister: {
+      milkQuantityRegister: {
         label: 'job_MilkQuantityAsPerRegister',
         inputType: 'inputNumber',
         required: true,
@@ -926,12 +935,12 @@ const inspectionFieldAttr = () => {
         md: 8,
         xs: 24,
       },
-      milkBrand: {
+      brandOfMilkUsed: {
         label: 'job_MilkBrand',
         inputType: 'select',
         options: [
           { label: 'Vijaya', value: 'VIJAYA' },
-          { label: 'Others', value: 'OTHERS' },
+          { label: 'dash_Others', value: 'OTHERS' },
         ],
         required: true,
         md: 12,
@@ -941,14 +950,14 @@ const inspectionFieldAttr = () => {
         label: 'job_MilkPurchaseMethod',
         inputType: 'select',
         options: [
-          { label: 'Supplied by the Contractor', value: 'CONTRACTOR' },
-          { label: 'Purchased Locally', value: 'LOCAL' },
+          { label: 'job_SuppliedByContractor', value: 'CONTRACTOR_SUPPLIED' },
+          { label: 'job_PurchasedLocally', value: 'PURCHASED_LOCALLY' },
         ],
         required: true,
         md: 12,
         xs: 24,
       },
-      foodProcurementIssues: {
+      foodProcurementStorageIssues: {
         label: 'job_FoodProcurementIssues',
         inputType: 'textArea',
         required: true,
@@ -956,7 +965,7 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      mealsFeedback: {
+      mealsNutritionalFeedback: {
         label: 'job_MealsFeedback',
         inputType: 'textArea',
         required: true,
@@ -964,7 +973,7 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      imageFoodStorageVegetables: {
+      foodStorageVegetablesPhoto: {
         label: 'job_PhotoOfFoodStorageVegetables',
         inputType: 'formUpload',
         md: 12,
@@ -972,7 +981,7 @@ const inspectionFieldAttr = () => {
         acceptFileTypes: '.png,.jpg,.jpeg',
         uploadSingle: true,
       },
-      imageFoodStorageDryItems: {
+      foodStorageDryItemsPhoto: {
         label: 'job_PhotoOfFoodStorageDryItems',
         inputType: 'formUpload',
         md: 12,
@@ -985,7 +994,7 @@ const inspectionFieldAttr = () => {
   )
   const safetyAndSecurityAttrFn = useCallback(
     () => ({
-      openSpaceLighting: {
+      sufficientLightingOpenSpaces: {
         label: 'job_OpenSpaceLightingAtNight',
         inputType: 'select',
         options: booleanOptions,
@@ -993,22 +1002,22 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      animalDangers: {
+      dangersCausedByAnimals: {
         label: 'job_AnimalDangers',
         inputType: 'select',
         mode: 'multiple',
         options: [
-          { label: 'Rats', value: 'RATS' },
-          { label: 'Dogs', value: 'DOGS' },
-          { label: 'Snakes', value: 'SNAKES' },
-          { label: 'Monkeys', value: 'MONKEYS' },
-          { label: 'None', value: 'NONE' },
+          { label: 'job_Rats', value: 'RATS' },
+          { label: 'job_Dogs', value: 'DOGS' },
+          { label: 'job_Snakes', value: 'SNAKES' },
+          { label: 'job_Monkeys', value: 'MONKEYS' },
+          { label: 'txt_None', value: 'NONE' },
         ],
         required: true,
         md: 12,
         xs: 24,
       },
-      nightStaffCount: {
+      numberOfStaffStayAtNight: {
         label: 'job_NightStaffCount',
         inputType: 'inputNumber',
         required: true,
@@ -1016,7 +1025,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      cctvAvailableCount: {
+      numberOfCctvsAvailable: {
         label: 'job_CCTVAvailableCount',
         inputType: 'inputNumber',
         required: true,
@@ -1024,7 +1033,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      cctvFunctioningCount: {
+      numberOfCctvsFunctioning: {
         label: 'job_CCTVFunctioningCount',
         inputType: 'inputNumber',
         required: true,
@@ -1032,7 +1041,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      policePatrolRequired: {
+      dailyNightPolicePatrollingRequired: {
         label: 'job_PolicePatrolRequired',
         inputType: 'select',
         options: booleanOptions,
@@ -1040,7 +1049,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      safetyIssues: {
+      safetyIssuesRequirements: {
         label: 'job_SafetyIssues',
         inputType: 'textArea',
         required: true,
@@ -1053,7 +1062,7 @@ const inspectionFieldAttr = () => {
   )
   const conductionMeetingsAttrFn = useCallback(
     () => ({
-      hwoMeetingsRegular: {
+      meetingsConvenedRegularly: {
         label: 'job_HWOMeetingsRegular',
         inputType: 'select',
         options: booleanOptions,
@@ -1061,10 +1070,11 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      lastParentCommitteeMeeting: {
+      lastParentCommitteeMeetingDate: {
         label: 'job_LastParentCommitteeMeeting',
-        inputType: 'datePicker',
+        inputType: 'dateTimePicker',
         required: true,
+        className: 'w-100',
         md: 24,
         xs: 24,
       },
@@ -1073,7 +1083,7 @@ const inspectionFieldAttr = () => {
   )
   const feedbackAttrFn = useCallback(
     () => ({
-      studentFeedback: {
+      feedbackRequestFromStudents: {
         label: 'job_StudentFeedback',
         inputType: 'textArea',
         required: true,
@@ -1081,7 +1091,7 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      officerFeedback: {
+      feedbackRequestFromPrincipal: {
         label: 'job_OfficerFeedback',
         inputType: 'textArea',
         required: true,
@@ -1095,7 +1105,7 @@ const inspectionFieldAttr = () => {
 
   const findingsAttrFn = useCallback(
     () => ({
-      repairsDescription: {
+      repairsOtherThanMentionedEarlier: {
         label: 'job_RepairsDescription',
         inputType: 'textArea',
         required: true,
@@ -1103,7 +1113,7 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      inspectionFindings: {
+      findingsOfInspectionOfficer: {
         label: 'job_InspectionFindings',
         inputType: 'textArea',
         required: true,
@@ -1111,7 +1121,7 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      officerStaffPhoto: {
+      inspectingOfficerWithStaffPhoto: {
         label: 'job_OfficerStaffPhoto',
         inputType: 'formUpload',
         acceptFileTypes: '.png,.jpg,.jpeg',
@@ -1120,7 +1130,7 @@ const inspectionFieldAttr = () => {
         md: 12,
         xs: 24,
       },
-      officerChildrenPhoto: {
+      inspectingOfficerWithChildrenPhoto: {
         label: 'job_OfficerChildrenPhoto',
         inputType: 'formUpload',
         acceptFileTypes: '.png,.jpg,.jpeg',

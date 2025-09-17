@@ -84,7 +84,7 @@ const InspectionJob = ({ editData }) => {
           <ANTDColumn md={12} lg={12} sm={24} xs={24}>
             <ANTDFormItem
               label={t('job_DateOfInspectionAndTime')}
-              name={'jobCompletionDate'}
+              name={'inspectionDate'}
               className={`${validationTag(lang)} date-label`}
               rules={[
                 {
@@ -96,7 +96,7 @@ const InspectionJob = ({ editData }) => {
               <ANTDDatePicker
                 showTime
                 className="w-100"
-                name="jobCompletionDate"
+                name="inspectionDate"
                 placeholder={t('job_SelectDate')}
                 allowClear={false}
                 format={'YYYY/MM/DD HH:mm'}

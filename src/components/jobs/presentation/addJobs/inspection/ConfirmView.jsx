@@ -107,13 +107,13 @@ const ConfirmView = ({
       <div className="confirm-date">
         <ANTDFormItem
           label={t('job_DateOfInspectionAndTime')}
-          name={'jobCompletionDate'}
+          name={'inspectionDate'}
           className={`date-label`}
         >
           <ANTDDatePicker
             showTime
             className="w-100"
-            name="jobCompletionDate"
+            name="inspectionDate"
             placeholder={t('job_SelectDate')}
             allowClear={false}
             format={'YYYY/MM/DD HH:mm'}

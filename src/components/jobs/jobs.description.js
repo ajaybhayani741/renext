@@ -49,8 +49,7 @@ const searchByLabels = {
 }
 
 const payloadType = {
-  // [shift]: 'SHIFT_JOB',
-  // [purchasing]: 'PURCHASE',
+  [inspection]: 'INSPECTION_JOB',
 }
 
 const inspectionSteps = [
@@ -364,8 +363,8 @@ const exportExcelOptions = [
 ]
 
 const booleanOptions = [
-  { label: 'btn_Yes', value: true },
-  { label: 'btn_No', value: false },
+  { label: 'btn_Yes', value: 'YES' },
+  { label: 'btn_No', value: 'NO' },
 ]
 
 export const APPROVED = 'APPROVED'

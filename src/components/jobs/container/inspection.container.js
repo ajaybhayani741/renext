@@ -18,10 +18,10 @@ import {
   nullOrUndefined,
   values,
 } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
 import { removeEquipmentApi } from '../jobs.api'
 import data from '../recoveryJobDataUpload.xlsx'
 import inspectionFieldAttr from './inspectionFieldAttr.container'
-import { getItem } from '../../../utils/localstorage'
 
 const inspection = ({
   editData,
@@ -54,7 +54,7 @@ const inspection = ({
   })
   const locationRef = useRef(null)
   const inspectionInitialValues = {
-    jobCompletionDate: dayJs(new Date()),
+    inspectionDate: dayJs(new Date()),
     managementNumber: '',
     remark: '',
     jobType: 'INSPECTION',
@@ -91,7 +91,7 @@ const inspection = ({
       locationRef.current = data
       form.setFieldsValue({
         ...form.getFieldsValue(),
-        locationInspection: `${data?.latitude?.toFixed(4)}, ${data?.longitude?.toFixed(4)}`,
+        locationInspection: `${data?.latitude?.toFixed(4)},${data?.longitude?.toFixed(4)}`,
       })
     }
     getCurrentLocation()
@@ -143,16 +143,29 @@ const inspection = ({
   } = {}) => {
     // if (isApiRunning && !jobId) return
     // setIsApiRunning(true)
+
+    // check payload-------------------------------------
     // const formData = { ...form.getFieldValue() }
+    // const latLng = formData.locationInspection
+    //   ? formData.locationInspection?.split(',')
+    //   : []
+    // const otherData = payloadConverter(formData?.inspectionList?.[0])
+    // console.log('otherData :>> ', otherData)
     // const payload = {
-    //   jobType: 'RECOVERY',
-    //   confirm,
-    //   jobId,
-    //   jobCompletionDate: formData.jobCompletionDate.format('DD/MM/YYYY'),
-    //   managementNumber: formData.managementNumber,
-    //   remark: formData.remark,
-    //   scrapSourceId: formData.scrapSourceId,
+    //   id: null,
+    //   jobType: payloadType?.[tabKeys?.inspection],
+    //   inspectionDate: formData.inspectionDate.format('DD/MM/YYYY'),
+    //   hostelId: selectedUsers?.[userWiseRole?.hostel]?.[0]?.id,
+    //   latitude: latLng?.[0] || null,
+    //   longitude: latLng?.[1] || null,
+    //   ...(formData?.inspectionList?.[0] &&
+    //     values(formData?.inspectionList?.[0]).reduce(
+    //       (acc, obj) => ({ ...acc, ...obj }),
+    //       {},
+    //     )),
+    //   ...(formData?.findingsRequestDto && formData?.findingsRequestDto),
     // }
+    // -------------------------------------------------------
 
     // setNextBtnLoader(isLoading)
     // if (!payload?.jobId || isComplete) {
@@ -310,14 +323,14 @@ const inspection = ({
       if (isEqual('foodProvisionRequestDto', changedKey)) {
         if (
           include(
-            ['riceStockAsPerRegister', 'riceStockGroundBalance'],
+            ['riceStockRegisterKg', 'riceStockGroundBalanceKg'],
             nestedKey,
           )
         ) {
           const riceStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.riceStockAsPerRegister
+            nestedUpdatedValues?.[changedKey]?.riceStockRegisterKg
           const riceStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.riceStockGroundBalance
+            nestedUpdatedValues?.[changedKey]?.riceStockGroundBalanceKg
           nestedUpdatedValues[changedKey] = {
             ...nestedUpdatedValues?.[changedKey],
             variationInRice:
@@ -328,12 +341,12 @@ const inspection = ({
                   (riceStockGroundBalanceVal || 0),
           }
         } else if (
-          include(['dalStockAsPerRegister', 'dalStockGroundBalance'], nestedKey)
+          include(['dalStockRegisterKg', 'dalStockGroundBalanceKg'], nestedKey)
         ) {
           const dalStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.dalStockAsPerRegister
+            nestedUpdatedValues?.[changedKey]?.dalStockRegisterKg
           const dalStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.dalStockGroundBalance
+            nestedUpdatedValues?.[changedKey]?.dalStockGroundBalanceKg
           nestedUpdatedValues[changedKey] = {
             ...nestedUpdatedValues?.[changedKey],
             variationInDal:
@@ -345,14 +358,14 @@ const inspection = ({
           }
         } else if (
           include(
-            ['cookingOilStockAsPerRegister', 'cookingOilStockGroundBalance'],
+            ['cookingOilStockRegisterKg', 'cookingOilStockGroundBalanceKg'],
             nestedKey,
           )
         ) {
           const cookingOilStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.cookingOilStockAsPerRegister
+            nestedUpdatedValues?.[changedKey]?.cookingOilStockRegisterKg
           const cookingOilStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.cookingOilStockGroundBalance
+            nestedUpdatedValues?.[changedKey]?.cookingOilStockGroundBalanceKg
           nestedUpdatedValues[changedKey] = {
             ...nestedUpdatedValues?.[changedKey],
             variationInCookingOil:
@@ -364,14 +377,14 @@ const inspection = ({
           }
         } else if (
           include(
-            ['sugarStockAsPerRegister', 'sugarStockGroundBalance'],
+            ['sugarStockRegisterKg', 'sugarStockGroundBalanceKg'],
             nestedKey,
           )
         ) {
           const sugarStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.sugarStockAsPerRegister
+            nestedUpdatedValues?.[changedKey]?.sugarStockRegisterKg
           const sugarStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.sugarStockGroundBalance
+            nestedUpdatedValues?.[changedKey]?.sugarStockGroundBalanceKg
           nestedUpdatedValues[changedKey] = {
             ...nestedUpdatedValues?.[changedKey],
             variationInSugar:
@@ -383,12 +396,12 @@ const inspection = ({
           }
         } else if (
           include(
-            ['idliRavaStockAsPerRegister', 'idliRavaStockGroundBalance'],
+            ['idliRavaStockRegister', 'idliRavaStockGroundBalance'],
             nestedKey,
           )
         ) {
           const idliRavaStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.idliRavaStockAsPerRegister
+            nestedUpdatedValues?.[changedKey]?.idliRavaStockRegister
           const idliRavaStockGroundBalanceVal =
             nestedUpdatedValues?.[changedKey]?.idliRavaStockGroundBalance
           nestedUpdatedValues[changedKey] = {
@@ -402,14 +415,14 @@ const inspection = ({
           }
         } else if (
           include(
-            ['ragiMaltStockAsPerRegister', 'ragiMaltStockGroundBalance'],
+            ['ragiMaltStockRegisterKg', 'ragiMaltStockGroundBalanceKg'],
             nestedKey,
           )
         ) {
           const ragiMaltStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.ragiMaltStockAsPerRegister
+            nestedUpdatedValues?.[changedKey]?.ragiMaltStockRegisterKg
           const ragiMaltStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.ragiMaltStockGroundBalance
+            nestedUpdatedValues?.[changedKey]?.ragiMaltStockGroundBalanceKg
           nestedUpdatedValues[changedKey] = {
             ...nestedUpdatedValues?.[changedKey],
             variationInRagiMalt:
@@ -517,6 +530,14 @@ const inspection = ({
     let isValid = await validationFn({ validateAll: true })
 
     if (!isValid) return
+    // if (isEqual(current + 1, 4)) {
+    //   apiCall({
+    //     showMsg: true,
+    //     redirect: true,
+    //   })
+    // } else {
+    //   setCurrent(current + 1)
+    // }
     return setCurrent(current + 1)
   }
 
