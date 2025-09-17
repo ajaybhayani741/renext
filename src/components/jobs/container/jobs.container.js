@@ -3,17 +3,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import { setJobActiveTab } from '../../../redux/jobs/reducer'
-import { getDummyUser, userWiseRole } from '../../../utils/constant'
+import { userWiseRole } from '../../../utils/constant'
 import { downloadReport } from '../../../utils/customFunctions'
 import debounce from '../../../utils/debounce'
 import { EVMasterSheet, RefurbishmentRequest } from '../../../utils/icons'
-import {
-  include,
-  isArray,
-  isEqual,
-  notEqual,
-  values,
-} from '../../../utils/javascript'
+import { include, isEqual, notEqual, values } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { getJobDetailApi, getJobListApi, searchJobListApi } from '../jobs.api'
 import {
@@ -32,7 +26,6 @@ const jobs = () => {
   const { t } = useTranslations()
   const { dispatch, selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
-  const storeId = selector(state => state?.app?.store?.selected)
   const { value: fiscalYear } = selector(state => state?.app?.fiscalYear)
   const activeTab = selector(state => state?.jobs?.activeTab)
   const { type, status } = { ...activeTab }
@@ -54,8 +47,7 @@ const jobs = () => {
   ])
   const searchVal = useRef(null)
   const userDetails = JSON.parse(getItem('userData'))
-  const { roleId, id: loginUserId } = { ...userDetails }
-  const loginUserDetails = getDummyUser({ roleId, userId: loginUserId })
+  const { roleId } = { ...userDetails }
   const [data, setData] = useState({})
   const [jobModel, setJobModel] = useState({
     open: false,
@@ -90,37 +82,13 @@ const jobs = () => {
     setLoading(false)
   }
 
-  const jobFilter = ({ info }) => {
-    if (
-      !loginUserDetails?.doAbleJobs?.partProduction &&
-      isEqual(roleId, refurbisher)
-    ) {
-      return (
-        include(info?.permission, roleId) &&
-        !include(
-          [
-            'job_SupplierProduction',
-            'job_PartSalesProducer',
-            'job_PartSalesPartProducer',
-          ],
-          info?.label,
-        )
-      )
-    } else {
-      return include(info?.permission, roleId)
-    }
+  const jobFilter = () => {
+    return true
   }
 
   const tabList = {
     status: jobTabList.status,
-    type: jobTabList.type
-      .filter(info => jobFilter({ info }))
-      ?.map(info => ({
-        ...info,
-        disabled:
-          isArray(loginUserDetails?.jobAccess) &&
-          !include(loginUserDetails.jobAccess, info?.key),
-      })),
+    type: jobTabList.type.filter(info => jobFilter({ info })),
   }
 
   useEffect(() => {
@@ -145,11 +113,11 @@ const jobs = () => {
     if (!include(currentSearchBy, searchBy)) {
       setSearchBy(searchByKeys.employeeName)
     }
-    if (fiscalYear && storeId) apiCall()
+    if (fiscalYear) apiCall()
     if (status) {
       setColumnFilters(currentColumns)
     }
-  }, [fiscalYear, status, type, storeId])
+  }, [fiscalYear, status, type])
 
   useEffect(() => {
     if (searchVal.current) {
@@ -194,7 +162,6 @@ const jobs = () => {
   const apiCall = async (pageNo = 1, range) => {
     if (!payloadType[type]) return
     const params = {
-      storeId,
       jobType: payloadType[type],
       fiscalYear,
       active: isEqual(status, tabKeys.active),

@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react'
-
 import { addressFormat } from '../../../utils'
 import { childUsers, userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { userChildrenList } from '../../layout/sidebar.description'
-import { updateUserApi } from '../user.api'
 
 const viewUser = ({ userDetails }) => {
   const {
@@ -24,8 +21,6 @@ const viewUser = ({ userDetails }) => {
   } = {
     ...userDetails,
   }
-  const [loader, setLoader] = useState(false)
-  const [vehicleModelData, setVehicleModelData] = useState({ list: [] })
   const parentData = parent || parentDetails
   const currentUser = userChildrenList.find(val => isEqual(val.userId, roleId))
   const userListView = currentUser?.userView
@@ -50,65 +45,6 @@ const viewUser = ({ userDetails }) => {
     manufacturer,
     customer,
   ]
-  const PAGE_SIZE = 15
-
-  useEffect(() => {
-    // if (isEqual(roleId, manufacturer)) {
-    if (isEqual(roleId, 1000)) {
-      getVehicleModelList({ pageNo: 1 })
-    }
-  }, [userDetails?.id])
-
-  const getVehicleModelList = async ({ pageNo = 1 }) => {
-    if (!userDetails?.id) return
-
-    setVehicleModelData(prev => ({ ...prev, loader: true }))
-
-    // const payload = { producerId: userDetails?.id, pageSize: PAGE_SIZE }
-
-    // const resp = await getVehicleModelListApi({
-    //   params: payload,
-    //   pageNo,
-    // })
-
-    setVehicleModelData(prev => ({
-      // ...resp?.data,
-      loader: false,
-    }))
-  }
-
-  const onVehicleModelPageChange = current => {
-    getVehicleModelList({ pageNo: current })
-  }
-
-  const updateVehicleModelList = async apiPayload => {
-    setLoader(true)
-    const payload = {
-      userId: userDetails?.id,
-      country: userDetails?.country,
-      ...apiPayload,
-    }
-
-    const response = await updateUserApi({
-      payload,
-    })
-    setLoader(false)
-
-    if (!response?.data?.data?.success) return
-    getVehicleModelList({ pageNo: vehicleModelData?.pageNo })
-  }
-
-  const handleDeleteModel = id => {
-    updateVehicleModelList({
-      modelIds: [id],
-    })
-  }
-
-  const handleSaveModel = modelNames => {
-    updateVehicleModelList({
-      modelNames,
-    })
-  }
 
   const getEmailList = () => {
     const emailList = {}
@@ -195,7 +131,6 @@ const viewUser = ({ userDetails }) => {
   ]
 
   return {
-    loader,
     parentData,
     otherDetail,
     userListView,
@@ -203,11 +138,6 @@ const viewUser = ({ userDetails }) => {
     parentInfoData,
     loginUserRoleId,
     getEmailList,
-    handleDeleteModel,
-    handleSaveModel,
-    vehicleModelData,
-    onVehicleModelPageChange,
-    PAGE_SIZE,
   }
 }
 

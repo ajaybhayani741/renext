@@ -59,7 +59,13 @@ const userChildrenList = [
     userId: stateHostelDepartment,
     Icon: DealerIcon,
     label: 'user_StateHostelDepartment',
-    sidebar: allUser,
+    sidebar: [
+      admin,
+      stateAdminOfficer,
+      districtCollector,
+      inspectionOfficer,
+      hostel,
+    ],
     addEdit: [admin],
     level: {},
     userView: {
@@ -93,7 +99,13 @@ const userChildrenList = [
     userId: districtCollector,
     Icon: DealerIcon,
     label: 'user_DistrictCollector',
-    sidebar: allUser,
+    sidebar: [
+      admin,
+      stateAdminOfficer,
+      stateHostelDepartment,
+      inspectionOfficer,
+      hostel,
+    ],
     addEdit: [admin],
     level: {},
     userView: {
@@ -107,7 +119,7 @@ const userChildrenList = [
           payload: { roleId: hostel },
         },
       ],
-      user_AssociatedStateHostelDepartmentList: [
+      user_AssociatedStateHostelDepartment: [
         {
           payload: { roleId: stateHostelDepartment, relationType: associate },
           addAssociate: [admin],
@@ -123,7 +135,7 @@ const userChildrenList = [
     label: 'user_InspectionOfficer',
     sidebar: [admin, districtCollector, hostel],
     addEdit: [admin, districtCollector],
-    level: { 'sub-menu': [admin] },
+    level: { 'sub-menu': [admin, hostel] },
     userView: {
       user_Hostel: [
         {
@@ -144,9 +156,9 @@ const userChildrenList = [
     label: 'user_Hostel',
     sidebar: [admin, districtCollector, inspectionOfficer],
     addEdit: [admin, districtCollector],
-    level: { 'sub-menu': [admin] },
+    level: { 'sub-menu': [admin, inspectionOfficer] },
     userView: {
-      user_Hostel: [
+      user_InspectionOfficer: [
         {
           payload: { roleId: inspectionOfficer, relationType: associate },
           addAssociate: [admin, districtCollector],
@@ -171,7 +183,7 @@ const sidebarMenus = [
     key: DASHBOARD_TXT,
     Icon: DashboardIcon,
     label: 'job_Dashboard',
-    sidebar: allUser,
+    sidebar: [districtCollector],
   },
   {
     key: USER_TXT,

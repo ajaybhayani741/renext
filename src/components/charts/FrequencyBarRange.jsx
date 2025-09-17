@@ -51,12 +51,10 @@ const FrequencyBarRange = ({
       credits: false,
       xAxis: {
         type: 'linear',
-        min: 5,
-        max: 60,
         events: {
           afterSetExtremes: function (e) {
+            if (e.trigger !== 'navigator') return
             const chart = this.chart
-            chart.xAxis[0].setExtremes(5, 60, true, false)
             const { min, max } = e
             const navAxis = chart.navigator.xAxis
 

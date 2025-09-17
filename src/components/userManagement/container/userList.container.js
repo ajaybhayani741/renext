@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react'
 import { notifyMethod } from '../../../App'
 import useRouter from '../../../hooks/useRouter'
 import { USER_TXT } from '../../../routing/pathName.constant'
-import { userDataList } from '../../../utils/constant'
-import { length } from '../../../utils/javascript'
+import { entries, isEqual } from '../../../utils/javascript'
 import { addAssociateApi, disAssociateApi, getUserList } from '../user.api'
 import { userRelationKey, userTranslationKey } from '../user.description'
 
@@ -24,28 +23,16 @@ const userList = ({ payload, isBuilding }) => {
   const modelTitle = userTranslationKey[payload?.roleId]
 
   const apiCall = async ({ pageNo }) => {
-    // let params = `${pageNo}`
-    setUserData({
-      ...userData,
+    let params = `${pageNo}`
+    setUserData(prev => ({
+      ...prev,
       loader: true,
-    })
+    }))
 
-    // entries(payload).forEach(([key, val], i) => {
-    //   params += `${isEqual(i, 0) ? '?' : '&'}${key}=${val}`
-    // })
-    // const response = await getUserList({ params })
-
-    const response = await new Promise(resolve => {
-      const list = userDataList({ roleId: payload?.roleId })?.list || []
-      setTimeout(() => {
-        resolve({
-          data: {
-            list,
-            total: length(list),
-          },
-        })
-      }, 500)
+    entries(payload).forEach(([key, val], i) => {
+      params += `${isEqual(i, 0) ? '?' : '&'}${key}=${val}`
     })
+    const response = await getUserList({ params })
 
     setUserData({
       ...response?.data,

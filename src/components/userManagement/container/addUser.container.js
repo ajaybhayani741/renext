@@ -7,8 +7,8 @@ import { profileDetails } from '../../../redux/user_management/reducer'
 import { USER_TXT } from '../../../routing/pathName.constant'
 import { useFormFn } from '../../../shared/antd/ANTDForm'
 import { getBase64 } from '../../../utils'
-// import configData from '../../../utils/config'
-import { childUsers, userDataList, userWiseRole } from '../../../utils/constant'
+import configData from '../../../utils/config'
+import { childUsers, userWiseRole } from '../../../utils/constant'
 import { formatDate } from '../../../utils/dayjs'
 import debounce from '../../../utils/debounce'
 import {
@@ -30,10 +30,11 @@ import {
   stateOptions,
 } from '../addressData'
 import {
-  // addNewUserApi,
-  // getUserList,
+  getUserList,
+  addNewUserApi,
   getUserProfileApi,
-  // updateUserApi,
+  updateUserApi,
+  userValidationApi,
 } from '../user.api'
 import {
   childUserFormFields,
@@ -45,21 +46,15 @@ import {
 const addUser = ({
   t,
   editInfo,
-  setEditInfo,
-  isBuilding,
-  selectedUserDetails,
   handleCancelEdit,
-  isProfile,
   userRoleId,
-  apiCall,
-  addNewBuildData,
   successCallback,
 }) => {
   const form = useFormFn()
   const { params, navigate, location } = useRouter()
   const { dispatch } = useRedux()
-  // const { country } = configData
-  const { admin, storeOwner, store, storeManager, storeEmployee } = userWiseRole
+  const { country } = configData
+  const { admin } = userWiseRole
   const userType = params?.userType
   const formRoleId =
     roleIdByPath[userType] ?? userRoleId ?? editInfo?.data?.roleId
@@ -186,31 +181,30 @@ const addUser = ({
     isEqual(item?.userId, formRoleId),
   )
   const selectPermission = {
-    [store]: [storeOwner],
-    [storeManager]: [store, storeOwner],
-    [storeEmployee]: [store, storeOwner],
+    // [inspectionOfficer]: [stateHostelDepartment],
+    // [hostel]: [stateHostelDepartment],
   }
   const isSelect =
     isEqual(roleId, admin) || selectPermission[formRoleId]?.includes(roleId)
 
   const businessNameCheck = debounce(async ({ type, value }) => {
-    // const params = `?type=${type}&country=${country}&value=${value}`
-    // const response = await userValidationApi({ params })
-    // if (!response?.data?.success) {
-    //   setPopup({ open: true, message: response?.error?.errorMsg })
-    //   if (notEqual(type, 'BUSINESSNAME'))
-    //     checkErrors.current = {
-    //       ...checkErrors.current,
-    //       [type]: response?.error?.errorMsg,
-    //     }
-    // } else {
-    //   if (notEqual(type, 'BUSINESSNAME')) {
-    //     checkErrors.current = {
-    //       ...checkErrors.current,
-    //       [type]: '',
-    //     }
-    //   }
-    // }
+    const params = `?type=${type}&country=${country}&value=${value}`
+    const response = await userValidationApi({ params })
+    if (!response?.data?.success) {
+      setPopup({ open: true, message: response?.error?.errorMsg })
+      if (notEqual(type, 'BUSINESSNAME'))
+        checkErrors.current = {
+          ...checkErrors.current,
+          [type]: response?.error?.errorMsg,
+        }
+    } else {
+      if (notEqual(type, 'BUSINESSNAME')) {
+        checkErrors.current = {
+          ...checkErrors.current,
+          [type]: '',
+        }
+      }
+    }
   }, 400)
 
   const handleValuesChange = (val, data) => {
@@ -389,7 +383,6 @@ const addUser = ({
     }
   }
 
-  // eslint-disable-next-line no-unused-vars
   const updateProfile = async () => {
     const pathName = location.pathname.split('/')
     if (isEqual(editInfo?.data?.id, loginUserId)) {
@@ -413,7 +406,6 @@ const addUser = ({
     editInfo?.flag && handleCancelEdit()
   }
 
-  // eslint-disable-next-line no-unused-vars
   const createEmailPayload = (emailArr = []) => {
     return emailArr.reduce(
       (obj, email, index) => ({
@@ -423,7 +415,7 @@ const addUser = ({
       { emailId: '' },
     )
   }
-  // eslint-disable-next-line no-unused-vars
+
   const filePayload = async (file, key) => {
     if (!file?.originFileObj)
       return {
@@ -441,102 +433,99 @@ const addUser = ({
     if (checkErrorArr?.some(err => err)) {
       return setPopup({ open: true, message: checkErrorArr?.find(err => err) })
     }
-    // let data = form.getFieldValue()
-    // const emailObj = createEmailPayload(data?.emailId)
-    // data = { ...data, ...emailObj }
+    let data = form.getFieldValue()
+    const emailObj = createEmailPayload(data?.emailId)
+    data = { ...data, ...emailObj }
 
-    // if (editInfo?.data?.id) {
-    //   setLoader(true)
-    //   const payload = {
-    //     userId: editInfo?.data?.id,
-    //     country: editInfo?.data?.country,
-    //   }
-    //   keys(data).forEach(k => {
-    //     if (include(k, ['profile'])) return
-    //     if (include(k, 'emailId')) {
-    //       if (notEqual(k, 'emailId')) return
-    //       Array.from({ length: 11 }, (v, i) => `emailId${i || ''}`).forEach(
-    //         elem => {
-    //           if (!editInfo?.data?.[elem]) {
-    //             payload[elem] = data?.[elem]
-    //           } else {
-    //             if (notEqual(editInfo?.data?.[elem], data?.[elem])) {
-    //               payload[elem] = data?.[elem] ?? ''
-    //             }
-    //           }
-    //         },
-    //       )
-    //     } else if (isEqual('sameAsParentBtn', k)) {
-    //     } else if (include(['modelNames'], k) && !data?.[k]) {
-    //       // don't send key to backend if no value
-    //       return
-    //     } else if (notEqual(data?.[k], editInfo?.data?.[k])) {
-    //       payload[k] = data?.[k] ?? '-1' // -1 for removing or empty field value while editing
-    //     }
-    //   })
+    if (editInfo?.data?.id) {
+      setLoader(true)
+      const payload = {
+        userId: editInfo?.data?.id,
+        country: editInfo?.data?.country,
+      }
+      keys(data).forEach(k => {
+        if (include(k, ['profile'])) return
+        if (include(k, 'emailId')) {
+          if (notEqual(k, 'emailId')) return
+          Array.from({ length: 11 }, (v, i) => `emailId${i || ''}`).forEach(
+            elem => {
+              if (!editInfo?.data?.[elem]) {
+                payload[elem] = data?.[elem]
+              } else {
+                if (notEqual(editInfo?.data?.[elem], data?.[elem])) {
+                  payload[elem] = data?.[elem] ?? ''
+                }
+              }
+            },
+          )
+        } else if (isEqual('sameAsParentBtn', k)) {
+        } else if (notEqual(data?.[k], editInfo?.data?.[k])) {
+          payload[k] = data?.[k] ?? '-1' // -1 for removing or empty field value while editing
+        }
+      })
 
-    //   if (
-    //     data?.profile?.fileList?.[0] &&
-    //     notEqual(
-    //       editInfo?.data?.profile?.fileUrl,
-    //       data?.profile?.fileList?.[0]?.url,
-    //     )
-    //   ) {
-    //     Object.assign(
-    //       payload,
-    //       await filePayload(data?.profile?.fileList?.[0], 'profile'),
-    //     )
-    //   } else if (
-    //     !data?.profile?.fileList?.[0] &&
-    //     editInfo?.data?.profile?.fileUrl
-    //   ) {
-    //     //when removing a profile
-    //     Object.assign(payload, { profileName: null, profileUrl: -1 })
-    //   }
+      if (
+        data?.profile?.fileList?.[0] &&
+        notEqual(
+          editInfo?.data?.profile?.fileUrl,
+          data?.profile?.fileList?.[0]?.url,
+        )
+      ) {
+        Object.assign(
+          payload,
+          await filePayload(data?.profile?.fileList?.[0], 'profile'),
+        )
+      } else if (
+        !data?.profile?.fileList?.[0] &&
+        editInfo?.data?.profile?.fileUrl
+      ) {
+        //when removing a profile
+        Object.assign(payload, { profileName: null, profileUrl: -1 })
+      }
 
-    //   //remove unnecessary payload
-    //   delete payload.profile
+      //remove unnecessary payload
+      delete payload.profile
 
-    //   if (length(keys(payload)) > 2) {
-    //     const response = await updateUserApi({
-    //       payload,
-    //     })
-    //     if (response?.data?.data?.success) {
-    //       await updateProfile()
-    //     }
-    //   } else {
-    //     handleCancelEdit && handleCancelEdit()
-    //   }
-    //   setLoader(false)
-    // } else {
-    //   if (isSelect || selectUser?.data?.id) {
-    //     setLoader(true)
-    //     const payload = {
-    //       ...data,
-    //       forRoleId: formRoleId,
-    //       forUserId: currentUserDescription?.parent
-    //         ? selectUser?.data?.id
-    //         : loginUserId,
-    //       ...(length(data?.profile?.fileList)
-    //         ? await filePayload(data?.profile?.fileList?.[0], 'profile')
-    //         : {}),
-    //     }
+      if (length(keys(payload)) > 2) {
+        const response = await updateUserApi({
+          payload,
+        })
+        if (response?.data?.data?.success) {
+          await updateProfile()
+        }
+      } else {
+        handleCancelEdit && handleCancelEdit()
+      }
+      setLoader(false)
+    } else {
+      if (isSelect || selectUser?.data?.id) {
+        setLoader(true)
+        const payload = {
+          ...data,
+          forRoleId: formRoleId,
+          forUserId: currentUserDescription?.parent
+            ? selectUser?.data?.id
+            : loginUserId,
+          ...(length(data?.profile?.fileList)
+            ? await filePayload(data?.profile?.fileList?.[0], 'profile')
+            : {}),
+        }
 
-    //     //remove unnecessary properties
-    //     delete payload.profile
+        //remove unnecessary properties
+        delete payload.profile
 
-    //     const response = await addNewUserApi({ payload })
-    //     setLoader(false)
-    //     if (response?.data?.data?.success) {
-    //       userType && navigate(`${USER_TXT}/${userType}`)
-    //       successCallback && successCallback(response?.data?.data?.userInfo)
-    //       // set success or failure message
-    //       notifyMethod.success({ message: 'msg_UserAddedSuccessfully' })
-    //     }
-    //   } else {
-    //     notifyMethod.warning({ message: 'msg_SelectUser' })
-    //   }
-    // }
+        const response = await addNewUserApi({ payload })
+        setLoader(false)
+        if (response?.data?.data?.success) {
+          userType && navigate(`${USER_TXT}/${userType}`)
+          successCallback && successCallback(response?.data?.data?.userInfo)
+          // set success or failure message
+          notifyMethod.success({ message: 'msg_UserAddedSuccessfully' })
+        }
+      } else {
+        notifyMethod.warning({ message: 'msg_SelectUser' })
+      }
+    }
   }
 
   const handleSelectClick = async () => {
@@ -554,23 +543,13 @@ const addUser = ({
   }
 
   const getUsers = async ({ page }) => {
-    // let params = `${page}?roleId=${currentUserDescription?.parent?.id}`
+    let params = `${page}?roleId=${currentUserDescription?.parent?.id}`
 
-    // const response = await getUserList({
-    //   params,
-    // })
-    const response = await new Promise(resolve => {
-      const list =
-        userDataList({ roleId: currentUserDescription?.parent?.id })?.list || []
-
-      resolve({
-        data: {
-          list,
-          total: length(list),
-        },
-      })
+    const response = await getUserList({
+      params,
     })
-    return await response?.data
+
+    return response?.data
   }
 
   const handleTableChange = async pagination => {

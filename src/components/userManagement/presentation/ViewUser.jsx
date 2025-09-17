@@ -2,13 +2,12 @@ import classNames from 'classnames'
 import { Fragment, memo } from 'react'
 
 import BasicInfo from './BasicInfo'
-import ProductList from './ProductListUserForm'
 import UserList from './UserList'
 import UserRating from './UserRating'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDModal from '../../../shared/antd/ANTDModal'
-import { childUsers, userWiseRole } from '../../../utils/constant'
-import { entries, include, isEqual, ternary } from '../../../utils/javascript'
+import { childUsers } from '../../../utils/constant'
+import { entries, include, ternary } from '../../../utils/javascript'
 import viewUser from '../container/viewUser.container'
 
 const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
@@ -20,17 +19,11 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
     parentInfoData,
     loginUserRoleId,
     getEmailList,
-    handleDeleteModel,
-    handleSaveModel,
-    vehicleModelData,
-    onVehicleModelPageChange,
-    PAGE_SIZE,
   } = viewUser({
     userDetails,
   })
 
   const { t } = useTranslations()
-  const { recycler, producer } = userWiseRole
   const isChildUser = childUsers.includes(userDetails?.roleId)
 
   const viewDetails = () => {
@@ -68,28 +61,10 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
             />
           </>
         )}
-        {isEqual(recycler, userDetails?.roleId) && (
-          <p
-            className="text-end fs-12 mb-10"
-            dangerouslySetInnerHTML={{ __html: t('user_InformationMessage') }}
-          ></p>
-        )}
-
-        {isEqual(producer, userDetails?.roleId) && (
-          <ProductList
-            handleDeleteModel={handleDeleteModel}
-            handleSaveModel={handleSaveModel}
-            onPageChange={onVehicleModelPageChange}
-            vehicleModels={vehicleModelData?.list}
-            pageSize={PAGE_SIZE}
-            total={vehicleModelData?.lastPage * PAGE_SIZE}
-          />
-        )}
 
         <UserRating />
 
-        {!isChildUser &&
-          userListView &&
+        {userListView &&
           entries(userListView).map(([key, value]) => {
             if (value?.some(v => v?.hideInProfile)) return null
             return (

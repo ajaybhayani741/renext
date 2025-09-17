@@ -1,11 +1,8 @@
 import { useState } from 'react'
 
-// import { apiParams } from '../../../utils'
-// import { isEqual } from '../../../utils/javascript'
-// import { getBuildingList, getUserList } from '../../userManagement/user.api'
-import { userDataList } from '../../../utils/constant'
-import { notEqual } from '../../../utils/javascript'
-import { getItem } from '../../../utils/localstorage'
+import { apiParams } from '../../../utils'
+import { isEqual } from '../../../utils/javascript'
+import { getBuildingList, getUserList } from '../../userManagement/user.api'
 import { userRelationKey } from '../../userManagement/user.description'
 
 const jobUserSelect = ({ roleId, apiPayload }) => {
@@ -13,32 +10,23 @@ const jobUserSelect = ({ roleId, apiPayload }) => {
     isOpen: false,
   })
   const [buildingInfo, setBuildingInfo] = useState({ flag: false, data: {} })
-  const userData = JSON.parse(getItem('userData'))
-  const { id: loginUserId } = { ...userData }
 
   const handleCancelEdit = () => {
     setBuildingInfo({ flag: false, data: {} })
   }
 
   const getUsers = async ({ pageNo = 1, params }) => {
-    // let response
-    // if (isEqual(roleId, 'building')) {
-    //   response = await getBuildingList({
-    //     params: apiParams({ params, pageNo }),
-    //   })
-    // } else {
-    //   response = await getUserList({
-    //     params: apiParams({ params, pageNo }),
-    //   })
-    // }
-    // return response?.data
-    const userList = userDataList({ roleId: params?.roleId })
-    return {
-      ...userList,
-      list: userList?.list
-        ?.filter(({ id } = {}) => notEqual(id, loginUserId))
-        .slice(0, params?.maxUsers),
+    let response
+    if (isEqual(roleId, 'building')) {
+      response = await getBuildingList({
+        params: apiParams({ params, pageNo }),
+      })
+    } else {
+      response = await getUserList({
+        params: apiParams({ params, pageNo }),
+      })
     }
+    return response?.data
   }
 
   const handleSelectUserPopup = async ({ pageNo, parent, associated }) => {
