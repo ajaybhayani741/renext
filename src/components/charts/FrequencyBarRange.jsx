@@ -16,14 +16,70 @@ const FrequencyBarRange = ({
       },
       title: { text: '' },
       chart: {
-        zooming: {
-          type: 'xy',
-          mouseWheel: false,
+        events: {
+          load: function () {
+            const chart = this
+            chart.renderer
+              .button(
+                'View', // The text of the button
+                5, // X position (e.g., from the right)
+                chart.chartHeight - 46, // Y position (e.g., from the top)
+                e => {
+                  handleChartClick(e) // Action to perform on click
+                },
+                {
+                  // Normal state styling
+                  fill: '#f6d4be',
+                  r: 5,
+                  stroke: 'none',
+                  padding: 8,
+                },
+                {
+                  // Normal state styling
+                  fill: '#f6d4be',
+                  r: 5,
+                  padding: 8,
+                },
+              )
+              .css({
+                border: 'none',
+              })
+              .add() // Adds the button to the chart
+          },
         },
       },
       credits: false,
       xAxis: {
         type: 'linear',
+        min: 5,
+        max: 60,
+        events: {
+          afterSetExtremes: function (e) {
+            const chart = this.chart
+            chart.xAxis[0].setExtremes(5, 60, true, false)
+            const { min, max } = e
+            const navAxis = chart.navigator.xAxis
+
+            // Remove old labels if they exist
+            if (chart.customLeftLabel) {
+              chart.customLeftLabel.destroy()
+              chart.customRightLabel.destroy()
+            }
+
+            const leftX = navAxis.toPixels(min)
+            const rightX = navAxis.toPixels(max)
+
+            chart.customLeftLabel = chart.renderer
+              .label(`${Math.round(min)}`, leftX - 8, chart.plotHeight + 52)
+              .css({ color: '#000', fontSize: '10px' })
+              .add()
+
+            chart.customRightLabel = chart.renderer
+              .label(`${Math.round(max)}`, rightX - 8, chart.plotHeight + 52)
+              .css({ color: '#000', fontSize: '10px' })
+              .add()
+          },
+        },
         title: {
           text: '',
         },
@@ -33,8 +89,8 @@ const FrequencyBarRange = ({
             return this.value // show plain numbers instead of time
           },
         },
-        minRange: 10,
         ...axisOptions?.xAxis,
+        minRange: 5,
       },
       yAxis: [...axisOptions?.yAxis],
       plotOptions: {
@@ -63,6 +119,7 @@ const FrequencyBarRange = ({
             },
           },
         },
+        margin: 10,
         height: 30,
       },
       scrollbar: {
