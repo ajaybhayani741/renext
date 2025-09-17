@@ -5,6 +5,7 @@ import Cylinder from 'highcharts/modules/cylinder.js'
 import Drilldown from 'highcharts/modules/drilldown'
 import Funnel from 'highcharts/modules/funnel3d'
 import HighchartsMap from 'highcharts/modules/map' // Import map module
+import ParallelCoordinates from 'highcharts/modules/parallel-coordinates'
 import Sankey from 'highcharts/modules/sankey'
 import Stock from 'highcharts/modules/stock'
 import HighchartsReact from 'highcharts-react-official'
@@ -22,6 +23,7 @@ Highcharts3d(Highcharts)
 Cylinder(Highcharts)
 Funnel(Highcharts)
 Stock(Highcharts)
+ParallelCoordinates(Highcharts)
 
 const HightChart = ({
   options,

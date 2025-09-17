@@ -493,3 +493,90 @@ export const hostelInfraSanitationCharts = {
     total: 350,
   },
 }
+
+
+export const medicalCareCharts = {
+  job_MedicalCare: {
+    type: 'columnCompare',
+    xAxisText: '',
+    yAxisText: '',
+    modalTitle: true,
+  },
+  job_DistanceToNearestPHC: {
+    type: 'polar',
+    xAxisText: '',
+    yAxisText: '',
+    modalTitle: true,
+  },
+  dash_IsTheStaffNurseAvailableInTheHostel: {
+    type: 'pie',
+    xAxisText: 'job_NumberOfScavengersAvailable',
+    yAxisText: 'dash_NumberOfHostels',
+    modalTitle: true,
+  },
+}
+
+export const educationFacilitiesCharts = {
+  dash_EducationRequirements: {
+    type: 'columnCompare',
+    xAxisText: '',
+    yAxisText: '',
+    md: 24,
+    modalTitle: true,
+  },
+}
+
+export const foodPrevisionsCharts = {
+  job_NatureOfCookingFuel: {
+    type: 'donut',
+    xAxisText: '',
+    yAxisText: '',
+    md: 24,
+    modalTitle: true,
+  },
+  job_FoodProvisions: {
+    type: 'columnCompare',
+    xAxisText: '',
+    yAxisText: '',
+    md: 24,
+    modalTitle: true,
+  },
+}
+
+export const safetySecurityCharts = {
+  dash_PrecautionaryMeasures: {
+    type: 'columnCompare',
+    xAxisText: '',
+    yAxisText: '',
+    modalTitle: true,
+  },
+  dash_AnimalThreat: {
+    type: 'columnCompare',
+    xAxisText: '',
+    yAxisText: '',
+    modalTitle: true,
+  },
+  dash_NumberOfCCTVsAvailable: {
+    type: 'rangeFrequency',
+    xAxisText: 'dash_NumberOfCCTVsAvailable',
+    yAxisText: 'dash_NumberOfHostels',
+    modalTitle: false,
+    total: 120,
+  },
+  dash_NumberOfCCTVsFunctioning: {
+    type: 'rangeFrequency',
+    xAxisText: 'dash_NumberOfCCTVsFunctioning',
+    yAxisText: 'dash_NumberOfHostels',
+    total: 100,
+    modalTitle: false,
+  },
+}
+
+export const conductionMeetingCharts = {
+  dash_PrincipalHWOSpecialOfficer: {
+    type: 'columnCompare',
+    xAxisText: '',
+    yAxisText: '',
+    modalTitle: true,
+  },
+}
