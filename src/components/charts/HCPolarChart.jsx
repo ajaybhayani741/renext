@@ -1,55 +1,50 @@
 import HightChart from '.'
 
 const HCPolarChart = ({ title, chartData, seriesData, yAxis }) => {
-  const data = seriesData || []
-
   const options = {
     chart: {
       polar: true,
-      parallelCoordinates: true,
-      type: 'area',
-    },
-    pane: {
-      size: '80%',
-      // startAngle: 72,
+      type: 'line',
     },
     title: {
-      text: '',
+      text: null,
     },
-    subtitle: {
-      text: '',
+    pane: {
+      size: '85%',
     },
     xAxis: {
       categories: chartData?.category,
-      gridLineWidth: 1,
-      gridLineColor: '#ccc',
-      gridLineInterpolation: 'polygon', // try "circle" for radar style
+      tickmarkPlacement: 'on',
       lineWidth: 0,
-      labels: {
-        style: { fontWeight: 'bold' },
+    },
+    yAxis: {
+      gridLineInterpolation: 'polygon',
+      lineWidth: 0,
+      min: 0,
+      // max: 20,
+      tickInterval: 2,
+      title: {
+        text: 'km',
+        align: 'middle',
+        offset: -40, // Adjust position to be visible
+        style: {
+          fontWeight: 'normal',
+        },
       },
     },
-    yAxis,
+    tooltip: {
+      shared: true,
+      pointFormat:
+        '<span style="color:{series.color}">{series.name}: <b>{point.y:,.1f}</b><br/>',
+    },
     legend: {
-      enabled: true,
       align: 'center',
       verticalAlign: 'bottom',
       layout: 'horizontal',
-      symbolHeight: 8,
-      symbolWidth: 17,
-      symbolRadius: 3,
-      squareSymbol: false,
     },
-    series: data.map(set => ({
-      name: set[0],
-      data: set.slice(1),
-    })),
-    plotOptions: {
-      series: {
-        fillOpacity: 0.2,
-        states: { hover: { lineWidthPlus: 0 } },
-        legendSymbol: 'rectangle',
-      },
+    series: seriesData,
+    credits: {
+      enabled: false,
     },
   }
 

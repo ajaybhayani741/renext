@@ -34,30 +34,46 @@ const medicalCare = () => {
         },
       ],
       yAxis: [
-      {
-        labels: { format: '{value} km' },
-      },
-      {
-        labels: { format: '{value} km' },
-      },
-      {
-        labels: { format: '{value} km' },
-      },
-      {
-        labels: { format: '{value} km' },
-      },
-      {
-        labels: { format: '{value} km' },
-        min: -0.5,
-        max: 2.5
-      },
-    ]
+        {
+          labels: { format: '{value} km' },
+        },
+        {
+          labels: { format: '{value} km' },
+        },
+        {
+          labels: { format: '{value} km' },
+        },
+        {
+          labels: { format: '{value} km' },
+        },
+        {
+          labels: { format: '{value} km' },
+          min: -0.5,
+          max: 2.5,
+        },
+      ],
     },
     job_DistanceToNearestPHC: {
       chartData: {
-        category: ['Hostel 1', 'Hostel 2', 'Hostel 3', 'Hostel 4', 'Hostel 5'],
+        category: [
+          'Ekalavya Model Residential School',
+          'Govt. BC Hostel',
+          'Govt. BC College',
+          'Govt. ST Ashram School',
+          'Govt. ST Hostel',
+          'Govt. ST PMH',
+          'Govt. ST Hostel',
+          'Ekalavya Model Residential School',
+        ],
       },
-      seriesData: [['Distance',12,2,3,5,4]],
+      seriesData: [
+        {
+          name: t('dash_Distance'),
+          data: [13, 9, 6, 3, 25, 10, 3, 5],
+          color: '#f1725e',
+          pointPlacement: 'on',
+        },
+      ],
     },
     dash_IsTheStaffNurseAvailableInTheHostel: [
       {

@@ -605,5 +605,6 @@
   "job_Firewood": "Firewood",
   "job_NoLPGCylinders": "No LPG Cylinders",
   "job_SufficientLPGCylinders": "Sufficient LPG Cylinders",
-  "job_NonSufficientLPGCylinders": "Non Sufficient LPG Cylinders"
+  "job_NonSufficientLPGCylinders": "Non Sufficient LPG Cylinders",
+  "dash_Distance": "Distance"
 }
