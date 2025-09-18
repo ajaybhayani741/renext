@@ -143,6 +143,14 @@ const userChildrenList = [
           addAssociate: [admin, districtCollector],
         },
       ],
+      user_AssociatedStateHostelDepartment: [
+        {
+          payload: { roleId: stateHostelDepartment, relationType: associate },
+          addAssociate: [admin],
+          needParent: true,
+          hideInProfile: true,
+        },
+      ],
     },
     parent: {
       label: 'user_DistrictCollector',
@@ -162,6 +170,14 @@ const userChildrenList = [
         {
           payload: { roleId: inspectionOfficer, relationType: associate },
           addAssociate: [admin, districtCollector],
+        },
+      ],
+      user_AssociatedStateHostelDepartment: [
+        {
+          payload: { roleId: stateHostelDepartment, relationType: associate },
+          addAssociate: [admin],
+          needParent: true,
+          hideInProfile: true,
         },
       ],
     },

@@ -54,7 +54,7 @@ const ConfirmView = ({
     }
 
     return {
-      hostel: [selectedUsers?.[hostel]?.[index]],
+      hostel: selectedUsers?.[hostel]?.[index],
       systemId: details?.systemId,
       hostelAdministrationRequestDto: mapKeyValue(
         inspectionFormFieldsAttr?.hostelAdministrationAttrFn(),

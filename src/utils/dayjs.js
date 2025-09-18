@@ -7,7 +7,7 @@ import { ternary } from './javascript'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const DISPLAY_DATE_FORMAT = 'MM/DD/YYYY'
+const DISPLAY_DATE_FORMAT = 'DD/MM/YYYY'
 
 const dayJs = (...args) => dayjs(...args)
 

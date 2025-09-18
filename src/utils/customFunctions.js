@@ -1,4 +1,10 @@
-import { include, isEqual, length, nullOrUndefined } from './javascript'
+import {
+  include,
+  isEqual,
+  length,
+  nullOrUndefined,
+  ternary,
+} from './javascript'
 
 const b64toFile = (b64Data, type, contentType = '', sliceSize = 512) => {
   const byteCharacters = atob(b64Data)
@@ -61,6 +67,18 @@ const validationTag = lang => {
       return 'en-validation'
   }
 }
+
+const modifyFileListKeys = list =>
+  ternary(
+    length(list),
+    list?.map(file => ({
+      name: file?.fileName,
+      url: file?.fileUrl,
+      uid: file?.dmsId,
+      dmsId: file?.dmsId,
+    })),
+    [],
+  )
 
 const downloadReport = async reportUrl => {
   try {
@@ -183,4 +201,5 @@ export {
   fixedNumber,
   deepClone,
   getLocation,
+  modifyFileListKeys,
 }

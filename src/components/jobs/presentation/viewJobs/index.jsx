@@ -1,4 +1,4 @@
-import ShiftJobView from './ShiftJobView'
+import InspectionJobView from './InspectionJobView'
 import ANTDSpin from '../../../../shared/antd/ANTDSpin'
 import PageNotFound from '../../../PageNotFound'
 import { tabKeys as jobTypes } from '../../jobs.description'
@@ -6,8 +6,8 @@ import { tabKeys as jobTypes } from '../../jobs.description'
 const ViewJob = ({ jobType, data, loader }) => {
   const getViewComponent = type => {
     switch (type) {
-      case jobTypes.shift:
-        return <ShiftJobView details={data} loader={loader} />
+      case jobTypes.inspection:
+        return <InspectionJobView data={data} />
 
       default:
         return <PageNotFound />

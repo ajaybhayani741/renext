@@ -36,16 +36,22 @@ const columnKeys = {
   read: 'read',
   all: 'txt_All',
   jobId: 'job_Id',
+  jobTitle: 'job_Title',
+  createdDate: 'user_CreationDate',
+  updatedDate: 'job_UpdatedDate',
+  status: 'job_Status',
+  hostel: 'user_Hostel',
+  inspectionOfficer: 'user_InspectionOfficer',
 }
 
 const searchByKeys = {
-  employeeName: 'EMPLOYEE_NAME',
+  jobId: 'JOB_ID',
 }
 
-// const { employeeName } = searchByKeys
+const { jobId } = searchByKeys
 
 const searchByLabels = {
-  // [employeeName]: 'job_EmployeeName',
+  [jobId]: 'job_Id',
 }
 
 const payloadType = {

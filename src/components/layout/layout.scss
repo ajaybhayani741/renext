@@ -90,8 +90,6 @@ img {
 
     @media screen and (max-width: 576px) {
       padding: 0px 12px 10px;
-      margin-top: 47px;
-      height: calc(100vh - 101px);
     }
   }
 }
@@ -129,7 +127,6 @@ img {
     @media screen and (max-width: 576px) {
       padding-right: 10px;
       padding-left: 10px;
-      height: 45px;
     }
 
     .header-content {
@@ -138,16 +135,6 @@ img {
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-
-      @media screen and (max-width: 800px) {
-        .username,
-        .header-action {
-          display: none;
-        }
-      }
-      @media screen and (max-width: 576px) {
-        height: 45px;
-      }
     }
 
     .nav-toggle {
@@ -269,6 +256,7 @@ img {
     max-width: 40%;
     font-size: 13px;
     flex-wrap: wrap;
+    height: auto;
   }
 
   .user_name {
@@ -297,10 +285,21 @@ img {
   }
 }
 
+.header-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .notification-container {
   font-size: 24px;
   position: relative;
   min-width: 30px;
+
+  @media only screen and (max-width: 575px) {
+    font-size: 20px;
+    min-width: 24px;
+  }
 
   .anticon-bell {
     color: #fff;

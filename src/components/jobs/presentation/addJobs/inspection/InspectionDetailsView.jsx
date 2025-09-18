@@ -2,6 +2,7 @@ import TabulerView from './TabulerView'
 import useTranslations from '../../../../../hooks/useTranslations'
 import ANTDCard from '../../../../../shared/antd/ANTDCard'
 import { userWiseRole } from '../../../../../utils/constant'
+import { length, keys } from '../../../../../utils/javascript'
 import JobUserSelect from '../../common/JobUserSelect'
 
 const InspectionDetailsView = ({ inspectionData, currentForm }) => {
@@ -17,7 +18,7 @@ const InspectionDetailsView = ({ inspectionData, currentForm }) => {
             {...{
               selectTitle: 'user_Hostel',
               roleId: hostel,
-              userData: details?.hostel,
+              userData: length(keys(details?.hostel)) ? [details?.hostel] : [],
               readOnly: true,
             }}
           />

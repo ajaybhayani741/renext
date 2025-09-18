@@ -21,8 +21,7 @@ import {
 } from '../jobs.description'
 
 const jobs = () => {
-  const { recoveryAgent, recycler, refurbisher, trader, supplier, dataEntry } =
-    userWiseRole
+  const { inspectionOfficer } = userWiseRole
   const { t } = useTranslations()
   const { dispatch, selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
@@ -126,10 +125,26 @@ const jobs = () => {
   }, [searchBy])
 
   const currentColumns = useMemo(() => {
-    const { jobId } = columnKeys
+    const {
+      jobId,
+      // jobTitle,
+      createdDate,
+      updatedDate,
+      status,
+      hostel: hostelCol,
+      inspectionOfficer: inspectionOfficerCol,
+    } = columnKeys
 
     return [
       jobId,
+      // jobTitle,
+      ...(notEqual(roleId, userWiseRole.inspectionOfficer)
+        ? [inspectionOfficerCol]
+        : []),
+      hostelCol,
+      createdDate,
+      updatedDate,
+      status,
       // For dynamic columns by role or active tab
       // ...ternary(isEqual(roleId, userWiseRole.admin), ['extra'], []),
       // ...ternary(isEqual(type, tabKeys.quote), ['extra2'], []),
@@ -137,10 +152,10 @@ const jobs = () => {
   }, [type, status, roleId])
 
   const currentSearchBy = useMemo(() => {
-    const { employeeName } = searchByKeys
+    const { jobId } = searchByKeys
 
     return [
-      employeeName,
+      jobId,
       // For dynamic searchBy by role or active tab
       // ...ternary(isEqual(roleId, userWiseRole.admin), ['extra'], []),
       // ...ternary(isEqual(type, tabKeys.quote), ['extra2'], []),
@@ -200,8 +215,8 @@ const jobs = () => {
     async jobId => {
       const response = await getJobDetailApi({
         params: {
-          jobId,
-          jobType: payloadType[tabKeys.shift],
+          id: jobId,
+          jobType: payloadType[type] || jobType,
         },
       })
       setJobModel(pre => ({ ...pre, loader: false, data: response?.data }))
@@ -249,9 +264,21 @@ const jobs = () => {
     setColumnExportToExcel(values)
   }
 
-  const handleViewClick = jobId => {
+  const handleViewClick = (jobId, jobType) => {
     setJobModel({ open: true, loader: true })
-    viewApiCall(jobId)
+    setData(pre => ({
+      ...pre,
+      [type]: {
+        ...pre?.[type],
+        list: pre?.[type]?.list?.map(value =>
+          isEqual(value.jobId, jobId) && !value.read
+            ? { ...value, read: true }
+            : value,
+        ),
+        loader: false,
+      },
+    }))
+    viewApiCall(jobId, jobType)
   }
 
   const handleCloseModel = () =>
@@ -286,35 +313,8 @@ const jobs = () => {
   const checkEditPermission = jobStatus => {
     if (isEqual(status, tabKeys.complete)) return false
     switch (type) {
-      case tabKeys.recovery:
-        return include([recoveryAgent, recycler, dataEntry], roleId)
-
-      case tabKeys.recycleRequest:
-        // const statusPermission = {
-        //   RECYCLE_REQUESTED: [recycler],
-        //   RECYCLE_REQUEST_AWAITING_RECEPTION: [recycler],
-        // }
-        return include([recycler, dataEntry], roleId)
-
-      case tabKeys.recycle:
-        return include([recycler, dataEntry], roleId)
-
-      case tabKeys.smeltingRequest:
-      case tabKeys.smelting:
-      case tabKeys.materialSalesSupplier:
-        return include([refurbisher], roleId)
-
-      case tabKeys.materialSalesProducer:
-        return include([supplier], roleId)
-
-      case tabKeys.materialSalesMaterialProducer:
-        return include([refurbisher], roleId)
-
-      case tabKeys.partSalesPartProducer:
-        return include([supplier], roleId)
-
-      case tabKeys.sales:
-        return include([refurbisher, trader], roleId)
+      case tabKeys.inspection:
+        return include([inspectionOfficer], roleId)
 
       default:
         return false

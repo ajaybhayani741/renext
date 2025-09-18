@@ -111,11 +111,16 @@
   border: 1px dashed #e9e9e9;
   border-radius: 2px;
   width: 100%;
-  max-height: calc(100vh - 390px);
-  min-height: calc(100vh - 390px);
+  max-height: calc(100vh - 348px);
+  min-height: calc(100vh - 348px);
   height: 100%;
   overflow-y: auto;
   position: relative;
+
+  &.with-save-btn {
+    max-height: calc(100vh - 390px);
+    min-height: calc(100vh - 390px);
+  }
 
   .steps-section {
     position: relative;
@@ -163,64 +168,6 @@
           width: auto;
           border-radius: 10px;
           max-width: min-content;
-        }
-      }
-    }
-
-    .basic-job-table {
-      td {
-        &:first-child {
-          width: 152px;
-          font-weight: 600;
-        }
-
-        .email-list {
-          border: 0;
-          background-color: transparent;
-
-          .ant-collapse-item {
-            border: 0;
-
-            .ant-collapse-header {
-              padding: 0;
-              display: inline-flex;
-              flex-direction: row-reverse;
-
-              .ant-collapse-expand-icon {
-                color: var(--color-primary);
-                padding-right: 0;
-                padding-left: 8px;
-
-                svg {
-                  transform: rotate(90deg);
-                }
-              }
-
-              &[aria-expanded='true'] {
-                .ant-collapse-expand-icon {
-                  svg {
-                    transform: rotate(-90deg) !important;
-                  }
-                }
-              }
-            }
-
-            .ant-collapse-content {
-              border: 0;
-            }
-
-            .ant-collapse-content-box {
-              padding: 0;
-
-              table {
-                td {
-                  &:first-child {
-                    width: 80px;
-                  }
-                }
-              }
-            }
-          }
         }
       }
     }

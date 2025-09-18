@@ -28,11 +28,6 @@ const getJobListApi = async ({ pageNo, params }) => {
   return response?.data
 }
 
-const postJobApi = async ({ payload }) => {
-  const response = await postMethod(JOBS, payload)
-  return response?.data
-}
-
 const searchJobListApi = async ({ params, pageNo }) => {
   const response = await getMethod(`${SEARCH_JOB_LIST}/${pageNo}`, { params })
   return response?.data
@@ -59,12 +54,12 @@ const getJobDetailApi = async ({ params }) => {
 }
 
 const addJobPostApi = async ({ payload }) => {
-  const response = await postMethod(JOBS_UPDATE, payload)
+  const response = await postMethod(JOBS, payload)
   return response
 }
 
 const updateJobPatchApi = async ({ payload }) => {
-  const response = await patchMethod(JOBS_UPDATE, payload)
+  const response = await patchMethod(JOBS, payload)
   return response
 }
 
@@ -124,7 +119,6 @@ const patchJobEditLogApi = async ({ payload }) => {
 
 export {
   getJobListApi,
-  postJobApi,
   searchJobListApi,
   getJobDetailApi,
   getErrorCodeApi,

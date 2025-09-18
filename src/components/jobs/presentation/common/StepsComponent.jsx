@@ -69,7 +69,10 @@ function StepsComponent({
           </ANTDButton>
         </div>
       )}
-      <div className="steps-content" ref={scrollElem}>
+      <div
+        className={`steps-content ${showSave ? 'with-save-btn' : ''}`}
+        ref={scrollElem}
+      >
         <div className="steps-section" id="steps-section">
           {displayForm?.[current]}
         </div>

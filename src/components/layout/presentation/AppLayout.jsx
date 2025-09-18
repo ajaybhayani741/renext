@@ -5,8 +5,6 @@ import { Suspense, memo } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import Header from './Header'
-import HeaderAction from './HeaderAction'
-import WelcomeUser from './WelcomeUser'
 import ANTDLayout, {
   ANTDContent,
   ANTDFooter,
@@ -43,12 +41,6 @@ function AppLayout() {
       >
         <div className="brand-logo">
           <img src={logo} alt="Mat Next" /* height="75%" */ />
-        </div>
-        <div className="mob-action-wrapper">
-          <div className="mob-action-header">
-            <WelcomeUser />
-            <HeaderAction />
-          </div>
         </div>
         <div className="menu-list">
           <ANTDMenu
