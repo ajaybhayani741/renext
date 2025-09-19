@@ -17,6 +17,7 @@ import ANTDForm, {
   useFormFn,
   useFormInstanceFn,
 } from '../../../../../shared/antd/ANTDForm'
+import ANTDImage from '../../../../../shared/antd/ANTDImage'
 import ANTDRow from '../../../../../shared/antd/ANTDRow'
 import ANTDTable from '../../../../../shared/antd/ANTDTable'
 import getFormInput from '../../../../../shared/form.description'
@@ -105,7 +106,6 @@ const CellRender = ({
     ...val,
     label: typeof val.label === 'object' ? val.label : t(val.label),
   }))
-
   return (
     <div className="d-flex space-between">
       <span className="mr-5 w-100">
@@ -126,9 +126,20 @@ const CellRender = ({
           </ANTDFormItem>
         ) : isEqual(inputType, 'select') ? (
           t(options?.find(item => item?.value === rowData)?.label || rowData)
+        ) : isEqual(inputType, 'formUpload') ? (
+          rowData?.map?.(item => (
+            <ANTDImage
+              className="inspection-images"
+              key={item?.id || item?.uid}
+              src={item?.fileUrl || item?.url}
+              height={70}
+              width={70}
+              visible={false}
+            />
+          ))
         ) : isEqual(inputType, 'dateTimePicker') ? (
           rowData ? (
-            dayJs(rowData, 'DD/MM/YYYY')?.format('YYYY/MM/DD')
+            rowData
           ) : (
             '-'
           )

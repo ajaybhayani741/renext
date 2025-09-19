@@ -6,10 +6,12 @@ import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import { setPopupMessageModel } from '../../../redux/app/reducer'
+import { setJobActiveTab } from '../../../redux/jobs/reducer'
+import pathName from '../../../routing/pathName.constant'
 import { useFormFn } from '../../../shared/antd/ANTDForm'
 import { getBase64 } from '../../../utils'
 import { MAX_FILE_SIZE, userWiseRole } from '../../../utils/constant'
-import { getLocation } from '../../../utils/customFunctions'
+import { getLocation, modifyFileListKeys } from '../../../utils/customFunctions'
 import { dayJs } from '../../../utils/dayjs'
 import debounce from '../../../utils/debounce'
 import {
@@ -40,7 +42,6 @@ const inspection = ({
 }) => {
   const { t } = useTranslations()
   const form = useFormFn()
-  // eslint-disable-next-line no-unused-vars
   const { navigate, params } = useRouter()
   const { dispatch } = useRedux()
   // eslint-disable-next-line no-unused-vars
@@ -59,7 +60,7 @@ const inspection = ({
     inspectionDate: dayJs(new Date()),
     managementNumber: '',
     remark: '',
-    jobType: 'INSPECTION',
+    jobType: payloadType?.[tabKeys?.inspection],
   }
   const isEdit = !!params?.jobId
   const showSave = isEdit || include([1], current)
@@ -100,7 +101,7 @@ const inspection = ({
   }, [])
 
   const setEditApiDataToForm = async () => {
-    setJobId(params?.jobId)
+    setJobId(editData?.id)
 
     const dateToDayJs = date => (date ? dayJs(date, 'DD/MM/YYYY') : null)
 
@@ -110,10 +111,14 @@ const inspection = ({
         if (!formAttr?.[key]) return
         const fieldType = formAttr?.[key]?.inputType
 
-        if (isEqual(key, 'categoryId')) {
-          data[key] = details?.categoryId?.id
-        } else if (isEqual(fieldType, 'dateTimePicker')) {
+        if (isEqual(fieldType, 'dateTimePicker')) {
           data[key] = dateToDayJs(value)
+        } else if (isEqual(fieldType, 'formUpload')) {
+          data[key] = length(details?.[`${key}Details`])
+            ? {
+                fileList: modifyFileListKeys(details?.[`${key}Details`]),
+              }
+            : null
         } else {
           data[key] = value
         }
@@ -124,11 +129,6 @@ const inspection = ({
     const inspectionDetails = {
       hostelAdministrationRequestDto: {
         ...formValueFromResponse(editData, hostelAdministrationAttrFn()),
-        // uploadRc: {
-        //     fileList: modifyFileListKeys(
-        //       fileUploadSectionResponseDto?.registrationCertFileDetails,
-        //     ),
-        //   },
       },
       hostelInfraRoomsRequestDto: {
         ...formValueFromResponse(editData, hostelInfraRoomsAttrFn()),
@@ -156,7 +156,65 @@ const inspection = ({
       },
     }
 
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionDetails,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'riceStockRegisterKg',
+      val2Key: 'riceStockGroundBalanceKg',
+      accumulationKey: 'variationInRice',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionDetails,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'dalStockRegisterKg',
+      val2Key: 'dalStockGroundBalanceKg',
+      accumulationKey: 'variationInDal',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionDetails,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'cookingOilStockRegisterKg',
+      val2Key: 'cookingOilStockGroundBalanceKg',
+      accumulationKey: 'variationInCookingOil',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionDetails,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'sugarStockRegisterKg',
+      val2Key: 'sugarStockGroundBalanceKg',
+      accumulationKey: 'variationInSugar',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionDetails,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'idliRavaStockRegisterKg',
+      val2Key: 'idliRavaStockGroundBalanceKg',
+      accumulationKey: 'variationInIdliRava',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionDetails,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'ragiMaltStockRegisterKg',
+      val2Key: 'ragiMaltStockGroundBalanceKg',
+      accumulationKey: 'variationInRagiMalt',
+    })
+
+    calPercentageInValue({
+      nestedUpdatedValues: inspectionDetails,
+      changedKey: 'hostelInfraSanitationRequestDto',
+      val1Key: 'numberOfToiletsAvailable',
+      val2Key: 'numberOfToiletsFunctioning',
+      accumulationKey: 'percentageOfToiletFunctioning',
+    })
+
     const preFormValues = {
+      inspectionDate: dayJs(editData?.inspectionDate, 'DD/MM/YYYY HH:mm'),
+      locationInspection: `${editData?.latitude?.toFixed(4)},${editData?.longitude?.toFixed(4)}`,
       inspectionList: [inspectionDetails],
       findingsRequestDto: {
         ...formValueFromResponse(editData, findingsAttrFn()),
@@ -212,8 +270,8 @@ const inspection = ({
       jobType: payloadType?.[tabKeys?.inspection],
       inspectionDate: formData.inspectionDate.format('DD/MM/YYYY HH:MM'),
       hostelId: selectedUsers?.[userWiseRole?.hostel]?.[0]?.id,
-      latitude: latLng?.[0] || null,
-      longitude: latLng?.[1] || null,
+      latitude: latLng?.[0] ? parseFloat(latLng?.[0]) : null,
+      longitude: latLng?.[1] ? parseFloat(latLng?.[1]) : null,
     }
 
     const inspectionDetails = formData?.inspectionList?.[0]
@@ -282,6 +340,7 @@ const inspection = ({
       }
       setIsApiRunning(false)
       setLoader(false)
+      if (!response?.data?.data) return false
     } else {
       const res = await updateJobPatchApi({ payload })
       setNextBtnLoader(false)
@@ -300,15 +359,15 @@ const inspection = ({
     if (confirm) {
       // reportPolling()
     }
-    // if (redirect) {
-    //   dispatch(
-    //     setJobActiveTab({
-    //       status: jobTabKeys.active,
-    //       type: jobTabKeys.recovery,
-    //     }),
-    //   )
-    //   navigate(pathName.JOBS)
-    // }
+    if (redirect) {
+      dispatch(
+        setJobActiveTab({
+          status: tabKeys.active,
+          type: tabKeys.inspection,
+        }),
+      )
+      navigate(pathName.JOBS)
+    }
     return true
   }
 
@@ -394,6 +453,44 @@ const inspection = ({
     jobId && debounceApiCall({})
   }
 
+  const calDifferenceInValue = ({
+    nestedUpdatedValues,
+    changedKey,
+    val1Key,
+    val2Key,
+    accumulationKey,
+  }) => {
+    const val1 = nestedUpdatedValues?.[changedKey]?.[val1Key]
+    const val2 = nestedUpdatedValues?.[changedKey]?.[val2Key]
+    nestedUpdatedValues[changedKey] = {
+      ...nestedUpdatedValues?.[changedKey],
+      [accumulationKey]:
+        nullOrUndefined(val1) && nullOrUndefined(val2)
+          ? null
+          : (val1 || 0) - (val2 || 0),
+    }
+    return nestedUpdatedValues
+  }
+  const calPercentageInValue = ({
+    nestedUpdatedValues,
+    changedKey,
+    val1Key,
+    val2Key,
+    accumulationKey,
+  }) => {
+    const val1 = nestedUpdatedValues?.[changedKey]?.[val1Key]
+    const val2 = nestedUpdatedValues?.[changedKey]?.[val2Key]
+    nestedUpdatedValues[changedKey] = {
+      ...nestedUpdatedValues?.[changedKey],
+      [accumulationKey]:
+        nullOrUndefined(val1) || nullOrUndefined(val2)
+          ? null
+          : (((val2 || 0) / (val1 || 0)) * 100).toFixed(2),
+    }
+
+    return nestedUpdatedValues
+  }
+
   const onValuesChange = async value => {
     const formValues = form.getFieldValue()
 
@@ -413,111 +510,75 @@ const inspection = ({
             nestedKey,
           )
         ) {
-          const riceStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.riceStockRegisterKg
-          const riceStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.riceStockGroundBalanceKg
-          nestedUpdatedValues[changedKey] = {
-            ...nestedUpdatedValues?.[changedKey],
-            variationInRice:
-              nullOrUndefined(riceStockAsPerRegisterVal) &&
-              nullOrUndefined(riceStockGroundBalanceVal)
-                ? null
-                : (riceStockAsPerRegisterVal || 0) -
-                  (riceStockGroundBalanceVal || 0),
-          }
+          calDifferenceInValue({
+            nestedUpdatedValues,
+            changedKey,
+            val1Key: 'riceStockRegisterKg',
+            val2Key: 'riceStockGroundBalanceKg',
+            accumulationKey: 'variationInRice',
+          })
         } else if (
           include(['dalStockRegisterKg', 'dalStockGroundBalanceKg'], nestedKey)
         ) {
-          const dalStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.dalStockRegisterKg
-          const dalStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.dalStockGroundBalanceKg
-          nestedUpdatedValues[changedKey] = {
-            ...nestedUpdatedValues?.[changedKey],
-            variationInDal:
-              nullOrUndefined(dalStockAsPerRegisterVal) &&
-              nullOrUndefined(dalStockGroundBalanceVal)
-                ? null
-                : (dalStockAsPerRegisterVal || 0) -
-                  (dalStockGroundBalanceVal || 0),
-          }
+          calDifferenceInValue({
+            nestedUpdatedValues,
+            changedKey,
+            val1Key: 'dalStockRegisterKg',
+            val2Key: 'dalStockGroundBalanceKg',
+            accumulationKey: 'variationInDal',
+          })
         } else if (
           include(
             ['cookingOilStockRegisterKg', 'cookingOilStockGroundBalanceKg'],
             nestedKey,
           )
         ) {
-          const cookingOilStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.cookingOilStockRegisterKg
-          const cookingOilStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.cookingOilStockGroundBalanceKg
-          nestedUpdatedValues[changedKey] = {
-            ...nestedUpdatedValues?.[changedKey],
-            variationInCookingOil:
-              nullOrUndefined(cookingOilStockAsPerRegisterVal) &&
-              nullOrUndefined(cookingOilStockGroundBalanceVal)
-                ? null
-                : (cookingOilStockAsPerRegisterVal || 0) -
-                  (cookingOilStockGroundBalanceVal || 0),
-          }
+          calDifferenceInValue({
+            nestedUpdatedValues,
+            changedKey,
+            val1Key: 'cookingOilStockRegisterKg',
+            val2Key: 'cookingOilStockGroundBalanceKg',
+            accumulationKey: 'variationInCookingOil',
+          })
         } else if (
           include(
             ['sugarStockRegisterKg', 'sugarStockGroundBalanceKg'],
             nestedKey,
           )
         ) {
-          const sugarStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.sugarStockRegisterKg
-          const sugarStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.sugarStockGroundBalanceKg
-          nestedUpdatedValues[changedKey] = {
-            ...nestedUpdatedValues?.[changedKey],
-            variationInSugar:
-              nullOrUndefined(sugarStockAsPerRegisterVal) &&
-              nullOrUndefined(sugarStockGroundBalanceVal)
-                ? null
-                : (sugarStockAsPerRegisterVal || 0) -
-                  (sugarStockGroundBalanceVal || 0),
-          }
+          calDifferenceInValue({
+            nestedUpdatedValues,
+            changedKey,
+            val1Key: 'sugarStockRegisterKg',
+            val2Key: 'sugarStockGroundBalanceKg',
+            accumulationKey: 'variationInSugar',
+          })
         } else if (
           include(
             ['idliRavaStockRegister', 'idliRavaStockGroundBalance'],
             nestedKey,
           )
         ) {
-          const idliRavaStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.idliRavaStockRegister
-          const idliRavaStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.idliRavaStockGroundBalance
-          nestedUpdatedValues[changedKey] = {
-            ...nestedUpdatedValues?.[changedKey],
-            variationInIdliRava:
-              nullOrUndefined(idliRavaStockAsPerRegisterVal) &&
-              nullOrUndefined(idliRavaStockGroundBalanceVal)
-                ? null
-                : (idliRavaStockAsPerRegisterVal || 0) -
-                  (idliRavaStockGroundBalanceVal || 0),
-          }
+          calDifferenceInValue({
+            nestedUpdatedValues,
+            changedKey,
+            val1Key: 'idliRavaStockRegister',
+            val2Key: 'idliRavaStockGroundBalance',
+            accumulationKey: 'variationInIdliRava',
+          })
         } else if (
           include(
             ['ragiMaltStockRegisterKg', 'ragiMaltStockGroundBalanceKg'],
             nestedKey,
           )
         ) {
-          const ragiMaltStockAsPerRegisterVal =
-            nestedUpdatedValues?.[changedKey]?.ragiMaltStockRegisterKg
-          const ragiMaltStockGroundBalanceVal =
-            nestedUpdatedValues?.[changedKey]?.ragiMaltStockGroundBalanceKg
-          nestedUpdatedValues[changedKey] = {
-            ...nestedUpdatedValues?.[changedKey],
-            variationInRagiMalt:
-              nullOrUndefined(ragiMaltStockAsPerRegisterVal) &&
-              nullOrUndefined(ragiMaltStockGroundBalanceVal)
-                ? null
-                : (ragiMaltStockAsPerRegisterVal || 0) -
-                  (ragiMaltStockGroundBalanceVal || 0),
-          }
+          calDifferenceInValue({
+            nestedUpdatedValues,
+            changedKey,
+            val1Key: 'ragiMaltStockRegisterKg',
+            val2Key: 'ragiMaltStockGroundBalanceKg',
+            accumulationKey: 'variationInRagiMalt',
+          })
         } else if (
           include(
             ['foodStorageVegetablesPhoto', 'foodStorageDryItemsPhoto'],
@@ -541,22 +602,13 @@ const inspection = ({
             nestedKey,
           )
         ) {
-          const numberOfToiletsAvailable =
-            nestedUpdatedValues?.[changedKey]?.numberOfToiletsAvailable
-          const numberOfToiletsFunctioning =
-            nestedUpdatedValues?.[changedKey]?.numberOfToiletsFunctioning
-          nestedUpdatedValues[changedKey] = {
-            ...nestedUpdatedValues?.[changedKey],
-            percentageOfToiletFunctioning:
-              nullOrUndefined(numberOfToiletsAvailable) ||
-              nullOrUndefined(numberOfToiletsFunctioning)
-                ? null
-                : (
-                    ((numberOfToiletsFunctioning || 0) /
-                      (numberOfToiletsAvailable || 0)) *
-                    100
-                  ).toFixed(2),
-          }
+          calPercentageInValue({
+            nestedUpdatedValues,
+            changedKey,
+            val1Key: 'numberOfToiletsAvailable',
+            val2Key: 'numberOfToiletsFunctioning',
+            accumulationKey: 'percentageOfToiletFunctioning',
+          })
         } else if (
           include(
             ['toiletsBathroomsPhoto1', 'toiletsBathroomsPhoto2'],
@@ -731,13 +783,15 @@ const inspection = ({
     // let isValid = true
     if (!isValid) return
     if (include([1, 2], current)) {
-      isValid = apiCall({
+      isValid = await apiCall({
         showMsg: true,
+        isLoading: true,
       })
     } else if (isEqual(current, 3)) {
-      isValid = apiCall({
+      isValid = await apiCall({
         showMsg: true,
         isComplete: true,
+        isLoading: true,
       })
     }
     if (!isValid) return

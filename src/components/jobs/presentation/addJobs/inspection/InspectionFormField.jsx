@@ -149,16 +149,22 @@ const InspectionFormField = ({
                       rules={
                         required
                           ? [
-                              {
-                                required: true,
-                                message: t('error_FieldISRequire'),
-                              },
+                              ...(disabledAll
+                                ? []
+                                : [
+                                    {
+                                      required: true,
+                                      message: t('error_FieldISRequire'),
+                                    },
+                                  ]),
                               ...rulesArr,
                             ]
                           : [...rulesArr]
                       }
                       dependencies={dependenciesArr}
-                      className={required ? validationTag(lang) : ''}
+                      className={
+                        required && !disabledAll ? validationTag(lang) : ''
+                      }
                       initialValue={initialValue}
                       extra={extra}
                     >

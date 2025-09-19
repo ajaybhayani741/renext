@@ -1,4 +1,5 @@
 import InspectionDetailsView from './InspectionDetailsView'
+import InspectionFormField from './InspectionFormField'
 import useTranslations from '../../../../../hooks/useTranslations'
 import ANTDConfigProvider from '../../../../../shared/antd/ANTDConfigProvider'
 import { ANTDDatePicker } from '../../../../../shared/antd/ANTDDatePicker'
@@ -9,7 +10,7 @@ import {
 } from '../../../../../shared/antd/ANTDForm'
 import { userWiseRole } from '../../../../../utils/constant'
 import { dayJs } from '../../../../../utils/dayjs'
-import { entries } from '../../../../../utils/javascript'
+import { entries, isArray } from '../../../../../utils/javascript'
 
 const ConfirmView = ({
   selectedUsers,
@@ -38,14 +39,24 @@ const ConfirmView = ({
       const data = {}
       entries(attributes)?.forEach(([key, item]) => {
         if (item.inputType === 'select') {
-          data[key] =
-            item.options?.find(option => option?.value === values?.[key])
-              ?.label || '-'
+          const optKeyMap = item.options?.reduce((acc, item) => {
+            acc[item?.value] = item?.label
+            return acc
+          }, {})
+          if (item.mode === 'multiple') {
+            data[key] = isArray(values?.[key])
+              ? values?.[key]
+                  ?.map(stgKey => t(optKeyMap?.[stgKey]) || '-')
+                  ?.join(', ')
+              : '-'
+          } else {
+            data[key] = optKeyMap?.[values?.[key]] || '-'
+          }
           data[`${key}Selected`] = values?.[key]
         } else if (item.inputType === 'dateTimePicker') {
           data[key] = dateToString(values?.[key])
         } else if (item.inputType === 'formUpload') {
-          data[key] = '-'
+          data[key] = values?.[key]?.fileList || []
         } else {
           data[key] = values?.[key] ?? '-'
         }
@@ -55,7 +66,7 @@ const ConfirmView = ({
 
     return {
       hostel: selectedUsers?.[hostel]?.[index],
-      systemId: details?.systemId,
+
       hostelAdministrationRequestDto: mapKeyValue(
         inspectionFormFieldsAttr?.hostelAdministrationAttrFn(),
         hostelAdministrationRequestDto,
@@ -124,6 +135,13 @@ const ConfirmView = ({
       <InspectionDetailsView
         inspectionData={inspectionData}
         currentForm={form}
+      />
+      <InspectionFormField
+        {...{
+          attrList: findingsAttrFn(),
+          name: 'findingsRequestDto',
+          disabledAll: true,
+        }}
       />
     </ANTDConfigProvider>
   )

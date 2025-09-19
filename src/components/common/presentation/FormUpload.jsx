@@ -22,6 +22,7 @@ const FormUpload = ({
   uploadDragger,
   isPreview = true,
   uploadText,
+  disabled,
   ...props
 }) => {
   const { t } = useTranslations()
@@ -53,6 +54,7 @@ const FormUpload = ({
           fileList={value?.fileList}
           onPreview={() => false}
           name="form-upload"
+          disabled={disabled}
           {...props}
         />
       ) : (
@@ -65,6 +67,7 @@ const FormUpload = ({
           iconRender={file => handleIconRender(file)}
           onPreview={isPreview ? handlePreview : false}
           fileList={value?.fileList}
+          disabled={disabled}
           {...props}
         >
           {props?.directory ? (
@@ -85,7 +88,7 @@ const FormUpload = ({
           type="primary"
           className="btn mt-10"
           onClick={handleTakePhoto}
-          disabled={!uploadMoreCondition}
+          disabled={disabled || !uploadMoreCondition}
         >
           <CameraOutlined />
           <span>{t('btn_TakePhoto')}</span>

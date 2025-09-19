@@ -1,15 +1,30 @@
-import { Fragment } from 'react'
+import { useEffect, useState } from 'react'
 
 import useTranslations from '../../../../hooks/useTranslations'
+import ANTDForm, { useFormFn } from '../../../../shared/antd/ANTDForm'
+import { userWiseRole } from '../../../../utils/constant'
+import { modifyFileListKeys } from '../../../../utils/customFunctions'
 import { dayJs, DISPLAY_DATE_FORMAT } from '../../../../utils/dayjs'
-import { keys, length, entries } from '../../../../utils/javascript'
+import {
+  entries,
+  isArray,
+  isEqual,
+  keys,
+  length,
+  nullOrUndefined,
+} from '../../../../utils/javascript'
 import UserTable from '../../../userManagement/presentation/UserTable'
+import inspectionFieldAttr from '../../container/inspectionFieldAttr.container'
 import InspectionDetailsView from '../addJobs/inspection/InspectionDetailsView'
+import InspectionFormField from '../addJobs/inspection/InspectionFormField'
 import DetailListView from '../common/DetailListView'
 
-const InspectionJobView = ({ data, loader }) => {
+const InspectionJobView = ({ data }) => {
   const { t } = useTranslations()
+  const form = useFormFn()
+  const [inspectionData, setInspectionData] = useState([])
 
+  const { inspectionOfficer } = userWiseRole
   const infoData = {
     user_BasicInformation: [
       { label: 'user_ID', value: data?.id },
@@ -24,36 +39,231 @@ const InspectionJobView = ({ data, loader }) => {
     ],
   }
 
-  const userInfo = {
-    user_InspectionOfficer: data?.userInfo,
-  }
+  const {
+    hostelAdministrationAttrFn,
+    hostelInfraRoomsAttrFn,
+    hostelInfraSanitationAttrFn,
+    medicalCareAttrFn,
+    educationFacilitiesAttrFn,
+    foodProvisionAttrFn,
+    safetyAndSecurityAttrFn,
+    conductionMeetingsAttrFn,
+    feedbackAttrFn,
+    findingsAttrFn,
+  } = inspectionFieldAttr()
 
-  const inspectionData = [
-    {
+  useEffect(() => {
+    setViewData()
+  }, [])
+
+  const setViewData = () => {
+    const mapKeyValue = (attributes, values) => {
+      const details = {}
+      entries(attributes)?.forEach(([key, item]) => {
+        if (item.inputType === 'select') {
+          const optKeyMap = item.options?.reduce((acc, item) => {
+            acc[item?.value] = item?.label
+            return acc
+          }, {})
+          if (item.mode === 'multiple') {
+            details[key] = isArray(values?.[key])
+              ? values?.[key]
+                  ?.map(stgKey => t(optKeyMap?.[stgKey]) || '-')
+                  ?.join(', ')
+              : '-'
+          } else {
+            details[key] = optKeyMap?.[values?.[key]] || '-'
+          }
+          details[`${key}Selected`] = values?.[key]
+        } else if (item.inputType === 'formUpload') {
+          details[key] = values?.[`${key}Details`]
+        } else {
+          details[key] = values?.[key] ?? '-'
+        }
+      })
+      return details
+    }
+    const inspectionValues = {
       hostel: data?.hostelInfo,
-    },
-  ]
+      hostelAdministrationRequestDto: mapKeyValue(
+        hostelAdministrationAttrFn(),
+        data,
+      ),
+      hostelInfraRoomsRequestDto: mapKeyValue(hostelInfraRoomsAttrFn(), data),
+      hostelInfraSanitationRequestDto: mapKeyValue(
+        hostelInfraSanitationAttrFn(),
+        data,
+      ),
+      medicalCareRequestDto: mapKeyValue(medicalCareAttrFn(), data),
+      educationFacilitiesRequestDto: mapKeyValue(
+        educationFacilitiesAttrFn(),
+        data,
+      ),
+      foodProvisionRequestDto: mapKeyValue(foodProvisionAttrFn(), data),
+      safetyAndSecurityRequestDto: mapKeyValue(safetyAndSecurityAttrFn(), data),
+      conductionMeetingsRequestDto: mapKeyValue(
+        conductionMeetingsAttrFn(),
+        data,
+      ),
+      feedbackRequestDto: mapKeyValue(feedbackAttrFn(), data),
+    }
+
+    const calDifferenceInValue = ({
+      nestedUpdatedValues,
+      changedKey,
+      val1Key,
+      val2Key,
+      accumulationKey,
+    }) => {
+      const val1 = nestedUpdatedValues?.[changedKey]?.[val1Key]
+      const val2 = nestedUpdatedValues?.[changedKey]?.[val2Key]
+      nestedUpdatedValues[changedKey] = {
+        ...nestedUpdatedValues?.[changedKey],
+        [accumulationKey]:
+          nullOrUndefined(val1) && nullOrUndefined(val2)
+            ? null
+            : (val1 || 0) - (val2 || 0),
+      }
+      return nestedUpdatedValues
+    }
+    const calPercentageInValue = ({
+      nestedUpdatedValues,
+      changedKey,
+      val1Key,
+      val2Key,
+      accumulationKey,
+    }) => {
+      const val1 = nestedUpdatedValues?.[changedKey]?.[val1Key]
+      const val2 = nestedUpdatedValues?.[changedKey]?.[val2Key]
+      nestedUpdatedValues[changedKey] = {
+        ...nestedUpdatedValues?.[changedKey],
+        [accumulationKey]:
+          nullOrUndefined(val1) || nullOrUndefined(val2)
+            ? null
+            : (((val2 || 0) / (val1 || 0)) * 100).toFixed(2),
+      }
+
+      return nestedUpdatedValues
+    }
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionValues,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'riceStockRegisterKg',
+      val2Key: 'riceStockGroundBalanceKg',
+      accumulationKey: 'variationInRice',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionValues,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'dalStockRegisterKg',
+      val2Key: 'dalStockGroundBalanceKg',
+      accumulationKey: 'variationInDal',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionValues,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'cookingOilStockRegisterKg',
+      val2Key: 'cookingOilStockGroundBalanceKg',
+      accumulationKey: 'variationInCookingOil',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionValues,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'sugarStockRegisterKg',
+      val2Key: 'sugarStockGroundBalanceKg',
+      accumulationKey: 'variationInSugar',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionValues,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'idliRavaStockRegisterKg',
+      val2Key: 'idliRavaStockGroundBalanceKg',
+      accumulationKey: 'variationInIdliRava',
+    })
+
+    calDifferenceInValue({
+      nestedUpdatedValues: inspectionValues,
+      changedKey: 'foodProvisionRequestDto',
+      val1Key: 'ragiMaltStockRegisterKg',
+      val2Key: 'ragiMaltStockGroundBalanceKg',
+      accumulationKey: 'variationInRagiMalt',
+    })
+
+    calPercentageInValue({
+      nestedUpdatedValues: inspectionValues,
+      changedKey: 'hostelInfraSanitationRequestDto',
+      val1Key: 'numberOfToiletsAvailable',
+      val2Key: 'numberOfToiletsFunctioning',
+      accumulationKey: 'percentageOfToiletFunctioning',
+    })
+    setInspectionData([inspectionValues])
+
+    //for finding section
+    const dateToDayJs = date => (date ? dayJs(date, 'DD/MM/YYYY') : null)
+    const formValueFromResponse = (details, formAttr) => {
+      const data = {}
+      entries(details)?.forEach(([key, value]) => {
+        if (!formAttr?.[key]) return
+        const fieldType = formAttr?.[key]?.inputType
+
+        if (isEqual(fieldType, 'dateTimePicker')) {
+          data[key] = dateToDayJs(value)
+        } else if (isEqual(fieldType, 'formUpload')) {
+          data[key] = length(details?.[`${key}Details`])
+            ? {
+                fileList: modifyFileListKeys(details?.[`${key}Details`]),
+              }
+            : null
+        } else {
+          data[key] = value
+        }
+      })
+      return data
+    }
+    form.setFieldsValue({
+      findingsRequestDto: {
+        ...formValueFromResponse(data, findingsAttrFn()),
+      },
+    })
+  }
 
   return (
     <>
       <DetailListView infoData={infoData} title="job_InspectionJob" />
 
-      {entries(userInfo).map(([key, userData]) => (
-        <Fragment key={key}>
-          <h2 className="content-title">{t(key)}</h2>
-          <UserTable
-            className="mb-15"
-            userData={{
-              loader: false,
-              list: length(keys(userData)) ? [userData] : [],
-            }}
-            permission={false}
-            pagination={false}
-          />
-        </Fragment>
-      ))}
+      <h2 className="content-title">{t('user_InspectionOfficer')}</h2>
+      <UserTable
+        className="mb-15"
+        userData={{
+          loader: false,
+          list: length(keys(data?.userInfo)) ? [data?.userInfo] : [],
+        }}
+        payload={{ roleId: inspectionOfficer }}
+        permission={false}
+        pagination={false}
+      />
 
       <InspectionDetailsView inspectionData={inspectionData} />
+
+      <ANTDForm
+        name="inspection"
+        initialValues={{}}
+        form={form}
+        layout="vertical"
+      >
+        <InspectionFormField
+          {...{
+            attrList: findingsAttrFn(),
+            name: 'findingsRequestDto',
+            disabledAll: true,
+          }}
+        />
+      </ANTDForm>
     </>
   )
 }
