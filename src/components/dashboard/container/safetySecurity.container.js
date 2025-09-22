@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, notEqual } from '../../../utils/javascript'
+import { entries, include, notEqual } from '../../../utils/javascript'
 import {
   axisOptionsList,
+  hostelsList,
   safetySecurityCharts,
   schoolsList,
 } from '../dashboard.description'
@@ -69,8 +70,10 @@ const safetySecurity = () => {
         type: notEqual(name, 'dash_AnimalThreat') ? data?.series?.name : null,
         value: data?.y,
       },
-      list: [...schoolsList],
-      title: 'job_HostelAuthority',
+      list: include(['dash_PrecautionaryMeasures', 'dash_AnimalThreat'], name)
+        ? [...schoolsList]
+        : [...hostelsList],
+      title: name,
       modalTitle: safetySecurityCharts?.[name]?.modalTitle,
     })
   }

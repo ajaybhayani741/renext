@@ -11,6 +11,13 @@ const dashboardWrapper = ({ title }) => {
       'dash_WasteManagement',
       'dash_ToiletsSufficiency',
       'job_DrinkingWater',
+      'job_MedicalCare',
+      'dash_IsTheStaffNurseAvailableInTheHostel',
+      'dash_EducationRequirements',
+      'job_FoodProvisions',
+      'dash_PrecautionaryMeasures',
+      'dash_AnimalThreat',
+      'dash_PrincipalHWOSpecialOfficer',
     ],
     title,
   )

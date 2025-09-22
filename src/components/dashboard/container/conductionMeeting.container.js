@@ -40,7 +40,7 @@ const conductionMeeting = () => {
     getSeriesData()
   }, [])
 
-  const handleChartClick = e => {
+  const handleChartClick = (e, name) => {
     const data = e.point
     setSelectedColumn({
       selected: true,
@@ -50,7 +50,7 @@ const conductionMeeting = () => {
         value: data?.y,
       },
       list: [...schoolsList],
-      title: 'job_HostelAuthority',
+      title: name,
       modalTitle: true,
     })
   }

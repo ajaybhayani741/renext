@@ -104,7 +104,7 @@ const medicalCare = () => {
         value: data?.y,
       },
       list: [...schoolsList],
-      title: 'job_HostelAuthority',
+      title: name,
       modalTitle: true,
     })
   }
