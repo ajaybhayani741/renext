@@ -494,7 +494,6 @@ export const hostelInfraSanitationCharts = {
   },
 }
 
-
 export const medicalCareCharts = {
   job_MedicalCare: {
     type: 'columnCompare',
@@ -578,5 +577,15 @@ export const conductionMeetingCharts = {
     xAxisText: '',
     yAxisText: '',
     modalTitle: true,
+  },
+}
+
+export const drinkingWaterKeys = {
+  boreWell: { label: 'job_BoreWell', value: 'BORE_WELL' },
+  openWell: { label: 'dash_OpenWell', value: 'OPEN_WELL' },
+  roPlant: { label: 'dash_ROPlant', value: 'RO_PLANT' },
+  tapMunicipalityMissionBhageeratha: {
+    label: 'dash_TapMunicipalityOrMissionBhageeratha',
+    value: 'TAP_MUNICIPALITY_MISSION_BHAGEERATHA',
   },
 }

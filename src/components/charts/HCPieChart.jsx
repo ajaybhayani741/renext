@@ -51,7 +51,7 @@ const HCPieChart = ({ handleChartClick, seriesData, title, name }) => {
         allowHTML: true,
       },
     }),
-    [],
+    [seriesData],
   )
 
   return (

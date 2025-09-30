@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, include, notEqual } from '../../../utils/javascript'
+import { entries, include, isEqual, notEqual } from '../../../utils/javascript'
+import {
+  getDrinkingWaterChartApi,
+  getDrinkingWaterHostelsApi,
+} from '../dashboard.api'
 import {
   axisOptionsList,
+  drinkingWaterKeys,
   hostelInfraSanitationCharts,
   hostelsList,
   schoolsList,
@@ -11,21 +17,14 @@ import {
 
 const hostelInfraSanitation = () => {
   const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
+  const [hostelsData, setHostelsData] = useState(null)
   const [seriesData, setSeriesData] = useState({
-    job_DrinkingWater: [
-      {
-        colorByPoint: true,
-        data: [
-          { id: 1, name: t('dash_TapMunicipalityOrMissionBhageeratha'), y: 10 },
-          { id: 1, name: t('dash_OpenWell'), y: 10 },
-          { id: 1, name: t('dash_ROPlant'), y: 10 },
-        ],
-      },
-    ],
     dash_WasteManagement: {
       chartData: {
         category: [
@@ -72,10 +71,64 @@ const hostelInfraSanitation = () => {
 
   useEffect(() => {
     getSeriesData()
-  }, [])
+    if (dateRange?.from && dateRange?.to) {
+      getData()
+    }
+  }, [dateRange])
 
-  const handleChartClick = (e, name) => {
+  const getData = async () => {
+    const [drinkingWaterResp] = await Promise.all([
+      getDrinkingWaterChartApi({
+        params: { fromDate: dateRange?.from, toDate: dateRange?.to },
+      }),
+    ])
+    let tempSeriesData = {}
+    if (drinkingWaterResp?.data) {
+      const data = [
+        {
+          colorByPoint: true,
+          data: entries(drinkingWaterKeys)?.map(([k, v], i) => ({
+            id: i + 1,
+            name: t(v?.label),
+            valueId: v?.value,
+            y: drinkingWaterResp?.data?.[k] || 0,
+          })),
+        },
+      ]
+      tempSeriesData['job_DrinkingWater'] = data
+    }
+    setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
+  }
+
+  const handleClickFn = async ({ category, name, pageNo = 1 }) => {
+    switch (name) {
+      case 'job_DrinkingWater':
+        const resp = await getDrinkingWaterHostelsApi({
+          pageNo,
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            filterValue: category,
+          },
+        })
+        return resp?.data
+
+      default:
+        setHostelsData(null)
+        break
+    }
+  }
+
+  const handleChartClick = async (e, name) => {
     const data = e.point
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await handleClickFn({ category: data?.valueId, name })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
+
     setSelectedColumn({
       selected: true,
       chartData: {
@@ -97,7 +150,22 @@ const hostelInfraSanitation = () => {
         : [...hostelsList],
       title: name,
       modalTitle: hostelInfraSanitationCharts?.[name]?.modalTitle,
+      categoryValue: data?.valueId,
     })
+  }
+
+  const handleTableChange = async ({ current }) => {
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await handleClickFn({
+      category: selectedColumn?.categoryValue,
+      name: selectedColumn?.title,
+      pageNo: current,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
   }
 
   const getSeriesData = () => {
@@ -105,7 +173,11 @@ const hostelInfraSanitation = () => {
     let tempSeriesData = {}
     // let tempTotalData = {}
     entries(hostelInfraSanitationCharts).forEach(([key, value]) => {
-      if (notEqual(value?.type, 'rangeFrequency')) return
+      if (
+        notEqual(value?.type, 'rangeFrequency') ||
+        isEqual(key, 'job_DrinkingWater')
+      )
+        return
 
       tempOptions[key] = {
         xAxis: {
@@ -179,6 +251,8 @@ const hostelInfraSanitation = () => {
     axisOptions,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   }
 }
 

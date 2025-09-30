@@ -16,10 +16,14 @@ const HostelInfraSanitationDashboard = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   } = hostelInfraSanitation()
 
   return (
-    <DashboardWrapper {...{ handleCloseModal, selectedColumn }}>
+    <DashboardWrapper
+      {...{ handleCloseModal, hostelsData, selectedColumn, handleTableChange }}
+    >
       {axisOptions &&
         entries(hostelInfraSanitationCharts)?.map(([key, value]) => {
           return (

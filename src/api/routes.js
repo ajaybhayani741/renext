@@ -95,5 +95,8 @@ const API_ROUTES = {
   GET_SINGLE_REPORT: `/job-management/v1/userflexiblereport`,
   GET_FLEXIBLE_REPORT_CALCULATION: `/job-management/v1/flexible_report_calculation`,
   GET_GENERATED_REPORT: ({ params }) => `/job-management/v1/report${params}`,
+  GET_DRINKING_WATER_BAR_CHART: `/dashboard-management/v1/drinking-water/bar-chart`,
+  GET_DRINKING_WATER_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/drinking-water/hostels/${pageNo}`,
 }
 export default API_ROUTES

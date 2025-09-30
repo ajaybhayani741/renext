@@ -12,6 +12,8 @@ const {
   GET_BUBBLE_CHART,
   DASHBOARD_SHIFT_REPORT,
   DASHBOARD_DISCREPANCIES,
+  GET_DRINKING_WATER_BAR_CHART,
+  GET_DRINKING_WATER_HOSTELS,
 } = API_ROUTES
 
 const getCountryStateApi = async ({ params }) => {
@@ -71,6 +73,18 @@ const getDiscrepanciesApi = async ({ params }) => {
   return response?.data
 }
 
+const getDrinkingWaterChartApi = async ({ params }) => {
+  const response = await getMethod(GET_DRINKING_WATER_BAR_CHART, { params })
+  return response?.data
+}
+
+const getDrinkingWaterHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_DRINKING_WATER_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
 export {
   getPieChartApi,
   getBarChartApi,
@@ -81,4 +95,6 @@ export {
   getErrorCodeTableApi,
   getShiftReportApi,
   getDiscrepanciesApi,
+  getDrinkingWaterChartApi,
+  getDrinkingWaterHostelsApi,
 }

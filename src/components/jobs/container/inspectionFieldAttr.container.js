@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { values } from '../../../utils/javascript'
+import { drinkingWaterKeys } from '../../dashboard/dashboard.description'
 import { booleanOptions } from '../jobs.description'
 
 const inspectionFieldAttr = () => {
@@ -505,15 +507,7 @@ const inspectionFieldAttr = () => {
         label: 'job_SourceOfDrinkingWater',
         inputType: 'select',
         mode: 'multiple',
-        options: [
-          {
-            label: 'job_TapMunicipalityMissionBhageeratha',
-            value: 'TAP_MUNICIPALITY_MISSION_BHAGEERATHA',
-          },
-          { label: 'job_BoreWell', value: 'BORE_WELL' },
-          { label: 'job_OpenWell', value: 'OPEN_WELL' },
-          { label: 'job_ROPlant', value: 'RO_PLANT' },
-        ],
+        options: values(drinkingWaterKeys),
         required: true,
         md: 12,
         xs: 24,

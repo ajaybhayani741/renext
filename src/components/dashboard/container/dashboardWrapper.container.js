@@ -33,10 +33,10 @@ const dashboardWrapper = ({ title }) => {
     },
     {
       title: '',
-      dataIndex: 'name',
-      key: 'name',
+      // dataIndex: 'name',
+      key: 'lastName',
       colSpan: 0,
-      render: rowData => (rowData ? `${rowData}` : '-'),
+      render: rowData => rowData?.lastName ?? rowData?.name ?? '-',
       hidden: !condition,
     },
     {

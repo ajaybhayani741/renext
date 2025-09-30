@@ -11,9 +11,13 @@ const DashboardWrapper = ({
   selectedColumn,
   handleCloseModal,
   chartClassName,
+  handleTableChange = null,
+  hostelsData,
 }) => {
   const { t } = useTranslations()
   const { columns } = dashboardWrapper({ title: selectedColumn?.title })
+  const { hostels, loader, pageNo, lastPage } = hostelsData || {}
+  const pageSize = 10
 
   return (
     <div className="dashboard-wrapper">
@@ -41,16 +45,27 @@ const DashboardWrapper = ({
             </ANTDButton>
           </div>
           <ANTDTable
+            loading={loader}
             columns={columns}
             dataSource={
-              length(selectedColumn?.list)
-                ? selectedColumn?.list?.map((item, ind) => ({
-                    ...item,
-                    key: ind,
-                  }))
-                : []
+              length(hostels)
+                ? hostels
+                : length(selectedColumn?.list)
+                  ? selectedColumn?.list?.map((item, ind) => ({
+                      ...item,
+                      key: ind,
+                    }))
+                  : []
             }
-            pagination={false}
+            pagination={{
+              lastFetched: pageNo,
+              current: pageNo,
+              pageSize: pageSize,
+              total: lastPage * pageSize,
+              responsive: true,
+              hideOnSinglePage: true,
+            }}
+            onChange={handleTableChange}
             size="small"
           ></ANTDTable>
         </ANTDModal>
