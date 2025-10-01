@@ -3,13 +3,6 @@ import API_ROUTES from '../../api/routes'
 import { apiParams } from '../../utils'
 
 const {
-  GET_COUNTRY_STATE,
-  GET_TILES,
-  GET_PIE_CHART,
-  GET_ERROR_CODE_TABLE,
-  GET_BAR_CHART,
-  GET_TOTAL_JOBS,
-  GET_BUBBLE_CHART,
   DASHBOARD_SHIFT_REPORT,
   DASHBOARD_DISCREPANCIES,
   GET_DRINKING_WATER_BAR_CHART,
@@ -18,54 +11,15 @@ const {
   GET_STAFF_AVAILABILITY_HOSTELS,
   GET_AVAILABLE_TOILETS_CHART,
   GET_AVAILABLE_TOILETS_HOSTELS,
+  DASHBOARD_PRINCIPAL_AUTHORITY_BAR_CHART,
+  DASHBOARD_PRINCIPAL_AUTHORITY_HOSTELS,
+  DASHBOARD_RECORD_MAINTENANCE_BAR_CHART,
+  DASHBOARD_RECORD_MAINTENANCE_HOSTELS,
+  DASHBOARD_WASTE_MANAGEMENT_BAR_CHART,
+  DASHBOARD_WASTE_MANAGEMENT_HOSTELS,
+  DASHBOARD_TOILETS_SUFFICIENCY_BAR_CHART,
+  DASHBOARD_TOILETS_SUFFICIENCY_HOSTELS,
 } = API_ROUTES
-
-const getCountryStateApi = async ({ params }) => {
-  const response = await getMethod(
-    GET_COUNTRY_STATE({ params: apiParams({ params }) }),
-  )
-  return response?.data
-}
-
-const getNumberTilesApi = async ({ params }) => {
-  const response = await getMethod(GET_TILES({ params: apiParams({ params }) }))
-  return response?.data
-}
-
-const getPieChartApi = async ({ params }) => {
-  const response = await getMethod(
-    GET_PIE_CHART({ params: apiParams({ params }) }),
-  )
-  return response?.data
-}
-
-const getErrorCodeTableApi = async ({ params, pageNo }) => {
-  const response = await getMethod(
-    GET_ERROR_CODE_TABLE({ params: apiParams({ params, pageNo }) }),
-  )
-  return response?.data
-}
-
-const getBarChartApi = async ({ params, pageNo }) => {
-  const response = await getMethod(
-    GET_BAR_CHART({ params: apiParams({ params, pageNo }) }),
-  )
-  return response?.data
-}
-
-const getTotalJobsApi = async ({ params }) => {
-  const response = await getMethod(
-    GET_TOTAL_JOBS({ params: apiParams({ params }) }),
-  )
-  return response?.data
-}
-
-const getBubbleChartApi = async ({ params }) => {
-  const response = await getMethod(
-    GET_BUBBLE_CHART({ params: apiParams({ params }) }),
-  )
-  return response?.data
-}
 
 const getShiftReportApi = async ({ params }) => {
   const response = await getMethod(DASHBOARD_SHIFT_REPORT, { params })
@@ -101,6 +55,13 @@ const getStaffAvailabilityHostelsApi = async ({ pageNo, params }) => {
   return response?.data
 }
 
+const getPrincipalAuthorityBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_PRINCIPAL_AUTHORITY_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
 const getAvailableToiletsChartApi = async ({ params }) => {
   const response = await getMethod(GET_AVAILABLE_TOILETS_CHART, { params })
   return response?.data
@@ -113,20 +74,78 @@ const getAvailableToiletsHostelsApi = async ({ pageNo, params }) => {
   return response?.data
 }
 
+const getPrincipalAuthorityHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_PRINCIPAL_AUTHORITY_HOSTELS({
+      params: apiParams({ params, pageNo }),
+    }),
+  )
+  return response?.data
+}
+
+const getRecordMaintenanceBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_RECORD_MAINTENANCE_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getRecordMaintenanceHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_RECORD_MAINTENANCE_HOSTELS({
+      params: apiParams({ params, pageNo }),
+    }),
+  )
+  return response?.data
+}
+
+const getWasteManagementBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_WASTE_MANAGEMENT_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getWasteManagementHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_WASTE_MANAGEMENT_HOSTELS({
+      params: apiParams({ params, pageNo }),
+    }),
+  )
+  return response?.data
+}
+
+const getToiletsSufficiencyBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_TOILETS_SUFFICIENCY_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getToiletsSufficiencyHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_TOILETS_SUFFICIENCY_HOSTELS({
+      params: apiParams({ params, pageNo }),
+    }),
+  )
+  return response?.data
+}
+
 export {
-  getPieChartApi,
-  getBarChartApi,
-  getTotalJobsApi,
-  getBubbleChartApi,
-  getCountryStateApi,
-  getNumberTilesApi,
-  getErrorCodeTableApi,
-  getShiftReportApi,
   getDiscrepanciesApi,
+  getShiftReportApi,
+  getPrincipalAuthorityBarChartApi,
+  getPrincipalAuthorityHostelsApi,
   getDrinkingWaterChartApi,
   getDrinkingWaterHostelsApi,
   getAvailableToiletsChartApi,
   getAvailableToiletsHostelsApi,
   getStaffAvailabilityChartApi,
   getStaffAvailabilityHostelsApi,
+  getRecordMaintenanceBarChartApi,
+  getRecordMaintenanceHostelsApi,
+  getWasteManagementBarChartApi,
+  getWasteManagementHostelsApi,
+  getToiletsSufficiencyBarChartApi,
+  getToiletsSufficiencyHostelsApi,
 }

@@ -74,21 +74,12 @@ const API_ROUTES = {
     `/dataviz-management/v1/brand/jobs/total${params}`,
   SHARE_REPORT: `/job-management/v1/email-sms`,
   UPDATE_REPORT: `/job-management/v1/updation/report`,
-  GET_COUNTRY_STATE: ({ params }) =>
-    `/dataviz-management/v1/dashboard/statecitylist${params}`,
-  GET_TILES: ({ params }) => `/dataviz-management/v1/dashboard/tiles${params}`,
-  GET_PIE_CHART: ({ params }) =>
-    `/dataviz-management/v1/dashboard/piechart${params}`,
-  GET_ERROR_CODE_TABLE: ({ params }) =>
-    `/dataviz-management/v1/dashboard/table/${params}`,
-  GET_BAR_CHART: ({ params }) =>
-    `/dataviz-management/v1/dashboard/barchart/${params}`,
-  GET_TOTAL_JOBS: ({ params }) =>
-    `/dataviz-management/v1/dashboard/totalJobs${params}`,
-  GET_BUBBLE_CHART: ({ params }) =>
-    `/dataviz-management/v1/dashboard/bubblechart${params}`,
   DASHBOARD_SHIFT_REPORT: '/dashboard-management/v1/shiftreport',
   DASHBOARD_DISCREPANCIES: '/dashboard-management/v1/discrepancies',
+  DASHBOARD_PRINCIPAL_AUTHORITY_BAR_CHART:
+    '/dashboard-management/v1/principal-authority/bar-chart',
+  DASHBOARD_PRINCIPAL_AUTHORITY_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/principal-authority/hostels/${params}`,
   GET_COLUMN_LIST: ({ params }) => `/job-management/v1/reportcolumn${params}`,
   SAVE_FLEXIBLE_REPORT: `/job-management/v1/userflexiblereport`,
   GET_SAVE_FLEXIBLE_REPORT: `/job-management/v1/userflexiblereport`,
@@ -104,5 +95,14 @@ const API_ROUTES = {
   GET_AVAILABLE_TOILETS_CHART: `/dashboard-management/v1/hostel-toilets-available-chart`,
   GET_AVAILABLE_TOILETS_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/hostel-toilets-available-chart/hostels/${pageNo}`,
+  DASHBOARD_RECORD_MAINTENANCE_BAR_CHART: `/dashboard-management/v1/record-maintenance/bar-chart`,
+  DASHBOARD_RECORD_MAINTENANCE_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/record-maintenance/hostels/${params}`,
+  DASHBOARD_WASTE_MANAGEMENT_BAR_CHART: `/dashboard-management/v1/waste-management/bar-chart`,
+  DASHBOARD_WASTE_MANAGEMENT_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/waste-management/hostels/${params}`,
+  DASHBOARD_TOILETS_SUFFICIENCY_BAR_CHART: `/dashboard-management/v1/toilets-sufficiency/bar-chart`,
+  DASHBOARD_TOILETS_SUFFICIENCY_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/toilets-sufficiency/hostels/${params}`,
 }
 export default API_ROUTES

@@ -11,10 +11,14 @@ const HostelAuthorityDashboard = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   } = hostelAuthority()
 
   return (
-    <DashboardWrapper {...{ handleCloseModal, selectedColumn }}>
+    <DashboardWrapper
+      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+    >
       <ANTDColumn xs={24} md={12}>
         <ColumnComparison
           {...{

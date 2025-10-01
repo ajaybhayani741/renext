@@ -11,11 +11,19 @@ const RecordMaintenanceDashboard = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   } = recordMaintenance()
 
   return (
     <DashboardWrapper
-      {...{ handleCloseModal, selectedColumn, chartClassName: 'w-100' }}
+      {...{
+        handleCloseModal,
+        selectedColumn,
+        chartClassName: 'w-100',
+        handleTableChange,
+        hostelsData,
+      }}
     >
       <ANTDColumn xs={24}>
         <ColumnComparison
