@@ -98,5 +98,11 @@ const API_ROUTES = {
   GET_DRINKING_WATER_BAR_CHART: `/dashboard-management/v1/drinking-water/bar-chart`,
   GET_DRINKING_WATER_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/drinking-water/hostels/${pageNo}`,
+  GET_STAFF_AVAILABILITY_CHART: `/dashboard-management/v1/staff-nurse-availability/pie-chart`,
+  GET_STAFF_AVAILABILITY_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/staff-nurse-availability/hostels/${pageNo}`,
+  GET_AVAILABLE_TOILETS_CHART: `/dashboard-management/v1/hostel-toilets-available-chart`,
+  GET_AVAILABLE_TOILETS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-toilets-available-chart/hostels/${pageNo}`,
 }
 export default API_ROUTES

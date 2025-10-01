@@ -14,6 +14,10 @@ const {
   DASHBOARD_DISCREPANCIES,
   GET_DRINKING_WATER_BAR_CHART,
   GET_DRINKING_WATER_HOSTELS,
+  GET_STAFF_AVAILABILITY_CHART,
+  GET_STAFF_AVAILABILITY_HOSTELS,
+  GET_AVAILABLE_TOILETS_CHART,
+  GET_AVAILABLE_TOILETS_HOSTELS,
 } = API_ROUTES
 
 const getCountryStateApi = async ({ params }) => {
@@ -85,6 +89,30 @@ const getDrinkingWaterHostelsApi = async ({ pageNo, params }) => {
   return response?.data
 }
 
+const getStaffAvailabilityChartApi = async ({ params }) => {
+  const response = await getMethod(GET_STAFF_AVAILABILITY_CHART, { params })
+  return response?.data
+}
+
+const getStaffAvailabilityHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_STAFF_AVAILABILITY_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
+const getAvailableToiletsChartApi = async ({ params }) => {
+  const response = await getMethod(GET_AVAILABLE_TOILETS_CHART, { params })
+  return response?.data
+}
+
+const getAvailableToiletsHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_AVAILABLE_TOILETS_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
 export {
   getPieChartApi,
   getBarChartApi,
@@ -97,4 +125,8 @@ export {
   getDiscrepanciesApi,
   getDrinkingWaterChartApi,
   getDrinkingWaterHostelsApi,
+  getAvailableToiletsChartApi,
+  getAvailableToiletsHostelsApi,
+  getStaffAvailabilityChartApi,
+  getStaffAvailabilityHostelsApi,
 }

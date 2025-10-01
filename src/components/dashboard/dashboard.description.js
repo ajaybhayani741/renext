@@ -589,3 +589,18 @@ export const drinkingWaterKeys = {
     value: 'TAP_MUNICIPALITY_MISSION_BHAGEERATHA',
   },
 }
+
+export const availableNursingStaffKeys = {
+  available: {
+    label: 'job_StaffNurseAvailability_Available',
+    value: 'AVAILABLE',
+  },
+  notAvailableAndNoNurseFromPHCVisits: {
+    label: 'job_StaffNurseAvailability_NotAvailable',
+    value: 'NOT_AVAILABLE_NO_PHC_NURSE_VISITS',
+  },
+  notAvailableButANMNurseFromPHCVisitsRegularly: {
+    label: 'job_StaffNurseAvailability_ANMVisits',
+    value: 'NOT_AVAILABLE_BUT_PHC_NURSE_VISITS',
+  },
+}

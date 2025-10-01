@@ -17,10 +17,14 @@ const MedicalCareDashboard = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   } = medicalCare()
   const { t } = useTranslations()
   return (
-    <DashboardWrapper {...{ handleCloseModal, selectedColumn }}>
+    <DashboardWrapper
+      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+    >
       {axisOptions &&
         entries(medicalCareCharts)?.map(([key, value]) => {
           return (

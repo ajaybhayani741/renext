@@ -1,7 +1,10 @@
 import { useCallback } from 'react'
 
 import { values } from '../../../utils/javascript'
-import { drinkingWaterKeys } from '../../dashboard/dashboard.description'
+import {
+  availableNursingStaffKeys,
+  drinkingWaterKeys,
+} from '../../dashboard/dashboard.description'
 import { booleanOptions } from '../jobs.description'
 
 const inspectionFieldAttr = () => {
@@ -535,9 +538,12 @@ const inspectionFieldAttr = () => {
           },
           {
             label: 'job_SickBoarderRecordsStatus_No',
-            value: 'NO_RECORDS_ENTERED_CORRECTLY',
+            value: 'NO_RECORDS_NOT_ENTERED_CORRECTLY',
           },
-          { label: 'job_SickBoarderRecordsStatus_None', value: 'NONE' },
+          {
+            label: 'job_SickBoarderRecordsStatus_None',
+            value: 'NO_SICK_BOARDER',
+          },
         ],
         required: true,
         md: 12,
@@ -546,17 +552,7 @@ const inspectionFieldAttr = () => {
       staffNurseAvailableInHostel: {
         label: 'job_StaffNurseAvailability',
         inputType: 'select',
-        options: [
-          { label: 'job_StaffNurseAvailability_Available', value: 'AVAILABLE' },
-          {
-            label: 'job_StaffNurseAvailability_ANMVisits',
-            value: 'NOT_AVAILABLE_BUT_PHC_NURSE_VISITS',
-          },
-          {
-            label: 'job_StaffNurseAvailability_NotAvailable',
-            value: 'NOT_AVAILABLE_NO_PHC_NURSE_VISITS',
-          },
-        ],
+        options: values(availableNursingStaffKeys),
         required: true,
         md: 12,
         xs: 24,

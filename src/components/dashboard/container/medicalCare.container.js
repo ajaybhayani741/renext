@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, notEqual } from '../../../utils/javascript'
 import {
+  getStaffAvailabilityChartApi,
+  getStaffAvailabilityHostelsApi,
+} from '../dashboard.api'
+import {
+  availableNursingStaffKeys,
   axisOptionsList,
   medicalCareCharts,
   schoolsList,
@@ -10,6 +16,9 @@ import {
 
 const medicalCare = () => {
   const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
+  const [hostelsData, setHostelsData] = useState(null)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
@@ -75,25 +84,70 @@ const medicalCare = () => {
         },
       ],
     },
-    dash_IsTheStaffNurseAvailableInTheHostel: [
-      {
-        colorByPoint: true,
-        data: [
-          { id: 1, name: t('job_StaffNurseAvailability_Available'), y: 10 },
-          { id: 1, name: t('job_StaffNurseAvailability_ANMVisits'), y: 10 },
-          { id: 1, name: t('job_StaffNurseAvailability_NotAvailable'), y: 10 },
-        ],
-      },
-    ],
   })
   const [axisOptions, setAxisOptions] = useState(null)
 
   useEffect(() => {
     getSeriesData()
-  }, [])
+    if (dateRange?.from && dateRange?.to) {
+      getData()
+    }
+  }, [dateRange])
 
-  const handleChartClick = (e, name) => {
+  const getData = async () => {
+    const [staffResp] = await Promise.all([
+      getStaffAvailabilityChartApi({
+        params: { fromDate: dateRange?.from, toDate: dateRange?.to },
+      }),
+    ])
+
+    let tempSeriesData = {}
+    if (staffResp?.data) {
+      const data = [
+        {
+          colorByPoint: true,
+          data: entries(availableNursingStaffKeys)?.map(([k, v], i) => ({
+            id: i + 1,
+            name: t(v?.label),
+            valueId: v?.value,
+            y: staffResp?.data?.[k] || 0,
+          })),
+        },
+      ]
+      tempSeriesData['dash_IsTheStaffNurseAvailableInTheHostel'] = data
+    }
+    setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
+  }
+
+  const handleClickFn = async ({ category, name, pageNo = 1 }) => {
+    switch (name) {
+      case 'dash_IsTheStaffNurseAvailableInTheHostel':
+        const resp = await getStaffAvailabilityHostelsApi({
+          pageNo,
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            filterValue: category,
+          },
+        })
+        return resp?.data
+
+      default:
+        setHostelsData(null)
+        break
+    }
+  }
+
+  const handleChartClick = async (e, name) => {
     const data = e.point
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await handleClickFn({ category: data?.valueId, name })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
+
     setSelectedColumn({
       selected: true,
       chartData: {
@@ -106,7 +160,22 @@ const medicalCare = () => {
       list: [...schoolsList],
       title: name,
       modalTitle: true,
+      categoryValue: data?.valueId,
     })
+  }
+
+  const handleTableChange = async ({ current }) => {
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await handleClickFn({
+      category: selectedColumn?.categoryValue,
+      name: selectedColumn?.title,
+      pageNo: current,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
   }
 
   const getSeriesData = () => {
@@ -188,6 +257,8 @@ const medicalCare = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   }
 }
 
