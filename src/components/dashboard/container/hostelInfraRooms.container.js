@@ -1,31 +1,137 @@
 import { useEffect, useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
 import {
+  getLocationBedsMattressesBarChartApi,
+  getLocationBedsMattressesHostelsApi,
+} from '../dashboard.api'
+import {
   axisOptionsList,
   hostelInfraRoomsCharts,
-  hostelsList,
-  schoolsList,
 } from '../dashboard.description'
 
 const hostelInfraRooms = () => {
   const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
   const [seriesData, setSeriesData] = useState(null)
   const [axisOptions, setAxisOptions] = useState(null)
+  const [hostelsData, setHostelsData] = useState(null)
   // const [totalData, setTotalData] = useState(null)
   const title = t('dash_StaffDetails')
 
+  const locationBedsMattressesCategoryMapping = {
+    [t('dash_LocationGovtPrivate')]: 'HOSTEL_LOCATION_TYPE',
+    [t('dash_AreBedsAvailableForAll')]: 'BEDS_AVAILABLE_FOR_ALL',
+    [t('dash_AreMattressesAvailableForAll')]: 'MATTRESSES_AVAILABLE_FOR_ALL',
+    [t('dash_IsAccommodationSufficient')]: 'ACCOMMODATION_SUFFICIENT',
+  }
+
+  const filterValueMapping = {
+    [t('dash_Government')]: 'GOVERNMENT',
+    [t('dash_Private')]: 'PRIVATE',
+    [t('btn_Yes')]: 'YES',
+    [t('btn_No')]: 'NO',
+  }
+
   useEffect(() => {
     getSeriesData()
-  }, [])
+    if (dateRange?.from && dateRange?.to) {
+      getLocationBedsMattressesData()
+    }
+  }, [dateRange])
 
-  const handleChartClick = (e, name) => {
+  //get series data
+  const getLocationBedsMattressesData = async () => {
+    const params = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    const response = await getLocationBedsMattressesBarChartApi({ params })
+
+    if (response && response.data) {
+      const newSeriesData = [
+        {
+          name: '',
+          color: '#eabf9f',
+          data: [
+            {
+              y: response.data.governmentLocationCount || 0,
+              custom: { label: t('dash_Government') },
+            },
+            {
+              y: response.data.bedsAvailableForAllYes || 0,
+              custom: { label: t('btn_Yes') },
+            },
+            {
+              y: response.data.mattressesAvailableForAllYes || 0,
+              custom: { label: t('btn_Yes') },
+            },
+            {
+              y: response.data.accommodationSufficientYes || 0,
+              custom: { label: t('btn_Yes') },
+            },
+          ],
+        },
+        {
+          name: '',
+          color: '#f1725d',
+          data: [
+            {
+              y: response.data.privateLocationCount || 0,
+              custom: { label: t('dash_Private') },
+            },
+            {
+              y: response.data.bedsAvailableForAllNo || 0,
+              custom: { label: t('btn_No') },
+            },
+            {
+              y: response.data.mattressesAvailableForAllNo || 0,
+              custom: { label: t('btn_No') },
+            },
+            {
+              y: response.data.accommodationSufficientNo || 0,
+              custom: { label: t('btn_No') },
+            },
+          ],
+        },
+      ]
+
+      setSeriesData(prev => ({
+        ...prev,
+        dash_LocationBedsMattresses: newSeriesData,
+      }))
+    }
+  }
+
+  const getLocationBedsMattressesHostelsData = async ({
+    category,
+    filterValue,
+    pageNo = 1,
+  }) => {
+    const params = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      category: category,
+      filterValue: filterValue,
+    }
+    const response = await getLocationBedsMattressesHostelsApi({
+      params,
+      pageNo,
+    })
+    return response?.data
+  }
+
+  const handleChartClick = async (e, name) => {
     const data = e.point
+    setHostelsData(prev => ({ ...prev, loader: true }))
+
     setSelectedColumn({
       selected: true,
       chartData: {
@@ -33,12 +139,29 @@ const hostelInfraRooms = () => {
         type: data?.series?.name || data?.custom?.label,
         value: data?.y,
       },
-      list: isEqual(name, 'dash_LocationBedsMattresses')
-        ? [...schoolsList]
-        : [...hostelsList],
       title: name,
       modalTitle: hostelInfraRoomsCharts?.[name]?.modalTitle,
     })
+
+    let respData = null
+    if (name === 'dash_LocationBedsMattresses') {
+      const categoryIndex = data?.category
+      const filterValue = data?.custom?.label
+
+      const apiCategory = locationBedsMattressesCategoryMapping[categoryIndex]
+      const apiFilterValue = filterValueMapping[filterValue]
+
+      respData = await getLocationBedsMattressesHostelsData({
+        category: apiCategory,
+        filterValue: apiFilterValue,
+      })
+
+      if (respData) {
+        setHostelsData({ ...respData, loader: false })
+      } else {
+        setHostelsData(prev => ({ ...prev, loader: false }))
+      }
+    }
   }
 
   const getSeriesData = () => {
@@ -139,6 +262,34 @@ const hostelInfraRooms = () => {
       chartData: null,
       list: [],
     })
+    setHostelsData({})
+  }
+
+  const handleTableChange = async ({ current }) => {
+    if (selectedColumn?.title === 'dash_LocationBedsMattresses') {
+      setHostelsData(prev => ({ ...prev, loader: true }))
+      const categoryIndex = selectedColumn?.chartData?.category
+      const categoryKeys = Object.keys(locationBedsMattressesCategoryMapping)
+      const filterValue = selectedColumn?.chartData?.type
+
+      if (categoryIndex !== undefined && categoryKeys[categoryIndex]) {
+        const apiCategory =
+          locationBedsMattressesCategoryMapping[categoryKeys[categoryIndex]]
+        const apiFilterValue = filterValueMapping[filterValue]
+
+        const respData = await getLocationBedsMattressesHostelsData({
+          category: apiCategory,
+          filterValue: apiFilterValue,
+          pageNo: current,
+        })
+
+        if (respData) {
+          setHostelsData({ ...respData, loader: false })
+        } else {
+          setHostelsData(prev => ({ ...prev, loader: false }))
+        }
+      }
+    }
   }
 
   return {
@@ -148,6 +299,8 @@ const hostelInfraRooms = () => {
     selectedColumn,
     handleChartClick,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   }
 }
 

@@ -16,10 +16,14 @@ const FoodProvisionsDashboard = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   } = foodProvisions()
   const { t } = useTranslations()
   return (
-    <DashboardWrapper {...{ handleCloseModal, selectedColumn }}>
+    <DashboardWrapper
+      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+    >
       {axisOptions &&
         entries(foodPrevisionsCharts)?.map(([key, value]) => {
           return (

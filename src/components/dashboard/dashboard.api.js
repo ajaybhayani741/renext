@@ -19,6 +19,20 @@ const {
   DASHBOARD_WASTE_MANAGEMENT_HOSTELS,
   DASHBOARD_TOILETS_SUFFICIENCY_BAR_CHART,
   DASHBOARD_TOILETS_SUFFICIENCY_HOSTELS,
+  DASHBOARD_LOCATION_BEDS_MATTRESSES_BAR_CHART,
+  DASHBOARD_LOCATION_BEDS_MATTRESSES_HOSTELS,
+  DASHBOARD_MEDICAL_CARE_BAR_CHART,
+  DASHBOARD_MEDICAL_CARE_HOSTELS,
+  DASHBOARD_EDUCATION_FACILITIES_BAR_CHART,
+  DASHBOARD_EDUCATION_FACILITIES_HOSTELS,
+  DASHBOARD_FOOD_PROVISIONS_BAR_CHART,
+  DASHBOARD_FOOD_PROVISIONS_HOSTELS,
+  DASHBOARD_PRECAUTIONARY_MEASURES_BAR_CHART,
+  DASHBOARD_PRECAUTIONARY_MEASURES_HOSTELS,
+  DASHBOARD_ANIMAL_THREAT_BAR_CHART,
+  DASHBOARD_ANIMAL_THREAT_HOSTELS,
+  DASHBOARD_CONDUCTION_MEETINGS_BAR_CHART,
+  DASHBOARD_CONDUCTION_MEETINGS_HOSTELS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -131,6 +145,124 @@ const getToiletsSufficiencyHostelsApi = async ({ params, pageNo = 1 }) => {
   return response?.data
 }
 
+const getLocationBedsMattressesBarChartApi = async ({ params }) => {
+  const response = await getMethod(
+    DASHBOARD_LOCATION_BEDS_MATTRESSES_BAR_CHART,
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+
+const getLocationBedsMattressesHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_LOCATION_BEDS_MATTRESSES_HOSTELS({
+      params: apiParams({ params, pageNo }),
+    }),
+  )
+  return response?.data
+}
+
+const getMedicalCareBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_MEDICAL_CARE_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getMedicalCareHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(DASHBOARD_MEDICAL_CARE_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
+const getEducationFacilitiesBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_EDUCATION_FACILITIES_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getEducationFacilitiesHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_EDUCATION_FACILITIES_HOSTELS({ pageNo }),
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+
+const getFoodProvisionsBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_FOOD_PROVISIONS_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getFoodProvisionsHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_FOOD_PROVISIONS_HOSTELS({ pageNo }),
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+
+const getPrecautionaryMeasuresBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_PRECAUTIONARY_MEASURES_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getPrecautionaryMeasuresHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_PRECAUTIONARY_MEASURES_HOSTELS({ pageNo }),
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+
+const getAnimalThreatBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_ANIMAL_THREAT_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getAnimalThreatHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_ANIMAL_THREAT_HOSTELS({ pageNo }),
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+
+const getConductionMeetingsBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_CONDUCTION_MEETINGS_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getConductionMeetingsHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_CONDUCTION_MEETINGS_HOSTELS({ pageNo }),
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+
 export {
   getDiscrepanciesApi,
   getShiftReportApi,
@@ -148,4 +280,18 @@ export {
   getWasteManagementHostelsApi,
   getToiletsSufficiencyBarChartApi,
   getToiletsSufficiencyHostelsApi,
+  getLocationBedsMattressesBarChartApi,
+  getLocationBedsMattressesHostelsApi,
+  getMedicalCareBarChartApi,
+  getMedicalCareHostelsApi,
+  getEducationFacilitiesBarChartApi,
+  getEducationFacilitiesHostelsApi,
+  getFoodProvisionsBarChartApi,
+  getFoodProvisionsHostelsApi,
+  getPrecautionaryMeasuresBarChartApi,
+  getPrecautionaryMeasuresHostelsApi,
+  getAnimalThreatBarChartApi,
+  getAnimalThreatHostelsApi,
+  getConductionMeetingsBarChartApi,
+  getConductionMeetingsHostelsApi,
 }

@@ -104,5 +104,26 @@ const API_ROUTES = {
   DASHBOARD_TOILETS_SUFFICIENCY_BAR_CHART: `/dashboard-management/v1/toilets-sufficiency/bar-chart`,
   DASHBOARD_TOILETS_SUFFICIENCY_HOSTELS: ({ params }) =>
     `/dashboard-management/v1/toilets-sufficiency/hostels/${params}`,
+  DASHBOARD_LOCATION_BEDS_MATTRESSES_BAR_CHART: `/dashboard-management/v1/location-beds-mattresses/bar-chart`,
+  DASHBOARD_LOCATION_BEDS_MATTRESSES_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/location-beds-mattresses/hostels/${params}`,
+  DASHBOARD_MEDICAL_CARE_BAR_CHART: `/dashboard-management/v1/medical-care/bar-chart`,
+  DASHBOARD_MEDICAL_CARE_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/medical-care/hostels/${pageNo}`,
+  DASHBOARD_EDUCATION_FACILITIES_BAR_CHART: `/dashboard-management/v1/education-facilities/bar-chart`,
+  DASHBOARD_EDUCATION_FACILITIES_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/education-facilities/hostels/${pageNo}`,
+  DASHBOARD_FOOD_PROVISIONS_BAR_CHART: `/dashboard-management/v1/food-provisions/bar-chart`,
+  DASHBOARD_FOOD_PROVISIONS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/food-provisions/hostels/${pageNo}`,
+  DASHBOARD_PRECAUTIONARY_MEASURES_BAR_CHART: `/dashboard-management/v1/precautionary-measures/bar-chart`,
+  DASHBOARD_PRECAUTIONARY_MEASURES_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/precautionary-measures/hostels/${pageNo}`,
+  DASHBOARD_ANIMAL_THREAT_BAR_CHART: `/dashboard-management/v1/animal-threat/bar-chart`,
+  DASHBOARD_ANIMAL_THREAT_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/animal-threat/hostels/${pageNo}`,
+  DASHBOARD_CONDUCTION_MEETINGS_BAR_CHART: `/dashboard-management/v1/conduction-meetings/bar-chart`,
+  DASHBOARD_CONDUCTION_MEETINGS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/conduction-meetings/hostels/${pageNo}`,
 }
 export default API_ROUTES
