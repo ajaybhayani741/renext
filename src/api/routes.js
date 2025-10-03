@@ -128,5 +128,29 @@ const API_ROUTES = {
   DASHBOARD_COOKING_FUEL_BAR_CHART: `/dashboard-management/v1/cooking-fuel/bar-chart`,
   DASHBOARD_COOKING_FUEL_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/cooking-fuel/hostels/${pageNo}`,
+  GET_FUNCTIONING_TOILETS_CHART: `/dashboard-management/v1/hostel-toilets-functioning-percentage-chart`,
+  GET_FUNCTIONING_TOILETS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-toilets-functioning-percentage-chart/hostels/${pageNo}`,
+  GET_HOSTEL_STUDENT_CHART: `/dashboard-management/v1/hostel-student-chart`,
+  GET_HOSTEL_STUDENT_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-student-chart/hostels/${pageNo}`,
+  GET_WORKERS_CHART: `/dashboard-management/v1/hostel-workers-payroll-chart`,
+  GET_WORKERS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-workers-payroll-chart/hostels/${pageNo}`,
+  GET_COOKS_CHART: `/dashboard-management/v1/hostel-cooks-enrolled-chart`,
+  GET_COOKS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-cooks-enrolled-chart/hostels/${pageNo}`,
+  GET_KAMATI_CHART: `/dashboard-management/v1/hostel-kamati-enrolled-chart`,
+  GET_KAMATI_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-kamati-enrolled-chart/hostels/${pageNo}`,
+  GET_WATCHMAN_CHART: `/dashboard-management/v1/hostel-watchmen-attenders-enrolled-chart`,
+  GET_WATCHMAN_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-watchmen-attenders-enrolled-chart/hostels/${pageNo}`,
+  GET_AVAILABLE_SCAVENGERS_CHART: `/dashboard-management/v1/hostel-scavengers-available-chart`,
+  GET_AVAILABLE_SCAVENGERS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-scavengers-available-chart/hostels/${pageNo}`,
+  GET_REQUIRED_SCAVENGERS_CHART: `/dashboard-management/v1/hostel-scavengers-required-chart`,
+  GET_REQUIRED_SCAVENGERS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-scavengers-required-chart/hostels/${pageNo}`,
 }
 export default API_ROUTES

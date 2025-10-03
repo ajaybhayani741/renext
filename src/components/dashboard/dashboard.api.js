@@ -35,6 +35,22 @@ const {
   DASHBOARD_CONDUCTION_MEETINGS_HOSTELS,
   DASHBOARD_COOKING_FUEL_BAR_CHART,
   DASHBOARD_COOKING_FUEL_HOSTELS,
+  GET_FUNCTIONING_TOILETS_CHART,
+  GET_FUNCTIONING_TOILETS_HOSTELS,
+  GET_HOSTEL_STUDENT_CHART,
+  GET_HOSTEL_STUDENT_HOSTELS,
+  GET_WORKERS_CHART,
+  GET_WORKERS_HOSTELS,
+  GET_COOKS_CHART,
+  GET_COOKS_HOSTELS,
+  GET_KAMATI_CHART,
+  GET_KAMATI_HOSTELS,
+  GET_WATCHMAN_CHART,
+  GET_WATCHMAN_HOSTELS,
+  GET_AVAILABLE_SCAVENGERS_CHART,
+  GET_AVAILABLE_SCAVENGERS_HOSTELS,
+  GET_REQUIRED_SCAVENGERS_CHART,
+  GET_REQUIRED_SCAVENGERS_HOSTELS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -157,6 +173,21 @@ const getLocationBedsMattressesBarChartApi = async ({ params }) => {
   return response?.data
 }
 
+const getFunctioningToiletsChartApi = async ({ params }) => {
+  const response = await getMethod(GET_FUNCTIONING_TOILETS_CHART, { params })
+  return response?.data
+}
+
+const getFunctioningToiletsHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(
+    GET_FUNCTIONING_TOILETS_HOSTELS({ pageNo }),
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+
 const getLocationBedsMattressesHostelsApi = async ({ params, pageNo = 1 }) => {
   const response = await getMethod(
     DASHBOARD_LOCATION_BEDS_MATTRESSES_HOSTELS({
@@ -190,6 +221,84 @@ const getEducationFacilitiesBarChartApi = async ({ params }) => {
 const getEducationFacilitiesHostelsApi = async ({ params, pageNo = 1 }) => {
   const response = await getMethod(
     DASHBOARD_EDUCATION_FACILITIES_HOSTELS({ pageNo }),
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+
+const getHostelStudentsChartApi = async ({ params }) => {
+  const response = await getMethod(GET_HOSTEL_STUDENT_CHART, { params })
+  return response?.data
+}
+
+const getStudentsHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_HOSTEL_STUDENT_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getWorkersChartApi = async ({ params }) => {
+  const response = await getMethod(GET_WORKERS_CHART, { params })
+  return response?.data
+}
+const getWorkersHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_WORKERS_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getCooksChartApi = async ({ params }) => {
+  const response = await getMethod(GET_COOKS_CHART, { params })
+  return response?.data
+}
+const getCooksHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_COOKS_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getKamatiChartApi = async ({ params }) => {
+  const response = await getMethod(GET_KAMATI_CHART, { params })
+  return response?.data
+}
+const getKamatiHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_KAMATI_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getWatchmanChartApi = async ({ params }) => {
+  const response = await getMethod(GET_WATCHMAN_CHART, { params })
+  return response?.data
+}
+const getWatchmanHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_WATCHMAN_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getAvailableScavengersChartApi = async ({ params }) => {
+  const response = await getMethod(GET_AVAILABLE_SCAVENGERS_CHART, { params })
+  return response?.data
+}
+const getAvailableScavengersHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(
+    GET_AVAILABLE_SCAVENGERS_HOSTELS({ pageNo }),
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+const getRequiredScavengersChartApi = async ({ params }) => {
+  const response = await getMethod(GET_REQUIRED_SCAVENGERS_CHART, { params })
+  return response?.data
+}
+const getRequiredScavengersHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(
+    GET_REQUIRED_SCAVENGERS_HOSTELS({ pageNo }),
     {
       params,
     },
@@ -312,4 +421,20 @@ export {
   getConductionMeetingsHostelsApi,
   getCookingFuelBarChartApi,
   getCookingFuelHostelsApi,
+  getFunctioningToiletsChartApi,
+  getFunctioningToiletsHostelsApi,
+  getHostelStudentsChartApi,
+  getStudentsHostelsApi,
+  getWorkersChartApi,
+  getWorkersHostelsApi,
+  getCooksChartApi,
+  getCooksHostelsApi,
+  getKamatiChartApi,
+  getKamatiHostelsApi,
+  getWatchmanChartApi,
+  getWatchmanHostelsApi,
+  getAvailableScavengersChartApi,
+  getAvailableScavengersHostelsApi,
+  getRequiredScavengersChartApi,
+  getRequiredScavengersHostelsApi,
 }

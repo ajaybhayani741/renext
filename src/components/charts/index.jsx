@@ -5,6 +5,7 @@ import Cylinder from 'highcharts/modules/cylinder.js'
 import Drilldown from 'highcharts/modules/drilldown'
 import Funnel from 'highcharts/modules/funnel3d'
 import HighchartsMap from 'highcharts/modules/map' // Import map module
+import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 import ParallelCoordinates from 'highcharts/modules/parallel-coordinates'
 import Sankey from 'highcharts/modules/sankey'
 import Stock from 'highcharts/modules/stock'
@@ -24,6 +25,7 @@ Cylinder(Highcharts)
 Funnel(Highcharts)
 Stock(Highcharts)
 ParallelCoordinates(Highcharts)
+NoDataToDisplay(Highcharts)
 
 const HightChart = ({
   options,
@@ -31,10 +33,15 @@ const HightChart = ({
   header,
   loading = false,
   title,
+  className,
   ...props
 }) => {
   return (
-    <ANTDCard className="mb-10 chart-card" bordered={false} {...(id && { id })}>
+    <ANTDCard
+      className={`${className} mb-10 chart-card`}
+      bordered={false}
+      {...(id && { id })}
+    >
       {header}
       {!loading ? (
         <HighchartsReact

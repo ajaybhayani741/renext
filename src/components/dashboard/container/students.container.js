@@ -1,23 +1,52 @@
 import { useEffect, useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { axisOptionsList, hostelsList } from '../dashboard.description'
+import {
+  getHostelStudentsChartApi,
+  getStudentsHostelsApi,
+} from '../dashboard.api'
+import { hostelsList, lineChartRange } from '../dashboard.description'
+import { setLineChartSeriesData } from '../dashboardFunctions'
 
 const students = () => {
   const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
   const [seriesData, setSeriesData] = useState(null)
-  const [axisOptions, setAxisOptions] = useState({ ...axisOptionsList })
+  const [hostelsData, setHostelsData] = useState(null)
+  // const [axisOptions, setAxisOptions] = useState({ ...axisOptionsList })
   const title = t('dash_TotalNumberOfStudents')
 
   useEffect(() => {
-    getSeriesData()
-  }, [])
+    if (dateRange?.from && dateRange?.to) {
+      getData()
+    }
+  }, [dateRange])
 
-  const handleChartClick = e => {
+  const getData = async () => {
+    let tempSeriesData = {}
+    const respData = await getHostelStudentsChartApi({
+      params: {
+        fromDate: dateRange?.from,
+        toDate: dateRange?.to,
+        start: lineChartRange?.start,
+        end: lineChartRange?.end,
+      },
+    })
+    setLineChartSeriesData({
+      respData,
+      tempSeriesData,
+      key: 'dash_Students',
+    })
+    setSeriesData(tempSeriesData)
+  }
+
+  const handleChartClick = async e => {
     const data = e.point
     setSelectedColumn({
       selected: true,
@@ -28,60 +57,37 @@ const students = () => {
       list: [...hostelsList],
       title: 'dash_Students',
     })
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getStudentsHostelsApi({
+      pageNo: 1,
+      params: {
+        fromDate: dateRange?.from,
+        toDate: dateRange?.to,
+        range: data?.category,
+      },
+    })
+    if (respData) {
+      setHostelsData({ ...respData?.data, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
   }
 
-  const getSeriesData = () => {
-    setSeriesData([
-      {
-        type: 'column',
-        data: [
-          [5, 45],
-          [10, 37],
-          [15, 28],
-          [20, 17],
-          [25, 39],
-          [30, 18],
-          [35, 90],
-          [40, 78],
-          [45, 74],
-          [50, 18],
-          [55, 17],
-          [60, 16],
-        ],
+  const handleTableChange = async ({ current }) => {
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await await getStudentsHostelsApi({
+      pageNo: 1,
+      params: {
+        fromDate: dateRange?.from,
+        toDate: dateRange?.to,
+        range: selectedColumn?.chartData?.category,
       },
-      {
-        type: 'spline',
-        data: [
-          [5, 45],
-          [10, 37],
-          [15, 28],
-          [20, 17],
-          [25, 39],
-          [30, 18],
-          [35, 90],
-          [40, 78],
-          [45, 74],
-          [50, 18],
-          [55, 17],
-          [60, 16],
-        ],
-      },
-    ])
-    setAxisOptions(prev => ({
-      xAxis: {
-        ...prev?.xAxis,
-        title: {
-          text: 'No. of students',
-        },
-        tickPositions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-      },
-      yAxis: prev?.yAxis?.map(axis => ({
-        ...axis,
-        title: {
-          text: 'No. of Hostel',
-        },
-      })),
-    }))
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
   }
 
   const handleCloseModal = () => {
@@ -94,11 +100,15 @@ const students = () => {
 
   return {
     title,
-    axisOptions,
+    // axisOptions,
+    xAxisTitle: 'dash_NumberOfStudents',
+    yAxisTitle: 'dash_NumberOfHostels',
     seriesData,
     selectedColumn,
     handleChartClick,
     handleCloseModal,
+    hostelsData,
+    handleTableChange,
   }
 }
 

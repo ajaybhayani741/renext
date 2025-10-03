@@ -389,37 +389,31 @@ export const staffDetailsCharts = {
   dash_TotalNumberOfWorkersOnPayroll: {
     xAxisText: 'job_NumberOfWorkersOnPayroll',
     yAxisText: 'dash_NumberOfHostels',
-    total: 1200,
     modalTitle: false,
   },
   dash_TotalNumberOfCooksEnrolled: {
     xAxisText: 'job_NumberOfCooksEnrolled',
     yAxisText: 'dash_NumberOfHostels',
-    total: 1010,
     modalTitle: false,
   },
   dash_TotalNumberOfKamatiEnrolled: {
     xAxisText: 'job_NumberOfKamatiEnrolled',
     yAxisText: 'dash_NumberOfHostels',
-    total: 940,
     modalTitle: false,
   },
   dash_TotalNumberOfWatchmenEnrolled: {
     xAxisText: 'job_NumberOfWatchmenEnrolled',
     yAxisText: 'dash_NumberOfHostels',
-    total: 200,
     modalTitle: false,
   },
   dash_TotalNumberOfScavengersAvailable: {
     xAxisText: 'job_NumberOfScavengersAvailable',
     yAxisText: 'dash_NumberOfHostels',
-    total: 350,
     modalTitle: false,
   },
   dash_TotalNumberOfScavengersRequired: {
     xAxisText: 'job_NumberOfScavengersRequired',
     yAxisText: 'dash_NumberOfHostels',
-    total: 220,
     modalTitle: false,
   },
 }
@@ -469,14 +463,14 @@ export const hostelInfraSanitationCharts = {
     type: 'rangeFrequency',
     xAxisText: 'dash_NumberOfToiletsAvailable',
     yAxisText: 'dash_NumberOfHostels',
-    total: 1010,
+    md: 24,
     modalTitle: false,
   },
   job_PercentageOfTotalToiletsFunctioning: {
     type: 'rangeFrequency',
     xAxisText: 'dash_PercentageOfToiletsFunctioning',
     yAxisText: 'dash_NumberOfHostels',
-    total: 85,
+    md: 24,
     modalTitle: false,
   },
   dash_ToiletsSufficiency: {
@@ -603,4 +597,9 @@ export const availableNursingStaffKeys = {
     label: 'job_StaffNurseAvailability_ANMVisits',
     value: 'NOT_AVAILABLE_BUT_PHC_NURSE_VISITS',
   },
+}
+
+export const lineChartRange = {
+  start: 1,
+  end: 100,
 }

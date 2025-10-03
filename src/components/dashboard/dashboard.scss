@@ -342,3 +342,9 @@
 .highcharts-legend-item {
   pointer-events: none !important;
 }
+
+.frequency-chart-card {
+  .highcharts-container {
+    height: 500px !important;
+  }
+}
