@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, notEqual } from '../../../utils/javascript'
+import {
+  getConductionMeetingsBarChartApi,
+  getConductionMeetingsHostelsApi,
+} from '../dashboard.api'
 import {
   axisOptionsList,
   conductionMeetingCharts,
@@ -10,10 +15,13 @@ import {
 
 const conductionMeeting = () => {
   const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
+  const [hostelsData, setHostelsData] = useState(null)
 
   const [seriesData, setSeriesData] = useState({
     dash_PrincipalHWOSpecialOfficer: {
@@ -23,12 +31,12 @@ const conductionMeeting = () => {
       seriesData: [
         {
           name: t('btn_Yes'),
-          data: [85],
+          data: [],
           // pointPlacement: -0.13,
         },
         {
           name: t('btn_No'),
-          data: [15],
+          data: [],
           // pointPlacement: 0.12,
         },
       ],
@@ -38,21 +46,90 @@ const conductionMeeting = () => {
 
   useEffect(() => {
     getSeriesData()
-  }, [])
+    if (dateRange?.from && dateRange?.to) {
+      getConductionMeetingsBarChartData()
+    }
+  }, [dateRange])
 
-  const handleChartClick = (e, name) => {
-    const data = e.point
-    setSelectedColumn({
-      selected: true,
-      chartData: {
-        category: data?.category,
-        type: data?.series?.name,
-        value: data?.y,
-      },
-      list: [...schoolsList],
-      title: name,
-      modalTitle: true,
+  // Conduction Meetings Bar Chart API call
+  const getConductionMeetingsBarChartData = async () => {
+    const params = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    const response = await getConductionMeetingsBarChartApi({
+      params,
     })
+
+    if (response && response.data) {
+      setSeriesData(prev => ({
+        ...prev,
+        dash_PrincipalHWOSpecialOfficer: {
+          ...prev.dash_PrincipalHWOSpecialOfficer,
+          seriesData: [
+            {
+              name: t('btn_Yes'),
+              data: [response.data.meetingsConvenedRegularlyYes || 0],
+            },
+            {
+              name: t('btn_No'),
+              data: [response.data.meetingsConvenedRegularlyNo || 0],
+            },
+          ],
+        },
+      }))
+    }
+  }
+
+  const handleChartClick = async (e, name) => {
+    const data = e.point
+
+    if (name === 'dash_PrincipalHWOSpecialOfficer') {
+      // Handle conduction meetings bar chart click
+      const type = data?.series?.name
+      const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
+
+      try {
+        setHostelsData(prev => ({ ...prev, loader: true }))
+        const response = await getConductionMeetingsHostelsApi({
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            filterValue: filterValue,
+          },
+          pageNo: 1,
+        })
+
+        if (response && response.data) {
+          setSelectedColumn({
+            selected: true,
+            chartData: {
+              category: data?.category,
+              type: data?.series?.name,
+              value: data?.y,
+            },
+            list: response.data.hostels || [],
+            title: name,
+            modalTitle: true,
+          })
+          setHostelsData({ ...response.data, loader: false })
+        }
+      } catch (error) {
+        setHostelsData(prev => ({ ...prev, loader: false }))
+      }
+    } else {
+      setSelectedColumn({
+        selected: true,
+        chartData: {
+          category: data?.category,
+          type: data?.series?.name,
+          value: data?.y,
+        },
+        list: [...schoolsList],
+        title: name,
+        modalTitle: true,
+      })
+    }
   }
 
   const getSeriesData = () => {
@@ -120,12 +197,39 @@ const conductionMeeting = () => {
     // setTotalData(tempTotalData)
   }
 
+  const handleTableChange = async ({ current }) => {
+    if (selectedColumn?.title === 'dash_PrincipalHWOSpecialOfficer') {
+      // Handle conduction meetings bar chart pagination
+      const type = selectedColumn?.chartData?.type
+      const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
+
+      try {
+        setHostelsData(prev => ({ ...prev, loader: true }))
+        const response = await getConductionMeetingsHostelsApi({
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            filterValue: filterValue,
+          },
+          pageNo: current,
+        })
+
+        if (response && response.data) {
+          setHostelsData({ ...response.data, loader: false })
+        }
+      } catch (error) {
+        setHostelsData(prev => ({ ...prev, loader: false }))
+      }
+    }
+  }
+
   const handleCloseModal = () => {
     setSelectedColumn({
       selected: false,
       chartData: null,
       list: [],
     })
+    setHostelsData({})
   }
 
   return {
@@ -134,6 +238,8 @@ const conductionMeeting = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   }
 }
 

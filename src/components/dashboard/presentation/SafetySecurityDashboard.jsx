@@ -16,10 +16,14 @@ const SafetySecurityDashboard = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   } = safetySecurity()
   const { t } = useTranslations()
   return (
-    <DashboardWrapper {...{ handleCloseModal, selectedColumn }}>
+    <DashboardWrapper
+      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+    >
       {axisOptions &&
         entries(safetySecurityCharts)?.map(([key, value]) => {
           return (

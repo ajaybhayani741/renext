@@ -2,6 +2,11 @@ import { Tag } from 'antd'
 
 import { childUsers } from './constant'
 import { dayJs } from './dayjs'
+import {
+  resetFiscalYearToDefault,
+  getDefaultFiscalYear,
+  isDateRangeDefault,
+} from './fiscalYearUtils'
 import { entries, isEqual, ternary } from './javascript'
 import { sidebarMenus } from '../components/layout/sidebar.description'
 
@@ -353,4 +358,7 @@ export {
   dateDaysDifference,
   getBase64,
   inventoryTags,
+  resetFiscalYearToDefault,
+  getDefaultFiscalYear,
+  isDateRangeDefault,
 }

@@ -6,6 +6,8 @@ import { entries, notEqual } from '../../../utils/javascript'
 import {
   getStaffAvailabilityChartApi,
   getStaffAvailabilityHostelsApi,
+  getMedicalCareBarChartApi,
+  getMedicalCareHostelsApi,
 } from '../dashboard.api'
 import {
   availableNursingStaffKeys,
@@ -25,43 +27,6 @@ const medicalCare = () => {
   })
 
   const [seriesData, setSeriesData] = useState({
-    job_MedicalCare: {
-      chartData: {
-        category: [
-          t('job_MedicalOfficerVisits'),
-          t('job_FirstAidKitAvailability'),
-        ],
-      },
-      seriesData: [
-        {
-          name: t('btn_Yes'),
-          data: [85, 45],
-        },
-        {
-          name: t('btn_No'),
-          data: [15, 55],
-        },
-      ],
-      yAxis: [
-        {
-          labels: { format: '{value} km' },
-        },
-        {
-          labels: { format: '{value} km' },
-        },
-        {
-          labels: { format: '{value} km' },
-        },
-        {
-          labels: { format: '{value} km' },
-        },
-        {
-          labels: { format: '{value} km' },
-          min: -0.5,
-          max: 2.5,
-        },
-      ],
-    },
     job_DistanceToNearestPHC: {
       chartData: {
         category: [
@@ -84,13 +49,29 @@ const medicalCare = () => {
         },
       ],
     },
+    // Medical Care Bar Chart
+    job_MedicalCare: {
+      chartData: {
+        category: [
+          t('job_MedicalOfficerVisits'),
+          t('job_FirstAidKitAvailability'),
+        ],
+      },
+      seriesData: null, // Will be populated by API
+    },
   })
   const [axisOptions, setAxisOptions] = useState(null)
+
+  const categoryMapping = {
+    [t('job_MedicalOfficerVisits')]: 'MEDICAL_OFFICER_REGULAR_VISITS',
+    [t('job_FirstAidKitAvailability')]: 'FIRST_AID_KIT_AVAILABLE_IN_HOSTEL',
+  }
 
   useEffect(() => {
     getSeriesData()
     if (dateRange?.from && dateRange?.to) {
       getData()
+      getMedicalCareBarChartData()
     }
   }, [dateRange])
 
@@ -119,6 +100,42 @@ const medicalCare = () => {
     setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
   }
 
+  // Medical Care Bar Chart API call
+  const getMedicalCareBarChartData = async () => {
+    const params = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    const response = await getMedicalCareBarChartApi({
+      params,
+    })
+
+    if (response && response.data) {
+      setSeriesData(prev => ({
+        ...prev,
+        job_MedicalCare: {
+          ...prev.job_MedicalCare,
+          seriesData: [
+            {
+              name: t('btn_Yes'),
+              data: [
+                response.data.medicalOfficerRegularVisitsYes || 0,
+                response.data.firstAidKitAvailableInHostelYes || 0,
+              ],
+            },
+            {
+              name: t('btn_No'),
+              data: [
+                response.data.medicalOfficerRegularVisitsNo || 0,
+                response.data.firstAidKitAvailableInHostelNo || 0,
+              ],
+            },
+          ],
+        },
+      }))
+    }
+  }
+
   const handleClickFn = async ({ category, name, pageNo = 1 }) => {
     switch (name) {
       case 'dash_IsTheStaffNurseAvailableInTheHostel':
@@ -132,6 +149,23 @@ const medicalCare = () => {
         })
         return resp?.data
 
+      case 'job_MedicalCare':
+        const categoryValue = category || selectedColumn?.chartData?.category
+        const type = selectedColumn?.chartData?.type
+        const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
+        const apiCategory = categoryMapping[categoryValue]
+
+        const medicalResp = await getMedicalCareHostelsApi({
+          pageNo,
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            category: apiCategory,
+            filterValue: filterValue,
+          },
+        })
+        return medicalResp?.data
+
       default:
         setHostelsData(null)
         break
@@ -141,7 +175,33 @@ const medicalCare = () => {
   const handleChartClick = async (e, name) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
-    const respData = await handleClickFn({ category: data?.valueId, name })
+
+    let respData
+    if (name === 'job_MedicalCare') {
+      // Handle medical care bar chart click
+      const category = data?.category
+      const type = data?.series?.name
+      const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
+      const apiCategory = categoryMapping[category]
+
+      try {
+        const response = await getMedicalCareHostelsApi({
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            category: apiCategory,
+            filterValue: filterValue,
+          },
+          pageNo: 1,
+        })
+        respData = response?.data
+      } catch (error) {
+        respData = null
+      }
+    } else {
+      respData = await handleClickFn({ category: data?.valueId, name })
+    }
+
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
@@ -157,7 +217,8 @@ const medicalCare = () => {
           : null,
         value: data?.y,
       },
-      list: [...schoolsList],
+      list:
+        name === 'job_MedicalCare' ? respData?.hostels || [] : [...schoolsList],
       title: name,
       modalTitle: true,
       categoryValue: data?.valueId,
@@ -166,11 +227,37 @@ const medicalCare = () => {
 
   const handleTableChange = async ({ current }) => {
     setHostelsData(prev => ({ ...prev, loader: true }))
-    const respData = await handleClickFn({
-      category: selectedColumn?.categoryValue,
-      name: selectedColumn?.title,
-      pageNo: current,
-    })
+
+    let respData
+    if (selectedColumn?.title === 'job_MedicalCare') {
+      // Handle medical care bar chart pagination
+      const category = selectedColumn?.chartData?.category
+      const type = selectedColumn?.chartData?.type
+      const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
+      const apiCategory = categoryMapping[category]
+
+      try {
+        const response = await getMedicalCareHostelsApi({
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            category: apiCategory,
+            filterValue: filterValue,
+          },
+          pageNo: current,
+        })
+        respData = response?.data
+      } catch (error) {
+        respData = null
+      }
+    } else {
+      respData = await handleClickFn({
+        category: selectedColumn?.categoryValue,
+        name: selectedColumn?.title,
+        pageNo: current,
+      })
+    }
+
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
@@ -249,6 +336,7 @@ const medicalCare = () => {
       chartData: null,
       list: [],
     })
+    setHostelsData({})
   }
 
   return {

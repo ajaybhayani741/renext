@@ -18,6 +18,7 @@ const dashboardWrapper = ({ title }) => {
       'dash_PrecautionaryMeasures',
       'dash_AnimalThreat',
       'dash_PrincipalHWOSpecialOfficer',
+      'job_NatureOfCookingFuel',
     ],
     title,
   )
@@ -37,23 +38,23 @@ const dashboardWrapper = ({ title }) => {
       colSpan: 0,
       render: rowData =>
         rowData?.businessName ?? rowData?.lastName ?? rowData?.name ?? '-',
-      hidden: !condition,
+      // hidden: !condition,
     },
-    {
-      title: '',
-      dataIndex: ['hostel', 'name'],
-      key: 'hostel',
-      colSpan: 0,
-      render: rowData => (rowData ? `${rowData}` : '-'),
-      hidden: condition,
-    },
-    {
-      title: t('dash_Students'),
-      dataIndex: 'total_students',
-      key: 'students',
-      render: rowData => (rowData ? `${rowData}` : '-'),
-      hidden: condition,
-    },
+    // {
+    //   title: '',
+    //   // dataIndex: ['hostel', 'name'],
+    //   key: 'hostel',
+    //   colSpan: 0,
+    //   render: rowData => rowData?.lastName ?? rowData?.name ?? '-',
+    //   hidden: condition,
+    // },
+    // {
+    //   title: t('dash_Students'),
+    //   dataIndex: 'total_students',
+    //   key: 'students',
+    //   render: rowData => (rowData ? `${rowData}` : '-'),
+    //   hidden: condition,
+    // },
   ].filter(item => !item.hidden)
 
   return { columns }

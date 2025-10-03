@@ -15,12 +15,16 @@ const HostelInfraRoomsDashboard = () => {
     selectedColumn,
     handleChartClick,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   } = hostelInfraRooms()
   return (
     <DashboardWrapper
       {...{
         selectedColumn,
         handleCloseModal,
+        handleTableChange,
+        hostelsData,
         // chartClassName: 'w-100',
       }}
     >

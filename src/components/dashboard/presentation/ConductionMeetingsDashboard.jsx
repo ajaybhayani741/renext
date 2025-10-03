@@ -15,10 +15,14 @@ const ConductionMeetingsDashboard = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   } = conductionMeeting()
   const { t } = useTranslations()
   return (
-    <DashboardWrapper {...{ handleCloseModal, selectedColumn }}>
+    <DashboardWrapper
+      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+    >
       {axisOptions &&
         entries(conductionMeetingCharts)?.map(([key, value]) => {
           return (

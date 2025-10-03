@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { getMethod } from '../../../api/methods'
-import API_ROUTES from '../../../api/routes'
 import useRedux from '../../../hooks/useRedux'
 import { setFiscalYear } from '../../../redux/app/reducer'
 import { dayJs, DISPLAY_DATE_FORMAT, formatDate } from '../../../utils/dayjs'
-import { length } from '../../../utils/javascript'
 
 const fiscalYearSelect = ({
   onDateChange,
@@ -20,35 +17,16 @@ const fiscalYearSelect = ({
   const saveFormat = 'DD/MM/YYYY'
 
   useEffect(() => {
-    const getFiscalYears = async () => {
-      const { data } = await getMethod(API_ROUTES.FISCAL_YEARS)
+    // Enable the component if fiscal year data is already available
+    if (options && options.length > 0) {
       setIsDisable(false)
-      const list = data?.data?.list
-      const fiscalOptions =
-        list?.map(({ year }) => ({ label: year, value: year })) || []
-      const lastElem = fiscalOptions.at(length(fiscalOptions) - 1)
-      const year = lastElem?.value
-      const startDate = dayJs(`${year}-04-01`).format(saveFormat)
-      const endDate = dayJs(`${year + 1}-03-31`).format(saveFormat)
-
-      const updateValues = {
-        options: fiscalOptions,
-      }
-
-      if (setDefault) {
-        updateValues.value = year
-        updateValues.dateRange = {
-          min: startDate,
-          max: endDate,
-          from: startDate,
-          to: endDate,
-        }
-      }
-
-      dispatch(setFiscalYear(updateValues))
+      return
     }
-    getFiscalYears()
-  }, [])
+
+    // If no data is available yet, keep disabled
+    // The global initializer will handle fetching the data
+    setIsDisable(true)
+  }, [options])
 
   const handleFiscalYearChange = value => {
     const startDate = dayJs(`${value}-04-01`).format(saveFormat)
