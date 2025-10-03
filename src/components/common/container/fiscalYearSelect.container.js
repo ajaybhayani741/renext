@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
@@ -13,20 +14,20 @@ const fiscalYearSelect = ({
   const { value, options, dateRange } = selector(
     state => state?.app?.fiscalYear,
   )
-  const [isDisable, setIsDisable] = useState(true)
+  const [isDisable, setIsDisable] = useState(false)
   const saveFormat = 'DD/MM/YYYY'
 
-  useEffect(() => {
-    // Enable the component if fiscal year data is already available
-    if (options && options.length > 0) {
-      setIsDisable(false)
-      return
-    }
+  // useEffect(() => {
+  //   // Enable the component if fiscal year data is already available
+  //   if (options && options.length > 0) {
+  //     setIsDisable(false)
+  //     return
+  //   }
 
-    // If no data is available yet, keep disabled
-    // The global initializer will handle fetching the data
-    setIsDisable(true)
-  }, [options])
+  //   // If no data is available yet, keep disabled
+  //   // The global initializer will handle fetching the data
+  //   setIsDisable(true)
+  // }, [options])
 
   const handleFiscalYearChange = value => {
     const startDate = dayJs(`${value}-04-01`).format(saveFormat)
