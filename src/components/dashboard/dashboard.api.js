@@ -33,6 +33,8 @@ const {
   DASHBOARD_ANIMAL_THREAT_HOSTELS,
   DASHBOARD_CONDUCTION_MEETINGS_BAR_CHART,
   DASHBOARD_CONDUCTION_MEETINGS_HOSTELS,
+  DASHBOARD_COOKING_FUEL_BAR_CHART,
+  DASHBOARD_COOKING_FUEL_HOSTELS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -263,6 +265,20 @@ const getConductionMeetingsHostelsApi = async ({ params, pageNo = 1 }) => {
   return response?.data
 }
 
+const getCookingFuelBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_COOKING_FUEL_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getCookingFuelHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(DASHBOARD_COOKING_FUEL_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
 export {
   getDiscrepanciesApi,
   getShiftReportApi,
@@ -294,4 +310,6 @@ export {
   getAnimalThreatHostelsApi,
   getConductionMeetingsBarChartApi,
   getConductionMeetingsHostelsApi,
+  getCookingFuelBarChartApi,
+  getCookingFuelHostelsApi,
 }

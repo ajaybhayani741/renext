@@ -18,6 +18,7 @@ const dashboardWrapper = ({ title }) => {
       'dash_PrecautionaryMeasures',
       'dash_AnimalThreat',
       'dash_PrincipalHWOSpecialOfficer',
+      'job_NatureOfCookingFuel',
     ],
     title,
   )

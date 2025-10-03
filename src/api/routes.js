@@ -125,5 +125,8 @@ const API_ROUTES = {
   DASHBOARD_CONDUCTION_MEETINGS_BAR_CHART: `/dashboard-management/v1/conduction-meetings/bar-chart`,
   DASHBOARD_CONDUCTION_MEETINGS_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/conduction-meetings/hostels/${pageNo}`,
+  DASHBOARD_COOKING_FUEL_BAR_CHART: `/dashboard-management/v1/cooking-fuel/bar-chart`,
+  DASHBOARD_COOKING_FUEL_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/cooking-fuel/hostels/${pageNo}`,
 }
 export default API_ROUTES

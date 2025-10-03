@@ -6,6 +6,8 @@ import { entries, notEqual } from '../../../utils/javascript'
 import {
   getFoodProvisionsBarChartApi,
   getFoodProvisionsHostelsApi,
+  getCookingFuelBarChartApi,
+  getCookingFuelHostelsApi,
 } from '../dashboard.api'
 import {
   axisOptionsList,
@@ -45,8 +47,8 @@ const foodProvisions = () => {
       {
         name: 'Level 2',
         data: [
-          { name: t('job_LPG'), y: 50, color: '#f3caaa' },
-          { name: t('job_Firewood'), y: 50, color: '#f1725e' },
+          { name: t('job_LPG'), y: 0, color: '#f3caaa' },
+          { name: t('job_Firewood'), y: 0, color: '#f1725e' },
         ],
         size: '75%',
         innerSize: '60%',
@@ -61,13 +63,12 @@ const foodProvisions = () => {
       {
         name: 'Level 3',
         data: [
-          { name: t('job_NoLPGCylinders'), y: 20, color: '#9c6644' },
-          { name: t('job_SufficientLPGCylinders'), y: 15, color: '#ab815f' },
-          { name: t('job_NonSufficientLPGCylinders'), y: 15, color: '#ddb892' },
-
+          { name: t('job_NoLPGCylinders'), y: 0, color: '#9c6644' },
+          { name: t('job_SufficientLPGCylinders'), y: 0, color: '#ab815f' },
+          { name: t('job_NonSufficientLPGCylinders'), y: 0, color: '#ddb892' },
           {
             name: t('job_Firewood'),
-            y: 50,
+            y: 0,
             color: '#f08700',
           },
         ],
@@ -120,6 +121,7 @@ const foodProvisions = () => {
     getSeriesData()
     if (dateRange?.from && dateRange?.to) {
       getFoodProvisionsBarChartData()
+      getCookingFuelBarChartData()
     }
   }, [dateRange])
 
@@ -165,6 +167,66 @@ const foodProvisions = () => {
     }
   }
 
+  // Cooking Fuel Bar Chart API call
+  const getCookingFuelBarChartData = async () => {
+    const params = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    const response = await getCookingFuelBarChartApi({
+      params,
+    })
+
+    if (response && response.data) {
+      setSeriesData(prev => ({
+        ...prev,
+        job_NatureOfCookingFuel: [
+          ...prev.job_NatureOfCookingFuel.slice(0, 1), // Keep Level 1 as is
+          {
+            ...prev.job_NatureOfCookingFuel[1], // Level 2
+            data: [
+              {
+                name: t('job_LPG'),
+                y: response.data.lpgCount || 0,
+                color: '#f3caaa',
+              },
+              {
+                name: t('job_Firewood'),
+                y: response.data.firewoodCount || 0,
+                color: '#f1725e',
+              },
+            ],
+          },
+          {
+            ...prev.job_NatureOfCookingFuel[2], // Level 3
+            data: [
+              {
+                name: t('job_NoLPGCylinders'),
+                y: response.data.noLpgCylindersCount || 0,
+                color: '#9c6644',
+              },
+              {
+                name: t('job_SufficientLPGCylinders'),
+                y: response.data.sufficientLpgCylindersCount || 0,
+                color: '#ab815f',
+              },
+              {
+                name: t('job_NonSufficientLPGCylinders'),
+                y: response.data.insufficientLpgCylindersCount || 0,
+                color: '#ddb892',
+              },
+              {
+                name: t('job_Firewood'),
+                y: response.data.firewoodCount || 0,
+                color: '#f08700',
+              },
+            ],
+          },
+        ],
+      }))
+    }
+  }
+
   const handleChartClick = async (e, name) => {
     const data = e.point
 
@@ -193,6 +255,60 @@ const foodProvisions = () => {
             chartData: {
               category: data?.category,
               type: data?.series?.name,
+              value: data?.y,
+            },
+            list: response.data.hostels || [],
+            title: name,
+            modalTitle: true,
+          })
+          setHostelsData({ ...response.data, loader: false })
+        }
+      } catch (error) {
+        setHostelsData(prev => ({ ...prev, loader: false }))
+      }
+    } else if (name === 'job_NatureOfCookingFuel') {
+      // Handle cooking fuel donut chart click
+      const pointName = data?.name
+      const seriesName = data?.series?.name
+
+      // Determine category and filter value based on the clicked point
+      let category, filterValue
+
+      if (seriesName === 'Level 2') {
+        category = 'NATURE_OF_COOKING_FUEL'
+        filterValue = pointName === t('job_LPG') ? 'LPG' : 'FIREWOOD'
+      } else if (seriesName === 'Level 3') {
+        category = 'LPG_CYLINDERS_AVAILABLE'
+        if (pointName === t('job_NoLPGCylinders')) {
+          filterValue = 'NO'
+        } else if (pointName === t('job_SufficientLPGCylinders')) {
+          filterValue = 'YES_SUFFICIENT'
+        } else if (pointName === t('job_NonSufficientLPGCylinders')) {
+          filterValue = 'YES_INSUFFICIENT'
+        } else if (pointName === t('job_Firewood')) {
+          category = 'NATURE_OF_COOKING_FUEL'
+          filterValue = 'FIREWOOD'
+        }
+      }
+
+      try {
+        setHostelsData(prev => ({ ...prev, loader: true }))
+        const response = await getCookingFuelHostelsApi({
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            category: category,
+            filterValue: filterValue,
+          },
+          pageNo: 1,
+        })
+
+        if (response && response.data) {
+          setSelectedColumn({
+            selected: true,
+            chartData: {
+              category: pointName,
+              type: seriesName,
               value: data?.y,
             },
             list: response.data.hostels || [],
@@ -261,6 +377,49 @@ const foodProvisions = () => {
             fromDate: dateRange?.from,
             toDate: dateRange?.to,
             category: apiCategory,
+            filterValue: filterValue,
+          },
+          pageNo: current,
+        })
+
+        if (response && response.data) {
+          setHostelsData({ ...response.data, loader: false })
+        }
+      } catch (error) {
+        setHostelsData(prev => ({ ...prev, loader: false }))
+      }
+    } else if (selectedColumn?.title === 'job_NatureOfCookingFuel') {
+      // Handle cooking fuel donut chart pagination
+      const pointName = selectedColumn?.chartData?.category
+      const seriesName = selectedColumn?.chartData?.type
+
+      // Determine category and filter value based on the clicked point
+      let category, filterValue
+
+      if (seriesName === 'Level 2') {
+        category = 'NATURE_OF_COOKING_FUEL'
+        filterValue = pointName === t('job_LPG') ? 'LPG' : 'FIREWOOD'
+      } else if (seriesName === 'Level 3') {
+        category = 'LPG_CYLINDERS_AVAILABLE'
+        if (pointName === t('job_NoLPGCylinders')) {
+          filterValue = 'NO'
+        } else if (pointName === t('job_SufficientLPGCylinders')) {
+          filterValue = 'YES_SUFFICIENT'
+        } else if (pointName === t('job_NonSufficientLPGCylinders')) {
+          filterValue = 'YES_INSUFFICIENT'
+        } else if (pointName === t('job_Firewood')) {
+          category = 'NATURE_OF_COOKING_FUEL'
+          filterValue = 'FIREWOOD'
+        }
+      }
+
+      try {
+        setHostelsData(prev => ({ ...prev, loader: true }))
+        const response = await getCookingFuelHostelsApi({
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            category: category,
             filterValue: filterValue,
           },
           pageNo: current,
