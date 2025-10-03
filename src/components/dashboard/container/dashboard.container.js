@@ -25,11 +25,15 @@ const dashboard = () => {
   // })
 
   useEffect(() => {
+    // Only handle session storage restoration if fiscal year data is not already available
+    if (fiscalYear && dateRange?.from && dateRange?.to) {
+      return
+    }
+
     const cachedStoreString = sessionStorage.getItem('fiscalYear')
     const fiscalYearObj = cachedStoreString ? JSON.parse(cachedStoreString) : {}
 
     const currentYear = dayJs().year()
-
     const currentFiscalYear = dayJs().isBefore(`${currentYear}-04-01`)
       ? currentYear - 1
       : currentYear
@@ -57,7 +61,7 @@ const dashboard = () => {
     return () => {
       sessionStorage.removeItem('fiscalYear')
     }
-  }, [])
+  }, [fiscalYear, dateRange, dispatch])
 
   useEffect(() => {
     const cachedStoreData = {
