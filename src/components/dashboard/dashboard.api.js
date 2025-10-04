@@ -51,6 +51,16 @@ const {
   GET_AVAILABLE_SCAVENGERS_HOSTELS,
   GET_REQUIRED_SCAVENGERS_CHART,
   GET_REQUIRED_SCAVENGERS_HOSTELS,
+  GET_LIVING_ROOMS_CHART,
+  GET_LIVING_ROOMS_HOSTELS,
+  GET_WORKING_FANS_CHART,
+  GET_WORKING_FANS_HOSTELS,
+  GET_WORKING_TUBELIGHT_CHART,
+  GET_WORKING_TUBELIGHT_HOSTELS,
+  GET_AVAILABLE_CCTV_CHART,
+  GET_AVAILABLE_CCTV_HOSTELS,
+  GET_FUNCTIONING_CCTV_CHART,
+  GET_FUNCTIONING_CCTV_HOSTELS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -387,6 +397,56 @@ const getCookingFuelHostelsApi = async ({ params, pageNo = 1 }) => {
   })
   return response?.data
 }
+const getLivingRoomsChartApi = async ({ params }) => {
+  const response = await getMethod(GET_LIVING_ROOMS_CHART, { params })
+  return response?.data
+}
+const getLivingRoomsHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_LIVING_ROOMS_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getTubelightChartApi = async ({ params }) => {
+  const response = await getMethod(GET_WORKING_TUBELIGHT_CHART, { params })
+  return response?.data
+}
+const getTubelightHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_WORKING_TUBELIGHT_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getFansChartApi = async ({ params }) => {
+  const response = await getMethod(GET_WORKING_FANS_CHART, { params })
+  return response?.data
+}
+const getFansHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_WORKING_FANS_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getAvailableCCTVChartApi = async ({ params }) => {
+  const response = await getMethod(GET_AVAILABLE_CCTV_CHART, { params })
+  return response?.data
+}
+const getAvailableCCTVHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_AVAILABLE_CCTV_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getFunctioningCCTVChartApi = async ({ params }) => {
+  const response = await getMethod(GET_FUNCTIONING_CCTV_CHART, { params })
+  return response?.data
+}
+const getFunctioningCCTVHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_FUNCTIONING_CCTV_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
 
 export {
   getDiscrepanciesApi,
@@ -437,4 +497,14 @@ export {
   getAvailableScavengersHostelsApi,
   getRequiredScavengersChartApi,
   getRequiredScavengersHostelsApi,
+  getLivingRoomsChartApi,
+  getLivingRoomsHostelsApi,
+  getTubelightChartApi,
+  getTubelightHostelsApi,
+  getFansChartApi,
+  getFansHostelsApi,
+  getAvailableCCTVChartApi,
+  getAvailableCCTVHostelsApi,
+  getFunctioningCCTVChartApi,
+  getFunctioningCCTVHostelsApi,
 }

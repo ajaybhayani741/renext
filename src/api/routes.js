@@ -152,5 +152,20 @@ const API_ROUTES = {
   GET_REQUIRED_SCAVENGERS_CHART: `/dashboard-management/v1/hostel-scavengers-required-chart`,
   GET_REQUIRED_SCAVENGERS_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/hostel-scavengers-required-chart/hostels/${pageNo}`,
+  GET_LIVING_ROOMS_CHART: `/dashboard-management/v1/hostel-living-rooms-chart`,
+  GET_LIVING_ROOMS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-living-rooms-chart/hostels/${pageNo}`,
+  GET_WORKING_TUBELIGHT_CHART: `/dashboard-management/v1/hostel-tubelights-bulbs-chart`,
+  GET_WORKING_TUBELIGHT_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-tubelights-bulbs-chart/hostels/${pageNo}`,
+  GET_WORKING_FANS_CHART: `/dashboard-management/v1/hostel-fans-working-chart`,
+  GET_WORKING_FANS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-fans-working-chart/hostels/${pageNo}`,
+  GET_AVAILABLE_CCTV_CHART: `/dashboard-management/v1/hostel-cctvs-available-chart`,
+  GET_AVAILABLE_CCTV_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-cctvs-available-chart/hostels/${pageNo}`,
+  GET_FUNCTIONING_CCTV_CHART: `/dashboard-management/v1/hostel-cctvs-functioning-chart`,
+  GET_FUNCTIONING_CCTV_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-cctvs-functioning-chart/hostels/${pageNo}`,
 }
 export default API_ROUTES

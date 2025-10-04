@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, include, notEqual } from '../../../utils/javascript'
+import { isEqual, keys, values } from '../../../utils/javascript'
 import {
-  getPrecautionaryMeasuresBarChartApi,
-  getPrecautionaryMeasuresHostelsApi,
   getAnimalThreatBarChartApi,
   getAnimalThreatHostelsApi,
+  getAvailableCCTVChartApi,
+  getAvailableCCTVHostelsApi,
+  getFunctioningCCTVChartApi,
+  getFunctioningCCTVHostelsApi,
+  getPrecautionaryMeasuresBarChartApi,
+  getPrecautionaryMeasuresHostelsApi,
 } from '../dashboard.api'
-import {
-  axisOptionsList,
-  hostelsList,
-  safetySecurityCharts,
-  schoolsList,
-} from '../dashboard.description'
+import { lineChartRange, safetySecurityCharts } from '../dashboard.description'
+import { setLineChartSeriesData } from '../dashboardFunctions'
 
 const safetySecurity = () => {
   const { t } = useTranslations()
@@ -24,48 +24,8 @@ const safetySecurity = () => {
     selected: false,
     chartData: null,
   })
+  const [seriesData, setSeriesData] = useState({})
   const [hostelsData, setHostelsData] = useState(null)
-
-  const [seriesData, setSeriesData] = useState({
-    dash_PrecautionaryMeasures: {
-      chartData: {
-        category: [
-          t('job_OpenSpaceLightingAtNight'),
-          t('job_PolicePatrolRequired'),
-        ],
-      },
-      seriesData: [
-        {
-          name: t('btn_Yes'),
-          data: [],
-          // pointPlacement: -0.13,
-        },
-        {
-          name: t('btn_No'),
-          data: [],
-          // pointPlacement: 0.12,
-        },
-      ],
-    },
-    dash_AnimalThreat: {
-      chartData: {
-        category: [
-          t('job_Rats'),
-          t('job_Monkeys'),
-          t('job_Snakes'),
-          t('job_Dogs'),
-          t('txt_None'),
-        ],
-      },
-      seriesData: [
-        {
-          name: t('job_Count'),
-          data: [],
-        },
-      ],
-    },
-  })
-  const [axisOptions, setAxisOptions] = useState(null)
 
   const precautionaryMeasuresCategoryMapping = {
     [t('job_OpenSpaceLightingAtNight')]: 'SUFFICIENT_LIGHTING_OPEN_SPACES',
@@ -80,246 +40,228 @@ const safetySecurity = () => {
     [t('txt_None')]: 'NONE',
   }
 
+  const axisOptions = {
+    dash_PrecautionaryMeasures: {
+      category: keys(precautionaryMeasuresCategoryMapping),
+    },
+    dash_AnimalThreat: {
+      category: keys(animalThreatCategoryMapping),
+    },
+  }
+
   useEffect(() => {
-    getSeriesData()
     if (dateRange?.from && dateRange?.to) {
-      getPrecautionaryMeasuresBarChartData()
-      getAnimalThreatBarChartData()
+      getData()
     }
   }, [dateRange])
 
-  // Precautionary Measures Bar Chart API call
-  const getPrecautionaryMeasuresBarChartData = async () => {
-    const params = {
+  const getDataApi = async ({
+    name,
+    start = lineChartRange?.start,
+    end = lineChartRange?.end,
+  }) => {
+    const lineParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      start,
+      end,
+    }
+    const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
     }
-    const response = await getPrecautionaryMeasuresBarChartApi({
-      params,
-    })
-
-    if (response && response.data) {
-      setSeriesData(prev => ({
-        ...prev,
-        dash_PrecautionaryMeasures: {
-          ...prev.dash_PrecautionaryMeasures,
-          seriesData: [
-            {
-              name: t('btn_Yes'),
-              data: [
-                response.data.sufficientLightingOpenSpacesYes || 0,
-                response.data.dailyNightPolicePatrollingRequiredYes || 0,
-              ],
-            },
-            {
-              name: t('btn_No'),
-              data: [
-                response.data.sufficientLightingOpenSpacesNo || 0,
-                response.data.dailyNightPolicePatrollingRequiredNo || 0,
-              ],
-            },
-          ],
-        },
-      }))
+    switch (name) {
+      case 'dash_PrecautionaryMeasures':
+        const roomsResp = await getPrecautionaryMeasuresBarChartApi({
+          params: columnParams,
+        })
+        return roomsResp
+      case 'dash_AnimalThreat':
+        const bedResp = await getAnimalThreatBarChartApi({
+          params: columnParams,
+        })
+        return bedResp
+      case 'dash_NumberOfCCTVsAvailable':
+        const lightsResp = await getAvailableCCTVChartApi({
+          params: lineParams,
+        })
+        return lightsResp
+      case 'dash_NumberOfCCTVsFunctioning':
+        const fansResp = await getFunctioningCCTVChartApi({
+          params: lineParams,
+        })
+        return fansResp
+      default:
+        return null
     }
   }
 
-  // Animal Threat Bar Chart API call
-  const getAnimalThreatBarChartData = async () => {
-    const params = {
+  const getData = async ({
+    start,
+    end,
+    chartType = keys(safetySecurityCharts),
+  } = {}) => {
+    chartType?.forEach(async key => {
+      const respData = await getDataApi({ name: key, start, end })
+      if (isEqual(key, 'dash_AnimalThreat')) {
+        const isData = values(respData?.data)?.find(item => item)
+        const tempSeriesData = isData && [
+          {
+            name: t('job_Count'),
+            data: [
+              respData.data.rats || 0,
+              respData.data.monkeys || 0,
+              respData.data.snakes || 0,
+              respData.data.dogs || 0,
+              respData.data.none || 0,
+            ],
+          },
+        ]
+        setSeriesData(prev => ({
+          ...prev,
+          [key]: { series: tempSeriesData },
+        }))
+      } else if (isEqual(key, 'dash_PrecautionaryMeasures')) {
+        const isData = values(respData?.data)?.find(item => item)
+        const tempSeriesData = isData && [
+          {
+            name: t('btn_Yes'),
+            data: [
+              respData.data.sufficientLightingOpenSpacesYes || 0,
+              respData.data.dailyNightPolicePatrollingRequiredYes || 0,
+            ],
+          },
+          {
+            name: t('btn_No'),
+            data: [
+              respData.data.sufficientLightingOpenSpacesNo || 0,
+              respData.data.dailyNightPolicePatrollingRequiredNo || 0,
+            ],
+          },
+        ]
+        setSeriesData(prev => ({
+          ...prev,
+          [key]: { series: tempSeriesData },
+        }))
+      } else {
+        let tempSeriesData = setLineChartSeriesData({
+          respData,
+          key,
+        })
+        setSeriesData(prev => ({
+          ...prev,
+          [key]: tempSeriesData,
+        }))
+      }
+    })
+  }
+
+  const getHandleClickDataApi = async ({
+    range,
+    category,
+    filterValue,
+    pageNo = 1,
+    name,
+  } = {}) => {
+    const lineParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      range,
     }
-    const response = await getAnimalThreatBarChartApi({
-      params,
-    })
-
-    if (response && response.data) {
-      setSeriesData(prev => ({
-        ...prev,
-        dash_AnimalThreat: {
-          ...prev.dash_AnimalThreat,
-          seriesData: [
-            {
-              name: t('job_Count'),
-              data: [
-                response.data.rats || 0,
-                response.data.monkeys || 0,
-                response.data.snakes || 0,
-                response.data.dogs || 0,
-                response.data.none || 0,
-              ],
-            },
-          ],
-        },
-      }))
+    const columnParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      ...(isEqual(name, 'dash_PrecautionaryMeasures') && {
+        category: category,
+      }),
+      filterValue: filterValue,
+    }
+    switch (name) {
+      case 'dash_PrecautionaryMeasures':
+        const roomsResp = await getPrecautionaryMeasuresHostelsApi({
+          pageNo,
+          params: columnParams,
+        })
+        return roomsResp?.data
+      case 'dash_AnimalThreat':
+        const bedResp = await getAnimalThreatHostelsApi({
+          pageNo,
+          params: columnParams,
+        })
+        return bedResp?.data
+      case 'dash_NumberOfCCTVsAvailable':
+        const lightsResp = await getAvailableCCTVHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return lightsResp?.data
+      case 'dash_NumberOfCCTVsFunctioning':
+        const fansResp = await getFunctioningCCTVHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return fansResp?.data
+      default:
+        return null
     }
   }
 
   const handleChartClick = async (e, name) => {
     const data = e.point
-
-    if (name === 'dash_PrecautionaryMeasures') {
-      // Handle precautionary measures bar chart click
-      const category = data?.category
-      const type = data?.series?.name
-      const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
-      const apiCategory = precautionaryMeasuresCategoryMapping[category]
-
-      try {
-        setHostelsData(prev => ({ ...prev, loader: true }))
-        const response = await getPrecautionaryMeasuresHostelsApi({
-          params: {
-            fromDate: dateRange?.from,
-            toDate: dateRange?.to,
-            category: apiCategory,
-            filterValue: filterValue,
-          },
-          pageNo: 1,
-        })
-
-        if (response && response.data) {
-          setSelectedColumn({
-            selected: true,
-            chartData: {
-              category: data?.category,
-              type: data?.series?.name,
-              value: data?.y,
-            },
-            list: response.data.hostels || [],
-            title: name,
-            modalTitle: safetySecurityCharts?.[name]?.modalTitle,
-          })
-          setHostelsData({ ...response.data, loader: false })
-        }
-      } catch (error) {
-        setHostelsData(prev => ({ ...prev, loader: false }))
-      }
-    } else if (name === 'dash_AnimalThreat') {
-      // Handle animal threat bar chart click
-      const category = data?.category
-      const filterValue = animalThreatCategoryMapping[category]
-
-      try {
-        setHostelsData(prev => ({ ...prev, loader: true }))
-        const response = await getAnimalThreatHostelsApi({
-          params: {
-            fromDate: dateRange?.from,
-            toDate: dateRange?.to,
-            filterValue: filterValue,
-          },
-          pageNo: 1,
-        })
-
-        if (response && response.data) {
-          setSelectedColumn({
-            selected: true,
-            chartData: {
-              category: data?.category,
-              type: null,
-              value: data?.y,
-            },
-            list: response.data.hostels || [],
-            title: name,
-            modalTitle: safetySecurityCharts?.[name]?.modalTitle,
-          })
-          setHostelsData({ ...response.data, loader: false })
-        }
-      } catch (error) {
-        setHostelsData(prev => ({ ...prev, loader: false }))
-      }
-    } else {
-      setSelectedColumn({
-        selected: true,
-        chartData: {
-          category: data?.category,
-          type: notEqual(name, 'dash_AnimalThreat') ? data?.series?.name : null,
-          value: data?.y,
-        },
-        list: include(['dash_PrecautionaryMeasures', 'dash_AnimalThreat'], name)
-          ? [...schoolsList]
-          : [...hostelsList],
-        title: name,
-        modalTitle: safetySecurityCharts?.[name]?.modalTitle,
-      })
-    }
-  }
-
-  const getSeriesData = () => {
-    let tempOptions = {}
-    let tempSeriesData = {}
-    // let tempTotalData = {}
-    entries(safetySecurityCharts).forEach(([key, value]) => {
-      if (notEqual(value?.type, 'rangeFrequency')) return
-
-      tempOptions[key] = {
-        xAxis: {
-          ...axisOptionsList?.xAxis,
-          title: {
-            text: t(value?.xAxisText),
-          },
-          tickPositions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-        },
-        yAxis: axisOptionsList?.yAxis?.map(axis => ({
-          ...axis,
-          title: {
-            text: t(value?.yAxisText),
-          },
-        })),
-      }
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getHandleClickDataApi({
+      category: isEqual(name, 'dash_PrecautionaryMeasures')
+        ? precautionaryMeasuresCategoryMapping[data?.category]
+        : null,
+      filterValue: isEqual(name, 'dash_PrecautionaryMeasures')
+        ? data?.series?.name === t('btn_Yes')
+          ? 'YES'
+          : 'NO'
+        : animalThreatCategoryMapping[data?.category],
+      range: data?.category,
+      name,
     })
-    setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
-    setAxisOptions(prev => ({ ...prev, ...tempOptions }))
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
+
+    setSelectedColumn({
+      selected: true,
+      chartData: {
+        category: data?.category,
+        type: isEqual(name, 'dash_PrecautionaryMeasures')
+          ? data?.series?.name
+          : null,
+        value: data?.y,
+      },
+      title: name,
+      modalTitle: safetySecurityCharts?.[name]?.modalTitle,
+    })
   }
 
   const handleTableChange = async ({ current }) => {
-    if (selectedColumn?.title === 'dash_PrecautionaryMeasures') {
-      // Handle precautionary measures bar chart pagination
-      const category = selectedColumn?.chartData?.category
-      const type = selectedColumn?.chartData?.type
-      const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
-      const apiCategory = precautionaryMeasuresCategoryMapping[category]
-
-      try {
-        setHostelsData(prev => ({ ...prev, loader: true }))
-        const response = await getPrecautionaryMeasuresHostelsApi({
-          params: {
-            fromDate: dateRange?.from,
-            toDate: dateRange?.to,
-            category: apiCategory,
-            filterValue: filterValue,
-          },
-          pageNo: current,
-        })
-
-        if (response && response.data) {
-          setHostelsData({ ...response.data, loader: false })
-        }
-      } catch (error) {
-        setHostelsData(prev => ({ ...prev, loader: false }))
-      }
-    } else if (selectedColumn?.title === 'dash_AnimalThreat') {
-      // Handle animal threat bar chart pagination
-      const category = selectedColumn?.chartData?.category
-      const filterValue = animalThreatCategoryMapping[category]
-
-      try {
-        setHostelsData(prev => ({ ...prev, loader: true }))
-        const response = await getAnimalThreatHostelsApi({
-          params: {
-            fromDate: dateRange?.from,
-            toDate: dateRange?.to,
-            filterValue: filterValue,
-          },
-          pageNo: current,
-        })
-
-        if (response && response.data) {
-          setHostelsData({ ...response.data, loader: false })
-        }
-      } catch (error) {
-        setHostelsData(prev => ({ ...prev, loader: false }))
-      }
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getHandleClickDataApi({
+      category: isEqual(selectedColumn?.title, 'dash_PrecautionaryMeasures')
+        ? precautionaryMeasuresCategoryMapping[
+            selectedColumn?.chartData?.category
+          ]
+        : null,
+      filterValue: isEqual(selectedColumn?.title, 'dash_PrecautionaryMeasures')
+        ? selectedColumn?.chartData?.type === t('btn_Yes')
+          ? 'YES'
+          : 'NO'
+        : animalThreatCategoryMapping[selectedColumn?.chartData?.category],
+      range: selectedColumn?.chartData?.category,
+      name: selectedColumn?.title,
+      pageNo: current,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
     }
   }
 
@@ -333,6 +275,7 @@ const safetySecurity = () => {
   }
 
   return {
+    onRangeChange: getData,
     axisOptions,
     handleChartClick,
     seriesData,

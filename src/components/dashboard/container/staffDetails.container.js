@@ -1,103 +1,188 @@
+import { keys } from 'highcharts'
 import { useEffect, useState } from 'react'
 
-import useTranslations from '../../../hooks/useTranslations'
-import { entries } from '../../../utils/javascript'
+import useRedux from '../../../hooks/useRedux'
 import {
-  axisOptionsList,
-  hostelsList,
-  staffDetailsCharts,
-} from '../dashboard.description'
+  getAvailableScavengersChartApi,
+  getAvailableScavengersHostelsApi,
+  getCooksChartApi,
+  getCooksHostelsApi,
+  getKamatiChartApi,
+  getKamatiHostelsApi,
+  getRequiredScavengersChartApi,
+  getRequiredScavengersHostelsApi,
+  getWatchmanChartApi,
+  getWatchmanHostelsApi,
+  getWorkersChartApi,
+  getWorkersHostelsApi,
+} from '../dashboard.api'
+import { lineChartRange, staffDetailsCharts } from '../dashboard.description'
+import { setLineChartSeriesData } from '../dashboardFunctions'
 
 const staffDetails = () => {
-  const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
   const [seriesData, setSeriesData] = useState(null)
-  const [axisOptions, setAxisOptions] = useState(null)
-  // const [totalData, setTotalData] = useState(null)
-  const title = t('dash_StaffDetails')
+  const [hostelsData, setHostelsData] = useState(null)
 
   useEffect(() => {
-    getSeriesData()
-  }, [])
+    if (dateRange?.from && dateRange?.to) {
+      getData()
+    }
+  }, [dateRange])
 
-  const handleChartClick = (e, name) => {
+  const getDataApi = async ({
+    name,
+    start = lineChartRange?.start,
+    end = lineChartRange?.end,
+  }) => {
+    const lineParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      start,
+      end,
+    }
+    switch (name) {
+      case 'dash_TotalNumberOfWorkersOnPayroll':
+        const workersResp = await getWorkersChartApi({
+          params: lineParams,
+        })
+        return workersResp
+      case 'dash_TotalNumberOfCooksEnrolled':
+        const cooksResp = await getCooksChartApi({
+          params: lineParams,
+        })
+        return cooksResp
+      case 'dash_TotalNumberOfKamatiEnrolled':
+        const kamatiResp = await getKamatiChartApi({
+          params: lineParams,
+        })
+        return kamatiResp
+      case 'dash_TotalNumberOfWatchmenEnrolled':
+        const watchmenResp = await getWatchmanChartApi({
+          params: lineParams,
+        })
+        return watchmenResp
+      case 'dash_TotalNumberOfScavengersAvailable':
+        const availableScavengersResp = await getAvailableScavengersChartApi({
+          params: lineParams,
+        })
+        return availableScavengersResp
+      case 'dash_TotalNumberOfScavengersRequired':
+        const requiredScavengersResp = await getRequiredScavengersChartApi({
+          params: lineParams,
+        })
+        return requiredScavengersResp
+      default:
+        return null
+    }
+  }
+
+  const getData = async ({
+    start,
+    end,
+    chartType = keys(staffDetailsCharts),
+  } = {}) => {
+    chartType?.forEach(async key => {
+      const respData = await getDataApi({ name: key, start, end })
+      let tempSeriesData = setLineChartSeriesData({
+        respData,
+        key,
+      })
+      setSeriesData(prev => ({
+        ...prev,
+        [key]: tempSeriesData,
+      }))
+    })
+  }
+
+  const getHandleClickDataApi = async ({ range, pageNo = 1, name } = {}) => {
+    const lineParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      range,
+    }
+    switch (name) {
+      case 'dash_TotalNumberOfWorkersOnPayroll':
+        const workersResp = await getWorkersHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return workersResp
+      case 'dash_TotalNumberOfCooksEnrolled':
+        const cooksResp = await getCooksHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return cooksResp
+      case 'dash_TotalNumberOfKamatiEnrolled':
+        const kamatiResp = await getKamatiHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return kamatiResp
+      case 'dash_TotalNumberOfWatchmenEnrolled':
+        const watchmenResp = await getWatchmanHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return watchmenResp
+      case 'dash_TotalNumberOfScavengersAvailable':
+        const availableScavengersResp = await getAvailableScavengersHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return availableScavengersResp
+      case 'dash_TotalNumberOfScavengersRequired':
+        const requiredScavengersResp = await getRequiredScavengersHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return requiredScavengersResp
+
+      default:
+        return null
+    }
+  }
+
+  const handleChartClick = async (e, name) => {
     const data = e.point
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getHandleClickDataApi({
+      range: data?.category,
+      name,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
     setSelectedColumn({
       selected: true,
       chartData: {
         category: data?.category,
         value: data?.y,
       },
-      list: [...hostelsList],
-      title: 'dash_Students',
-      modalTitle: staffDetailsCharts?.[name]?.modalTitle,
+      title: name,
     })
   }
 
-  const getSeriesData = () => {
-    let tempOptions = {}
-    let tempSeriesData = {}
-    // let tempTotalData = {}
-    entries(staffDetailsCharts).forEach(([key, value]) => {
-      tempOptions[key] = {
-        xAxis: {
-          ...axisOptionsList?.xAxis,
-          title: {
-            text: t(value?.xAxisText),
-          },
-          tickPositions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-        },
-        yAxis: axisOptionsList?.yAxis?.map(axis => ({
-          ...axis,
-          title: {
-            text: t(value?.yAxisText),
-          },
-        })),
-      }
-      tempSeriesData[key] = [
-        {
-          type: 'column',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-        {
-          type: 'spline',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-      ]
-      // tempTotalData[key] = 1100
+  const handleTableChange = async ({ current }) => {
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getHandleClickDataApi({
+      range: selectedColumn?.chartData?.category,
+      name: selectedColumn?.title,
+      pageNo: current,
     })
-    setSeriesData(tempSeriesData)
-    setAxisOptions(tempOptions)
-    // setTotalData(tempTotalData)
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
   }
 
   const handleCloseModal = () => {
@@ -109,12 +194,13 @@ const staffDetails = () => {
   }
 
   return {
-    title,
-    axisOptions,
+    onRangeChange: getData,
     seriesData,
     selectedColumn,
     handleChartClick,
     handleCloseModal,
+    hostelsData,
+    handleTableChange,
   }
 }
 

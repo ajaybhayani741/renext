@@ -2,22 +2,33 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, include, isEqual, notEqual } from '../../../utils/javascript'
 import {
+  entries,
+  include,
+  notEqual,
+  keys,
+  isEqual,
+} from '../../../utils/javascript'
+import {
+  getAvailableToiletsChartApi,
+  getAvailableToiletsHostelsApi,
   getDrinkingWaterChartApi,
   getDrinkingWaterHostelsApi,
-  getWasteManagementBarChartApi,
-  getWasteManagementHostelsApi,
+  getFunctioningToiletsChartApi,
+  getFunctioningToiletsHostelsApi,
   getToiletsSufficiencyBarChartApi,
   getToiletsSufficiencyHostelsApi,
+  getWasteManagementBarChartApi,
+  getWasteManagementHostelsApi,
 } from '../dashboard.api'
 import {
-  axisOptionsList,
   drinkingWaterKeys,
   hostelInfraSanitationCharts,
   hostelsList,
+  lineChartRange,
   schoolsList,
 } from '../dashboard.description'
+import { setLineChartSeriesData } from '../dashboardFunctions'
 
 const hostelInfraSanitation = () => {
   const { t } = useTranslations()
@@ -49,7 +60,7 @@ const hostelInfraSanitation = () => {
       seriesData: null,
     },
   })
-  const [axisOptions, setAxisOptions] = useState(null)
+  const axisOptions = null
 
   const wasteManagementCategoryMapping = {
     [t('dash_GPMunicipalityIsRegularlyCleaningTheSolidWaste')]:
@@ -65,107 +76,153 @@ const hostelInfraSanitation = () => {
   }
 
   useEffect(() => {
-    getSeriesData()
     if (dateRange?.from && dateRange?.to) {
       getData()
-      getWasteManagementData()
-      getToiletsSufficiencyData()
     }
   }, [dateRange])
 
-  const getData = async () => {
-    const [drinkingWaterResp] = await Promise.all([
-      getDrinkingWaterChartApi({
-        params: { fromDate: dateRange?.from, toDate: dateRange?.to },
-      }),
-    ])
+  const getDataApi = async ({
+    name,
+    start = lineChartRange?.start,
+    end = lineChartRange?.end,
+  }) => {
+    const lineParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      start,
+      end,
+    }
+    const columnParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    const pieParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    switch (name) {
+      case 'dash_TotalToiletsAvailable':
+        const availableToiletsResp = await getAvailableToiletsChartApi({
+          params: lineParams,
+        })
+        return availableToiletsResp
+      case 'job_PercentageOfTotalToiletsFunctioning':
+        const functioningToiletsResp = await getFunctioningToiletsChartApi({
+          params: lineParams,
+        })
+        return functioningToiletsResp
+      case 'job_DrinkingWater':
+        const drinkingWaterResp = await getDrinkingWaterChartApi({
+          params: pieParams,
+        })
+        return drinkingWaterResp
+      case 'dash_WasteManagement':
+        const wasteManagementResp = await getWasteManagementBarChartApi({
+          params: columnParams,
+        })
+        return wasteManagementResp
+      case 'dash_ToiletsSufficiency':
+        const toiletsSufficiencyResp = await getToiletsSufficiencyBarChartApi({
+          params: columnParams,
+        })
+        return toiletsSufficiencyResp
+      default:
+        return null
+    }
+  }
+
+  const getData = async ({
+    chartType = keys(hostelInfraSanitationCharts),
+    start,
+    end,
+  } = {}) => {
     let tempSeriesData = {}
-    if (drinkingWaterResp?.data) {
-      const data = [
-        {
-          colorByPoint: true,
-          data: entries(drinkingWaterKeys)?.map(([k, v], i) => ({
-            id: i + 1,
-            name: t(v?.label),
-            valueId: v?.value,
-            y: drinkingWaterResp?.data?.[k] || 0,
-          })),
-        },
-      ]
-      tempSeriesData['job_DrinkingWater'] = data
-    }
-    setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
-  }
-
-  const getWasteManagementData = async () => {
-    const params = {
-      fromDate: dateRange?.from,
-      toDate: dateRange?.to,
-    }
-    const response = await getWasteManagementBarChartApi({ params })
-
-    if (response && response.data) {
-      setSeriesData(prev => ({
-        ...prev,
-        dash_WasteManagement: {
-          ...prev.dash_WasteManagement,
-          seriesData: [
+    chartType?.forEach(async key => {
+      const respData = await getDataApi({ name: key, start, end })
+      if (respData?.data) {
+        if (isEqual(key, 'job_DrinkingWater')) {
+          const series = [
             {
-              name: t('btn_Yes'),
-              data: [
-                response.data.gpMunicipalityClearingSolidWasteYes || 0,
-                response.data.greyBlackWaterSeparatelyDrainedYes || 0,
-                response.data.septicTankCleanedRegularlyYes || 0,
-                response.data.soakPitsInHostelYes || 0,
-                response.data.sufficientDistanceSepticTankBorewellYes || 0,
-                response.data.hostelPremisesKeptCleanYes || 0,
+              colorByPoint: true,
+              data: entries(drinkingWaterKeys)?.map(([k, v], i) => ({
+                id: i + 1,
+                name: t(v?.label),
+                valueId: v?.value,
+                y: respData?.data?.[k] || 0,
+              })),
+            },
+          ]
+          tempSeriesData['job_DrinkingWater'] = {
+            series,
+          }
+        } else if (isEqual(key, 'dash_WasteManagement')) {
+          setSeriesData(prev => ({
+            ...prev,
+            dash_WasteManagement: {
+              ...prev.dash_WasteManagement,
+              series: [
+                {
+                  name: t('btn_Yes'),
+                  data: [
+                    respData.data
+                      .gpMunicipalityClearingSolidWasteRegularlyYes || 0,
+                    respData.data.greyBlackWaterSeparatelyDrainedYes || 0,
+                    respData.data.septicTankCleanedRegularlyYes || 0,
+                    respData.data.soakPitsInHostelYes || 0,
+                    respData.data.sufficientDistanceSepticTankBorewellYes || 0,
+                    respData.data.hostelPremisesKeptCleanYes || 0,
+                  ],
+                },
+                {
+                  name: t('btn_No'),
+                  data: [
+                    respData.data.gpMunicipalityClearingSolidWasteRegularlyNo ||
+                      0,
+                    respData.data.greyBlackWaterSeparatelyDrainedNo || 0,
+                    respData.data.septicTankCleanedRegularlyNo || 0,
+                    respData.data.soakPitsInHostelNo || 0,
+                    respData.data.sufficientDistanceSepticTankBorewellNo || 0,
+                    respData.data.hostelPremisesKeptCleanNo || 0,
+                  ],
+                },
               ],
             },
-            {
-              name: t('btn_No'),
-              data: [
-                response.data.gpMunicipalityClearingSolidWasteNo || 0,
-                response.data.greyBlackWaterSeparatelyDrainedNo || 0,
-                response.data.septicTankCleanedRegularlyNo || 0,
-                response.data.soakPitsInHostelNo || 0,
-                response.data.sufficientDistanceSepticTankBorewellNo || 0,
-                response.data.hostelPremisesKeptCleanNo || 0,
+          }))
+        } else if (isEqual(key, 'dash_ToiletsSufficiency')) {
+          setSeriesData(prev => ({
+            ...prev,
+            dash_ToiletsSufficiency: {
+              ...prev.dash_ToiletsSufficiency,
+              series: [
+                {
+                  name: t('btn_Yes'),
+                  data: [respData.data.numberOfToiletsSufficientYes || 0],
+                },
+                {
+                  name: t('btn_No'),
+                  data: [respData.data.numberOfToiletsSufficientNo || 0],
+                },
               ],
             },
-          ],
-        },
-      }))
-    }
+          }))
+        } else {
+          setLineChartSeriesData({
+            respData,
+            tempSeriesData,
+            key,
+          })
+        }
+      }
+      setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
+    })
   }
 
-  const getToiletsSufficiencyData = async () => {
-    const params = {
-      fromDate: dateRange?.from,
-      toDate: dateRange?.to,
-    }
-    const response = await getToiletsSufficiencyBarChartApi({ params })
-
-    if (response && response.data) {
-      setSeriesData(prev => ({
-        ...prev,
-        dash_ToiletsSufficiency: {
-          ...prev.dash_ToiletsSufficiency,
-          seriesData: [
-            {
-              name: t('btn_Yes'),
-              data: [response.data.numberOfToiletsSufficientYes || 0],
-            },
-            {
-              name: t('btn_No'),
-              data: [response.data.numberOfToiletsSufficientNo || 0],
-            },
-          ],
-        },
-      }))
-    }
-  }
-
-  const handleClickFn = async ({ category, name, pageNo = 1 }) => {
+  const getHandleClickDataApi = async ({
+    category,
+    name,
+    range,
+    pageNo = 1,
+  }) => {
     switch (name) {
       case 'job_DrinkingWater':
         const resp = await getDrinkingWaterHostelsApi({
@@ -177,6 +234,26 @@ const hostelInfraSanitation = () => {
           },
         })
         return resp?.data
+      case 'dash_TotalToiletsAvailable':
+        const availableToiletsResp = await getAvailableToiletsHostelsApi({
+          pageNo,
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            range,
+          },
+        })
+        return availableToiletsResp?.data
+      case 'job_PercentageOfTotalToiletsFunctioning':
+        const functioningToiletsResp = await getFunctioningToiletsHostelsApi({
+          pageNo,
+          params: {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            range,
+          },
+        })
+        return functioningToiletsResp?.data
 
       case 'dash_WasteManagement':
         const wasteManagementResp = await getWasteManagementHostelsApi({
@@ -214,17 +291,17 @@ const hostelInfraSanitation = () => {
     setHostelsData(prev => ({ ...prev, loader: true }))
 
     let categoryValue = data?.valueId
-    if (name === 'dash_WasteManagement') {
-      // For waste management, we need to map the category to API format
-      const categoryIndex = data?.category
-      const categoryKeys = Object.keys(wasteManagementCategoryMapping)
-      if (categoryIndex !== undefined && categoryKeys[categoryIndex]) {
-        categoryValue =
-          wasteManagementCategoryMapping[categoryKeys[categoryIndex]]
-      }
+    if (isEqual(name, 'dash_WasteManagement')) {
+      categoryValue = wasteManagementCategoryMapping[data?.category]
+    } else if (isEqual(name, 'dash_ToiletsSufficiency')) {
+      categoryValue = 'ARE_TOILETS_SUFFICIENT'
     }
 
-    const respData = await handleClickFn({ category: categoryValue, name })
+    const respData = await getHandleClickDataApi({
+      category: categoryValue,
+      range: data?.category,
+      name,
+    })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
@@ -258,85 +335,17 @@ const hostelInfraSanitation = () => {
 
   const handleTableChange = async ({ current }) => {
     setHostelsData(prev => ({ ...prev, loader: true }))
-    const respData = await handleClickFn({
+    const respData = await getHandleClickDataApi({
       category: selectedColumn?.categoryValue,
       name: selectedColumn?.title,
       pageNo: current,
+      range: selectedColumn?.chartData?.category,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
       setHostelsData(prev => ({ ...prev, loader: false }))
     }
-  }
-
-  const getSeriesData = () => {
-    let tempOptions = {}
-    let tempSeriesData = {}
-    // let tempTotalData = {}
-    entries(hostelInfraSanitationCharts).forEach(([key, value]) => {
-      if (
-        notEqual(value?.type, 'rangeFrequency') ||
-        isEqual(key, 'job_DrinkingWater')
-      )
-        return
-
-      tempOptions[key] = {
-        xAxis: {
-          ...axisOptionsList?.xAxis,
-          title: {
-            text: t(value?.xAxisText),
-          },
-          tickPositions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-        },
-        yAxis: axisOptionsList?.yAxis?.map(axis => ({
-          ...axis,
-          title: {
-            text: t(value?.yAxisText),
-          },
-        })),
-      }
-      tempSeriesData[key] = [
-        {
-          type: 'column',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-        {
-          type: 'spline',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-      ]
-      // tempTotalData[key] = 1100
-    })
-    setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
-    setAxisOptions(prev => ({ ...prev, ...tempOptions }))
-    // setTotalData(tempTotalData)
   }
 
   const handleCloseModal = () => {
@@ -348,6 +357,7 @@ const hostelInfraSanitation = () => {
   }
 
   return {
+    onRangeChange: getData,
     handleChartClick,
     seriesData,
     axisOptions,
