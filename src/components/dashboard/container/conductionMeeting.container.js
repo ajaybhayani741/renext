@@ -10,7 +10,6 @@ import {
 import {
   axisOptionsList,
   conductionMeetingCharts,
-  schoolsList,
 } from '../dashboard.description'
 
 const conductionMeeting = () => {
@@ -23,113 +22,102 @@ const conductionMeeting = () => {
   })
   const [hostelsData, setHostelsData] = useState(null)
 
-  const [seriesData, setSeriesData] = useState({
-    dash_PrincipalHWOSpecialOfficer: {
-      chartData: {
-        category: [t('job_HWOMeetingsRegular')],
-      },
-      seriesData: [
-        {
-          name: t('btn_Yes'),
-          data: [],
-          // pointPlacement: -0.13,
-        },
-        {
-          name: t('btn_No'),
-          data: [],
-          // pointPlacement: 0.12,
-        },
-      ],
-    },
-  })
+  const [seriesData, setSeriesData] = useState({})
   const [axisOptions, setAxisOptions] = useState(null)
 
   useEffect(() => {
     getSeriesData()
     if (dateRange?.from && dateRange?.to) {
-      getConductionMeetingsBarChartData()
+      getData()
     }
   }, [dateRange])
 
-  // Conduction Meetings Bar Chart API call
-  const getConductionMeetingsBarChartData = async () => {
+  const getDataApi = name => {
     const params = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
     }
-    const response = await getConductionMeetingsBarChartApi({
-      params,
-    })
+    switch (name) {
+      case 'dash_PrincipalHWOSpecialOfficer':
+        return getConductionMeetingsBarChartApi({ params })
+      default:
+        return null
+    }
+  }
 
-    if (response && response.data) {
-      setSeriesData(prev => ({
-        ...prev,
-        dash_PrincipalHWOSpecialOfficer: {
-          ...prev.dash_PrincipalHWOSpecialOfficer,
-          seriesData: [
-            {
-              name: t('btn_Yes'),
-              data: [response.data.meetingsConvenedRegularlyYes || 0],
+  const getData = async () => {
+    let tempSeriesData = {}
+    for (const key of Object.keys(conductionMeetingCharts)) {
+      const response = await getDataApi(key)
+      if (response && response.data) {
+        if (key === 'dash_PrincipalHWOSpecialOfficer') {
+          tempSeriesData[key] = {
+            chartData: {
+              category: [t('job_HWOMeetingsRegular')],
             },
-            {
-              name: t('btn_No'),
-              data: [response.data.meetingsConvenedRegularlyNo || 0],
-            },
-          ],
-        },
-      }))
+            seriesData: [
+              {
+                name: t('btn_Yes'),
+                data: [response.data.meetingsConvenedRegularlyYes || 0],
+              },
+              {
+                name: t('btn_No'),
+                data: [response.data.meetingsConvenedRegularlyNo || 0],
+              },
+            ],
+          }
+        }
+      }
+    }
+    setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
+  }
+
+  const getHandleClickDataApi = ({ name, pageNo, type }) => {
+    const params = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      pageNo,
+    }
+    switch (name) {
+      case 'dash_PrincipalHWOSpecialOfficer':
+        const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
+        return getConductionMeetingsHostelsApi({
+          pageNo,
+          params: { ...params, filterValue },
+        })
+      default:
+        return null
     }
   }
 
   const handleChartClick = async (e, name) => {
     const data = e.point
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const category = data?.category
+    const type = data?.series?.name
+    const response = await getHandleClickDataApi({
+      name,
+      type,
+      pageNo: 1,
+    })
 
-    if (name === 'dash_PrincipalHWOSpecialOfficer') {
-      // Handle conduction meetings bar chart click
-      const type = data?.series?.name
-      const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
-
-      try {
-        setHostelsData(prev => ({ ...prev, loader: true }))
-        const response = await getConductionMeetingsHostelsApi({
-          params: {
-            fromDate: dateRange?.from,
-            toDate: dateRange?.to,
-            filterValue: filterValue,
-          },
-          pageNo: 1,
-        })
-
-        if (response && response.data) {
-          setSelectedColumn({
-            selected: true,
-            chartData: {
-              category: data?.category,
-              type: data?.series?.name,
-              value: data?.y,
-            },
-            list: response.data.hostels || [],
-            title: name,
-            modalTitle: true,
-          })
-          setHostelsData({ ...response.data, loader: false })
-        }
-      } catch (error) {
-        setHostelsData(prev => ({ ...prev, loader: false }))
-      }
+    if (response?.data) {
+      setHostelsData({ ...response?.data, loader: false })
     } else {
-      setSelectedColumn({
-        selected: true,
-        chartData: {
-          category: data?.category,
-          type: data?.series?.name,
-          value: data?.y,
-        },
-        list: [...schoolsList],
-        title: name,
-        modalTitle: true,
-      })
+      setHostelsData(prev => ({ ...prev, loader: false }))
     }
+
+    setSelectedColumn({
+      selected: true,
+      chartData: {
+        category,
+        type,
+        value: data?.y,
+      },
+      list: response?.data?.hostels || [],
+      title: name,
+      modalTitle: conductionMeetingCharts[name]?.modalTitle,
+    })
   }
 
   const getSeriesData = () => {
@@ -154,43 +142,6 @@ const conductionMeeting = () => {
           },
         })),
       }
-      tempSeriesData[key] = [
-        {
-          type: 'column',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-        {
-          type: 'spline',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-      ]
-      // tempTotalData[key] = 1100
     })
     setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
     setAxisOptions(prev => ({ ...prev, ...tempOptions }))
@@ -198,28 +149,18 @@ const conductionMeeting = () => {
   }
 
   const handleTableChange = async ({ current }) => {
-    if (selectedColumn?.title === 'dash_PrincipalHWOSpecialOfficer') {
-      // Handle conduction meetings bar chart pagination
-      const type = selectedColumn?.chartData?.type
-      const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const { title, chartData } = selectedColumn
+    const response = await getHandleClickDataApi({
+      name: title,
+      type: chartData?.type,
+      pageNo: current,
+    })
 
-      try {
-        setHostelsData(prev => ({ ...prev, loader: true }))
-        const response = await getConductionMeetingsHostelsApi({
-          params: {
-            fromDate: dateRange?.from,
-            toDate: dateRange?.to,
-            filterValue: filterValue,
-          },
-          pageNo: current,
-        })
-
-        if (response && response.data) {
-          setHostelsData({ ...response.data, loader: false })
-        }
-      } catch (error) {
-        setHostelsData(prev => ({ ...prev, loader: false }))
-      }
+    if (response?.data) {
+      setHostelsData({ ...response?.data, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
     }
   }
 

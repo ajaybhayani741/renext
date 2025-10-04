@@ -385,6 +385,22 @@ export const axisOptionsList = {
   ],
 }
 
+export const hostelAuthorityCharts = {
+  job_HostelAuthority: {
+    xAxisText: ['dash_RegularInCharge', 'dash_StayInHeadquarters'],
+    yAxisText: '',
+    chartType: 'column',
+    modalTitle: true,
+  },
+}
+
+export const recordMaintenanceCharts = {
+  job_RecordMaintenance: {
+    chartType: 'column',
+    modalTitle: true,
+  },
+}
+
 export const staffDetailsCharts = {
   dash_TotalNumberOfWorkersOnPayroll: {
     xAxisText: 'job_NumberOfWorkersOnPayroll',
@@ -443,6 +459,15 @@ export const hostelInfraRoomsCharts = {
   job_WorkingFansCount: {
     xAxisText: 'dash_FansInWorking',
     yAxisText: 'dash_NumberOfHostels',
+    modalTitle: false,
+  },
+}
+
+export const studentsCharts = {
+  dash_Students: {
+    xAxisText: 'dash_NumberOfStudents',
+    yAxisText: 'dash_NumberOfHostels',
+    chartType: 'rangeFrequency',
     modalTitle: false,
   },
 }
