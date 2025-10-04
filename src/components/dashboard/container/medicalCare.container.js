@@ -26,7 +26,30 @@ const medicalCare = () => {
     chartData: null,
   })
 
-  const [seriesData, setSeriesData] = useState({})
+  const [seriesData, setSeriesData] = useState({
+    job_DistanceToNearestPHC: {
+      chartData: {
+        category: [
+          'Ekalavya Model Residential School',
+          'Govt. BC Hostel',
+          'Govt. BC College',
+          'Govt. ST Ashram School',
+          'Govt. ST Hostel',
+          'Govt. ST PMH',
+          'Govt. ST Hostel',
+          'Ekalavya Model Residential School',
+        ],
+      },
+      seriesData: [
+        {
+          name: t('dash_Distance'),
+          data: [13, 9, 6, 3, 25, 10, 3, 5],
+          color: '#f1725e',
+          pointPlacement: 'on',
+        },
+      ],
+    },
+  })
   const [axisOptions, setAxisOptions] = useState(null)
 
   const categoryMapping = {

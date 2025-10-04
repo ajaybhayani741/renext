@@ -11,6 +11,7 @@ const HostelInfraRoomsDashboard = () => {
   const { t } = useTranslations()
   const {
     axisOptions,
+    onRangeChange,
     seriesData,
     selectedColumn,
     handleChartClick,
@@ -44,6 +45,7 @@ const HostelInfraRoomsDashboard = () => {
               <LineCharts
                 {...{
                   name: key,
+                  onRangeChange,
                   handleChartClick,
                   seriesData: seriesData?.[key]?.series,
                   title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,

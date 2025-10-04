@@ -1,20 +1,19 @@
 import DashboardWrapper from './DashboardWrapper'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
+import { entries } from '../../../utils/javascript'
 import LineCharts from '../../charts/LineCharts'
 import students from '../container/students.container'
+import { studentCharts } from '../dashboard.description'
 
 const StudentsDashboard = () => {
   const {
-    title,
-    // axisOptions,
-    xAxisTitle,
-    yAxisTitle,
     seriesData,
     selectedColumn,
     handleChartClick,
     handleCloseModal,
     hostelsData,
     handleTableChange,
+    onRangeChange,
   } = students()
   return (
     <DashboardWrapper
@@ -26,18 +25,24 @@ const StudentsDashboard = () => {
         chartClassName: 'w-100',
       }}
     >
-      <ANTDColumn xs={24} md={24}>
-        <LineCharts
-          {...{
-            // axisOptions,
-            xAxisTitle,
-            yAxisTitle,
-            handleChartClick,
-            seriesData: seriesData?.['dash_Students']?.series,
-            title: `${title}: ${seriesData?.['dash_Students']?.total || 0}`,
-          }}
-        />
-      </ANTDColumn>
+      {' '}
+      {entries(studentCharts)?.map(([key, value]) => {
+        return (
+          <ANTDColumn xs={24} md={24} key={key}>
+            <LineCharts
+              {...{
+                name: key,
+                xAxisTitle: value?.xAxisText,
+                yAxisTitle: value?.yAxisText,
+                handleChartClick,
+                seriesData: seriesData?.[key]?.series,
+                title: `${key}: ${seriesData?.[key]?.total || 0}`,
+                onRangeChange,
+              }}
+            />
+          </ANTDColumn>
+        )
+      })}
     </DashboardWrapper>
   )
 }

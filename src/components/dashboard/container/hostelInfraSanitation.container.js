@@ -81,12 +81,16 @@ const hostelInfraSanitation = () => {
     }
   }, [dateRange])
 
-  const getDataApi = async ({ name }) => {
+  const getDataApi = async ({
+    name,
+    start = lineChartRange?.start,
+    end = lineChartRange?.end,
+  }) => {
     const lineParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
-      start: lineChartRange?.start,
-      end: lineChartRange?.end,
+      start,
+      end,
     }
     const columnParams = {
       fromDate: dateRange?.from,
@@ -102,7 +106,7 @@ const hostelInfraSanitation = () => {
           params: lineParams,
         })
         return availableToiletsResp
-      case 'dash_PercentageOfToiletsFunctioning':
+      case 'job_PercentageOfTotalToiletsFunctioning':
         const functioningToiletsResp = await getFunctioningToiletsChartApi({
           params: lineParams,
         })
@@ -129,10 +133,12 @@ const hostelInfraSanitation = () => {
 
   const getData = async ({
     chartType = keys(hostelInfraSanitationCharts),
+    start,
+    end,
   } = {}) => {
     let tempSeriesData = {}
     chartType?.forEach(async key => {
-      const respData = await getDataApi({ name: key })
+      const respData = await getDataApi({ name: key, start, end })
       if (respData?.data) {
         if (isEqual(key, 'job_DrinkingWater')) {
           const series = [
@@ -238,7 +244,7 @@ const hostelInfraSanitation = () => {
           },
         })
         return availableToiletsResp?.data
-      case 'dash_PercentageOfToiletsFunctioning':
+      case 'job_PercentageOfTotalToiletsFunctioning':
         const functioningToiletsResp = await getFunctioningToiletsHostelsApi({
           pageNo,
           params: {
@@ -351,6 +357,7 @@ const hostelInfraSanitation = () => {
   }
 
   return {
+    onRangeChange: getData,
     handleChartClick,
     seriesData,
     axisOptions,
