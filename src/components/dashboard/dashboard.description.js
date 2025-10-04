@@ -524,12 +524,12 @@ export const medicalCareCharts = {
     yAxisText: '',
     modalTitle: true,
   },
-  job_DistanceToNearestPHC: {
-    type: 'polar',
-    xAxisText: '',
-    yAxisText: '',
-    modalTitle: true,
-  },
+  // job_DistanceToNearestPHC: {
+  //   type: 'polar',
+  //   xAxisText: '',
+  //   yAxisText: '',
+  //   modalTitle: true,
+  // },
   dash_IsTheStaffNurseAvailableInTheHostel: {
     type: 'pie',
     xAxisText: 'job_NumberOfScavengersAvailable',
