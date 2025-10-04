@@ -29,7 +29,6 @@ const hostelInfraRooms = () => {
   })
   const [seriesData, setSeriesData] = useState(null)
   const [hostelsData, setHostelsData] = useState(null)
-  const title = t('dash_StaffDetails')
 
   const locationBedsMattressesCategoryMapping = {
     [t('dash_LocationGovtPrivate')]: 'HOSTEL_LOCATION_TYPE',
@@ -56,12 +55,16 @@ const hostelInfraRooms = () => {
     }
   }, [dateRange])
 
-  const getDataApi = async ({ name }) => {
+  const getDataApi = async ({
+    name,
+    start = lineChartRange?.start,
+    end = lineChartRange?.end,
+  }) => {
     const lineParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
-      start: lineChartRange?.start,
-      end: lineChartRange?.end,
+      start,
+      end,
     }
     const columnParams = {
       fromDate: dateRange?.from,
@@ -87,9 +90,13 @@ const hostelInfraRooms = () => {
     }
   }
 
-  const getData = async () => {
-    keys(hostelInfraRoomsCharts)?.forEach(async key => {
-      const respData = await getDataApi({ name: key })
+  const getData = async ({
+    start,
+    end,
+    chartType = keys(hostelInfraRoomsCharts),
+  } = {}) => {
+    chartType?.forEach(async key => {
+      const respData = await getDataApi({ name: key, start, end })
       if (isEqual(key, 'dash_LocationBedsMattresses')) {
         const isData = values(respData?.data)?.find(item => item)
         const tempSeriesData = isData && [
@@ -255,7 +262,7 @@ const hostelInfraRooms = () => {
   }
 
   return {
-    title,
+    onRangeChange: getData,
     axisOptions,
     seriesData,
     selectedColumn,

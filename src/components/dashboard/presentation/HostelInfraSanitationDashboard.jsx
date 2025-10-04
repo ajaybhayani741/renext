@@ -11,7 +11,7 @@ import { hostelInfraSanitationCharts } from '../dashboard.description'
 const HostelInfraSanitationDashboard = () => {
   const { t } = useTranslations()
   const {
-    // axisOptions,
+    onRangeChange,
     handleChartClick,
     seriesData,
     selectedColumn,
@@ -37,6 +37,7 @@ const HostelInfraSanitationDashboard = () => {
                   title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
                   xAxisTitle: value?.xAxisText,
                   yAxisTitle: value?.yAxisText,
+                  onRangeChange,
                 }}
               />
             ) : isEqual(value?.type, 'columnCompare') ? (

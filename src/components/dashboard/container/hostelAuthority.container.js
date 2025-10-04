@@ -2,18 +2,17 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { values } from '../../../utils/javascript'
+import { isEqual, keys, values } from '../../../utils/javascript'
 import {
   getPrincipalAuthorityBarChartApi,
   getPrincipalAuthorityHostelsApi,
 } from '../dashboard.api'
+import { hostelAuthorityCharts } from '../dashboard.description'
 
 const hostelAuthority = () => {
   const { t } = useTranslations()
-  const title = t('job_HostelAuthority')
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
-
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
@@ -32,89 +31,103 @@ const hostelAuthority = () => {
 
   useEffect(() => {
     if (dateRange?.from && dateRange?.to) {
-      getSeriesData()
+      getData()
     }
   }, [dateRange])
 
-  const getHostelsData = async ({
-    data,
-    pageNo = selectedColumn?.pageNo || 1,
-  }) => {
-    const category = data?.category || selectedColumn?.chartData?.category
-    const type = data?.series?.name || selectedColumn?.chartData?.type
-    const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
-    const apiCategory = categoryMapping[category]
-
-    try {
-      setHostelsData(prev => ({ ...prev, loader: true }))
-      const params = {
-        fromDate: dateRange?.from,
-        toDate: dateRange?.to,
-        category: apiCategory,
-        filterValue: filterValue,
-      }
-
-      const response = await getPrincipalAuthorityHostelsApi({
-        params,
-        pageNo,
-      })
-
-      if (response && response.data) {
-        setSelectedColumn({
-          selected: true,
-          chartData: {
-            category,
-            type,
-          },
-          list: response.data.hostels || [],
-          title: 'job_HostelAuthority',
-          modalTitle: true,
-          ...response.data,
-        })
-        setHostelsData({ ...response.data, loader: false })
-      }
-    } catch (error) {
-      return
-    } finally {
-      setHostelsData(prev => ({ ...prev, loader: false }))
-    }
-  }
-
-  const handleChartClick = async e => {
-    const data = e.point
-    getHostelsData({ data })
-  }
-
-  const getSeriesData = async () => {
-    const params = {
+  const getDataApi = async ({ name }) => {
+    const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
     }
-    const response = await getPrincipalAuthorityBarChartApi({
-      params,
-    })
+    switch (name) {
+      case 'job_HostelAuthority':
+        const authorityResp = await getPrincipalAuthorityBarChartApi({
+          params: columnParams,
+        })
+        return authorityResp
+      default:
+        return null
+    }
+  }
 
-    if (response && response.data) {
-      const isData = values(response?.data)?.find(item => item)
-      setSeriesData(
-        isData && [
+  const getData = async () => {
+    keys(hostelAuthorityCharts)?.forEach(async key => {
+      const respData = await getDataApi({ name: key })
+      if (isEqual(key, 'job_HostelAuthority')) {
+        const isData = values(respData?.data)?.find(item => item)
+        const tempSeriesData = isData && [
           {
             name: t('btn_Yes'),
             data: [
-              response.data.isRegularInChargeYes || 0,
-              response.data.staysInHeadquartersYes || 0,
+              respData.data.isRegularInChargeYes || 0,
+              respData.data.staysInHeadquartersYes || 0,
             ],
           },
           {
             name: t('btn_No'),
             data: [
-              response.data.isRegularInChargeNo || 0,
-              response.data.staysInHeadquartersNo || 0,
+              respData.data.isRegularInChargeNo || 0,
+              respData.data.staysInHeadquartersNo || 0,
             ],
           },
-        ],
-      )
+        ]
+        setSeriesData(prev => ({
+          ...prev,
+          [key]: { series: tempSeriesData },
+        }))
+      }
+    })
+  }
+
+  const getHandleClickDataApi = async ({
+    category,
+    filterValue,
+    pageNo = 1,
+    name,
+  } = {}) => {
+    const columnParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      category,
+      filterValue,
     }
+    switch (name) {
+      case 'job_HostelAuthority':
+        const roomsResp = await getPrincipalAuthorityHostelsApi({
+          pageNo,
+          params: columnParams,
+        })
+        return roomsResp?.data
+      default:
+        return null
+    }
+  }
+
+  const handleChartClick = async (e, name) => {
+    const data = e.point
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const type = data?.series?.name || selectedColumn?.chartData?.type
+    const respData = await getHandleClickDataApi({
+      category: categoryMapping[data?.category],
+      filterValue: type === t('btn_Yes') ? 'YES' : 'NO',
+      name,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
+
+    setSelectedColumn({
+      selected: true,
+      chartData: {
+        category: data?.category,
+        type,
+      },
+      title: name,
+      modalTitle: hostelAuthorityCharts?.[name]?.modalTitle,
+    })
   }
 
   const handleCloseModal = () => {
@@ -127,11 +140,22 @@ const hostelAuthority = () => {
   }
 
   const handleTableChange = async ({ current }) => {
-    getHostelsData({ pageNo: current })
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getHandleClickDataApi({
+      category: categoryMapping[selectedColumn?.chartData?.category],
+      filterValue:
+        selectedColumn?.chartData?.type === t('btn_Yes') ? 'YES' : 'NO',
+      name: selectedColumn?.title,
+      pageNo: current,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
   }
 
   return {
-    title,
     chartData,
     handleChartClick,
     seriesData,

@@ -394,8 +394,17 @@ export const hostelAuthorityCharts = {
   },
 }
 
+export const studentCharts = {
+  dash_TotalNumberOfStudents: {
+    xAxisText: 'dash_NumberOfStudents',
+    yAxisText: 'dash_NumberOfHostels',
+    modalTitle: false,
+  },
+}
+
 export const recordMaintenanceCharts = {
   job_RecordMaintenance: {
+    yAxisText: '',
     chartType: 'column',
     modalTitle: true,
   },
@@ -515,12 +524,12 @@ export const medicalCareCharts = {
     yAxisText: '',
     modalTitle: true,
   },
-  job_DistanceToNearestPHC: {
-    type: 'polar',
-    xAxisText: '',
-    yAxisText: '',
-    modalTitle: true,
-  },
+  // job_DistanceToNearestPHC: {
+  //   type: 'polar',
+  //   xAxisText: '',
+  //   yAxisText: '',
+  //   modalTitle: true,
+  // },
   dash_IsTheStaffNurseAvailableInTheHostel: {
     type: 'pie',
     xAxisText: 'job_NumberOfScavengersAvailable',

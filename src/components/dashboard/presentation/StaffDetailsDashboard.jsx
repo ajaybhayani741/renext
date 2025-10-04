@@ -9,7 +9,7 @@ import DashboardWrapper from './DashboardWrapper'
 const StaffDetailsDashboard = () => {
   const { t } = useTranslations()
   const {
-    // axisOptions,
+    onRangeChange,
     seriesData,
     selectedColumn,
     handleChartClick,
@@ -33,7 +33,7 @@ const StaffDetailsDashboard = () => {
             <LineCharts
               {...{
                 name: key,
-                // axisOptions: axisOptions?.[key],
+                onRangeChange,
                 handleChartClick,
                 seriesData: seriesData?.[key]?.series,
                 title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
