@@ -1,19 +1,21 @@
-import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries } from '../../../utils/javascript'
-import FrequencyBarRange from '../../charts/FrequencyBarRange'
+import LineCharts from '../../charts/LineCharts'
 import staffDetails from '../container/staffDetails.container'
 import { staffDetailsCharts } from '../dashboard.description'
+import DashboardWrapper from './DashboardWrapper'
 
 const StaffDetailsDashboard = () => {
   const { t } = useTranslations()
   const {
-    axisOptions,
+    // axisOptions,
     seriesData,
     selectedColumn,
     handleChartClick,
     handleCloseModal,
+    hostelsData,
+    handleTableChange,
   } = staffDetails()
 
   return (
@@ -21,25 +23,27 @@ const StaffDetailsDashboard = () => {
       {...{
         selectedColumn,
         handleCloseModal,
-        // chartClassName: 'w-100',
+        hostelsData,
+        handleTableChange,
       }}
     >
-      {axisOptions &&
-        entries(staffDetailsCharts)?.map(([key, value]) => {
-          return (
-            <ANTDColumn xs={24} md={12} key={key}>
-              <FrequencyBarRange
-                {...{
-                  name: key,
-                  axisOptions: axisOptions?.[key],
-                  handleChartClick,
-                  seriesData: seriesData?.[key],
-                  title: `${t(key)}: ${value?.total}`,
-                }}
-              />
-            </ANTDColumn>
-          )
-        })}
+      {entries(staffDetailsCharts)?.map(([key, value]) => {
+        return (
+          <ANTDColumn xs={24} md={24} key={key}>
+            <LineCharts
+              {...{
+                name: key,
+                // axisOptions: axisOptions?.[key],
+                handleChartClick,
+                seriesData: seriesData?.[key]?.series,
+                title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
+                xAxisTitle: value?.xAxisText,
+                yAxisTitle: value?.yAxisText,
+              }}
+            />
+          </ANTDColumn>
+        )
+      })}
     </DashboardWrapper>
   )
 }

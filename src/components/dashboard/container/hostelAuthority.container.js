@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
+import { values } from '../../../utils/javascript'
 import {
   getPrincipalAuthorityBarChartApi,
   getPrincipalAuthorityHostelsApi,
@@ -94,22 +95,25 @@ const hostelAuthority = () => {
     })
 
     if (response && response.data) {
-      setSeriesData([
-        {
-          name: t('btn_Yes'),
-          data: [
-            response.data.isRegularInChargeYes || 0,
-            response.data.staysInHeadquartersYes || 0,
-          ],
-        },
-        {
-          name: t('btn_No'),
-          data: [
-            response.data.isRegularInChargeNo || 0,
-            response.data.staysInHeadquartersNo || 0,
-          ],
-        },
-      ])
+      const isData = values(response?.data)?.find(item => item)
+      setSeriesData(
+        isData && [
+          {
+            name: t('btn_Yes'),
+            data: [
+              response.data.isRegularInChargeYes || 0,
+              response.data.staysInHeadquartersYes || 0,
+            ],
+          },
+          {
+            name: t('btn_No'),
+            data: [
+              response.data.isRegularInChargeNo || 0,
+              response.data.staysInHeadquartersNo || 0,
+            ],
+          },
+        ],
+      )
     }
   }
 

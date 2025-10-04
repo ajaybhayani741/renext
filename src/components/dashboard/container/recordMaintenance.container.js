@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
+import { values } from '../../../utils/javascript'
 import {
   getRecordMaintenanceBarChartApi,
   getRecordMaintenanceHostelsApi,
@@ -105,30 +106,33 @@ const recordMaintenance = () => {
     })
 
     if (response && response.data) {
-      setSeriesData([
-        {
-          name: t('btn_Yes'),
-          data: [
-            response.data.staffAttendanceRecordMaintainedYes || 0,
-            response.data.boarderAttendanceRecordMaintainedYes || 0,
-            response.data.sickBoardersRecordMaintainedYes || 0,
-            response.data.boarderMovementRecordMaintainedYes || 0,
-            response.data.visitorRegisterMaintainedYes || 0,
-            response.data.allOtherRecordsMaintainedRegularlyYes || 0,
-          ],
-        },
-        {
-          name: t('btn_No'),
-          data: [
-            response.data.staffAttendanceRecordMaintainedNo || 0,
-            response.data.boarderAttendanceRecordMaintainedNo || 0,
-            response.data.sickBoardersRecordMaintainedNo || 0,
-            response.data.boarderMovementRecordMaintainedNo || 0,
-            response.data.visitorRegisterMaintainedNo || 0,
-            response.data.allOtherRecordsMaintainedRegularlyNo || 0,
-          ],
-        },
-      ])
+      const isData = values(response?.data)?.find(item => item)
+      setSeriesData(
+        isData && [
+          {
+            name: t('btn_Yes'),
+            data: [
+              response.data.staffAttendanceRecordMaintainedYes || 0,
+              response.data.boarderAttendanceRecordMaintainedYes || 0,
+              response.data.sickBoardersRecordMaintainedYes || 0,
+              response.data.boarderMovementRecordMaintainedYes || 0,
+              response.data.visitorRegisterMaintainedYes || 0,
+              response.data.allOtherRecordsMaintainedRegularlyYes || 0,
+            ],
+          },
+          {
+            name: t('btn_No'),
+            data: [
+              response.data.staffAttendanceRecordMaintainedNo || 0,
+              response.data.boarderAttendanceRecordMaintainedNo || 0,
+              response.data.sickBoardersRecordMaintainedNo || 0,
+              response.data.boarderMovementRecordMaintainedNo || 0,
+              response.data.visitorRegisterMaintainedNo || 0,
+              response.data.allOtherRecordsMaintainedRegularlyNo || 0,
+            ],
+          },
+        ],
+      )
     }
   }
 

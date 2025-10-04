@@ -422,7 +422,6 @@ export const hostelInfraRoomsCharts = {
   dash_TotalNumberOfLivingRooms: {
     xAxisText: 'job_NumberOfLivingRooms',
     yAxisText: 'dash_NumberOfHostels',
-    total: 370,
     modalTitle: false,
   },
   dash_LocationBedsMattresses: {
@@ -433,20 +432,17 @@ export const hostelInfraRoomsCharts = {
       'dash_IsAccommodationSufficient',
     ],
     yAxisText: '',
-    total: 1200,
     chartType: 'column',
     modalTitle: true,
   },
   job_WorkingLightsCount: {
     xAxisText: 'dash_TubelightsBulbsInWorking',
     yAxisText: 'dash_NumberOfHostels',
-    total: 1280,
     modalTitle: false,
   },
   job_WorkingFansCount: {
     xAxisText: 'dash_FansInWorking',
     yAxisText: 'dash_NumberOfHostels',
-    total: 990,
     modalTitle: false,
   },
 }
@@ -484,7 +480,6 @@ export const hostelInfraSanitationCharts = {
     xAxisText: 'job_NumberOfScavengersAvailable',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: true,
-    total: 350,
   },
 }
 
@@ -554,14 +549,14 @@ export const safetySecurityCharts = {
     xAxisText: 'dash_NumberOfCCTVsAvailable',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
-    total: 120,
+    md: 24,
   },
   dash_NumberOfCCTVsFunctioning: {
     type: 'rangeFrequency',
     xAxisText: 'dash_NumberOfCCTVsFunctioning',
     yAxisText: 'dash_NumberOfHostels',
-    total: 100,
     modalTitle: false,
+    md: 24,
   },
 }
 

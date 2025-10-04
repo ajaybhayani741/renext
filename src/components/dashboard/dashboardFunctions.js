@@ -3,9 +3,14 @@ export const setLineChartSeriesData = ({ respData, tempSeriesData, key }) => {
     const series = respData?.data?.hostleAndCountNumberlist?.map(
       ({ countValue, numberOfHostels }) => [countValue, numberOfHostels],
     )
-    tempSeriesData[key] = {
+    const data = {
       series,
       total: respData?.data?.totalCount,
+    }
+    if (tempSeriesData) {
+      tempSeriesData[key] = data
+    } else {
+      return data
     }
   }
 }
