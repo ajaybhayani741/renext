@@ -1,4 +1,5 @@
 import DashboardWrapper from './DashboardWrapper'
+import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries } from '../../../utils/javascript'
 import LineCharts from '../../charts/LineCharts'
@@ -6,6 +7,7 @@ import students from '../container/students.container'
 import { studentCharts } from '../dashboard.description'
 
 const StudentsDashboard = () => {
+  const { t } = useTranslations()
   const {
     seriesData,
     selectedColumn,
@@ -36,7 +38,7 @@ const StudentsDashboard = () => {
                 yAxisTitle: value?.yAxisText,
                 handleChartClick,
                 seriesData: seriesData?.[key]?.series,
-                title: `${key}: ${seriesData?.[key]?.total || 0}`,
+                title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
                 onRangeChange,
               }}
             />
