@@ -74,26 +74,98 @@ const API_ROUTES = {
     `/dataviz-management/v1/brand/jobs/total${params}`,
   SHARE_REPORT: `/job-management/v1/email-sms`,
   UPDATE_REPORT: `/job-management/v1/updation/report`,
-  GET_COUNTRY_STATE: ({ params }) =>
-    `/dataviz-management/v1/dashboard/statecitylist${params}`,
-  GET_TILES: ({ params }) => `/dataviz-management/v1/dashboard/tiles${params}`,
-  GET_PIE_CHART: ({ params }) =>
-    `/dataviz-management/v1/dashboard/piechart${params}`,
-  GET_ERROR_CODE_TABLE: ({ params }) =>
-    `/dataviz-management/v1/dashboard/table/${params}`,
-  GET_BAR_CHART: ({ params }) =>
-    `/dataviz-management/v1/dashboard/barchart/${params}`,
-  GET_TOTAL_JOBS: ({ params }) =>
-    `/dataviz-management/v1/dashboard/totalJobs${params}`,
-  GET_BUBBLE_CHART: ({ params }) =>
-    `/dataviz-management/v1/dashboard/bubblechart${params}`,
   DASHBOARD_SHIFT_REPORT: '/dashboard-management/v1/shiftreport',
   DASHBOARD_DISCREPANCIES: '/dashboard-management/v1/discrepancies',
+  DASHBOARD_PRINCIPAL_AUTHORITY_BAR_CHART:
+    '/dashboard-management/v1/principal-authority/bar-chart',
+  DASHBOARD_PRINCIPAL_AUTHORITY_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/principal-authority/hostels/${params}`,
   GET_COLUMN_LIST: ({ params }) => `/job-management/v1/reportcolumn${params}`,
   SAVE_FLEXIBLE_REPORT: `/job-management/v1/userflexiblereport`,
   GET_SAVE_FLEXIBLE_REPORT: `/job-management/v1/userflexiblereport`,
   GET_SINGLE_REPORT: `/job-management/v1/userflexiblereport`,
   GET_FLEXIBLE_REPORT_CALCULATION: `/job-management/v1/flexible_report_calculation`,
   GET_GENERATED_REPORT: ({ params }) => `/job-management/v1/report${params}`,
+  GET_DRINKING_WATER_BAR_CHART: `/dashboard-management/v1/drinking-water/bar-chart`,
+  GET_DRINKING_WATER_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/drinking-water/hostels/${pageNo}`,
+  GET_STAFF_AVAILABILITY_CHART: `/dashboard-management/v1/staff-nurse-availability/pie-chart`,
+  GET_STAFF_AVAILABILITY_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/staff-nurse-availability/hostels/${pageNo}`,
+  GET_AVAILABLE_TOILETS_CHART: `/dashboard-management/v1/hostel-toilets-available-chart`,
+  GET_AVAILABLE_TOILETS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-toilets-available-chart/hostels/${pageNo}`,
+  DASHBOARD_RECORD_MAINTENANCE_BAR_CHART: `/dashboard-management/v1/record-maintenance/bar-chart`,
+  DASHBOARD_RECORD_MAINTENANCE_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/record-maintenance/hostels/${params}`,
+  DASHBOARD_WASTE_MANAGEMENT_BAR_CHART: `/dashboard-management/v1/waste-management/bar-chart`,
+  DASHBOARD_WASTE_MANAGEMENT_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/waste-management/hostels/${params}`,
+  DASHBOARD_TOILETS_SUFFICIENCY_BAR_CHART: `/dashboard-management/v1/toilets-sufficiency/bar-chart`,
+  DASHBOARD_TOILETS_SUFFICIENCY_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/toilets-sufficiency/hostels/${params}`,
+  DASHBOARD_LOCATION_BEDS_MATTRESSES_BAR_CHART: `/dashboard-management/v1/location-beds-mattresses/bar-chart`,
+  DASHBOARD_LOCATION_BEDS_MATTRESSES_HOSTELS: ({ params }) =>
+    `/dashboard-management/v1/location-beds-mattresses/hostels/${params}`,
+  DASHBOARD_MEDICAL_CARE_BAR_CHART: `/dashboard-management/v1/medical-care/bar-chart`,
+  DASHBOARD_MEDICAL_CARE_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/medical-care/hostels/${pageNo}`,
+  DASHBOARD_EDUCATION_FACILITIES_BAR_CHART: `/dashboard-management/v1/education-facilities/bar-chart`,
+  DASHBOARD_EDUCATION_FACILITIES_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/education-facilities/hostels/${pageNo}`,
+  DASHBOARD_FOOD_PROVISIONS_BAR_CHART: `/dashboard-management/v1/food-provisions/bar-chart`,
+  DASHBOARD_FOOD_PROVISIONS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/food-provisions/hostels/${pageNo}`,
+  DASHBOARD_PRECAUTIONARY_MEASURES_BAR_CHART: `/dashboard-management/v1/precautionary-measures/bar-chart`,
+  DASHBOARD_PRECAUTIONARY_MEASURES_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/precautionary-measures/hostels/${pageNo}`,
+  DASHBOARD_ANIMAL_THREAT_BAR_CHART: `/dashboard-management/v1/animal-threat/bar-chart`,
+  DASHBOARD_ANIMAL_THREAT_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/animal-threat/hostels/${pageNo}`,
+  DASHBOARD_CONDUCTION_MEETINGS_BAR_CHART: `/dashboard-management/v1/conduction-meetings/bar-chart`,
+  DASHBOARD_CONDUCTION_MEETINGS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/conduction-meetings/hostels/${pageNo}`,
+  DASHBOARD_COOKING_FUEL_BAR_CHART: `/dashboard-management/v1/cooking-fuel/bar-chart`,
+  DASHBOARD_COOKING_FUEL_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/cooking-fuel/hostels/${pageNo}`,
+  GET_FUNCTIONING_TOILETS_CHART: `/dashboard-management/v1/hostel-toilets-functioning-percentage-chart`,
+  GET_FUNCTIONING_TOILETS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-toilets-functioning-percentage-chart/hostels/${pageNo}`,
+  GET_HOSTEL_STUDENT_CHART: `/dashboard-management/v1/hostel-student-chart`,
+  GET_HOSTEL_STUDENT_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-student-chart/hostels/${pageNo}`,
+  GET_WORKERS_CHART: `/dashboard-management/v1/hostel-workers-payroll-chart`,
+  GET_WORKERS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-workers-payroll-chart/hostels/${pageNo}`,
+  GET_COOKS_CHART: `/dashboard-management/v1/hostel-cooks-enrolled-chart`,
+  GET_COOKS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-cooks-enrolled-chart/hostels/${pageNo}`,
+  GET_KAMATI_CHART: `/dashboard-management/v1/hostel-kamati-enrolled-chart`,
+  GET_KAMATI_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-kamati-enrolled-chart/hostels/${pageNo}`,
+  GET_WATCHMAN_CHART: `/dashboard-management/v1/hostel-watchmen-attenders-enrolled-chart`,
+  GET_WATCHMAN_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-watchmen-attenders-enrolled-chart/hostels/${pageNo}`,
+  GET_AVAILABLE_SCAVENGERS_CHART: `/dashboard-management/v1/hostel-scavengers-available-chart`,
+  GET_AVAILABLE_SCAVENGERS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-scavengers-available-chart/hostels/${pageNo}`,
+  GET_REQUIRED_SCAVENGERS_CHART: `/dashboard-management/v1/hostel-scavengers-required-chart`,
+  GET_REQUIRED_SCAVENGERS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-scavengers-required-chart/hostels/${pageNo}`,
+  GET_LIVING_ROOMS_CHART: `/dashboard-management/v1/hostel-living-rooms-chart`,
+  GET_LIVING_ROOMS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-living-rooms-chart/hostels/${pageNo}`,
+  GET_WORKING_TUBELIGHT_CHART: `/dashboard-management/v1/hostel-tubelights-bulbs-chart`,
+  GET_WORKING_TUBELIGHT_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-tubelights-bulbs-chart/hostels/${pageNo}`,
+  GET_WORKING_FANS_CHART: `/dashboard-management/v1/hostel-fans-working-chart`,
+  GET_WORKING_FANS_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-fans-working-chart/hostels/${pageNo}`,
+  GET_AVAILABLE_CCTV_CHART: `/dashboard-management/v1/hostel-cctvs-available-chart`,
+  GET_AVAILABLE_CCTV_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-cctvs-available-chart/hostels/${pageNo}`,
+  GET_FUNCTIONING_CCTV_CHART: `/dashboard-management/v1/hostel-cctvs-functioning-chart`,
+  GET_FUNCTIONING_CCTV_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/hostel-cctvs-functioning-chart/hostels/${pageNo}`,
 }
 export default API_ROUTES

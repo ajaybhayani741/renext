@@ -1,31 +1,226 @@
 import { useEffect, useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, isEqual } from '../../../utils/javascript'
+import { isEqual, keys, values } from '../../../utils/javascript'
 import {
-  axisOptionsList,
+  getFansChartApi,
+  getFansHostelsApi,
+  getLivingRoomsChartApi,
+  getLivingRoomsHostelsApi,
+  getLocationBedsMattressesBarChartApi,
+  getLocationBedsMattressesHostelsApi,
+  getTubelightChartApi,
+  getTubelightHostelsApi,
+} from '../dashboard.api'
+import {
   hostelInfraRoomsCharts,
-  hostelsList,
-  schoolsList,
+  lineChartRange,
 } from '../dashboard.description'
+import { setLineChartSeriesData } from '../dashboardFunctions'
 
 const hostelInfraRooms = () => {
   const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
   const [seriesData, setSeriesData] = useState(null)
-  const [axisOptions, setAxisOptions] = useState(null)
-  // const [totalData, setTotalData] = useState(null)
-  const title = t('dash_StaffDetails')
+  const [hostelsData, setHostelsData] = useState(null)
+
+  const locationBedsMattressesCategoryMapping = {
+    [t('dash_LocationGovtPrivate')]: 'HOSTEL_LOCATION_TYPE',
+    [t('dash_AreBedsAvailableForAll')]: 'BEDS_AVAILABLE_FOR_ALL',
+    [t('dash_AreMattressesAvailableForAll')]: 'MATTRESSES_AVAILABLE_FOR_ALL',
+    [t('dash_IsAccommodationSufficient')]: 'ACCOMMODATION_SUFFICIENT',
+  }
+
+  const filterValueMapping = {
+    [t('dash_Government')]: 'GOVERNMENT',
+    [t('dash_Private')]: 'PRIVATE',
+    [t('btn_Yes')]: 'YES',
+    [t('btn_No')]: 'NO',
+  }
+  const axisOptions = {
+    dash_LocationBedsMattresses: {
+      category: keys(locationBedsMattressesCategoryMapping),
+    },
+  }
 
   useEffect(() => {
-    getSeriesData()
-  }, [])
+    if (dateRange?.from && dateRange?.to) {
+      getData()
+    }
+  }, [dateRange])
 
-  const handleChartClick = (e, name) => {
+  const getDataApi = async ({
+    name,
+    start = lineChartRange?.start,
+    end = lineChartRange?.end,
+  }) => {
+    const lineParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      start,
+      end,
+    }
+    const columnParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    switch (name) {
+      case 'dash_TotalNumberOfLivingRooms':
+        const roomsResp = await getLivingRoomsChartApi({ params: lineParams })
+        return roomsResp
+      case 'dash_LocationBedsMattresses':
+        const bedResp = await getLocationBedsMattressesBarChartApi({
+          params: columnParams,
+        })
+        return bedResp
+      case 'job_WorkingLightsCount':
+        const lightsResp = await getTubelightChartApi({ params: lineParams })
+        return lightsResp
+      case 'job_WorkingFansCount':
+        const fansResp = await getFansChartApi({ params: lineParams })
+        return fansResp
+      default:
+        return null
+    }
+  }
+
+  const getData = async ({
+    start,
+    end,
+    chartType = keys(hostelInfraRoomsCharts),
+  } = {}) => {
+    chartType?.forEach(async key => {
+      const respData = await getDataApi({ name: key, start, end })
+      if (isEqual(key, 'dash_LocationBedsMattresses')) {
+        const isData = values(respData?.data)?.find(item => item)
+        const tempSeriesData = isData && [
+          {
+            name: '',
+            color: '#eabf9f',
+            data: [
+              {
+                y: respData.data.governmentLocationCount || 0,
+                custom: { label: t('dash_Government') },
+              },
+              {
+                y: respData.data.bedsAvailableForAllYes || 0,
+                custom: { label: t('btn_Yes') },
+              },
+              {
+                y: respData.data.mattressesAvailableForAllYes || 0,
+                custom: { label: t('btn_Yes') },
+              },
+              {
+                y: respData.data.accommodationSufficientYes || 0,
+                custom: { label: t('btn_Yes') },
+              },
+            ],
+          },
+          {
+            name: '',
+            color: '#f1725d',
+            data: [
+              {
+                y: respData.data.privateLocationCount || 0,
+                custom: { label: t('dash_Private') },
+              },
+              {
+                y: respData.data.bedsAvailableForAllNo || 0,
+                custom: { label: t('btn_No') },
+              },
+              {
+                y: respData.data.mattressesAvailableForAllNo || 0,
+                custom: { label: t('btn_No') },
+              },
+              {
+                y: respData.data.accommodationSufficientNo || 0,
+                custom: { label: t('btn_No') },
+              },
+            ],
+          },
+        ]
+        setSeriesData(prev => ({
+          ...prev,
+          [key]: { series: tempSeriesData },
+        }))
+      } else {
+        let tempSeriesData = setLineChartSeriesData({
+          respData,
+          key,
+        })
+        setSeriesData(prev => ({
+          ...prev,
+          [key]: tempSeriesData,
+        }))
+      }
+    })
+  }
+
+  const getHandleClickDataApi = async ({
+    range,
+    category,
+    filterValue,
+    pageNo = 1,
+    name,
+  } = {}) => {
+    const lineParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      range,
+    }
+    const columnParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      category: category,
+      filterValue: filterValue,
+    }
+    switch (name) {
+      case 'dash_TotalNumberOfLivingRooms':
+        const roomsResp = await getLivingRoomsHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return roomsResp?.data
+      case 'dash_LocationBedsMattresses':
+        const bedResp = await getLocationBedsMattressesHostelsApi({
+          pageNo,
+          params: columnParams,
+        })
+        return bedResp?.data
+      case 'job_WorkingLightsCount':
+        const lightsResp = await getTubelightHostelsApi({
+          pageNo,
+          params: lineParams,
+        })
+        return lightsResp?.data
+      case 'job_WorkingFansCount':
+        const fansResp = await getFansHostelsApi({ pageNo, params: lineParams })
+        return fansResp?.data
+      default:
+        return null
+    }
+  }
+
+  const handleChartClick = async (e, name) => {
     const data = e.point
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getHandleClickDataApi({
+      category: locationBedsMattressesCategoryMapping?.[data?.category],
+      filterValue: filterValueMapping?.[data?.custom?.label],
+      range: data?.category,
+      name,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
     setSelectedColumn({
       selected: true,
       chartData: {
@@ -33,104 +228,9 @@ const hostelInfraRooms = () => {
         type: data?.series?.name || data?.custom?.label,
         value: data?.y,
       },
-      list: isEqual(name, 'dash_LocationBedsMattresses')
-        ? [...schoolsList]
-        : [...hostelsList],
       title: name,
       modalTitle: hostelInfraRoomsCharts?.[name]?.modalTitle,
     })
-  }
-
-  const getSeriesData = () => {
-    let tempOptions = {}
-    let tempSeriesData = {}
-    // let tempTotalData = {}
-    entries(hostelInfraRoomsCharts).forEach(([key, value]) => {
-      tempOptions[key] = isEqual(value?.chartType, 'column')
-        ? {
-            category: value?.xAxisText?.map(v => t(v)),
-          }
-        : {
-            xAxis: {
-              ...axisOptionsList?.xAxis,
-              title: {
-                text: t(value?.xAxisText),
-              },
-              tickPositions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-            },
-            yAxis: axisOptionsList?.yAxis?.map(axis => ({
-              ...axis,
-              title: {
-                text: t(value?.yAxisText),
-              },
-            })),
-          }
-      tempSeriesData[key] = isEqual(value?.chartType, 'column')
-        ? [
-            {
-              name: '',
-              color: '#eabf9f',
-              data: [
-                { y: 85, custom: { label: t('dash_Government') } },
-                { y: 45, custom: { label: t('btn_Yes') } },
-                { y: 70, custom: { label: t('btn_Yes') } },
-                { y: 60, custom: { label: t('btn_Yes') } },
-              ],
-              // pointPlacement: -0.13,
-            },
-            {
-              name: '',
-              color: '#f1725d',
-              data: [
-                { y: 15, custom: { label: t('dash_Private') } },
-                { y: 55, custom: { label: t('btn_No') } },
-                { y: 30, custom: { label: t('btn_No') } },
-                { y: 40, custom: { label: t('btn_No') } },
-              ],
-              // pointPlacement: 0.12,
-            },
-          ]
-        : [
-            {
-              type: 'column',
-              data: [
-                [5, 45],
-                [10, 37],
-                [15, 28],
-                [20, 17],
-                [25, 39],
-                [30, 18],
-                [35, 90],
-                [40, 78],
-                [45, 74],
-                [50, 18],
-                [55, 17],
-                [60, 16],
-              ],
-            },
-            {
-              type: 'spline',
-              data: [
-                [5, 45],
-                [10, 37],
-                [15, 28],
-                [20, 17],
-                [25, 39],
-                [30, 18],
-                [35, 90],
-                [40, 78],
-                [45, 74],
-                [50, 18],
-                [55, 17],
-                [60, 16],
-              ],
-            },
-          ]
-      // tempTotalData[key] = 1100
-    })
-    setSeriesData(tempSeriesData)
-    setAxisOptions(tempOptions)
-    // setTotalData(tempTotalData)
   }
 
   const handleCloseModal = () => {
@@ -139,15 +239,37 @@ const hostelInfraRooms = () => {
       chartData: null,
       list: [],
     })
+    setHostelsData({})
+  }
+
+  const handleTableChange = async ({ current }) => {
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getHandleClickDataApi({
+      category:
+        locationBedsMattressesCategoryMapping?.[
+          selectedColumn?.chartData?.category
+        ],
+      filterValue: filterValueMapping?.[selectedColumn?.chartData?.type],
+      range: selectedColumn?.chartData?.category,
+      name: selectedColumn?.title,
+      pageNo: current,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
   }
 
   return {
-    title,
+    onRangeChange: getData,
     axisOptions,
     seriesData,
     selectedColumn,
     handleChartClick,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   }
 }
 

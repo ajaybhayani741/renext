@@ -1,12 +1,12 @@
 import HightChart from '.'
 
-const HCDonutChart = ({ title, seriesData }) => {
+const HCDonutChart = ({ title, seriesData, handleChartClick, name }) => {
   const options = {
     chart: {
       type: 'pie',
     },
     title: {
-      text: "",
+      text: '',
     },
     credits: false,
     plotOptions: {
@@ -14,6 +14,15 @@ const HCDonutChart = ({ title, seriesData }) => {
         shadow: false,
         center: ['50%', '50%'],
         showInLegend: true,
+        point: {
+          events: {
+            click: function (e) {
+              if (handleChartClick) {
+                handleChartClick(e, name)
+              }
+            },
+          },
+        },
       },
     },
     tooltip: {

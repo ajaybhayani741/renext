@@ -1,67 +1,166 @@
 import { useEffect, useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, notEqual } from '../../../utils/javascript'
 import {
+  getEducationFacilitiesBarChartApi,
+  getEducationFacilitiesHostelsApi,
+} from '../dashboard.api'
+import {
   axisOptionsList,
   educationFacilitiesCharts,
-  schoolsList,
 } from '../dashboard.description'
 
 const educationFacilities = () => {
   const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
+  const [hostelsData, setHostelsData] = useState(null)
 
-  const [seriesData, setSeriesData] = useState({
-    dash_EducationRequirements: {
-      chartData: {
-        category: [
-          t('job_TextbooksSupplied'),
-          t('job_NotebooksSupplied'),
-          t('job_UniformsSupplied'),
-          t('job_TrunkBoxesSupplied'),
-          t('job_PlatesGlassesSupplied'),
-          t('job_SchoolBagsSupplied'),
-          t('job_BeddingMaterialSupplied'),
-          t('job_TreasuryBillRegisterMaintained'),
-          t('job_TeachingAsPerLessonPlan'),
-        ],
-      },
-      seriesData: [
-        {
-          name: t('btn_Yes'),
-          data: [85, 45, 78, 90, 56, 45, 23, 67, 89],
-          // pointPlacement: -0.13,
-        },
-        {
-          name: t('btn_No'),
-          data: [15, 55, 22, 34, 56, 78, 90, 45, 67],
-          // pointPlacement: 0.12,
-        },
-      ],
-    },
-  })
+  const [seriesData, setSeriesData] = useState({})
   const [axisOptions, setAxisOptions] = useState(null)
+
+  const categoryMapping = {
+    [t('job_TextbooksSupplied')]: 'TEXTBOOKS',
+    [t('job_NotebooksSupplied')]: 'NOTEBOOKS',
+    [t('job_UniformsSupplied')]: 'UNIFORMS',
+    [t('job_TrunkBoxesSupplied')]: 'TRUNK_BOXES',
+    [t('job_PlatesGlassesSupplied')]: 'PLATES_GLASSES',
+    [t('job_SchoolBagsSupplied')]: 'SCHOOL_BAGS',
+    [t('job_BeddingMaterialSupplied')]: 'BEDDING_MATERIAL',
+    [t('job_TreasuryBillRegisterMaintained')]: 'TREASURY_BILL_REGISTER',
+    [t('job_TeachingAsPerLessonPlan')]: 'TEACHING_ANNUAL_LESSON_PLAN',
+  }
 
   useEffect(() => {
     getSeriesData()
-  }, [])
+    if (dateRange?.from && dateRange?.to) {
+      getData()
+    }
+  }, [dateRange])
 
-  const handleChartClick = (e, name) => {
+  const getDataApi = name => {
+    const params = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    switch (name) {
+      case 'dash_EducationRequirements':
+        return getEducationFacilitiesBarChartApi({ params })
+      default:
+        return null
+    }
+  }
+
+  const getData = async () => {
+    let tempSeriesData = {}
+    for (const key of Object.keys(educationFacilitiesCharts)) {
+      const response = await getDataApi(key)
+      if (response && response.data) {
+        if (key === 'dash_EducationRequirements') {
+          tempSeriesData[key] = {
+            chartData: {
+              category: [
+                t('job_TextbooksSupplied'),
+                t('job_NotebooksSupplied'),
+                t('job_UniformsSupplied'),
+                t('job_TrunkBoxesSupplied'),
+                t('job_PlatesGlassesSupplied'),
+                t('job_SchoolBagsSupplied'),
+                t('job_BeddingMaterialSupplied'),
+                t('job_TreasuryBillRegisterMaintained'),
+                t('job_TeachingAsPerLessonPlan'),
+              ],
+            },
+            seriesData: [
+              {
+                name: t('btn_Yes'),
+                data: [
+                  response.data.boardersSuppliedTextbooksYes || 0,
+                  response.data.boardersSuppliedNotebooksYes || 0,
+                  response.data.boardersSuppliedUniformsYes || 0,
+                  response.data.boardersSuppliedTrunkBoxesYes || 0,
+                  response.data.boardersSuppliedPlatesGlassesYes || 0,
+                  response.data.boardersSuppliedSchoolBagsYes || 0,
+                  response.data.boardersSuppliedBeddingMaterialYes || 0,
+                  response.data.treasuryBillRegisterMaintainedYes || 0,
+                  response.data.teachingAsPerAnnualLessonPlanYes || 0,
+                ],
+              },
+              {
+                name: t('btn_No'),
+                data: [
+                  response.data.boardersSuppliedTextbooksNo || 0,
+                  response.data.boardersSuppliedNotebooksNo || 0,
+                  response.data.boardersSuppliedUniformsNo || 0,
+                  response.data.boardersSuppliedTrunkBoxesNo || 0,
+                  response.data.boardersSuppliedPlatesGlassesNo || 0,
+                  response.data.boardersSuppliedSchoolBagsNo || 0,
+                  response.data.boardersSuppliedBeddingMaterialNo || 0,
+                  response.data.treasuryBillRegisterMaintainedNo || 0,
+                  response.data.teachingAsPerAnnualLessonPlanNo || 0,
+                ],
+              },
+            ],
+          }
+        }
+      }
+    }
+    setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
+  }
+
+  const getHandleClickDataApi = ({ name, category, pageNo, type }) => {
+    const params = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      pageNo,
+    }
+    switch (name) {
+      case 'dash_EducationRequirements':
+        const filterValue = type === t('btn_Yes') ? 'YES' : 'NO'
+        const apiCategory = categoryMapping[category]
+        return getEducationFacilitiesHostelsApi({
+          pageNo,
+          params: { ...params, category: apiCategory, filterValue },
+        })
+      default:
+        return null
+    }
+  }
+
+  const handleChartClick = async (e, name) => {
     const data = e.point
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const category = data?.category
+    const type = data?.series?.name
+    const response = await getHandleClickDataApi({
+      name,
+      category,
+      type,
+      pageNo: 1,
+    })
+
+    if (response?.data) {
+      setHostelsData({ ...response?.data, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
+
     setSelectedColumn({
       selected: true,
       chartData: {
-        category: data?.category,
-        type: data?.series?.name,
+        category,
+        type,
         value: data?.y,
       },
-      list: [...schoolsList],
+      list: response?.data?.hostels || [],
       title: name,
-      modalTitle: true,
+      modalTitle: educationFacilitiesCharts[name]?.modalTitle,
     })
   }
 
@@ -71,7 +170,6 @@ const educationFacilities = () => {
     // let tempTotalData = {}
     entries(educationFacilitiesCharts).forEach(([key, value]) => {
       if (notEqual(value?.type, 'rangeFrequency')) return
-
       tempOptions[key] = {
         xAxis: {
           ...axisOptionsList?.xAxis,
@@ -87,47 +185,26 @@ const educationFacilities = () => {
           },
         })),
       }
-      tempSeriesData[key] = [
-        {
-          type: 'column',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-        {
-          type: 'spline',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-      ]
-      // tempTotalData[key] = 1100
     })
     setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
     setAxisOptions(prev => ({ ...prev, ...tempOptions }))
-    // setTotalData(tempTotalData)
+  }
+
+  const handleTableChange = async ({ current }) => {
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const { title, chartData } = selectedColumn
+    const response = await getHandleClickDataApi({
+      name: title,
+      category: chartData?.category,
+      type: chartData?.type,
+      pageNo: current,
+    })
+
+    if (response?.data) {
+      setHostelsData({ ...response?.data, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
   }
 
   const handleCloseModal = () => {
@@ -136,6 +213,7 @@ const educationFacilities = () => {
       chartData: null,
       list: [],
     })
+    setHostelsData({})
   }
 
   return {
@@ -144,6 +222,8 @@ const educationFacilities = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   }
 }
 

@@ -1,20 +1,24 @@
 import { useEffect, useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { schoolsList } from '../dashboard.description'
+import { isEqual, keys, values } from '../../../utils/javascript'
+import {
+  getRecordMaintenanceBarChartApi,
+  getRecordMaintenanceHostelsApi,
+} from '../dashboard.api'
+import { recordMaintenanceCharts } from '../dashboard.description'
 
 const recordMaintenance = () => {
   const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
     chartData: null,
   })
   const [seriesData, setSeriesData] = useState(null)
-  const title = t('job_RecordMaintenance')
-
-  useEffect(() => {
-    getSeriesData()
-  }, [])
+  const [hostelsData, setHostelsData] = useState(null)
 
   const chartData = {
     category: [
@@ -25,42 +29,140 @@ const recordMaintenance = () => {
       t('dash_VisitorRegister'),
       t('dash_OtherRecords'),
     ],
-    staff: [85, 15],
-    boarder: [45, 55],
-    sick: [45, 55],
-    boarderMovement: [45, 55],
-    visitorRegister: [45, 55],
-    otherRecords: [45, 55],
   }
 
-  const handleChartClick = e => {
+  const categoryMapping = {
+    [t('dash_Staff')]: 'STAFF_ATTENDANCE',
+    [t('dash_Boarder')]: 'BOARDER_ATTENDANCE',
+    [t('dash_Sick')]: 'SICK_BOARDERS',
+    [t('dash_BoarderMovement')]: 'BOARDER_MOVEMENT',
+    [t('dash_VisitorRegister')]: 'VISITOR_REGISTER',
+    [t('dash_OtherRecords')]: 'ALL_OTHER_RECORDS',
+  }
+
+  useEffect(() => {
+    if (dateRange?.from && dateRange?.to) {
+      getData()
+    }
+  }, [dateRange])
+
+  const getDataApi = async ({ name }) => {
+    const columnParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    switch (name) {
+      case 'job_RecordMaintenance':
+        const authorityResp = await getRecordMaintenanceBarChartApi({
+          params: columnParams,
+        })
+        return authorityResp
+      default:
+        return null
+    }
+  }
+
+  const getData = async () => {
+    keys(recordMaintenanceCharts)?.forEach(async key => {
+      const respData = await getDataApi({ name: key })
+      if (isEqual(key, 'job_RecordMaintenance')) {
+        const isData = values(respData?.data)?.find(item => item)
+        const tempSeriesData = isData && [
+          {
+            name: t('btn_Yes'),
+            data: [
+              respData.data.staffAttendanceRecordMaintainedYes || 0,
+              respData.data.boarderAttendanceRecordMaintainedYes || 0,
+              respData.data.sickBoardersRecordMaintainedYes || 0,
+              respData.data.boarderMovementRecordMaintainedYes || 0,
+              respData.data.visitorRegisterMaintainedYes || 0,
+              respData.data.allOtherRecordsMaintainedRegularlyYes || 0,
+            ],
+          },
+          {
+            name: t('btn_No'),
+            data: [
+              respData.data.staffAttendanceRecordMaintainedNo || 0,
+              respData.data.boarderAttendanceRecordMaintainedNo || 0,
+              respData.data.sickBoardersRecordMaintainedNo || 0,
+              respData.data.boarderMovementRecordMaintainedNo || 0,
+              respData.data.visitorRegisterMaintainedNo || 0,
+              respData.data.allOtherRecordsMaintainedRegularlyNo || 0,
+            ],
+          },
+        ]
+        setSeriesData(prev => ({
+          ...prev,
+          [key]: { series: tempSeriesData },
+        }))
+      }
+    })
+  }
+
+  const getHandleClickDataApi = async ({
+    category,
+    filterValue,
+    pageNo = 1,
+    name,
+  } = {}) => {
+    const columnParams = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      category,
+      filterValue,
+    }
+    switch (name) {
+      case 'job_RecordMaintenance':
+        const roomsResp = await getRecordMaintenanceHostelsApi({
+          pageNo,
+          params: columnParams,
+        })
+        return roomsResp?.data
+      default:
+        return null
+    }
+  }
+
+  const handleChartClick = async (e, name) => {
     const data = e.point
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const type = data?.series?.name
+    const respData = await getHandleClickDataApi({
+      category: categoryMapping[data?.category],
+      filterValue: type === t('btn_Yes') ? 'YES' : 'NO',
+      name,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
+
     setSelectedColumn({
       selected: true,
       chartData: {
         category: data?.category,
-        type: data?.series?.name,
-        value: data?.y,
+        type,
       },
-      list: [...schoolsList],
-      title: 'job_RecordMaintenance',
-      modalTitle: true,
+      title: name,
+      modalTitle: recordMaintenanceCharts?.[name]?.modalTitle,
     })
   }
 
-  const getSeriesData = () => {
-    setSeriesData([
-      {
-        name: t('btn_Yes'),
-        data: [85, 45, 45, 45, 45, 45],
-        // pointPlacement: -0.13,
-      },
-      {
-        name: t('btn_No'),
-        data: [15, 55, 55, 55, 55, 55],
-        // pointPlacement: 0.12,
-      },
-    ])
+  const handleTableChange = async ({ current }) => {
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getHandleClickDataApi({
+      category: categoryMapping[selectedColumn?.chartData?.category],
+      filterValue:
+        selectedColumn?.chartData?.type === t('btn_Yes') ? 'YES' : 'NO',
+      name: selectedColumn?.title,
+      pageNo: current,
+    })
+    if (respData) {
+      setHostelsData({ ...respData, loader: false })
+    } else {
+      setHostelsData(prev => ({ ...prev, loader: false }))
+    }
   }
 
   const handleCloseModal = () => {
@@ -69,15 +171,17 @@ const recordMaintenance = () => {
       chartData: null,
       list: [],
     })
+    setHostelsData({})
   }
 
   return {
-    title,
     chartData,
     handleChartClick,
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   }
 }
 

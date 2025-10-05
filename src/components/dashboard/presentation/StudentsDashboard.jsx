@@ -1,35 +1,50 @@
 import DashboardWrapper from './DashboardWrapper'
+import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
-import FrequencyBarRange from '../../charts/FrequencyBarRange'
+import { entries } from '../../../utils/javascript'
+import LineCharts from '../../charts/LineCharts'
 import students from '../container/students.container'
+import { studentCharts } from '../dashboard.description'
 
 const StudentsDashboard = () => {
+  const { t } = useTranslations()
   const {
-    title,
-    axisOptions,
     seriesData,
     selectedColumn,
     handleChartClick,
     handleCloseModal,
+    hostelsData,
+    handleTableChange,
+    onRangeChange,
   } = students()
   return (
     <DashboardWrapper
       {...{
         selectedColumn,
         handleCloseModal,
+        hostelsData,
+        handleTableChange,
         chartClassName: 'w-100',
       }}
     >
-      <ANTDColumn xs={24} md={12}>
-        <FrequencyBarRange
-          {...{
-            axisOptions,
-            handleChartClick,
-            seriesData,
-            title: `${title}: ${1200}`,
-          }}
-        />
-      </ANTDColumn>
+      {' '}
+      {entries(studentCharts)?.map(([key, value]) => {
+        return (
+          <ANTDColumn xs={24} md={24} key={key}>
+            <LineCharts
+              {...{
+                name: key,
+                xAxisTitle: value?.xAxisText,
+                yAxisTitle: value?.yAxisText,
+                handleChartClick,
+                seriesData: seriesData?.[key]?.series,
+                title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
+                onRangeChange,
+              }}
+            />
+          </ANTDColumn>
+        )
+      })}
     </DashboardWrapper>
   )
 }

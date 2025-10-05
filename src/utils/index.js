@@ -5,6 +5,52 @@ import { dayJs } from './dayjs'
 import { entries, isEqual, ternary } from './javascript'
 import { sidebarMenus } from '../components/layout/sidebar.description'
 
+const getDefaultFiscalYear = () => {
+  const currentYear = dayJs().year()
+  const currentFiscalYear = dayJs().isBefore(`${currentYear}-04-01`)
+    ? currentYear - 1
+    : currentYear
+
+  const saveFormat = 'DD/MM/YYYY'
+  const startDate = dayJs(`${currentFiscalYear}-04-01`).format(saveFormat)
+  const endDate = dayJs(`${currentFiscalYear + 1}-03-31`).format(saveFormat)
+
+  return {
+    value: currentFiscalYear,
+    dateRange: {
+      min: startDate,
+      max: endDate,
+      from: startDate,
+      to: endDate,
+    },
+  }
+}
+
+const isDateRangeDefault = currentDateRange => {
+  if (!currentDateRange?.from || !currentDateRange?.to) {
+    return false
+  }
+
+  const defaultFiscalYear = getDefaultFiscalYear()
+  return (
+    currentDateRange.from === defaultFiscalYear.dateRange.from &&
+    currentDateRange.to === defaultFiscalYear.dateRange.to
+  )
+}
+
+const resetFiscalYearToDefault = (dispatch, options) => {
+  const defaultValues = getDefaultFiscalYear()
+
+  dispatch({
+    type: 'app/setFiscalYear',
+    payload: {
+      ...defaultValues,
+      options: options || [], // Keep existing options
+    },
+  })
+}
+
+
 const addressFormat = data => {
   if (data?.pincode || data?.address) {
     return `${data?.address ? data?.address + ',' : ''} ${
@@ -353,4 +399,7 @@ export {
   dateDaysDifference,
   getBase64,
   inventoryTags,
+  resetFiscalYearToDefault,
+  getDefaultFiscalYear,
+  isDateRangeDefault,
 }

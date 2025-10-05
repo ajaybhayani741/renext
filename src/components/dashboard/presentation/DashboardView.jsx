@@ -19,6 +19,7 @@ import StudentsDashboard from './StudentsDashboard'
 import { DASHBOARD_TXT } from '../../../routing/pathName.constant'
 import ANTDBreadcrumb from '../../../shared/antd/ANTDBreadcrumb'
 import { isEqual } from '../../../utils/javascript'
+import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 
 const DashboardView = () => {
   const { t } = useTranslations()
@@ -75,6 +76,7 @@ const DashboardView = () => {
   return (
     <div className="dashboard-view">
       <div className="breadCrumb">{getCurrentPath()}</div>
+      <FiscalYearSelect className="ml-auto mb-10" setDefault={false} />
       {getDashboardComponent(params?.type)}
     </div>
   )

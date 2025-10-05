@@ -15,10 +15,14 @@ const EducationFacilitiesDashboard = () => {
     seriesData,
     selectedColumn,
     handleCloseModal,
+    handleTableChange,
+    hostelsData,
   } = educationFacilities()
   const { t } = useTranslations()
   return (
-    <DashboardWrapper {...{ handleCloseModal, selectedColumn }}>
+    <DashboardWrapper
+      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+    >
       {axisOptions &&
         entries(educationFacilitiesCharts)?.map(([key, value]) => {
           return (

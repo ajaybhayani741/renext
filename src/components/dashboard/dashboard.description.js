@@ -385,41 +385,60 @@ export const axisOptionsList = {
   ],
 }
 
+export const hostelAuthorityCharts = {
+  job_HostelAuthority: {
+    xAxisText: ['dash_RegularInCharge', 'dash_StayInHeadquarters'],
+    yAxisText: '',
+    chartType: 'column',
+    modalTitle: true,
+  },
+}
+
+export const studentCharts = {
+  dash_TotalNumberOfStudents: {
+    xAxisText: 'dash_NumberOfStudents',
+    yAxisText: 'dash_NumberOfHostels',
+    modalTitle: false,
+  },
+}
+
+export const recordMaintenanceCharts = {
+  job_RecordMaintenance: {
+    yAxisText: '',
+    chartType: 'column',
+    modalTitle: true,
+  },
+}
+
 export const staffDetailsCharts = {
   dash_TotalNumberOfWorkersOnPayroll: {
     xAxisText: 'job_NumberOfWorkersOnPayroll',
     yAxisText: 'dash_NumberOfHostels',
-    total: 1200,
     modalTitle: false,
   },
   dash_TotalNumberOfCooksEnrolled: {
     xAxisText: 'job_NumberOfCooksEnrolled',
     yAxisText: 'dash_NumberOfHostels',
-    total: 1010,
     modalTitle: false,
   },
   dash_TotalNumberOfKamatiEnrolled: {
     xAxisText: 'job_NumberOfKamatiEnrolled',
     yAxisText: 'dash_NumberOfHostels',
-    total: 940,
     modalTitle: false,
   },
   dash_TotalNumberOfWatchmenEnrolled: {
     xAxisText: 'job_NumberOfWatchmenEnrolled',
     yAxisText: 'dash_NumberOfHostels',
-    total: 200,
     modalTitle: false,
   },
   dash_TotalNumberOfScavengersAvailable: {
     xAxisText: 'job_NumberOfScavengersAvailable',
     yAxisText: 'dash_NumberOfHostels',
-    total: 350,
     modalTitle: false,
   },
   dash_TotalNumberOfScavengersRequired: {
     xAxisText: 'job_NumberOfScavengersRequired',
     yAxisText: 'dash_NumberOfHostels',
-    total: 220,
     modalTitle: false,
   },
 }
@@ -428,7 +447,6 @@ export const hostelInfraRoomsCharts = {
   dash_TotalNumberOfLivingRooms: {
     xAxisText: 'job_NumberOfLivingRooms',
     yAxisText: 'dash_NumberOfHostels',
-    total: 370,
     modalTitle: false,
   },
   dash_LocationBedsMattresses: {
@@ -439,20 +457,26 @@ export const hostelInfraRoomsCharts = {
       'dash_IsAccommodationSufficient',
     ],
     yAxisText: '',
-    total: 1200,
     chartType: 'column',
     modalTitle: true,
   },
   job_WorkingLightsCount: {
     xAxisText: 'dash_TubelightsBulbsInWorking',
     yAxisText: 'dash_NumberOfHostels',
-    total: 1280,
     modalTitle: false,
   },
   job_WorkingFansCount: {
     xAxisText: 'dash_FansInWorking',
     yAxisText: 'dash_NumberOfHostels',
-    total: 990,
+    modalTitle: false,
+  },
+}
+
+export const studentsCharts = {
+  dash_Students: {
+    xAxisText: 'dash_NumberOfStudents',
+    yAxisText: 'dash_NumberOfHostels',
+    chartType: 'rangeFrequency',
     modalTitle: false,
   },
 }
@@ -469,14 +493,14 @@ export const hostelInfraSanitationCharts = {
     type: 'rangeFrequency',
     xAxisText: 'dash_NumberOfToiletsAvailable',
     yAxisText: 'dash_NumberOfHostels',
-    total: 1010,
+    md: 24,
     modalTitle: false,
   },
   job_PercentageOfTotalToiletsFunctioning: {
     type: 'rangeFrequency',
     xAxisText: 'dash_PercentageOfToiletsFunctioning',
     yAxisText: 'dash_NumberOfHostels',
-    total: 85,
+    md: 24,
     modalTitle: false,
   },
   dash_ToiletsSufficiency: {
@@ -490,10 +514,8 @@ export const hostelInfraSanitationCharts = {
     xAxisText: 'job_NumberOfScavengersAvailable',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: true,
-    total: 350,
   },
 }
-
 
 export const medicalCareCharts = {
   job_MedicalCare: {
@@ -502,12 +524,12 @@ export const medicalCareCharts = {
     yAxisText: '',
     modalTitle: true,
   },
-  job_DistanceToNearestPHC: {
-    type: 'polar',
-    xAxisText: '',
-    yAxisText: '',
-    modalTitle: true,
-  },
+  // job_DistanceToNearestPHC: {
+  //   type: 'polar',
+  //   xAxisText: '',
+  //   yAxisText: '',
+  //   modalTitle: true,
+  // },
   dash_IsTheStaffNurseAvailableInTheHostel: {
     type: 'pie',
     xAxisText: 'job_NumberOfScavengersAvailable',
@@ -561,14 +583,14 @@ export const safetySecurityCharts = {
     xAxisText: 'dash_NumberOfCCTVsAvailable',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
-    total: 120,
+    md: 24,
   },
   dash_NumberOfCCTVsFunctioning: {
     type: 'rangeFrequency',
     xAxisText: 'dash_NumberOfCCTVsFunctioning',
     yAxisText: 'dash_NumberOfHostels',
-    total: 100,
     modalTitle: false,
+    md: 24,
   },
 }
 
@@ -579,4 +601,34 @@ export const conductionMeetingCharts = {
     yAxisText: '',
     modalTitle: true,
   },
+}
+
+export const drinkingWaterKeys = {
+  boreWell: { label: 'job_BoreWell', value: 'BORE_WELL' },
+  openWell: { label: 'dash_OpenWell', value: 'OPEN_WELL' },
+  roPlant: { label: 'dash_ROPlant', value: 'RO_PLANT' },
+  tapMunicipalityMissionBhageeratha: {
+    label: 'dash_TapMunicipalityOrMissionBhageeratha',
+    value: 'TAP_MUNICIPALITY_MISSION_BHAGEERATHA',
+  },
+}
+
+export const availableNursingStaffKeys = {
+  available: {
+    label: 'job_StaffNurseAvailability_Available',
+    value: 'AVAILABLE',
+  },
+  notAvailableAndNoNurseFromPHCVisits: {
+    label: 'job_StaffNurseAvailability_NotAvailable',
+    value: 'NOT_AVAILABLE_NO_PHC_NURSE_VISITS',
+  },
+  notAvailableButANMNurseFromPHCVisitsRegularly: {
+    label: 'job_StaffNurseAvailability_ANMVisits',
+    value: 'NOT_AVAILABLE_BUT_PHC_NURSE_VISITS',
+  },
+}
+
+export const lineChartRange = {
+  start: 1,
+  end: 100,
 }

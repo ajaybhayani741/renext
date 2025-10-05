@@ -4,6 +4,7 @@ import './App.scss'
 import React, { Suspense } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
+import useFiscalYearInitializer from './hooks/useFiscalYearInitializer'
 import useNotify from './hooks/useNotify'
 import useRedux from './hooks/useRedux'
 import useTranslations from './hooks/useTranslations'
@@ -21,6 +22,9 @@ function App() {
   const { selector, dispatch } = useRedux()
   const popup = selector(state => state?.app?.popUpMsgModel)
   const { open, message, success } = { ...popup }
+
+  // Initialize fiscal year data globally once
+  useFiscalYearInitializer()
 
   // useEffect(() => {
   //   Notification.requestPermission()
