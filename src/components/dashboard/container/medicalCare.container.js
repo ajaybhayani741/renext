@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, notEqual } from '../../../utils/javascript'
+import { entries, notEqual, values } from '../../../utils/javascript'
 import {
   getStaffAvailabilityChartApi,
   getStaffAvailabilityHostelsApi,
@@ -84,18 +84,23 @@ const medicalCare = () => {
     for (const key of Object.keys(medicalCareCharts)) {
       const response = await getDataApi(key)
       if (response && response.data) {
+        const isData = values(response?.data)?.find(item => item)
         if (key === 'dash_IsTheStaffNurseAvailableInTheHostel') {
-          tempSeriesData[key] = [
-            {
-              colorByPoint: true,
-              data: entries(availableNursingStaffKeys)?.map(([k, v], i) => ({
-                id: i + 1,
-                name: t(v?.label),
-                valueId: v?.value,
-                y: response?.data?.[k] || 0,
-              })),
-            },
-          ]
+          tempSeriesData[key] = isData
+            ? [
+                {
+                  colorByPoint: true,
+                  data: entries(availableNursingStaffKeys)?.map(
+                    ([k, v], i) => ({
+                      id: i + 1,
+                      name: t(v?.label),
+                      valueId: v?.value,
+                      y: response?.data?.[k] || 0,
+                    }),
+                  ),
+                },
+              ]
+            : []
         } else if (key === 'job_MedicalCare') {
           tempSeriesData[key] = {
             chartData: {
@@ -104,22 +109,24 @@ const medicalCare = () => {
                 t('job_FirstAidKitAvailability'),
               ],
             },
-            seriesData: [
-              {
-                name: t('btn_Yes'),
-                data: [
-                  response.data.medicalOfficerRegularVisitsYes || 0,
-                  response.data.firstAidKitAvailableInHostelYes || 0,
-                ],
-              },
-              {
-                name: t('btn_No'),
-                data: [
-                  response.data.medicalOfficerRegularVisitsNo || 0,
-                  response.data.firstAidKitAvailableInHostelNo || 0,
-                ],
-              },
-            ],
+            seriesData: isData
+              ? [
+                  {
+                    name: t('btn_Yes'),
+                    data: [
+                      response.data.medicalOfficerRegularVisitsYes || 0,
+                      response.data.firstAidKitAvailableInHostelYes || 0,
+                    ],
+                  },
+                  {
+                    name: t('btn_No'),
+                    data: [
+                      response.data.medicalOfficerRegularVisitsNo || 0,
+                      response.data.firstAidKitAvailableInHostelNo || 0,
+                    ],
+                  },
+                ]
+              : [],
           }
         }
       }

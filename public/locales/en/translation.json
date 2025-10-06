@@ -507,9 +507,6 @@
   "job_InspectionFindings": "Findings of Inspection Officer (Describe in detail all findings)",
   "job_OfficerStaffPhoto": "Photo of Inspecting Officer with Staff",
   "job_OfficerChildrenPhoto": "Photo of Inspecting Officer with Children",
-  "job_HostelPhoto1": "Photo-1 of Hostel",
-  "job_HostelPhoto2": "Photo-2 of Hostel",
-  "job_HostelPhoto3": "Photo-3 of Hostel",
   "job_InspectionDetails": "Inspection Details",
   "dash_StudentMetrics": "Student Metrics",
   "dash_StaffMetrics": "Staff Metrics",
@@ -623,5 +620,6 @@
   "job_Dogs": "Dogs",
   "job_Snakes": "Snakes",
   "job_Monkeys": "Monkeys",
-  "msg_PleaseSelectHostel": "Please select hostel"
+  "msg_PleaseSelectHostel": "Please select hostel",
+  "job_HostelPhotos": "Photos of Hostel"
 }

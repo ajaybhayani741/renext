@@ -54,7 +54,7 @@ const addUser = ({
   const { params, navigate, location } = useRouter()
   const { dispatch } = useRedux()
   const { country } = configData
-  const { admin } = userWiseRole
+  const { admin, hostel } = userWiseRole
   const userType = params?.userType
   const formRoleId =
     roleIdByPath[userType] ?? userRoleId ?? editInfo?.data?.roleId
@@ -101,6 +101,12 @@ const addUser = ({
       } else {
         fetchData()
       }
+    }
+    if (formRoleId === hostel) {
+      const updatedForm = { ...userForm }
+      delete updatedForm.username
+      delete updatedForm.password
+      setUserForm(updatedForm)
     }
   }, [])
 

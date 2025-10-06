@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
 import useRedux from './useRedux'
 import { getMethod } from '../api/methods'
@@ -14,25 +14,22 @@ const useFiscalYearInitializer = () => {
     state => state?.app?.fiscalYear,
   )
   const userExists = getItem('userExists')
-  const isInitializedRef = useRef(false)
 
   useEffect(() => {
     if (!userExists) return
     // Only initialize once and only if data is not already available
     if (
-      isInitializedRef.current ||
-      (options &&
-        options.length > 0 &&
-        value &&
-        dateRange?.from &&
-        dateRange?.to)
+      options &&
+      options.length > 0 &&
+      value &&
+      dateRange?.from &&
+      dateRange?.to
     ) {
       return
     }
 
     const initializeFiscalYear = async () => {
       try {
-        isInitializedRef.current = true
         const { data } = await getMethod(API_ROUTES.FISCAL_YEARS)
         const list = data?.data?.list
         const fiscalOptions =
@@ -57,7 +54,6 @@ const useFiscalYearInitializer = () => {
         )
       } catch (error) {
         // console.error('Error initializing fiscal year:', error)
-        isInitializedRef.current = false // Reset on error to allow retry
       }
     }
 
