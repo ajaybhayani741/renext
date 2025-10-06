@@ -219,6 +219,7 @@ const hostelInfraSanitation = () => {
 
   const getHandleClickDataApi = async ({
     category,
+    filterValue,
     name,
     range,
     pageNo = 1,
@@ -262,8 +263,7 @@ const hostelInfraSanitation = () => {
             fromDate: dateRange?.from,
             toDate: dateRange?.to,
             category: category,
-            filterValue:
-              selectedColumn?.chartData?.type === t('btn_Yes') ? 'YES' : 'NO',
+            filterValue,
           },
         })
         return wasteManagementResp?.data
@@ -274,8 +274,7 @@ const hostelInfraSanitation = () => {
           params: {
             fromDate: dateRange?.from,
             toDate: dateRange?.to,
-            filterValue:
-              selectedColumn?.chartData?.type === t('btn_Yes') ? 'YES' : 'NO',
+            filterValue,
           },
         })
         return toiletsSufficiencyResp?.data
@@ -289,7 +288,7 @@ const hostelInfraSanitation = () => {
   const handleChartClick = async (e, name) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
-
+    const type = data?.series?.name
     let categoryValue = data?.valueId
     if (isEqual(name, 'dash_WasteManagement')) {
       categoryValue = wasteManagementCategoryMapping[data?.category]
@@ -300,6 +299,7 @@ const hostelInfraSanitation = () => {
     const respData = await getHandleClickDataApi({
       category: categoryValue,
       range: data?.category,
+      filterValue: type === t('btn_Yes') ? 'YES' : 'NO',
       name,
     })
     if (respData) {
@@ -313,7 +313,7 @@ const hostelInfraSanitation = () => {
       chartData: {
         category: data?.category || data?.name,
         type: notEqual(name, 'job_DrinkingWater')
-          ? data?.series?.name || data?.custom?.label
+          ? type || data?.custom?.label
           : null,
         value: data?.y,
       },
@@ -336,6 +336,8 @@ const hostelInfraSanitation = () => {
   const handleTableChange = async ({ current }) => {
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
+      filterValue:
+        selectedColumn?.chartData?.type === t('btn_Yes') ? 'YES' : 'NO',
       category: selectedColumn?.categoryValue,
       name: selectedColumn?.title,
       pageNo: current,
