@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, notEqual } from '../../../utils/javascript'
+import { entries, notEqual, values } from '../../../utils/javascript'
 import {
   getEducationFacilitiesBarChartApi,
   getEducationFacilitiesHostelsApi,
@@ -62,6 +62,7 @@ const educationFacilities = () => {
     for (const key of Object.keys(educationFacilitiesCharts)) {
       const response = await getDataApi(key)
       if (response && response.data) {
+        const isData = values(response?.data)?.find(item => item)
         if (key === 'dash_EducationRequirements') {
           tempSeriesData[key] = {
             chartData: {
@@ -77,36 +78,38 @@ const educationFacilities = () => {
                 t('job_TeachingAsPerLessonPlan'),
               ],
             },
-            seriesData: [
-              {
-                name: t('btn_Yes'),
-                data: [
-                  response.data.boardersSuppliedTextbooksYes || 0,
-                  response.data.boardersSuppliedNotebooksYes || 0,
-                  response.data.boardersSuppliedUniformsYes || 0,
-                  response.data.boardersSuppliedTrunkBoxesYes || 0,
-                  response.data.boardersSuppliedPlatesGlassesYes || 0,
-                  response.data.boardersSuppliedSchoolBagsYes || 0,
-                  response.data.boardersSuppliedBeddingMaterialYes || 0,
-                  response.data.treasuryBillRegisterMaintainedYes || 0,
-                  response.data.teachingAsPerAnnualLessonPlanYes || 0,
-                ],
-              },
-              {
-                name: t('btn_No'),
-                data: [
-                  response.data.boardersSuppliedTextbooksNo || 0,
-                  response.data.boardersSuppliedNotebooksNo || 0,
-                  response.data.boardersSuppliedUniformsNo || 0,
-                  response.data.boardersSuppliedTrunkBoxesNo || 0,
-                  response.data.boardersSuppliedPlatesGlassesNo || 0,
-                  response.data.boardersSuppliedSchoolBagsNo || 0,
-                  response.data.boardersSuppliedBeddingMaterialNo || 0,
-                  response.data.treasuryBillRegisterMaintainedNo || 0,
-                  response.data.teachingAsPerAnnualLessonPlanNo || 0,
-                ],
-              },
-            ],
+            seriesData: isData
+              ? [
+                  {
+                    name: t('btn_Yes'),
+                    data: [
+                      response.data.boardersSuppliedTextbooksYes || 0,
+                      response.data.boardersSuppliedNotebooksYes || 0,
+                      response.data.boardersSuppliedUniformsYes || 0,
+                      response.data.boardersSuppliedTrunkBoxesYes || 0,
+                      response.data.boardersSuppliedPlatesGlassesYes || 0,
+                      response.data.boardersSuppliedSchoolBagsYes || 0,
+                      response.data.boardersSuppliedBeddingMaterialYes || 0,
+                      response.data.treasuryBillRegisterMaintainedYes || 0,
+                      response.data.teachingAsPerAnnualLessonPlanYes || 0,
+                    ],
+                  },
+                  {
+                    name: t('btn_No'),
+                    data: [
+                      response.data.boardersSuppliedTextbooksNo || 0,
+                      response.data.boardersSuppliedNotebooksNo || 0,
+                      response.data.boardersSuppliedUniformsNo || 0,
+                      response.data.boardersSuppliedTrunkBoxesNo || 0,
+                      response.data.boardersSuppliedPlatesGlassesNo || 0,
+                      response.data.boardersSuppliedSchoolBagsNo || 0,
+                      response.data.boardersSuppliedBeddingMaterialNo || 0,
+                      response.data.treasuryBillRegisterMaintainedNo || 0,
+                      response.data.teachingAsPerAnnualLessonPlanNo || 0,
+                    ],
+                  },
+                ]
+              : [],
           }
         }
       }

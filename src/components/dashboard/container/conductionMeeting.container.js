@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, notEqual } from '../../../utils/javascript'
+import { entries, notEqual, values } from '../../../utils/javascript'
 import {
   getConductionMeetingsBarChartApi,
   getConductionMeetingsHostelsApi,
@@ -50,21 +50,24 @@ const conductionMeeting = () => {
     for (const key of Object.keys(conductionMeetingCharts)) {
       const response = await getDataApi(key)
       if (response && response.data) {
+        const isData = values(response?.data)?.find(item => item)
         if (key === 'dash_PrincipalHWOSpecialOfficer') {
           tempSeriesData[key] = {
             chartData: {
               category: [t('job_HWOMeetingsRegular')],
             },
-            seriesData: [
-              {
-                name: t('btn_Yes'),
-                data: [response.data.meetingsConvenedRegularlyYes || 0],
-              },
-              {
-                name: t('btn_No'),
-                data: [response.data.meetingsConvenedRegularlyNo || 0],
-              },
-            ],
+            seriesData: isData
+              ? [
+                  {
+                    name: t('btn_Yes'),
+                    data: [response.data.meetingsConvenedRegularlyYes || 0],
+                  },
+                  {
+                    name: t('btn_No'),
+                    data: [response.data.meetingsConvenedRegularlyNo || 0],
+                  },
+                ]
+              : [],
           }
         }
       }
