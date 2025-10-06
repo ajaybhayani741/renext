@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, notEqual } from '../../../utils/javascript'
+import { entries, notEqual, values } from '../../../utils/javascript'
 import {
   getFoodProvisionsBarChartApi,
   getFoodProvisionsHostelsApi,
@@ -91,6 +91,7 @@ const foodProvisions = () => {
     for (const key of Object.keys(foodPrevisionsCharts)) {
       const response = await getDataApi(key)
       if (response && response.data) {
+        const isData = values(response?.data)?.find(item => item)
         if (key === 'job_FoodProvisions') {
           tempSeriesData[key] = {
             chartData: {
@@ -102,104 +103,108 @@ const foodProvisions = () => {
                 t('job_ExhaustFanInKitchen'),
               ],
             },
-            seriesData: [
-              {
-                name: t('btn_Yes'),
-                data: [
-                  response.data.menuChartDisplayedYes || 0,
-                  response.data.menuImplementedAsPrescribedYes || 0,
-                  response.data.stockRegisterMaintainedYes || 0,
-                  response.data.vegetablesStoredAboveGroundYes || 0,
-                  response.data.exhaustFanInKitchenYes || 0,
-                ],
-              },
-              {
-                name: t('btn_No'),
-                data: [
-                  response.data.menuChartDisplayedNo || 0,
-                  response.data.menuImplementedAsPrescribedNo || 0,
-                  response.data.stockRegisterMaintainedNo || 0,
-                  response.data.vegetablesStoredAboveGroundNo || 0,
-                  response.data.exhaustFanInKitchenNo || 0,
-                ],
-              },
-            ],
+            seriesData: isData
+              ? [
+                  {
+                    name: t('btn_Yes'),
+                    data: [
+                      response.data.menuChartDisplayedYes || 0,
+                      response.data.menuImplementedAsPrescribedYes || 0,
+                      response.data.stockRegisterMaintainedYes || 0,
+                      response.data.vegetablesStoredAboveGroundYes || 0,
+                      response.data.exhaustFanInKitchenYes || 0,
+                    ],
+                  },
+                  {
+                    name: t('btn_No'),
+                    data: [
+                      response.data.menuChartDisplayedNo || 0,
+                      response.data.menuImplementedAsPrescribedNo || 0,
+                      response.data.stockRegisterMaintainedNo || 0,
+                      response.data.vegetablesStoredAboveGroundNo || 0,
+                      response.data.exhaustFanInKitchenNo || 0,
+                    ],
+                  },
+                ]
+              : [],
           }
         } else if (key === 'job_NatureOfCookingFuel') {
-          tempSeriesData[key] = [
-            {
-              name: 'Level 1',
-              data: [],
-              size: '42%',
-              dataLabels: {
-                formatter: function () {
-                  return this.y > 5 ? this.point.name : null
-                },
-                color: '#000000',
-                distance: -65,
-                style: {
-                  fontSize: 14,
-                },
-              },
-            },
-            {
-              name: 'Level 2',
-              data: [
+          tempSeriesData[key] = isData
+            ? [
                 {
-                  name: t('job_LPG'),
-                  y: response.data.lpgCount || 0,
-                  color: '#f3caaa',
+                  name: 'Level 1',
+                  data: [],
+                  size: '42%',
+                  dataLabels: {
+                    formatter: function () {
+                      return this.y > 5 ? this.point.name : null
+                    },
+                    color: '#000000',
+                    distance: -65,
+                    style: {
+                      fontSize: 14,
+                    },
+                  },
                 },
                 {
-                  name: t('job_Firewood'),
-                  y: response.data.firewoodCount || 0,
-                  color: '#f1725e',
-                },
-              ],
-              size: '75%',
-              innerSize: '60%',
-              id: 'level2',
-              dataLabels: {
-                style: {
-                  fontSize: 14,
-                },
-                distance: -28,
-              },
-            },
-            {
-              name: 'Level 3',
-              data: [
-                {
-                  name: t('job_NoLPGCylinders'),
-                  y: response.data.noLpgCylindersCount || 0,
-                  color: '#9c6644',
-                },
-                {
-                  name: t('job_SufficientLPGCylinders'),
-                  y: response.data.sufficientLpgCylindersCount || 0,
-                  color: '#ab815f',
+                  name: 'Level 2',
+                  data: [
+                    {
+                      name: t('job_LPG'),
+                      y: response.data.lpgCount || 0,
+                      color: '#f3caaa',
+                    },
+                    {
+                      name: t('job_Firewood'),
+                      y: response.data.firewoodCount || 0,
+                      color: '#f1725e',
+                    },
+                  ],
+                  size: '75%',
+                  innerSize: '60%',
+                  id: 'level2',
+                  dataLabels: {
+                    style: {
+                      fontSize: 14,
+                    },
+                    distance: -28,
+                  },
                 },
                 {
-                  name: t('job_NonSufficientLPGCylinders'),
-                  y: response.data.insufficientLpgCylindersCount || 0,
-                  color: '#ddb892',
+                  name: 'Level 3',
+                  data: [
+                    {
+                      name: t('job_NoLPGCylinders'),
+                      y: response.data.noLpgCylindersCount || 0,
+                      color: '#9c6644',
+                    },
+                    {
+                      name: t('job_SufficientLPGCylinders'),
+                      y: response.data.sufficientLpgCylindersCount || 0,
+                      color: '#ab815f',
+                    },
+                    {
+                      name: t('job_NonSufficientLPGCylinders'),
+                      y: response.data.insufficientLpgCylindersCount || 0,
+                      color: '#ddb892',
+                    },
+                    {
+                      name: t('job_Firewood'),
+                      y: response.data.firewoodCount || 0,
+                      color: '#f08700',
+                    },
+                  ],
+                  size: '95%',
+                  innerSize: '80%',
+                  id: 'level3',
+                  dataLabels: {
+                    style: {
+                      fontSize: 14,
+                    },
+                  },
                 },
-                {
-                  name: t('job_Firewood'),
-                  y: response.data.firewoodCount || 0,
-                  color: '#f08700',
-                },
-              ],
-              size: '95%',
-              innerSize: '80%',
-              id: 'level3',
-              dataLabels: {
-                style: {
-                  fontSize: 14,
-                },
-              },
-            },
-          ]
+              ]
+            : []
         }
       }
     }

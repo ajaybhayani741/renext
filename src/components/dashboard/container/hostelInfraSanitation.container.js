@@ -8,6 +8,7 @@ import {
   notEqual,
   keys,
   isEqual,
+  values,
 } from '../../../utils/javascript'
 import {
   getAvailableToiletsChartApi,
@@ -141,68 +142,79 @@ const hostelInfraSanitation = () => {
       const respData = await getDataApi({ name: key, start, end })
       if (respData?.data) {
         if (isEqual(key, 'job_DrinkingWater')) {
-          const series = [
-            {
-              colorByPoint: true,
-              data: entries(drinkingWaterKeys)?.map(([k, v], i) => ({
-                id: i + 1,
-                name: t(v?.label),
-                valueId: v?.value,
-                y: respData?.data?.[k] || 0,
-              })),
-            },
-          ]
+          const isData = values(respData?.data)?.find(item => item)
+          const series = isData
+            ? [
+                {
+                  colorByPoint: true,
+                  data: entries(drinkingWaterKeys)?.map(([k, v], i) => ({
+                    id: i + 1,
+                    name: t(v?.label),
+                    valueId: v?.value,
+                    y: respData?.data?.[k] || 0,
+                  })),
+                },
+              ]
+            : []
           tempSeriesData['job_DrinkingWater'] = {
             series,
           }
         } else if (isEqual(key, 'dash_WasteManagement')) {
+          const isData = values(respData?.data)?.find(item => item)
           setSeriesData(prev => ({
             ...prev,
             dash_WasteManagement: {
               ...prev.dash_WasteManagement,
-              series: [
-                {
-                  name: t('btn_Yes'),
-                  data: [
-                    respData.data
-                      .gpMunicipalityClearingSolidWasteRegularlyYes || 0,
-                    respData.data.greyBlackWaterSeparatelyDrainedYes || 0,
-                    respData.data.septicTankCleanedRegularlyYes || 0,
-                    respData.data.soakPitsInHostelYes || 0,
-                    respData.data.sufficientDistanceSepticTankBorewellYes || 0,
-                    respData.data.hostelPremisesKeptCleanYes || 0,
-                  ],
-                },
-                {
-                  name: t('btn_No'),
-                  data: [
-                    respData.data.gpMunicipalityClearingSolidWasteRegularlyNo ||
-                      0,
-                    respData.data.greyBlackWaterSeparatelyDrainedNo || 0,
-                    respData.data.septicTankCleanedRegularlyNo || 0,
-                    respData.data.soakPitsInHostelNo || 0,
-                    respData.data.sufficientDistanceSepticTankBorewellNo || 0,
-                    respData.data.hostelPremisesKeptCleanNo || 0,
-                  ],
-                },
-              ],
+              series: isData
+                ? [
+                    {
+                      name: t('btn_Yes'),
+                      data: [
+                        respData.data
+                          .gpMunicipalityClearingSolidWasteRegularlyYes || 0,
+                        respData.data.greyBlackWaterSeparatelyDrainedYes || 0,
+                        respData.data.septicTankCleanedRegularlyYes || 0,
+                        respData.data.soakPitsInHostelYes || 0,
+                        respData.data.sufficientDistanceSepticTankBorewellYes ||
+                          0,
+                        respData.data.hostelPremisesKeptCleanYes || 0,
+                      ],
+                    },
+                    {
+                      name: t('btn_No'),
+                      data: [
+                        respData.data
+                          .gpMunicipalityClearingSolidWasteRegularlyNo || 0,
+                        respData.data.greyBlackWaterSeparatelyDrainedNo || 0,
+                        respData.data.septicTankCleanedRegularlyNo || 0,
+                        respData.data.soakPitsInHostelNo || 0,
+                        respData.data.sufficientDistanceSepticTankBorewellNo ||
+                          0,
+                        respData.data.hostelPremisesKeptCleanNo || 0,
+                      ],
+                    },
+                  ]
+                : [],
             },
           }))
         } else if (isEqual(key, 'dash_ToiletsSufficiency')) {
+          const isData = values(respData?.data)?.find(item => item)
           setSeriesData(prev => ({
             ...prev,
             dash_ToiletsSufficiency: {
               ...prev.dash_ToiletsSufficiency,
-              series: [
-                {
-                  name: t('btn_Yes'),
-                  data: [respData.data.numberOfToiletsSufficientYes || 0],
-                },
-                {
-                  name: t('btn_No'),
-                  data: [respData.data.numberOfToiletsSufficientNo || 0],
-                },
-              ],
+              series: isData
+                ? [
+                    {
+                      name: t('btn_Yes'),
+                      data: [respData.data.numberOfToiletsSufficientYes || 0],
+                    },
+                    {
+                      name: t('btn_No'),
+                      data: [respData.data.numberOfToiletsSufficientNo || 0],
+                    },
+                  ]
+                : [],
             },
           }))
         } else {

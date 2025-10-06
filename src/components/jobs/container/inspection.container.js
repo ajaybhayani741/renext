@@ -25,9 +25,9 @@ import {
 } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { addJobPostApi, updateJobPatchApi } from '../jobs.api'
+import { payloadType, tabKeys } from '../jobs.description'
 import data from '../recoveryJobDataUpload.xlsx'
 import inspectionFieldAttr from './inspectionFieldAttr.container'
-import { payloadType, tabKeys } from '../jobs.description'
 
 const inspection = ({
   editData,
@@ -642,9 +642,7 @@ const inspection = ({
           [
             'inspectingOfficerWithStaffPhoto',
             'inspectingOfficerWithChildrenPhoto',
-            'hostelPhoto1',
-            'hostelPhoto2',
-            'hostelPhoto3',
+            'hostelPhotos',
           ],
           nestedKey,
         )
