@@ -61,6 +61,7 @@ const {
   GET_AVAILABLE_CCTV_HOSTELS,
   GET_FUNCTIONING_CCTV_CHART,
   GET_FUNCTIONING_CCTV_HOSTELS,
+  GET_FEEDBACK_HOSTELS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -447,6 +448,12 @@ const getFunctioningCCTVHostelsApi = async ({ pageNo, params }) => {
   })
   return response?.data
 }
+const getFeedbackHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_FEEDBACK_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
 
 export {
   getDiscrepanciesApi,
@@ -507,4 +514,5 @@ export {
   getAvailableCCTVHostelsApi,
   getFunctioningCCTVChartApi,
   getFunctioningCCTVHostelsApi,
+  getFeedbackHostelsApi,
 }

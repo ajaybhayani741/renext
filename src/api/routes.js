@@ -167,5 +167,7 @@ const API_ROUTES = {
   GET_FUNCTIONING_CCTV_CHART: `/dashboard-management/v1/hostel-cctvs-functioning-chart`,
   GET_FUNCTIONING_CCTV_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/hostel-cctvs-functioning-chart/hostels/${pageNo}`,
+  GET_FEEDBACK_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/feedback/hostels/${pageNo}`,
 }
 export default API_ROUTES
