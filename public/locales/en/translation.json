@@ -621,5 +621,6 @@
   "job_Snakes": "Snakes",
   "job_Monkeys": "Monkeys",
   "msg_PleaseSelectHostel": "Please select hostel",
-  "job_HostelPhotos": "Photos of Hostel"
+  "job_HostelPhotos": "Photos of Hostel",
+  "user_AssignHostel": "Assign Hostel"
 }

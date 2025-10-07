@@ -2,7 +2,7 @@ import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import { addressFormat } from '../../../utils'
-import { childUsers } from '../../../utils/constant'
+import { childUsers, userWiseRole } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
 import { include, ternary } from '../../../utils/javascript'
@@ -17,13 +17,23 @@ const userColumns = ({
   handleEdit,
   isBuilding,
   removeEditBtn,
+  handleAssignHostel,
 }) => {
   const { t } = useTranslations()
 
   const isChildUser = include(childUsers, roleId)
+  const { inspectionOfficer } = userWiseRole
 
   const actionButtons = rowData => (
     <div className="flex-nowrap d-flex">
+      {include([inspectionOfficer], roleId) && (
+        <ANTDButton
+          className="bg-assign-hostel"
+          onClick={() => handleAssignHostel({ rowData })}
+        >
+          {t('user_AssignHostel')}
+        </ANTDButton>
+      )}
       <ANTDButton className="bg-view" onClick={() => handleView(rowData)}>
         {t('btn_View')}
       </ANTDButton>

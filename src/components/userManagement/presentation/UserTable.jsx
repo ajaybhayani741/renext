@@ -49,6 +49,7 @@ function UserTable({
     editInfo,
     setEditInfo,
     handleCancelEdit,
+    handleAssignHostel,
   } = userTable({ payload, multiSelect, isBuilding, searchByEmail })
 
   const { column, actionButtons, cardViewFn } = userColumns({
@@ -65,6 +66,7 @@ function UserTable({
     isBuilding,
     handleDAssociate,
     removeEditBtn,
+    handleAssignHostel,
   })
   const { t } = useTranslations()
 
