@@ -47,7 +47,8 @@ const inspection = ({
   // eslint-disable-next-line no-unused-vars
   const { createPromise, resolvePromise } = usePromise()
   const [jobId, setJobId] = useState(null)
-  const [current, setCurrent] = useState(0)
+  const isEdit = !!params?.jobId
+  const [current, setCurrent] = useState(isEdit ? 1 : 0)
   const [loader, setLoader] = useState(false)
   const [isApiRunning, setIsApiRunning] = useState(false)
   const [activeKeys, setActiveKeys] = useState([])
@@ -62,7 +63,6 @@ const inspection = ({
     remark: '',
     jobType: payloadType?.[tabKeys?.inspection],
   }
-  const isEdit = !!params?.jobId
   const showSave = isEdit || include([1], current)
   const { inspectionOfficer, hostel } = userWiseRole
   const userData = JSON.parse(getItem('userData'))
@@ -82,6 +82,7 @@ const inspection = ({
 
   useEffect(() => {
     if (isEdit) {
+      setCurrent(1)
       setEditApiDataToForm()
     } else {
       setSelectedUsers({
