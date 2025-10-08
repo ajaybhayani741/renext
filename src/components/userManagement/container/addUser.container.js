@@ -54,7 +54,7 @@ const addUser = ({
   const { params, navigate, location } = useRouter()
   const { dispatch } = useRedux()
   const { country } = configData
-  const { admin, hostel } = userWiseRole
+  const { admin, hostel, stateAdminOfficer } = userWiseRole
   const userType = params?.userType
   const formRoleId =
     roleIdByPath[userType] ?? userRoleId ?? editInfo?.data?.roleId
@@ -89,13 +89,13 @@ const addUser = ({
           data: responseData?.list?.[0] || {},
           list: responseData,
         })
-        if (include(childUsers, formRoleId) && !editInfo?.data?.id) {
+        if (include([stateAdminOfficer], formRoleId) && !editInfo?.data?.id) {
           handleSameAsParent(responseData?.list?.[0])
         }
       }
       if (isEqual(currentUserDescription?.parent?.id, roleId)) {
         setSelectUser(prev => ({ ...prev, data: userDetails }))
-        if (include(childUsers, formRoleId) && !editInfo?.data?.id) {
+        if (include([stateAdminOfficer], formRoleId) && !editInfo?.data?.id) {
           handleSameAsParent(userDetails)
         }
       } else {
@@ -169,7 +169,9 @@ const addUser = ({
   useEffect(() => {
     if (include(childUsers, formRoleId) && selectUser?.data?.id) {
       //Add same as parent button
-      handleSameAsParent(selectUser?.data)
+      if (include([stateAdminOfficer], formRoleId)) {
+        handleSameAsParent(selectUser?.data)
+      }
       setUserForm(prev => {
         const updatedFormField = { ...prev }
         updatedFormField.sameAsParentBtn = {
