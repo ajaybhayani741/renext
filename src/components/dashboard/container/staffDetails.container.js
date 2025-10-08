@@ -100,11 +100,19 @@ const staffDetails = () => {
     })
   }
 
-  const getHandleClickDataApi = async ({ range, pageNo = 1, name } = {}) => {
+  const getHandleClickDataApi = async ({
+    range,
+    pageNo = 1,
+    name,
+    start,
+    end,
+    newDateRange = dateRange,
+  } = {}) => {
     const lineParams = {
-      fromDate: dateRange?.from,
-      toDate: dateRange?.to,
-      range,
+      fromDate: newDateRange?.from,
+      toDate: newDateRange?.to,
+      ...(range && { range }),
+      ...((start || end) && { start, end }),
     }
     switch (name) {
       case 'dash_TotalNumberOfWorkersOnPayroll':
@@ -112,49 +120,52 @@ const staffDetails = () => {
           pageNo,
           params: lineParams,
         })
-        return workersResp
+        return workersResp?.data
       case 'dash_TotalNumberOfCooksEnrolled':
         const cooksResp = await getCooksHostelsApi({
           pageNo,
           params: lineParams,
         })
-        return cooksResp
+        return cooksResp?.data
       case 'dash_TotalNumberOfKamatiEnrolled':
         const kamatiResp = await getKamatiHostelsApi({
           pageNo,
           params: lineParams,
         })
-        return kamatiResp
+        return kamatiResp?.data
       case 'dash_TotalNumberOfWatchmenEnrolled':
         const watchmenResp = await getWatchmanHostelsApi({
           pageNo,
           params: lineParams,
         })
-        return watchmenResp
+        return watchmenResp?.data
       case 'dash_TotalNumberOfScavengersAvailable':
         const availableScavengersResp = await getAvailableScavengersHostelsApi({
           pageNo,
           params: lineParams,
         })
-        return availableScavengersResp
+        return availableScavengersResp?.data
       case 'dash_TotalNumberOfScavengersRequired':
         const requiredScavengersResp = await getRequiredScavengersHostelsApi({
           pageNo,
           params: lineParams,
         })
-        return requiredScavengersResp
+        return requiredScavengersResp?.data
 
       default:
         return null
     }
   }
 
-  const handleChartClick = async (e, name) => {
+  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
       range: data?.category,
       name,
+      start: startEnd?.start,
+      end: startEnd?.end,
+       newDateRange: {...newDateRange},
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -166,6 +177,10 @@ const staffDetails = () => {
       chartData: {
         category: data?.category,
         value: data?.y,
+        range: data?.category,
+        start: startEnd?.start,
+        end: startEnd?.end,
+        newDateRange: { ...newDateRange },
       },
       title: name,
     })
@@ -174,9 +189,12 @@ const staffDetails = () => {
   const handleTableChange = async ({ current }) => {
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
-      range: selectedColumn?.chartData?.category,
+      range: selectedColumn?.chartData?.range,
       name: selectedColumn?.title,
       pageNo: current,
+      start: selectedColumn?.chartData?.start,
+      end: selectedColumn?.chartData?.end,
+      newDateRange: selectedColumn?.chartData?.newDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })

@@ -162,11 +162,15 @@ const safetySecurity = () => {
     filterValue,
     pageNo = 1,
     name,
+    start,
+    end,
+    newDateRange = dateRange,
   } = {}) => {
     const lineParams = {
-      fromDate: dateRange?.from,
-      toDate: dateRange?.to,
-      range,
+      fromDate: newDateRange?.from,
+      toDate: newDateRange?.to,
+      ...(range && { range }),
+      ...((start || end) && { start, end }),
     }
     const columnParams = {
       fromDate: dateRange?.from,
@@ -206,7 +210,7 @@ const safetySecurity = () => {
     }
   }
 
-  const handleChartClick = async (e, name) => {
+  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
@@ -220,6 +224,9 @@ const safetySecurity = () => {
         : animalThreatCategoryMapping[data?.category],
       range: data?.category,
       name,
+      start: startEnd?.start,
+      end: startEnd?.end,
+       newDateRange: {...newDateRange},
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -235,6 +242,9 @@ const safetySecurity = () => {
           ? data?.series?.name
           : null,
         value: data?.y,
+        start: startEnd?.start,
+        end: startEnd?.end,
+        newDateRange: { ...newDateRange },
       },
       title: name,
       modalTitle: safetySecurityCharts?.[name]?.modalTitle,
@@ -257,6 +267,9 @@ const safetySecurity = () => {
       range: selectedColumn?.chartData?.category,
       name: selectedColumn?.title,
       pageNo: current,
+      start: selectedColumn?.chartData?.start,
+      end: selectedColumn?.chartData?.end,
+      newDateRange: selectedColumn?.chartData?.newDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })

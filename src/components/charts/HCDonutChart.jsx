@@ -18,7 +18,7 @@ const HCDonutChart = ({ title, seriesData, handleChartClick, name }) => {
           events: {
             click: function (e) {
               if (handleChartClick) {
-                handleChartClick(e, name)
+                handleChartClick({ e, name })
               }
             },
           },

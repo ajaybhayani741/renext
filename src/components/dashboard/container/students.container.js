@@ -65,11 +65,19 @@ const students = () => {
     })
   }
 
-  const getHandleClickDataApi = async ({ range, pageNo = 1, name } = {}) => {
+  const getHandleClickDataApi = async ({
+    range,
+    pageNo = 1,
+    name,
+    start,
+    end,
+    newDateRange = dateRange,
+  } = {}) => {
     const lineParams = {
-      fromDate: dateRange?.from,
-      toDate: dateRange?.to,
-      range,
+      fromDate: newDateRange?.from,
+      toDate: newDateRange?.to,
+      ...(range && { range }),
+      ...((start || end) && { start, end }),
     }
     switch (name) {
       case 'dash_TotalNumberOfStudents':
@@ -83,12 +91,15 @@ const students = () => {
     }
   }
 
-  const handleChartClick = async (e, name) => {
+  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
       range: data?.category,
       name,
+      start: startEnd?.start,
+      end: startEnd?.end,
+      newDateRange: {...newDateRange},
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -100,6 +111,11 @@ const students = () => {
       chartData: {
         category: data?.category,
         value: data?.y,
+        range: data?.category,
+        name,
+        start: startEnd?.start,
+        end: startEnd?.end,
+        newDateRange: { ...newDateRange },
       },
       title: name,
     })
@@ -111,6 +127,9 @@ const students = () => {
       range: selectedColumn?.chartData?.category,
       name: selectedColumn?.title,
       pageNo: current,
+      start: selectedColumn?.chartData?.start,
+      end: selectedColumn?.chartData?.end,
+      newDateRange: selectedColumn?.chartData?.newDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })

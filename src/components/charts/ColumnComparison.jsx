@@ -38,7 +38,7 @@ const ColumnComparison = ({
         series: {
           point: {
             events: {
-              click: e => handleChartClick(e, name || title),
+              click: e => handleChartClick({ e, name: name || title }),
             },
           },
         },

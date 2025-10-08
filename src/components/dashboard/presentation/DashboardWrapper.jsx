@@ -15,9 +15,9 @@ const DashboardWrapper = ({
   hostelsData,
 }) => {
   const { t } = useTranslations()
-  const { columns } = dashboardWrapper({ title: selectedColumn?.title })
   const { hostels, loader, pageNo, lastPage } = hostelsData || {}
   const pageSize = 10
+  const { columns } = dashboardWrapper({ title: selectedColumn?.title, pageNo })
 
   return (
     <div className="dashboard-wrapper">

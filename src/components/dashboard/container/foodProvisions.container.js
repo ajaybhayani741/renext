@@ -243,7 +243,7 @@ const foodProvisions = () => {
     }
   }
 
-  const handleChartClick = async (e, name) => {
+  const handleChartClick = async ({ e, name }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const category = data?.category || data?.name

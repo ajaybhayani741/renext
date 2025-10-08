@@ -37,7 +37,7 @@ const StudentsDashboard = () => {
                 xAxisTitle: value?.xAxisText,
                 yAxisTitle: value?.yAxisText,
                 handleChartClick,
-                seriesData: seriesData?.[key]?.series,
+                seriesData: seriesData?.[key],
                 title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
                 onRangeChange,
               }}

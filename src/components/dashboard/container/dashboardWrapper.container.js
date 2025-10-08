@@ -1,7 +1,7 @@
 import useTranslations from '../../../hooks/useTranslations'
 import { include } from '../../../utils/javascript'
 
-const dashboardWrapper = ({ title }) => {
+const dashboardWrapper = ({ title, pageNo }) => {
   const { t } = useTranslations()
   const condition = include(
     [
@@ -29,7 +29,7 @@ const dashboardWrapper = ({ title }) => {
       key: 'id',
       colSpan: 2,
       render: (_, __, index) => {
-        return index + 1
+        return (pageNo - 1) * 10 + index + 1
       },
     },
     {
