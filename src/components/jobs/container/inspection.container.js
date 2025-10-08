@@ -90,16 +90,31 @@ const inspection = ({
         [inspectionOfficer]: [userData],
       })
     }
-    const getCurrentLocation = async () => {
+  }, [])
+
+  const getCurrentLocation = async () => {
+    setConfirmModel({
+      open: true,
+      description:
+        current === 3 ? t('msg_confirmEndLocation') : t('msg_confirmLocation'),
+    })
+    const isAccepted = await createPromise()
+    if (isAccepted) {
       const data = await getLocation()
       locationRef.current = data
       form.setFieldsValue({
         ...form.getFieldsValue(),
         locationInspection: `${data?.latitude?.toFixed(4)},${data?.longitude?.toFixed(4)}`,
+        ...(current === 3
+          ? {
+              endLocationInspection: `${data?.latitude?.toFixed(4)},${data?.longitude?.toFixed(4)}`,
+            }
+          : {}),
       })
+
+      jobId && debounceApiCall({})
     }
-    getCurrentLocation()
-  }, [])
+  }
 
   const setEditApiDataToForm = async () => {
     setJobId(editData?.id)
@@ -215,7 +230,14 @@ const inspection = ({
 
     const preFormValues = {
       inspectionDate: dayJs(editData?.inspectionDate, 'DD/MM/YYYY HH:mm'),
-      locationInspection: `${editData?.latitude?.toFixed(4)},${editData?.longitude?.toFixed(4)}`,
+      locationInspection:
+        editData?.latitude && editData?.longitude
+          ? `${editData?.latitude?.toFixed(4)},${editData?.longitude?.toFixed(4)}`
+          : '',
+      endLocationInspection:
+        editData?.latitude2 && editData?.longitude2
+          ? `${editData?.latitude2?.toFixed(4)},${editData?.longitude2?.toFixed(4)}`
+          : '',
       inspectionList: [inspectionDetails],
       findingsRequestDto: {
         ...formValueFromResponse(editData, findingsAttrFn()),
@@ -265,6 +287,9 @@ const inspection = ({
     const latLng = formData.locationInspection
       ? formData.locationInspection?.split(',')
       : []
+    const latLng2 = formData.endLocationInspection
+      ? formData.endLocationInspection?.split(',')
+      : []
 
     const payload = {
       id: jobId,
@@ -273,6 +298,8 @@ const inspection = ({
       hostelId: selectedUsers?.[userWiseRole?.hostel]?.[0]?.id,
       latitude: latLng?.[0] ? parseFloat(latLng?.[0]) : null,
       longitude: latLng?.[1] ? parseFloat(latLng?.[1]) : null,
+      latitude2: latLng2?.[0] ? parseFloat(latLng2?.[0]) : null,
+      longitude2: latLng2?.[1] ? parseFloat(latLng2?.[1]) : null,
     }
 
     const inspectionDetails = formData?.inspectionList?.[0]
@@ -750,6 +777,15 @@ const inspection = ({
 
   const validationFn = async ({ onSave, validateAll }) => {
     switch (current) {
+      case 0:
+      case 3:
+        try {
+          await form.validateFields()
+        } catch (error) {
+          return false
+        }
+        return true
+
       case 1:
         const hostelId = selectedUsers?.[userWiseRole?.hostel]?.[0]?.id
         if (!hostelId) {
@@ -772,6 +808,7 @@ const inspection = ({
         } catch (error) {
           return false
         }
+
       default:
         return true
     }
@@ -779,7 +816,6 @@ const inspection = ({
 
   const handleNext = async () => {
     let isValid = await validationFn({ validateAll: true })
-    // let isValid = true
     if (!isValid) return
     if (include([1, 2], current)) {
       isValid = await apiCall({
@@ -871,6 +907,7 @@ const inspection = ({
     onConfirmModelClose,
     onAcceptConfirmation,
     findingsAttrFn,
+    getCurrentLocation,
   }
 }
 

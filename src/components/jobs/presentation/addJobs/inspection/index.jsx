@@ -1,15 +1,17 @@
 import ConfirmView from './ConfirmView'
 import InspectionFormField from './InspectionFormField'
 import InspectionFormList from './InspectionFormList'
+import ANTDButton from '../../../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../../../shared/antd/ANTDColumn'
 import { ANTDDatePicker } from '../../../../../shared/antd/ANTDDatePicker'
 import ANTDForm, { ANTDFormItem } from '../../../../../shared/antd/ANTDForm'
 import ANTDInput from '../../../../../shared/antd/ANTDInput'
 import ANTDRow from '../../../../../shared/antd/ANTDRow'
+import ANTDToolTip from '../../../../../shared/antd/ANTDTooltip'
 import PopUpConfirm from '../../../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../../../utils/constant'
 import { validationTag } from '../../../../../utils/customFunctions'
-import { clipboardsImage } from '../../../../../utils/icons'
+import { clipboardsImage, location } from '../../../../../utils/icons'
 import { getItem } from '../../../../../utils/localstorage'
 import inspection from '../../../container/inspection.container'
 import jobContext from '../../../container/jobContext.container'
@@ -53,6 +55,7 @@ const InspectionJob = ({ editData }) => {
     onConfirmModelClose,
     onAcceptConfirmation,
     findingsAttrFn,
+    getCurrentLocation,
   } = inspection({
     editData,
     selectedUsers,
@@ -103,13 +106,33 @@ const InspectionJob = ({ editData }) => {
               />
             </ANTDFormItem>
           </ANTDColumn>
-          <ANTDColumn md={12} lg={12} sm={24} xs={24}>
+          <ANTDColumn md={10} lg={10} sm={21} xs={20}>
             <ANTDFormItem
               label={t('job_LocationOfInspection')}
               name={'locationInspection'}
-              className={`date-label`}
+              className={`${validationTag(lang)} date-label`}
+              rules={[
+                {
+                  required: true,
+                  message: t('error_FieldISRequire'),
+                },
+              ]}
             >
               <ANTDInput disabled />
+            </ANTDFormItem>
+          </ANTDColumn>
+          <ANTDColumn md={2} lg={2} sm={3} xs={4}>
+            <ANTDFormItem>
+              <ANTDToolTip title={t('job_CaptureLocation')}>
+                <ANTDButton onClick={getCurrentLocation}>
+                  <img
+                    src={location}
+                    alt="location"
+                    height="20px"
+                    width="20px"
+                  />
+                </ANTDButton>
+              </ANTDToolTip>
             </ANTDFormItem>
           </ANTDColumn>
         </ANTDRow>
@@ -156,6 +179,7 @@ const InspectionJob = ({ editData }) => {
         selectedUsers={selectedUsers}
         inspectionFormFieldsAttr={inspectionFormFieldsAttr}
         findingsAttrFn={findingsAttrFn}
+        getCurrentLocation={getCurrentLocation}
       />
     ),
     4: (
