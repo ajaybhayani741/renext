@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import HightChart from '.'
 import { notifyMethod } from '../../App'
@@ -17,9 +17,13 @@ const LineCharts = ({
 }) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
-  const { dateRange } = selector(state => state?.app?.fiscalYear)
-
+  const dateRange = selector(state => state?.app?.fiscalYear?.dateRange)
+  const dateRangeRef = useRef(dateRange)
   const xAxisMax = seriesData?.highestCount || 100
+
+  useEffect(() => {
+    dateRangeRef.current = dateRange
+  }, [dateRange])
 
   const debouncedScroll = useCallback(
     debounce((start, end) => {
@@ -28,7 +32,7 @@ const LineCharts = ({
         onRangeChange({ start, end, chartType: [name] })
       }
     }, 500),
-    [dateRange, name, onRangeChange],
+    [dateRangeRef.current, name, onRangeChange],
   )
 
   const checkRange = useCallback(
@@ -66,7 +70,7 @@ const LineCharts = ({
                     e,
                     name,
                     startEnd: { start: Math.round(min), end: Math.round(max) },
-                    newDateRange: dateRange,
+                    newDateRange: dateRangeRef.current,
                   }) // Action to perform on click
                 },
                 {
@@ -150,7 +154,12 @@ const LineCharts = ({
           cursor: 'pointer',
           point: {
             events: {
-              click: e => handleChartClick({ e, name }),
+              click: e =>
+                handleChartClick({
+                  e,
+                  name,
+                  newDateRange: dateRangeRef.current,
+                }),
             },
           },
         },
@@ -196,7 +205,7 @@ const LineCharts = ({
         },
       ],
     }
-  }, [seriesData, dateRange?.start, dateRange?.end, xAxisMax])
+  }, [seriesData, dateRange?.from, dateRange?.to, xAxisMax])
 
   return (
     <>
