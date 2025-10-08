@@ -18,6 +18,7 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
   const { dispatch, selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
   const [editInfo, setEditInfo] = useState({ flag: false, data: {} })
+  const userDetail = selector(state => state.user.profile_details)
 
   const handleView = data => {
     setViewModel({ open: true, userDetails: data })
@@ -72,7 +73,7 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
   }
   const handleAssignHostel = async ({ rowData }) => {
     const payload = {
-      userId: rowData?.id,
+      userId: userDetail?.id,
       associateHostel: true,
     }
     const resp = await addAssociateApi({
