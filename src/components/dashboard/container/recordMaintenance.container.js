@@ -123,7 +123,7 @@ const recordMaintenance = () => {
     }
   }
 
-  const handleChartClick = async (e, name) => {
+  const handleChartClick = async ({ e, name }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const type = data?.series?.name

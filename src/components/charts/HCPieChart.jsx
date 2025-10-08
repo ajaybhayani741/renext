@@ -16,7 +16,7 @@ const HCPieChart = ({ handleChartClick, seriesData, title, name }) => {
           cursor: 'pointer',
           point: {
             events: {
-              click: e => handleChartClick(e, name),
+              click: e => handleChartClick({ e, name }),
             },
           },
           dataLabels: {

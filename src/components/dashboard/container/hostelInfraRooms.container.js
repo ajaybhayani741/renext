@@ -168,11 +168,15 @@ const hostelInfraRooms = () => {
     filterValue,
     pageNo = 1,
     name,
+    start,
+    end,
+    newDateRange = dateRange,
   } = {}) => {
     const lineParams = {
-      fromDate: dateRange?.from,
-      toDate: dateRange?.to,
-      range,
+      fromDate: newDateRange?.from,
+      toDate: newDateRange?.to,
+      ...(range && { range }),
+      ...((start || end) && { start, end }),
     }
     const columnParams = {
       fromDate: dateRange?.from,
@@ -207,7 +211,7 @@ const hostelInfraRooms = () => {
     }
   }
 
-  const handleChartClick = async (e, name) => {
+  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
@@ -215,6 +219,9 @@ const hostelInfraRooms = () => {
       filterValue: filterValueMapping?.[data?.custom?.label],
       range: data?.category,
       name,
+      start: startEnd?.start,
+      end: startEnd?.end,
+      newDateRange: {...newDateRange},
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -227,6 +234,9 @@ const hostelInfraRooms = () => {
         category: data?.category,
         type: data?.series?.name || data?.custom?.label,
         value: data?.y,
+        start: startEnd?.start,
+        end: startEnd?.end,
+        newDateRange: { ...newDateRange },
       },
       title: name,
       modalTitle: hostelInfraRoomsCharts?.[name]?.modalTitle,
@@ -253,6 +263,9 @@ const hostelInfraRooms = () => {
       range: selectedColumn?.chartData?.category,
       name: selectedColumn?.title,
       pageNo: current,
+      start: selectedColumn?.chartData?.start,
+      end: selectedColumn?.chartData?.end,
+      newDateRange: selectedColumn?.chartData?.newDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })

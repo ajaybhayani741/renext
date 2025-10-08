@@ -235,7 +235,16 @@ const hostelInfraSanitation = () => {
     name,
     range,
     pageNo = 1,
+    start,
+    end,
+    newDateRange = dateRange,
   }) => {
+    const lineParams = {
+      fromDate: newDateRange?.from,
+      toDate: newDateRange?.to,
+      ...(range && { range }),
+      ...((start || end) && { start, end }),
+    }
     switch (name) {
       case 'job_DrinkingWater':
         const resp = await getDrinkingWaterHostelsApi({
@@ -250,21 +259,13 @@ const hostelInfraSanitation = () => {
       case 'dash_TotalToiletsAvailable':
         const availableToiletsResp = await getAvailableToiletsHostelsApi({
           pageNo,
-          params: {
-            fromDate: dateRange?.from,
-            toDate: dateRange?.to,
-            range,
-          },
+          params: lineParams,
         })
         return availableToiletsResp?.data
       case 'job_PercentageOfTotalToiletsFunctioning':
         const functioningToiletsResp = await getFunctioningToiletsHostelsApi({
           pageNo,
-          params: {
-            fromDate: dateRange?.from,
-            toDate: dateRange?.to,
-            range,
-          },
+          params: lineParams,
         })
         return functioningToiletsResp?.data
 
@@ -297,7 +298,7 @@ const hostelInfraSanitation = () => {
     }
   }
 
-  const handleChartClick = async (e, name) => {
+  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const type = data?.series?.name
@@ -313,6 +314,9 @@ const hostelInfraSanitation = () => {
       range: data?.category,
       filterValue: type === t('btn_Yes') ? 'YES' : 'NO',
       name,
+      start: startEnd?.start,
+      end: startEnd?.end,
+      newDateRange: {...newDateRange}
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -328,6 +332,9 @@ const hostelInfraSanitation = () => {
           ? type || data?.custom?.label
           : null,
         value: data?.y,
+        start: startEnd?.start,
+        end: startEnd?.end,
+        newDateRange: { ...newDateRange },
       },
       list: include(
         [
@@ -354,6 +361,9 @@ const hostelInfraSanitation = () => {
       name: selectedColumn?.title,
       pageNo: current,
       range: selectedColumn?.chartData?.category,
+      start: selectedColumn?.chartData?.start,
+      end: selectedColumn?.chartData?.end,
+      newDateRange: selectedColumn?.chartData?.newDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })

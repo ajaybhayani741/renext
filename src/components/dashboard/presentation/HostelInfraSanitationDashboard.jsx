@@ -33,7 +33,7 @@ const HostelInfraSanitationDashboard = () => {
                   name: key,
                   // axisOptions: axisOptions?.[key],
                   handleChartClick,
-                  seriesData: seriesData?.[key]?.series,
+                  seriesData: seriesData?.[key],
                   title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
                   xAxisTitle: value?.xAxisText,
                   yAxisTitle: value?.yAxisText,

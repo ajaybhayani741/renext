@@ -6,6 +6,7 @@ export const setLineChartSeriesData = ({ respData, tempSeriesData, key }) => {
     const data = {
       series,
       total: respData?.data?.totalCount,
+      highestCount: respData?.data?.highestCount,
     }
     if (tempSeriesData) {
       tempSeriesData[key] = data
