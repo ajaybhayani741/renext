@@ -2,19 +2,21 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { entries, notEqual, values } from '../../../utils/javascript'
+import { entries, keys, notEqual, values } from '../../../utils/javascript'
 import {
-  getStaffAvailabilityChartApi,
-  getStaffAvailabilityHostelsApi,
   getMedicalCareBarChartApi,
   getMedicalCareHostelsApi,
+  getPHCDistanceChartApi,
+  getPHCDistanceHostelsApi,
+  getStaffAvailabilityChartApi,
+  getStaffAvailabilityHostelsApi,
 } from '../dashboard.api'
 import {
   availableNursingStaffKeys,
-  axisOptionsList,
+  lineChartRange,
   medicalCareCharts,
-  schoolsList,
 } from '../dashboard.description'
+import { setLineChartSeriesData } from '../dashboardFunctions'
 
 const medicalCare = () => {
   const { t } = useTranslations()
@@ -25,32 +27,7 @@ const medicalCare = () => {
     selected: false,
     chartData: null,
   })
-
-  const [seriesData, setSeriesData] = useState({
-    job_DistanceToNearestPHC: {
-      chartData: {
-        category: [
-          'Ekalavya Model Residential School',
-          'Govt. BC Hostel',
-          'Govt. BC College',
-          'Govt. ST Ashram School',
-          'Govt. ST Hostel',
-          'Govt. ST PMH',
-          'Govt. ST Hostel',
-          'Ekalavya Model Residential School',
-        ],
-      },
-      seriesData: [
-        {
-          name: t('dash_Distance'),
-          data: [13, 9, 6, 3, 25, 10, 3, 5],
-          color: '#f1725e',
-          pointPlacement: 'on',
-        },
-      ],
-    },
-  })
-  const [axisOptions, setAxisOptions] = useState(null)
+  const [seriesData, setSeriesData] = useState({})
 
   const categoryMapping = {
     [t('job_MedicalOfficerVisits')]: 'MEDICAL_OFFICER_REGULAR_VISITS',
@@ -58,13 +35,16 @@ const medicalCare = () => {
   }
 
   useEffect(() => {
-    getSeriesData()
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
   }, [dateRange])
 
-  const getDataApi = name => {
+  const getDataApi = ({
+    name,
+    start = lineChartRange?.start,
+    end = lineChartRange?.end,
+  }) => {
     const params = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
@@ -74,33 +54,41 @@ const medicalCare = () => {
         return getStaffAvailabilityChartApi({ params })
       case 'job_MedicalCare':
         return getMedicalCareBarChartApi({ params })
+      case 'job_DistanceToNearestPHC':
+        return getPHCDistanceChartApi({ params: { ...params, start, end } })
       default:
         return null
     }
   }
 
-  const getData = async () => {
+  const getData = async ({
+    start,
+    end,
+    chartType = keys(medicalCareCharts),
+  } = {}) => {
     let tempSeriesData = {}
     for (const key of Object.keys(medicalCareCharts)) {
-      const response = await getDataApi(key)
+      const response = await getDataApi({ name: key, start, end })
       if (response && response.data) {
         const isData = values(response?.data)?.find(item => item)
         if (key === 'dash_IsTheStaffNurseAvailableInTheHostel') {
-          tempSeriesData[key] = isData
-            ? [
-                {
-                  colorByPoint: true,
-                  data: entries(availableNursingStaffKeys)?.map(
-                    ([k, v], i) => ({
-                      id: i + 1,
-                      name: t(v?.label),
-                      valueId: v?.value,
-                      y: response?.data?.[k] || 0,
-                    }),
-                  ),
-                },
-              ]
-            : []
+          tempSeriesData[key] = {
+            series: isData
+              ? [
+                  {
+                    colorByPoint: true,
+                    data: entries(availableNursingStaffKeys)?.map(
+                      ([k, v], i) => ({
+                        id: i + 1,
+                        name: t(v?.label),
+                        valueId: v?.value,
+                        y: response?.data?.[k] || 0,
+                      }),
+                    ),
+                  },
+                ]
+              : [],
+          }
         } else if (key === 'job_MedicalCare') {
           tempSeriesData[key] = {
             chartData: {
@@ -109,7 +97,7 @@ const medicalCare = () => {
                 t('job_FirstAidKitAvailability'),
               ],
             },
-            seriesData: isData
+            series: isData
               ? [
                   {
                     name: t('btn_Yes'),
@@ -128,17 +116,34 @@ const medicalCare = () => {
                 ]
               : [],
           }
+        } else if (key === 'job_DistanceToNearestPHC') {
+          let tempSeriesData = setLineChartSeriesData({
+            respData: response,
+            key,
+          })
+          setSeriesData(prev => ({
+            ...prev,
+            [key]: tempSeriesData,
+          }))
         }
       }
     }
     setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
   }
 
-  const getHandleClickDataApi = ({ name, category, pageNo, type }) => {
+  const getHandleClickDataApi = ({
+    name,
+    category,
+    pageNo,
+    type,
+    range,
+    start,
+    end,
+    newDateRange = dateRange,
+  }) => {
     const params = {
-      fromDate: dateRange?.from,
-      toDate: dateRange?.to,
-      pageNo,
+      fromDate: newDateRange?.from,
+      toDate: newDateRange?.to,
     }
     switch (name) {
       case 'dash_IsTheStaffNurseAvailableInTheHostel':
@@ -153,12 +158,23 @@ const medicalCare = () => {
           pageNo,
           params: { ...params, category: apiCategory, filterValue },
         })
+      case 'job_DistanceToNearestPHC':
+        return getPHCDistanceHostelsApi({
+          pageNo,
+          params: {
+            fromDate: newDateRange?.from,
+            toDate: newDateRange?.to,
+            ...(range && { range }),
+            ...((start || end) && { start, end }),
+            // ...params,
+          },
+        })
       default:
         return null
     }
   }
 
-  const handleChartClick = async ({ e, name }) => {
+  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const category = data?.category || data?.name
@@ -170,7 +186,11 @@ const medicalCare = () => {
       category:
         name === 'job_MedicalCare' ? category : data?.valueId || data?.name,
       type,
+      range: data?.category,
       pageNo: 1,
+      start: startEnd?.start,
+      end: startEnd?.end,
+      newDateRange: { ...newDateRange },
     })
 
     if (response?.data) {
@@ -186,13 +206,13 @@ const medicalCare = () => {
         type,
         value: data?.y,
       },
-      list:
-        name === 'job_MedicalCare'
-          ? response?.data?.hostels || []
-          : [...schoolsList],
+      list: response?.data?.hostels || [],
       title: name,
       modalTitle: medicalCareCharts[name]?.modalTitle,
       categoryValue: data?.valueId,
+      start: startEnd?.start,
+      end: startEnd?.end,
+      newDateRange: { ...newDateRange },
     })
   }
 
@@ -204,7 +224,11 @@ const medicalCare = () => {
       category:
         title === 'job_MedicalCare' ? chartData?.category : categoryValue,
       type: chartData?.type,
+      range: chartData?.category,
       pageNo: current,
+      start: selectedColumn?.chartData?.start,
+      end: selectedColumn?.chartData?.end,
+      newDateRange: selectedColumn?.chartData?.newDateRange,
     })
 
     if (response?.data) {
@@ -212,71 +236,6 @@ const medicalCare = () => {
     } else {
       setHostelsData(prev => ({ ...prev, loader: false }))
     }
-  }
-
-  const getSeriesData = () => {
-    let tempOptions = {}
-    let tempSeriesData = {}
-    // let tempTotalData = {}
-    entries(medicalCareCharts).forEach(([key, value]) => {
-      if (notEqual(value?.type, 'rangeFrequency')) return
-
-      tempOptions[key] = {
-        xAxis: {
-          ...axisOptionsList?.xAxis,
-          title: {
-            text: t(value?.xAxisText),
-          },
-          tickPositions: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-        },
-        yAxis: axisOptionsList?.yAxis?.map(axis => ({
-          ...axis,
-          title: {
-            text: t(value?.yAxisText),
-          },
-        })),
-      }
-      tempSeriesData[key] = [
-        {
-          type: 'column',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-        {
-          type: 'spline',
-          data: [
-            [5, 45],
-            [10, 37],
-            [15, 28],
-            [20, 17],
-            [25, 39],
-            [30, 18],
-            [35, 90],
-            [40, 78],
-            [45, 74],
-            [50, 18],
-            [55, 17],
-            [60, 16],
-          ],
-        },
-      ]
-      // tempTotalData[key] = 1100
-    })
-    setSeriesData(prev => ({ ...prev, ...tempSeriesData }))
-    setAxisOptions(prev => ({ ...prev, ...tempOptions }))
-    // setTotalData(tempTotalData)
   }
 
   const handleCloseModal = () => {
@@ -289,7 +248,7 @@ const medicalCare = () => {
   }
 
   return {
-    axisOptions,
+    onRangeChange: getData,
     handleChartClick,
     seriesData,
     selectedColumn,

@@ -167,6 +167,9 @@ const API_ROUTES = {
   GET_FUNCTIONING_CCTV_CHART: `/dashboard-management/v1/hostel-cctvs-functioning-chart`,
   GET_FUNCTIONING_CCTV_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/hostel-cctvs-functioning-chart/hostels/${pageNo}`,
+  GET_PHC_DISTANCE_CHART: `/dashboard-management/v1/distance-to-nearest-phc-chart`,
+  GET_PHC_DISTANCE_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/distance-to-nearest-phc-chart/hostels/${pageNo}`,
   GET_FEEDBACK_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/feedback/hostels/${pageNo}`,
 }
