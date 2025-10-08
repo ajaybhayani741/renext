@@ -76,7 +76,7 @@ img {
 .main-layout {
   background-color: var(--color-bg);
   @media screen and (min-width: 992px) {
-    margin-left: 255px;
+    // margin-left: 255px;
   }
 
   .ant-layout-content {
@@ -107,7 +107,7 @@ img {
 .ant-layout {
   .ant-layout-header {
     background-color: var(--color-primary);
-    padding-inline: 20px;
+    padding-inline: 10px 20px;
     position: fixed;
     z-index: 10;
     left: 0;
@@ -116,7 +116,7 @@ img {
     @media screen and (min-width: 992px) {
       left: auto;
       right: 0;
-      width: calc(100% - 255px);
+      width:100%;
     }
 
     @media screen and (max-width: 991px) {
