@@ -95,7 +95,7 @@ const addUser = ({
       }
       if (isEqual(currentUserDescription?.parent?.id, roleId)) {
         setSelectUser(prev => ({ ...prev, data: userDetails }))
-        if (include(childUsers, formRoleId) && !editInfo?.data?.id) {
+        if (include([stateAdminOfficer], formRoleId) && !editInfo?.data?.id) {
           handleSameAsParent(userDetails)
         }
       } else {
