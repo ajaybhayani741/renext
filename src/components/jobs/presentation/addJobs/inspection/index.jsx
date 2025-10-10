@@ -10,6 +10,7 @@ import PopUpConfirm from '../../../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../../../utils/constant'
 import { validationTag } from '../../../../../utils/customFunctions'
 import { clipboardsImage } from '../../../../../utils/icons'
+import { isEqual } from '../../../../../utils/javascript'
 import { getItem } from '../../../../../utils/localstorage'
 import inspection from '../../../container/inspection.container'
 import jobContext from '../../../container/jobContext.container'
@@ -131,15 +132,17 @@ const InspectionJob = ({ editData }) => {
       </>
     ),
     1: (
-      <InspectionFormList
-        removeMaterialClick={removeMaterialClick}
-        onDownloadTemplate={onDownloadTemplate}
-        inspectionFormFieldsAttr={inspectionFormFieldsAttr}
-        onSaveClick={() => handleSave({ redirect: false })}
-        activeKeys={activeKeys}
-        onActiveKeysChange={onActiveKeysChange}
-        {...{ onSelectUser, selectedUsers, onUserClear }}
-      />
+      <div className="inspection-form-list">
+        <InspectionFormList
+          removeMaterialClick={removeMaterialClick}
+          onDownloadTemplate={onDownloadTemplate}
+          inspectionFormFieldsAttr={inspectionFormFieldsAttr}
+          onSaveClick={() => handleSave({ redirect: false })}
+          activeKeys={activeKeys}
+          onActiveKeysChange={onActiveKeysChange}
+          {...{ onSelectUser, selectedUsers, onUserClear }}
+        />
+      </div>
     ),
     2: (
       <>
@@ -184,8 +187,21 @@ const InspectionJob = ({ editData }) => {
           name="inspection"
           initialValues={inspectionInitialValues}
           form={form}
-          layout="vertical"
+          layout={isEqual(current, 1) ? 'horizontal' : 'vertical'}
+          labelWrap={isEqual(current, 1)}
           onValuesChange={onValuesChange}
+          colon={false}
+          labelCol={{
+            xs: { span: 24 },
+            sm: { span: 24 },
+            md: { span: isEqual(current, 1) ? 12 : 24 },
+          }}
+          wrapperCol={{
+            xs: { span: 24 },
+            sm: { span: 24 },
+            md: { span: isEqual(current, 1) ? 12 : 24 },
+          }}
+          labelAlign="left"
         >
           <StepsComponent
             {...{

@@ -61,7 +61,8 @@ const fieldContactFormat = contact => {
 const validationTag = lang => {
   switch (lang) {
     case 'jp':
-      return 'jp-validation'
+      return 'en-validation'
+    // return 'jp-validation'
 
     default:
       return 'en-validation'
