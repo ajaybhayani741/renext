@@ -188,7 +188,6 @@ const InspectionJob = ({ editData }) => {
           initialValues={inspectionInitialValues}
           form={form}
           layout={isEqual(current, 1) ? 'horizontal' : 'vertical'}
-          labelWrap={isEqual(current, 1)}
           onValuesChange={onValuesChange}
           colon={false}
           labelCol={{
