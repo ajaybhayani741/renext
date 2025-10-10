@@ -144,15 +144,31 @@ h6 {
     > label.ant-form-item-required:not(
       .ant-form-item-required-mark-optional
     )::before {
+    display: none !important;
+  }
+  .ant-form-item-label > label.ant-form-item-required {
+    display: flex;
+    align-items: flex-start;
+    white-space: normal;
+    line-height: 1.2;
+    height: auto;
+    display: inline-block;
+  }
+  .ant-form-item-label > label.ant-form-item-required::after {
+    content: '*';
+    color: var(--color-mandatory);
     font-size: 22px;
-    margin: 0 5px 0 0px;
-    align-self: self-end;
+    margin-left: 2px;
+    vertical-align: middle;
+    visibility: visible !important;
   }
   .ant-form-item-label > label::before,
   b::before {
-    font-size: 12px;
-    margin: 0 5px 0 0px;
-    align-self: self-end;
+    display: none !important;
+  }
+  .ant-form-item-label > label {
+    display: flex;
+    align-items: flex-start;
   }
 }
 .jp-validation {
