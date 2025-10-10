@@ -75,8 +75,10 @@ const DashboardView = () => {
 
   return (
     <div className="dashboard-view">
-      <div className="breadCrumb">{getCurrentPath()}</div>
-      <FiscalYearSelect className="ml-auto mb-10" setDefault={false} />
+      <div className="d-flex justify-content-between">
+        <div className="breadCrumb">{getCurrentPath()}</div>
+        <FiscalYearSelect className="ml-auto mb-10" setDefault={false} />
+      </div>
       {getDashboardComponent(params?.type)}
     </div>
   )
