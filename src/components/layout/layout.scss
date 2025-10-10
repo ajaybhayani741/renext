@@ -76,7 +76,7 @@ img {
 .main-layout {
   background-color: var(--color-bg);
   @media screen and (min-width: 992px) {
-    margin-left: 255px;
+    // margin-left: 255px;
   }
 
   .ant-layout-content {
@@ -116,7 +116,7 @@ img {
     @media screen and (min-width: 992px) {
       left: auto;
       right: 0;
-      width: calc(100% - 255px);
+      width: 100%;
     }
 
     @media screen and (max-width: 991px) {
@@ -134,7 +134,7 @@ img {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
     }
 
     .nav-toggle {
