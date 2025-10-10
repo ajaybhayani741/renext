@@ -20,8 +20,8 @@ function Header({ setToggleMenu }) {
             <img
               src={logo}
               alt="Mat Next"
-              height={55}
-              width={170}
+              height={58}
+              width={140}
               className="cursor-pointer"
             />
           </div>
