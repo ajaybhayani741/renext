@@ -1,4 +1,6 @@
+import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
+import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import { addressFormat } from '../../../utils'
@@ -20,20 +22,22 @@ const userColumns = ({
   handleAssignHostel,
 }) => {
   const { t } = useTranslations()
+  const { location } = useRouter()
 
   const isChildUser = include(childUsers, roleId)
   const { inspectionOfficer } = userWiseRole
 
   const actionButtons = rowData => (
     <div className="flex-nowrap d-flex">
-      {include([inspectionOfficer], roleId) && (
-        <ANTDButton
-          className="bg-assign-hostel"
-          onClick={() => handleAssignHostel({ rowData })}
-        >
-          {t('user_AssignHostel')}
-        </ANTDButton>
-      )}
+      {!include(location.pathname, pathName.JOBS) &&
+        include([inspectionOfficer], roleId) && (
+          <ANTDButton
+            className="bg-assign-hostel"
+            onClick={() => handleAssignHostel({ rowData })}
+          >
+            {t('user_AssignHostel')}
+          </ANTDButton>
+        )}
       <ANTDButton className="bg-view" onClick={() => handleView(rowData)}>
         {t('btn_View')}
       </ANTDButton>

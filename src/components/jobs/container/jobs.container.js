@@ -9,11 +9,13 @@ import debounce from '../../../utils/debounce'
 import { EVMasterSheet, RefurbishmentRequest } from '../../../utils/icons'
 import { include, isEqual, notEqual, values } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
+import { getUserList } from '../../userManagement/user.api'
+import { userRelationKey } from '../../userManagement/user.description'
 import { getJobDetailApi, getJobListApi, searchJobListApi } from '../jobs.api'
 import {
   columnKeys,
   exportExcelOptions,
-  jobTabList,
+  getJobTabList,
   payloadType,
   searchByKeys,
   searchByLabels,
@@ -48,6 +50,7 @@ const jobs = () => {
   const userDetails = JSON.parse(getItem('userData'))
   const { roleId } = { ...userDetails }
   const [data, setData] = useState({})
+  const [hostelData, setHostelData] = useState({})
   const [jobModel, setJobModel] = useState({
     open: false,
     loader: false,
@@ -85,20 +88,29 @@ const jobs = () => {
     return true
   }
 
-  const tabList = {
-    status: jobTabList.status,
-    type: jobTabList.type.filter(info => jobFilter({ info })),
-  }
+  const tabList = getJobTabList(roleId)
+  tabList.type = isEqual(status, tabKeys.unassignHostel)
+    ? []
+    : tabList.type.filter(info => jobFilter({ info }))
 
   useEffect(() => {
-    if (
+    if (isEqual(status, tabKeys.unassignHostel)) {
+      // When unassign hostel tab is selected, clear the type
+      if (type !== null) {
+        dispatch(
+          setJobActiveTab({
+            type: null,
+          }),
+        )
+      }
+    } else if (
       !tabList.type?.some(
         ({ key, disabled }) => isEqual(key, type) && !disabled,
       )
     ) {
       dispatch(
         setJobActiveTab({
-          status: tabKeys.active,
+          status: status || tabKeys.active,
           type: tabList?.type?.find(({ disabled }) => !disabled)?.key,
         }),
       )
@@ -106,15 +118,24 @@ const jobs = () => {
     if (type) {
       setColumnFilters(currentColumns)
     }
-  }, [type])
+  }, [type, status])
 
   useEffect(() => {
     if (!include(currentSearchBy, searchBy)) {
       setSearchBy(searchByKeys.employeeName)
     }
-    if (fiscalYear) apiCall()
     if (status) {
       setColumnFilters(currentColumns)
+    }
+  }, [status, type])
+
+  useEffect(() => {
+    if (fiscalYear) {
+      if (isEqual(status, tabKeys.unassignHostel)) {
+        if (type === null) hostelApiCall()
+      } else if (type) {
+        apiCall()
+      }
     }
   }, [fiscalYear, status, type])
 
@@ -211,6 +232,16 @@ const jobs = () => {
     }))
   }
 
+  const hostelApiCall = async (pageNo = 1) => {
+    setHostelData(pre => ({ ...pre, loader: true }))
+    const params = `${pageNo}?roleId=${userWiseRole.hostel}&relationType=${userRelationKey?.nonAssociate}`
+    const response = await getUserList({ params })
+    setHostelData({
+      ...response?.data,
+      loader: false,
+    })
+  }
+
   const viewApiCall = useCallback(
     async jobId => {
       const response = await getJobDetailApi({
@@ -225,7 +256,11 @@ const jobs = () => {
   )
 
   const handleTableChange = pagination => {
-    apiCall(pagination.current)
+    if (isEqual(status, tabKeys.unassignHostel)) {
+      hostelApiCall(pagination.current)
+    } else {
+      apiCall(pagination.current)
+    }
   }
 
   const onSearch = debounce(async e => {
@@ -342,7 +377,7 @@ const jobs = () => {
 
   return {
     t,
-    data: data[type],
+    data: isEqual(status, tabKeys.unassignHostel) ? hostelData : data[type],
     tabList,
     jobModel,
     isDesktop,

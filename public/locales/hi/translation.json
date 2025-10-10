@@ -200,6 +200,7 @@
   "msg_PasswordShouldBeSame": "पासवर्ड और पुष्टि पासवर्ड मेल नहीं खाते",
   "txt_Active": "सक्रिय",
   "job_Complete": "पूर्ण",
+  "job_UnassignHostel": "अनअसाइन हॉस्टल",
   "msg_BuildingUpdatedSuccessfully": "भवन सफलतापूर्वक अपडेट किया गया",
   "msg_JobUpdatedSuccessfully": "कार्य आईडी: {{jobId}} सफलतापूर्वक अपडेट किया गया",
   "msg_JobCreatedSuccessfully": "कार्य आईडी: {{jobId}} सफलतापूर्वक बनाया गया",

@@ -200,6 +200,7 @@
   "msg_PasswordShouldBeSame": "Password and Confirm Password do not match",
   "txt_Active": "Active",
   "job_Complete": "Complete",
+  "job_UnassignHostel": "Unassign Hostel",
   "msg_BuildingUpdatedSuccessfully": "Building updated successfully",
   "msg_JobUpdatedSuccessfully": "Job Id: {{jobId}} updated successfully",
   "msg_JobCreatedSuccessfully": "Job Id: {{jobId}} created successfully",

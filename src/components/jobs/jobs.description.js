@@ -1,15 +1,48 @@
 import { userWiseRole } from '../../utils/constant'
 import { isEqual } from '../../utils/javascript'
 
-const { admin, inspectionOfficer } = userWiseRole
+const { admin, inspectionOfficer, districtCollector } = userWiseRole
 
 const tabKeys = {
   active: 'active',
   complete: 'complete',
   inspection: 'inspection',
+  unassignHostel: 'unassignHostel',
 }
 
-const { active, complete, inspection } = tabKeys
+const { active, complete, inspection, unassignHostel } = tabKeys
+
+const getJobTabList = roleId => {
+  const baseStatusTabs = [
+    {
+      label: 'txt_Active',
+      key: active,
+    },
+    {
+      label: 'job_Complete',
+      key: complete,
+    },
+  ]
+
+  // Add unassign hostel tab only for district collector
+  if (isEqual(roleId, districtCollector)) {
+    baseStatusTabs.push({
+      label: 'job_UnassignHostel',
+      key: unassignHostel,
+    })
+  }
+
+  return {
+    status: baseStatusTabs,
+    type: [
+      {
+        label: 'job_InspectionJob',
+        key: inspection,
+        permission: [admin, inspectionOfficer],
+      },
+    ],
+  }
+}
 
 const jobTabList = {
   status: [
@@ -20,6 +53,10 @@ const jobTabList = {
     {
       label: 'job_Complete',
       key: complete,
+    },
+    {
+      label: 'job_UnassignHostel',
+      key: unassignHostel,
     },
   ],
   type: [
@@ -384,6 +421,7 @@ export {
   dummyJobList,
   exportExcelOptions,
   getDummyJob,
+  getJobTabList,
   jobTabList,
   jobWiseReport,
   payloadType,

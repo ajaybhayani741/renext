@@ -118,6 +118,17 @@ const userChildrenList = [
         {
           payload: { roleId: hostel },
         },
+        // {
+        //   subTitle: 'dash_Assigned',
+        //   payload: { roleId: hostel, relationType: userRelationKey?.associate },
+        // },
+        // {
+        //   subTitle: 'dash_Unassigned',
+        //   payload: {
+        //     roleId: hostel,
+        //     relationType: userRelationKey?.nonAssociate,
+        //   },
+        // },
       ],
       user_AssociatedStateHostelDepartment: [
         {
