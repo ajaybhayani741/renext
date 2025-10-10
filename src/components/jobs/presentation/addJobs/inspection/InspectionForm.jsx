@@ -29,9 +29,9 @@ const InspectionForm = ({
   const userData = JSON.parse(getItem('userData'))
   const { roleId } = userData || {}
 
-  const { districtHostelDepartment, inspectionOfficer, hostel } = userWiseRole
+  const { inspectionOfficer, hostel } = userWiseRole
 
-  const allPermissionRoles = [districtHostelDepartment, inspectionOfficer]
+  const allPermissionRoles = [inspectionOfficer]
 
   const {
     hostelAdministrationAttrFn,

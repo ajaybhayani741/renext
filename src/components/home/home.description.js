@@ -4,7 +4,7 @@ import { userWiseRole } from '../../utils/constant'
 import { DashboardIcon, QuoteIcon } from '../../utils/icons'
 import { tabKeys as jobTabKeys } from '../jobs/jobs.description'
 
-const { admin, districtHostelDepartment, inspectionOfficer } = userWiseRole
+const { admin, inspectionOfficer, districtCollector } = userWiseRole
 
 // const job_Recovery = [
 //   {
@@ -81,17 +81,9 @@ const home_ActiveJobs = [
 
 //role-wise listing
 const roleWiseData = {
-  [admin]: [{ job_Dashboard }],
-  [districtHostelDepartment]: [
-    { job_Dashboard },
-    { job_InspectionJob },
-    { home_ActiveJobs },
-  ],
-  [inspectionOfficer]: [
-    { job_Dashboard },
-    { job_InspectionJob },
-    { home_ActiveJobs },
-  ],
+  [admin]: [{ home_ActiveJobs }],
+  [districtCollector]: [{ job_Dashboard }, { home_ActiveJobs }],
+  [inspectionOfficer]: [{ job_InspectionJob }, { home_ActiveJobs }],
 }
 
 export default roleWiseData

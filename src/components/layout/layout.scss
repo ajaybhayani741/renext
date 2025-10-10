@@ -107,7 +107,7 @@ img {
 .ant-layout {
   .ant-layout-header {
     background-color: var(--color-primary);
-    padding-inline: 10px 20px;
+    padding-inline: 20px;
     position: fixed;
     z-index: 10;
     left: 0;
@@ -116,7 +116,7 @@ img {
     @media screen and (min-width: 992px) {
       left: auto;
       right: 0;
-      width:100%;
+      width: 100%;
     }
 
     @media screen and (max-width: 991px) {
@@ -134,7 +134,7 @@ img {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
     }
 
     .nav-toggle {

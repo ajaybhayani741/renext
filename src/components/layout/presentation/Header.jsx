@@ -15,10 +15,16 @@ function Header({ setToggleMenu }) {
   return (
     <ANTDHeader>
       <div className="d-flex">
-        <div className="mr-10" onClick={handleClick}>
-          <img src={logo} alt="Mat Next" height={62} width={140} />
-        </div>
         <div className="header-content space-between">
+          <div onClick={handleClick}>
+            <img
+              src={logo}
+              alt="Mat Next"
+              height={55}
+              width={170}
+              className="cursor-pointer"
+            />
+          </div>
           <WelcomeUser />
           <HeaderAction />
         </div>
