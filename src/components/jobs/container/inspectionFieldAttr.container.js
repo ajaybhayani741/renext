@@ -17,7 +17,7 @@ const inspectionFieldAttr = () => {
         label: 'job_NameOfPrincipalHWOSpecialOfficer',
         inputType: 'input',
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       principalIsRegularOrIncharge: {
@@ -25,7 +25,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       principalPresentDuringInspection: {
@@ -34,7 +34,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       principalStaysInHeadquarters: {
@@ -42,7 +42,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfStudentsEnrolled: {
@@ -50,7 +50,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         className: 'w-100',
         required: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       numberOfStudentsMarkedAttendance: {
@@ -58,7 +58,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         className: 'w-100',
         required: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       studentsActuallyPresentDuringInspection: {
@@ -66,7 +66,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         className: 'w-100',
         required: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       recordMaintenance: {
@@ -77,7 +77,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       boarderAttendanceRecordMaintained: {
@@ -85,7 +85,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       sickBoardersRecordMaintained: {
@@ -93,7 +93,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       boarderMovementRecordMaintained: {
@@ -101,7 +101,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       visitorRegisterMaintained: {
@@ -109,7 +109,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       allOtherRecordsMaintainedRegularly: {
@@ -117,7 +117,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       staffDetails: {
@@ -128,7 +128,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfCooksEnrolled: {
@@ -136,7 +136,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfCooksPresent: {
@@ -144,7 +144,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfKamatiEnrolled: {
@@ -152,7 +152,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfKamatiPresent: {
@@ -160,7 +160,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfWatchmenAttendersEnrolled: {
@@ -168,7 +168,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfWatchmenAttendersPresent: {
@@ -176,7 +176,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfScavengersAvailable: {
@@ -184,7 +184,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfScavengersRequired: {
@@ -192,7 +192,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
     }),
@@ -211,7 +211,7 @@ const inspectionFieldAttr = () => {
           { label: 'dash_Private', value: 'PRIVATE' },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfLivingRooms: {
@@ -219,7 +219,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       bedsAvailableForAllBoarders: {
@@ -227,7 +227,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       typeOfBedsAvailable: {
@@ -239,7 +239,7 @@ const inspectionFieldAttr = () => {
           { label: 'job_NoBedsAvailable', value: 'NO_BED_AVAILABLE' },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       mattressesAvailableForBoarders: {
@@ -247,14 +247,14 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       mattressesRequired: {
         label: 'job_NumberOfMattressesRequired',
         inputType: 'inputNumber',
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       accommodationSufficient: {
@@ -262,7 +262,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       windowIssues: {
@@ -277,7 +277,7 @@ const inspectionFieldAttr = () => {
           { label: 'txt_None', value: 'NONE' },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       electricity: {
@@ -288,7 +288,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       properLightingArrangementsMade: {
@@ -296,7 +296,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       totalFansWorking: {
@@ -304,7 +304,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       properVentilationArrangementsMade: {
@@ -312,14 +312,14 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       inverterAvailable: {
         label: 'job_InverterAvailable',
         inputType: 'select',
         options: booleanOptions,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       electricalIssuesPresent: {
@@ -334,7 +334,7 @@ const inspectionFieldAttr = () => {
           { label: 'job_NoIssues', value: 'NO_ISSUES' },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       electrificationRepairsRequired: {
@@ -357,7 +357,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       wasteDisposedInOpenAreaDuringVisit: {
@@ -365,7 +365,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       liquidWasteManagement: {
@@ -376,7 +376,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       septicTankCleanedRegularly: {
@@ -384,7 +384,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       stagnantWaterOnGround: {
@@ -392,7 +392,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       soakPitsInHostel: {
@@ -400,7 +400,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       sufficientDistanceSepticTankBorewell: {
@@ -408,7 +408,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       hostelPremisesKeptClean: {
@@ -416,7 +416,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       toilets: {
@@ -427,7 +427,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfToiletsFunctioning: {
@@ -435,14 +435,14 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       percentageOfToiletFunctioning: {
         label: 'job_PercentageOfTotalToiletsFunctioning',
         inputType: 'input',
         disabled: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfToiletsSufficient: {
@@ -450,7 +450,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfBathroomsAvailable: {
@@ -458,7 +458,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfBathroomsFunctioning: {
@@ -466,7 +466,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfBathroomsSufficient: {
@@ -474,7 +474,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       toiletsBathroomsIssuesRepairs: {
@@ -491,7 +491,7 @@ const inspectionFieldAttr = () => {
         acceptFileTypes: '.png,.jpg,.jpeg',
         uploadSingle: true,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       toiletsBathroomsPhoto2: {
@@ -500,7 +500,7 @@ const inspectionFieldAttr = () => {
         acceptFileTypes: '.png,.jpg,.jpeg',
         uploadSingle: true,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       drinkingWater: {
@@ -512,7 +512,7 @@ const inspectionFieldAttr = () => {
         mode: 'multiple',
         options: values(drinkingWaterKeys),
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       drinkingWaterIssuesRepairs: {
@@ -546,7 +546,7 @@ const inspectionFieldAttr = () => {
           },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       staffNurseAvailableInHostel: {
@@ -554,7 +554,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: values(availableNursingStaffKeys),
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       medicalOfficerRegularVisits: {
@@ -562,7 +562,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       firstAidKitAvailableInHostel: {
@@ -570,7 +570,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       distanceToNearestPhcKm: {
@@ -578,7 +578,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       medicalCareFeedback: {
@@ -599,7 +599,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       boardersSuppliedNotebooks: {
@@ -607,7 +607,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       boardersSuppliedUniforms: {
@@ -615,14 +615,14 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       boardersSuppliedTrunkBoxes: {
         label: 'job_TrunkBoxesSupplied',
         inputType: 'select',
         options: booleanOptions,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       boardersSuppliedPlatesGlasses: {
@@ -630,7 +630,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       boardersSuppliedSchoolBags: {
@@ -638,7 +638,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       boardersSuppliedBeddingMaterial: {
@@ -646,7 +646,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       cosmeticChargesLastPaidUptoDate: {
@@ -655,7 +655,7 @@ const inspectionFieldAttr = () => {
         className: 'w-100',
         format: 'YYYY/MM/DD',
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       treasuryBillRegisterMaintained: {
@@ -663,7 +663,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       teachingAsPerAnnualLessonPlan: {
@@ -671,14 +671,14 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       distanceToSchoolKm: {
         label: 'job_DistanceToSchool',
         inputType: 'inputNumber',
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       educationalStatusFeedback: {
@@ -702,7 +702,7 @@ const inspectionFieldAttr = () => {
           { label: 'Firewood', value: 'FIREWOOD' },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       lpgCylindersAvailable: {
@@ -714,7 +714,7 @@ const inspectionFieldAttr = () => {
           { label: 'job_YesInSufficient', value: 'YES_INSUFFICIENT' },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       menuChartDisplayed: {
@@ -722,7 +722,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       menuImplementedAsPrescribed: {
@@ -730,7 +730,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       stockRegisterMaintained: {
@@ -738,7 +738,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       vegetablesStoredAboveGround: {
@@ -746,7 +746,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       exhaustFanInKitchen: {
@@ -754,7 +754,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       riceStockRegisterKg: {
@@ -762,7 +762,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       riceStockGroundBalanceKg: {
@@ -770,7 +770,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       variationInRice: {
@@ -778,7 +778,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         className: 'w-100',
         disabled: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       dalStockRegisterKg: {
@@ -786,7 +786,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       dalStockGroundBalanceKg: {
@@ -794,7 +794,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       variationInDal: {
@@ -802,7 +802,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         className: 'w-100',
         disabled: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       cookingOilStockRegisterKg: {
@@ -810,7 +810,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       cookingOilStockGroundBalanceKg: {
@@ -818,7 +818,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       variationInCookingOil: {
@@ -826,7 +826,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         className: 'w-100',
         disabled: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       sugarStockRegisterKg: {
@@ -834,7 +834,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       sugarStockGroundBalanceKg: {
@@ -842,7 +842,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       variationInSugar: {
@@ -850,7 +850,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         className: 'w-100',
         disabled: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       idliRavaStockRegister: {
@@ -858,7 +858,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       idliRavaStockGroundBalance: {
@@ -866,7 +866,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       variationInIdliRava: {
@@ -874,7 +874,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         className: 'w-100',
         disabled: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       ragiMaltStockRegisterKg: {
@@ -882,7 +882,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       ragiMaltStockGroundBalanceKg: {
@@ -890,7 +890,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       variationInRagiMalt: {
@@ -898,7 +898,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         className: 'w-100',
         disabled: true,
-        md: 8,
+        md: 24,
         xs: 24,
       },
       ragiMaltConsumptionDailyKg: {
@@ -906,7 +906,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       milkQuantityRegister: {
@@ -914,7 +914,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       milkQuantityActualStock: {
@@ -922,7 +922,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 8,
+        md: 24,
         xs: 24,
       },
       brandOfMilkUsed: {
@@ -933,7 +933,7 @@ const inspectionFieldAttr = () => {
           { label: 'dash_Others', value: 'OTHERS' },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       milkPurchaseMethod: {
@@ -944,7 +944,7 @@ const inspectionFieldAttr = () => {
           { label: 'job_PurchasedLocally', value: 'PURCHASED_LOCALLY' },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       foodProcurementStorageIssues: {
@@ -966,7 +966,7 @@ const inspectionFieldAttr = () => {
       foodStorageVegetablesPhoto: {
         label: 'job_PhotoOfFoodStorageVegetables',
         inputType: 'formUpload',
-        md: 12,
+        md: 24,
         xs: 24,
         acceptFileTypes: '.png,.jpg,.jpeg',
         uploadSingle: true,
@@ -974,7 +974,7 @@ const inspectionFieldAttr = () => {
       foodStorageDryItemsPhoto: {
         label: 'job_PhotoOfFoodStorageDryItems',
         inputType: 'formUpload',
-        md: 12,
+        md: 24,
         xs: 24,
         acceptFileTypes: '.png,.jpg,.jpeg',
         uploadSingle: true,
@@ -989,7 +989,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       dangersCausedByAnimals: {
@@ -1004,7 +1004,7 @@ const inspectionFieldAttr = () => {
           { label: 'txt_None', value: 'NONE' },
         ],
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfStaffStayAtNight: {
@@ -1012,7 +1012,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfCctvsAvailable: {
@@ -1020,7 +1020,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       numberOfCctvsFunctioning: {
@@ -1028,7 +1028,7 @@ const inspectionFieldAttr = () => {
         inputType: 'inputNumber',
         required: true,
         className: 'w-100',
-        md: 12,
+        md: 24,
         xs: 24,
       },
       dailyNightPolicePatrollingRequired: {
@@ -1036,7 +1036,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         options: booleanOptions,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       safetyIssuesRequirements: {
@@ -1118,7 +1118,7 @@ const inspectionFieldAttr = () => {
         acceptFileTypes: '.png,.jpg,.jpeg',
         uploadSingle: true,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       inspectingOfficerWithChildrenPhoto: {
@@ -1127,7 +1127,7 @@ const inspectionFieldAttr = () => {
         acceptFileTypes: '.png,.jpg,.jpeg',
         uploadSingle: true,
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
       },
       hostelPhotos: {
@@ -1135,7 +1135,7 @@ const inspectionFieldAttr = () => {
         inputType: 'formUpload',
         acceptFileTypes: '.png,.jpg,.jpeg',
         required: true,
-        md: 12,
+        md: 24,
         xs: 24,
         max: 3,
       },

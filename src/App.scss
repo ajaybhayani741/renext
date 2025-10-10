@@ -144,23 +144,15 @@ h6 {
     > label.ant-form-item-required:not(
       .ant-form-item-required-mark-optional
     )::before {
-    font-size: 12px;
-    color: var(--color-white);
-    content: 'MANDATORY' !important;
-    background-color: var(--color-mandatory);
-    border-radius: 5px;
-    padding: 4px 5px;
-    margin: 0 8px 0 0px;
+    font-size: 22px;
+    margin: 0 5px 0 0px;
+    align-self: self-end;
   }
   .ant-form-item-label > label::before,
   b::before {
     font-size: 12px;
-    color: var(--color-white);
-    content: 'MANDATORY' !important;
-    background-color: var(--color-mandatory);
-    border-radius: 5px;
-    padding: 0px 5px;
-    margin: 0 8px 0 0px;
+    margin: 0 5px 0 0px;
+    align-self: self-end;
   }
 }
 .jp-validation {
