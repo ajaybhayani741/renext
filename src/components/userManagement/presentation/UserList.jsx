@@ -52,7 +52,7 @@ function UserList({
             style={{
               marginTop: '10px',
               marginBottom: '5px',
-              padding: '0 5px',
+              padding: '5px',
             }}
           >
             {t(subTitle)}
