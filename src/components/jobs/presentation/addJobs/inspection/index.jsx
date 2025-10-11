@@ -206,7 +206,18 @@ const InspectionJob = ({ editData }) => {
   return (
     <>
       <div className="inner-repair-wrapper">
-        <h2 className="content-title">{t('job_InspectionJob')}</h2>
+        <h2 className="content-title d-flex space-between align-center">
+          <span>{t('job_InspectionJob')}</span>
+          {showSave && (
+            <ANTDButton
+              type="primary"
+              className="save-btn m-2 mr-10"
+              onClick={handleSave}
+            >
+              {t('btn_Save')}
+            </ANTDButton>
+          )}
+        </h2>
         <ANTDForm
           name="inspection"
           initialValues={inspectionInitialValues}
@@ -236,7 +247,7 @@ const InspectionJob = ({ editData }) => {
               handleNext,
               handlePrevious,
               handleSave,
-              showSave,
+              showSave: false,
               jobType: jobTabKeys.inspection,
               backToLabel: 'btn_BackToInspectionJob',
               nextBtnLoader,

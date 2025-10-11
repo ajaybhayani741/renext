@@ -230,6 +230,10 @@ h6 {
   border-radius: 10px;
   padding: 6px 25px;
   height: 38px;
+  @media screen and (max-width: 1440px) {
+    padding: 0px 15px;
+    height: 31px;
+  }
 
   @media screen and (max-width: 576px) {
     font-size: 14px;
@@ -616,4 +620,7 @@ h6 {
 .ant-steps .ant-steps-item-finish .ant-steps-item-icon {
   background-color: #ffffff;
   border-color: var(--color-primary);
+}
+.ant-steps.ant-steps-label-vertical .ant-steps-item-content {
+  margin-top: 5px;
 }
