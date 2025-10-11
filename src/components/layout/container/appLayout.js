@@ -26,6 +26,7 @@ const appLayout = () => {
   const [toggleMenu, setToggleMenu] = useState(false)
   const activeItem1 = location.pathname
   const defaultOpenKeys = [`/${activeItem1.split('/')?.[1]}`]
+  const [collapsed, setCollapsed] = useState(false)
 
   const removeAddFromLastPath = () => {
     let url = ''
@@ -128,6 +129,10 @@ const appLayout = () => {
     !isDesktop && toggleMenu && setToggleMenu(false)
   }
 
+    const toggleCollapsed = () => {
+      setCollapsed(!collapsed)
+    }
+
   return {
     t,
     ref,
@@ -139,6 +144,8 @@ const appLayout = () => {
     items: filterMenuByRoleId(sidebarMenus, roleId),
     handleMenu,
     transformItemsRecursive,
+    toggleCollapsed,
+    collapsed,
   }
 }
 

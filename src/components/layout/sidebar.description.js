@@ -207,12 +207,6 @@ const sidebarMenus = [
     sidebar: allUser,
   },
   {
-    key: DASHBOARD_TXT,
-    Icon: DashboardIcon,
-    label: 'job_Dashboard',
-    sidebar: [districtCollector],
-  },
-  {
     key: USER_TXT,
     Icon: UserIcon,
     label: 'menu_User',
@@ -221,6 +215,12 @@ const sidebarMenus = [
       ...prop,
       key: `${USER_TXT}/${prop.key}`,
     })),
+  },
+  {
+    key: DASHBOARD_TXT,
+    Icon: DashboardIcon,
+    label: 'job_Dashboard',
+    sidebar: [districtCollector],
   },
   {
     key: JOBS,

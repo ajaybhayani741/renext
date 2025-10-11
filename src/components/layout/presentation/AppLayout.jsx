@@ -1,10 +1,12 @@
 import '../layout.scss'
 
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import { Suspense, memo } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import Header from './Header'
+import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDLayout, {
   ANTDContent,
   ANTDFooter,
@@ -13,7 +15,7 @@ import ANTDLayout, {
 import ANTDMenu from '../../../shared/antd/ANTDMenu'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
 import configData from '../../../utils/config'
-import { CloseCircleOutlined } from '../../../utils/icons'
+import { CloseCircleOutlined, hostIcon } from '../../../utils/icons'
 import appLayout from '../container/appLayout'
 
 function AppLayout() {
@@ -28,6 +30,8 @@ function AppLayout() {
     setToggleMenu,
     handleMenu,
     transformItemsRecursive,
+    collapsed,
+    toggleCollapsed,
   } = appLayout()
   const { logo } = configData
   return (
@@ -35,13 +39,27 @@ function AppLayout() {
       <ANTDSider
         theme="light"
         className={classNames({
+          'collapsed-sider': collapsed,
+          'expanded-sider': !collapsed,
           'sidebar-open': toggleMenu,
           'mobile-view-sider': !isDesktop || toggleMenu,
         })}
+        collapsed={isDesktop ? collapsed : false}
       >
-        <div className="brand-logo">
-          <img src={logo} alt="Mat Next" /* height="75%" */ />
+        <div
+          className="logo_collapsed-menu"
+          style={{
+            justifyContent: collapsed ? 'center' : 'space-between',
+          }}
+        >
+          <div className="brand-logo">
+            <img
+              src={isDesktop && collapsed ? hostIcon : logo}
+              alt="Mat Next"
+            />
+          </div>
         </div>
+
         <div className="menu-list">
           <ANTDMenu
             theme="light"
@@ -50,14 +68,39 @@ function AppLayout() {
             selectedKeys={[activeItem]}
             items={items && transformItemsRecursive(items)}
             onClick={handleMenu}
+            triggerSubMenuAction="hover"
+            inlineCollapsed={collapsed}
           />
         </div>
       </ANTDSider>
-      <ANTDLayout className="layout">
+      <ANTDButton
+        onClick={toggleCollapsed}
+        className={classNames(
+          'ant-menu-collapse',
+          'd-flex',
+          'justify-center',
+          'align-center',
+          {
+            'ant-menu-collapse-dimensions': collapsed,
+            'ant-menu-uncollapse-dimensions': !collapsed,
+            'ant-menu-collapse-mobile': true,
+          },
+        )}
+      >
+        {collapsed ? (
+          <RightOutlined
+            className={classNames('fold_icon', 'justify-center')}
+          />
+        ) : (
+          <LeftOutlined className={classNames('fold_icon', 'justify-center')} />
+        )}
+      </ANTDButton>
+      <ANTDLayout className={classNames('layout', { collapsed })}>
         {(!isDesktop || toggleMenu) && (
           <div
             className={classNames('close-sidebar', {
-              'close-open': toggleMenu,
+              'close-open': toggleMenu && collapsed,
+              'close-none': !toggleMenu,
             })}
           >
             <CloseCircleOutlined
@@ -66,8 +109,8 @@ function AppLayout() {
             />
           </div>
         )}
-        <Header setToggleMenu={setToggleMenu} />
-        <ANTDLayout className="main-layout">
+        <Header setToggleMenu={setToggleMenu} collapsed={collapsed} />
+        <ANTDLayout className={classNames('main-layout', { collapsed })}>
           <div
             className={classNames({ 'bg-opaque': toggleMenu })}
             onClick={() => setToggleMenu(false)}
@@ -85,7 +128,9 @@ function AppLayout() {
             </Suspense>
           </ANTDContent>
         </ANTDLayout>
-        <ANTDFooter className="footer">
+        <ANTDFooter
+          className={classNames('footer', { 'footer-collapsed': collapsed })}
+        >
           <span>©{new Date().getFullYear()} GenbaNEXT Limited</span>
         </ANTDFooter>
       </ANTDLayout>

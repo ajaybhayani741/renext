@@ -13,6 +13,7 @@ import {
   EditOutlined,
 } from '@ant-design/icons'
 
+import hostIcon from '../assets/appLogo/H-host.jpg'
 import BucketInventory from '../assets/BucketInventory.xlsx'
 import buildingIcon from '../assets/buildingIcon.png'
 import clipboardsImage from '../assets/clipboards.png'
@@ -149,4 +150,5 @@ export {
   CategoryManagementIcon,
   excelIcon,
   location,
+  hostIcon,
 }

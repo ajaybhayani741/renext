@@ -27,7 +27,7 @@ const HeaderAction = () => {
   ]
 
   return (
-    <div className="header-action">
+    <div className="d-flex space-between align-center">
       <div className="notification-container">
         <BellFilled />
         <ANTDBadge count={0}>
