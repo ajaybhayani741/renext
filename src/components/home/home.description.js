@@ -1,10 +1,10 @@
 import { setJobActiveTab } from '../../redux/jobs/reducer'
 import pathName from '../../routing/pathName.constant'
 import { userWiseRole } from '../../utils/constant'
-import { DashboardIcon, QuoteIcon } from '../../utils/icons'
+import { QuoteIcon } from '../../utils/icons'
 import { tabKeys as jobTabKeys } from '../jobs/jobs.description'
 
-const { admin, inspectionOfficer, districtCollector } = userWiseRole
+const { admin, districtHostelDepartment, inspectionOfficer } = userWiseRole
 
 // const job_Recovery = [
 //   {
@@ -19,14 +19,6 @@ const job_InspectionJob = [
     btnLabel: 'job_InspectionJob',
     BtnIcon: QuoteIcon,
     path: pathName.ADD_JOB.replace(':jobType', jobTabKeys.inspection),
-  },
-]
-
-const job_Dashboard = [
-  {
-    btnLabel: 'job_Dashboard',
-    BtnIcon: DashboardIcon,
-    path: pathName.DASHBOARD.replace(':type', ''),
   },
 ]
 
@@ -81,8 +73,8 @@ const home_ActiveJobs = [
 
 //role-wise listing
 const roleWiseData = {
-  [admin]: [{ home_ActiveJobs }],
-  [districtCollector]: [{ job_Dashboard }, { home_ActiveJobs }],
+  [admin]: [],
+  [districtHostelDepartment]: [{ job_InspectionJob }, { home_ActiveJobs }],
   [inspectionOfficer]: [{ job_InspectionJob }, { home_ActiveJobs }],
 }
 

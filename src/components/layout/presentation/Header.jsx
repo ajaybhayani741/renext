@@ -1,31 +1,25 @@
 import HeaderAction from './HeaderAction'
 import WelcomeUser from './WelcomeUser'
-import useRouter from '../../../hooks/useRouter'
 import { ANTDHeader } from '../../../shared/antd/ANTDLayout'
-import configData from '../../../utils/config'
+import { MenuOutlined } from '../../../utils/icons'
 
 function Header({ setToggleMenu }) {
-  const { logo } = configData
-  const { navigate } = useRouter()
-
-  const handleClick = () => {
-    navigate('/')
-  }
-
   return (
     <ANTDHeader>
       <div className="d-flex">
+        <div className="nav-toggle">
+          <MenuOutlined onClick={() => setToggleMenu(true)} />
+        </div>
         <div className="header-content space-between">
-          <div onClick={handleClick}>
-            <img
-              src={logo}
-              alt="Mat Next"
-              height={58}
-              width={140}
-              className="cursor-pointer"
-            />
-          </div>
           <WelcomeUser />
+          {/* {include(
+            [admin, storeOwner, store, storeEmployee, storeManager],
+            roleId,
+          ) && (
+            <DigitalClockWithShift
+              showShiftSelector={include([storeEmployee], roleId)}
+            />
+          )} */}
           <HeaderAction />
         </div>
       </div>

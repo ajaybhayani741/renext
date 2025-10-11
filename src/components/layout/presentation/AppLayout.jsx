@@ -8,28 +8,31 @@ import Header from './Header'
 import ANTDLayout, {
   ANTDContent,
   ANTDFooter,
+  ANTDSider,
 } from '../../../shared/antd/ANTDLayout'
+import ANTDMenu from '../../../shared/antd/ANTDMenu'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
+import configData from '../../../utils/config'
 import { CloseCircleOutlined } from '../../../utils/icons'
 import appLayout from '../container/appLayout'
 
 function AppLayout() {
   const {
     t,
-    // defaultOpenKeys,
-    // activeItem,
-    // items,
+    defaultOpenKeys,
+    activeItem,
+    items,
     ref,
     isDesktop,
     toggleMenu,
     setToggleMenu,
-    // handleMenu,
-    // transformItemsRecursive,
+    handleMenu,
+    transformItemsRecursive,
   } = appLayout()
-  // const { logo } = configData
+  const { logo } = configData
   return (
     <div ref={ref}>
-      {/* <ANTDSider
+      <ANTDSider
         theme="light"
         className={classNames({
           'sidebar-open': toggleMenu,
@@ -37,7 +40,7 @@ function AppLayout() {
         })}
       >
         <div className="brand-logo">
-          <img src={logo} alt="Mat Next" />
+          <img src={logo} alt="Mat Next" /* height="75%" */ />
         </div>
         <div className="menu-list">
           <ANTDMenu
@@ -49,7 +52,7 @@ function AppLayout() {
             onClick={handleMenu}
           />
         </div>
-      </ANTDSider> */}
+      </ANTDSider>
       <ANTDLayout className="layout">
         {(!isDesktop || toggleMenu) && (
           <div
