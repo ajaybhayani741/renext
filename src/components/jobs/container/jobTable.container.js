@@ -6,6 +6,7 @@ import useTranslations from '../../../hooks/useTranslations'
 import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
+import { addressFormat } from '../../../utils'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
 import { include, length, ternary } from '../../../utils/javascript'
@@ -96,22 +97,6 @@ const jobTable = ({
       //   },
       // },
       {
-        title: t('user_InspectionOfficer'),
-        key: columnKeys.inspectionOfficer,
-        dataIndex: 'userInfo',
-        ellipsis: true,
-        render: rowData => {
-          return rowData?.lastName ? (
-            <div className="user-image-job">
-              <img src={rowData?.profile?.fileUrl || noImage} alt={'pic'} />
-              <p>{rowData?.lastName || '-'}</p>
-            </div>
-          ) : (
-            '-'
-          )
-        },
-      },
-      {
         title: t('user_Hostel'),
         key: columnKeys.hostel,
         dataIndex: 'hostelInfo',
@@ -127,6 +112,39 @@ const jobTable = ({
           )
         },
       },
+      {
+        title: t('user_HostelAddress'),
+        key: columnKeys.hostelAddress,
+        dataIndex: 'hostelInfo',
+        width: '250px',
+        render: rowData => {
+          return addressFormat(rowData)
+        },
+      },
+      {
+        title: t('user_Contact'),
+        key: columnKeys.hostelContact,
+        dataIndex: 'hostelInfo',
+        ellipsis: true,
+        render: rowData => rowData?.phoneNumber || '-',
+      },
+      {
+        title: t('user_InspectionOfficer'),
+        key: columnKeys.inspectionOfficer,
+        dataIndex: 'userInfo',
+        ellipsis: true,
+        render: rowData => {
+          return rowData?.lastName ? (
+            <div className="user-image-job">
+              <img src={rowData?.profile?.fileUrl || noImage} alt={'pic'} />
+              <p>{rowData?.lastName || '-'}</p>
+            </div>
+          ) : (
+            '-'
+          )
+        },
+      },
+
       {
         title: t('user_CreationDate'),
         key: columnKeys.createdDate,

@@ -56,6 +56,12 @@ const JobManagement = () => {
     onSelectExportCol,
     onSelectColumn,
     onSelectAllColumn,
+    handleAssignInspectionOfficer,
+    inspectionOfficerModal,
+    inspectionOfficerData,
+    handleInspectionOfficerTableChange,
+    handleCloseInspectionOfficerModal,
+    onAssignInspectionOfficer,
   } = jobs()
 
   const { inspectionOfficer } = userWiseRole
@@ -177,6 +183,15 @@ const JobManagement = () => {
           removeEditBtn={true}
           isCardView={false}
           pagination={true}
+          handleAssignInspectionOfficer={handleAssignInspectionOfficer}
+          showAssignInspectionOfficer={true}
+          columnFilter={[
+            'user_ID',
+            'user_Name',
+            'user_Address',
+            'user_Contact',
+            'txt_Action',
+          ]}
         />
       ) : (
         <JobTable
@@ -243,6 +258,29 @@ const JobManagement = () => {
               {t('btn_Save')}
             </ANTDButton>
           </div>
+        </ANTDModal>
+      )}
+      {inspectionOfficerModal?.open && (
+        <ANTDModal
+          title={t('user_InspectionOfficer')}
+          centered
+          open={inspectionOfficerModal?.open}
+          onCancel={handleCloseInspectionOfficerModal}
+          footer={false}
+          width={1000}
+        >
+          <UserTable
+            className="mb-15"
+            userData={inspectionOfficerData}
+            payload={{
+              roleId: inspectionOfficer,
+              relationType: 'nonAssociate',
+            }}
+            isSearch
+            handleTableChange={handleInspectionOfficerTableChange}
+            handleSelect={onAssignInspectionOfficer}
+            multiSelect
+          />
         </ANTDModal>
       )}
     </>

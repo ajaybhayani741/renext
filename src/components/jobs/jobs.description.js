@@ -26,7 +26,7 @@ const getJobTabList = roleId => {
 
   // Add unassign hostel tab only for district collector
   if (isEqual(roleId, districtCollector)) {
-    baseStatusTabs.push({
+    baseStatusTabs.unshift({
       label: 'job_UnassignHostel',
       key: unassignHostel,
     })
@@ -78,7 +78,9 @@ const columnKeys = {
   updatedDate: 'job_UpdatedDate',
   status: 'job_Status',
   hostel: 'user_Hostel',
+  hostelAddress: 'user_HostelAddress',
   inspectionOfficer: 'user_InspectionOfficer',
+  hostelContact: 'user_Contact',
 }
 
 const searchByKeys = {

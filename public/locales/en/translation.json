@@ -624,5 +624,7 @@
   "msg_PleaseSelectHostel": "Please select hostel",
   "job_HostelPhotos": "Photos of Hostel",
   "user_AssignHostel": "Assign Hostel",
-  "txt_ViewJob": "View Job"
+  "txt_ViewJob": "View Job",
+  "user_AssignInspectionOfficer": "Assign Inspection Officer",
+  "user_HostelAddress": "Hostel Address"
 }
