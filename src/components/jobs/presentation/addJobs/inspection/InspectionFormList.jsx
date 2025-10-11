@@ -1,5 +1,4 @@
 import InspectionForm from './InspectionForm'
-import ANTDCard from '../../../../../shared/antd/ANTDCard'
 import { ANTDFormList } from '../../../../../shared/antd/ANTDForm'
 
 const InspectionFormList = ({
@@ -28,7 +27,7 @@ const InspectionFormList = ({
   // }
 
   return (
-    <ANTDCard>
+    <div>
       {/* <div className="text-end d-flex justify-center"></div>
       <ANTDCard className="mt-20">
         <div className="bulk-upload-instruction">
@@ -100,7 +99,7 @@ const InspectionFormList = ({
           </>
         )}
       </ANTDFormList>
-    </ANTDCard>
+    </div>
   )
 }
 

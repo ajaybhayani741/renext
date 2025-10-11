@@ -49,7 +49,7 @@ const JobUserSelect = ({
 
   return (
     <>
-      <div className="mb-20 select-user-card">
+      <div className="mb-10 select-user-card">
         <div className="mb-10 d-flex space-between title">
           <h3>{t(selectTitle)}</h3>
           {!readOnly && (
