@@ -40,7 +40,7 @@ const userColumns = ({
           {t('user_AssignInspectionOfficer')}
         </ANTDButton>
       )}
-      {include(location.pathname, pathName.USER) &&
+      {!include(location.pathname, pathName.JOBS) &&
         include([inspectionOfficer], roleId) && (
           <ANTDButton
             className="bg-assign-hostel"

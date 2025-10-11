@@ -200,7 +200,6 @@
   "msg_PasswordShouldBeSame": "Password and Confirm Password do not match",
   "txt_Active": "Active",
   "job_Complete": "Complete",
-  "job_UnassignHostel": "Unassign Hostel",
   "msg_BuildingUpdatedSuccessfully": "Building updated successfully",
   "msg_JobUpdatedSuccessfully": "Job Id: {{jobId}} updated successfully",
   "msg_JobCreatedSuccessfully": "Job Id: {{jobId}} created successfully",
@@ -629,5 +628,6 @@
   "user_HostelAddress": "Hostel Address",
   "job_CaptureLocation": "Capture Location",
   "msg_confirmLocation": "Do you want to start the job? Ensure you are at the actual location of hostel",
-  "msg_confirmEndLocation": "Do you want to end the job? Ensure you are at the actual location of hostel"
+  "msg_confirmEndLocation": "Do you want to end the job? Ensure you are at the actual location of hostel",
+  "job_Unassign": "Unassigned"
 }
