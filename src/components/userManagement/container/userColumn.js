@@ -7,7 +7,7 @@ import { addressFormat } from '../../../utils'
 import { childUsers, userWiseRole } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
-import { include, ternary } from '../../../utils/javascript'
+import { include, length, ternary } from '../../../utils/javascript'
 
 const userColumns = ({
   permission,
@@ -20,6 +20,9 @@ const userColumns = ({
   isBuilding,
   removeEditBtn,
   handleAssignHostel,
+  handleAssignInspectionOfficer,
+  showAssignInspectionOfficer,
+  columnFilter,
 }) => {
   const { t } = useTranslations()
   const { location } = useRouter()
@@ -29,7 +32,15 @@ const userColumns = ({
 
   const actionButtons = rowData => (
     <div className="flex-nowrap d-flex">
-      {!include(location.pathname, pathName.JOBS) &&
+      {showAssignInspectionOfficer && (
+        <ANTDButton
+          className="bg-assign-hostel"
+          onClick={() => handleAssignInspectionOfficer({ rowData })}
+        >
+          {t('user_AssignInspectionOfficer')}
+        </ANTDButton>
+      )}
+      {include(location.pathname, pathName.USER) &&
         include([inspectionOfficer], roleId) && (
           <ANTDButton
             className="bg-assign-hostel"
@@ -148,6 +159,12 @@ const userColumns = ({
     },
   ]
 
+  const filteredColumn = length(columnFilter)
+    ? columnFilter
+        .map(filterKey => column.find(item => item.key === filterKey))
+        .filter(Boolean)
+    : column
+
   const cardViewFn = ({
     lastName,
     emailId,
@@ -181,7 +198,7 @@ const userColumns = ({
       },
     ].filter(item => !item.hidden)
 
-  return { column, actionButtons, cardViewFn }
+  return { column: filteredColumn, actionButtons, cardViewFn }
 }
 
 export default userColumns
