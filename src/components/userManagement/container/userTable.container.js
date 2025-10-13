@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from 'react'
 import useRedux from '../../../hooks/useRedux'
 import { setPopupMessageModel } from '../../../redux/app/reducer'
 import { apiParams, nameParam } from '../../../utils'
+import { userWiseRole } from '../../../utils/constant'
 import debounce from '../../../utils/debounce'
 import { entries, notEqual, ternary } from '../../../utils/javascript'
 import { addAssociateApi, searchUserApi } from '../user.api'
@@ -18,7 +19,7 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
   const { dispatch, selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
   const [editInfo, setEditInfo] = useState({ flag: false, data: {} })
-  const userDetail = selector(state => state.user.profile_details)
+  const { hostel } = userWiseRole
 
   const handleView = data => {
     setViewModel({ open: true, userDetails: data })
@@ -73,7 +74,8 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
   }
   const handleAssignHostel = async ({ rowData }) => {
     const payload = {
-      userId: userDetail?.id,
+      roleId: hostel,
+      userId: rowData?.id,
       associateHostel: true,
     }
     const resp = await addAssociateApi({
