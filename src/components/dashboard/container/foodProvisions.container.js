@@ -267,6 +267,7 @@ const foodProvisions = () => {
         category,
         type,
         value: data?.y,
+        chartType: foodPrevisionsCharts[name]?.type,
       },
       list: response?.data?.hostels || [],
       title: name,

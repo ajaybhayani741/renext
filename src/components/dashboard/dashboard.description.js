@@ -399,6 +399,7 @@ export const studentCharts = {
     xAxisText: 'dash_NumberOfStudents',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
 }
 
@@ -415,31 +416,37 @@ export const staffDetailsCharts = {
     xAxisText: 'job_NumberOfWorkersOnPayroll',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
   dash_TotalNumberOfCooksEnrolled: {
     xAxisText: 'job_NumberOfCooksEnrolled',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
   dash_TotalNumberOfKamatiEnrolled: {
     xAxisText: 'job_NumberOfKamatiEnrolled',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
   dash_TotalNumberOfWatchmenEnrolled: {
     xAxisText: 'job_NumberOfWatchmenEnrolled',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
   dash_TotalNumberOfScavengersAvailable: {
     xAxisText: 'job_NumberOfScavengersAvailable',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
   dash_TotalNumberOfScavengersRequired: {
     xAxisText: 'job_NumberOfScavengersRequired',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
 }
 
@@ -448,6 +455,7 @@ export const hostelInfraRoomsCharts = {
     xAxisText: 'job_NumberOfLivingRooms',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
   dash_LocationBedsMattresses: {
     xAxisText: [
@@ -464,11 +472,13 @@ export const hostelInfraRoomsCharts = {
     xAxisText: 'dash_TubelightsBulbsInWorking',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
   job_WorkingFansCount: {
     xAxisText: 'dash_FansInWorking',
     yAxisText: 'dash_NumberOfHostels',
     modalTitle: false,
+    chartType: 'rangeFrequency',
   },
 }
 
@@ -633,3 +643,104 @@ export const lineChartRange = {
   start: 1,
   end: 100,
 }
+
+export const chartTypeKeys = {
+  job_HostelAuthority: 'PRINCIPAL_AUTHORITY',
+  job_RecordMaintenance: 'RECORD_MAINTENANCE',
+  job_EducationFacilities: 'EDUCATION_FACILITIES',
+  dash_WasteManagement: 'WASTE_MANAGEMENT',
+  dash_ToiletsSufficiency: 'TOILETS_SUFFICIENCY',
+  job_DrinkingWater: 'DRINKING_WATER',
+  job_FoodProvisions: 'FOOD_PROVISIONS',
+  job_NatureOfCookingFuel: 'COOKING_FUEL',
+  dash_PrincipalHWOSpecialOfficer: 'CONDUCTION_MEETINGS',
+  dash_PrecautionaryMeasures: 'PRECAUTIONARY_MEASURES',
+  dash_AnimalThreat: 'ANIMAL_THREAT',
+  job_MedicalCare: 'MEDICAL_CARE',
+  dash_IsTheStaffNurseAvailableInTheHostel: 'STAFF_NURSE_AVAILABILITY',
+  dash_LocationBedsMattresses: 'LOCATION_BEDS_MATTRESSES',
+  job_DistanceToNearestPHC: 'DISTANCE_TO_NEAREST_PHC',
+  dash_TotalNumberOfStudents: 'HOSTEL_STUDENT',
+  dash_TotalNumberOfLivingRooms: 'HOSTEL_LIVING_ROOMS',
+  job_WorkingLightsCount: 'HOSTEL_TUBELIGHTS_BULBS',
+  job_WorkingFansCount: 'HOSTEL_FANS_WORKING',
+  dash_TotalToiletsAvailable: 'HOSTEL_TOILETS_AVAILABLE',
+  job_PercentageOfTotalToiletsFunctioning:
+    'HOSTEL_TOILETS_FUNCTIONING_PERCENTAGE',
+  dash_NumberOfCCTVsAvailable: 'HOSTEL_CCTVS_AVAILABLE',
+  dash_NumberOfCCTVsFunctioning: 'HOSTEL_CCTVS_FUNCTIONING',
+  dash_TotalNumberOfWorkersOnPayroll: 'HOSTEL_WORKERS_PAYROLL',
+  dash_TotalNumberOfCooksEnrolled: 'HOSTEL_COOKS_ENROLLED',
+  dash_TotalNumberOfKamatiEnrolled: 'HOSTEL_KAMATI_ENROLLED',
+  dash_TotalNumberOfWatchmenEnrolled: 'HOSTEL_WATCHMEN_ATTENDERS_ENROLLED',
+  dash_TotalNumberOfScavengersAvailable: 'HOSTEL_SCAVENGERS_AVAILABLE',
+  dash_TotalNumberOfScavengersRequired: 'HOSTEL_SCAVENGERS_REQUIRED',
+  dash_EducationRequirements: 'EDUCATION_FACILITIES',
+}
+
+export const reportCategoryKeys = t => ({
+  [t('btn_Yes')]: 'YES',
+  [t('btn_No')]: 'NO',
+  [t('dash_RegularInCharge')]: 'IS_REGULAR_INCHARGE',
+  [t('dash_StayInHeadquarters')]: 'STAYS_IN_HEADQUARTERS',
+  [t('dash_Staff')]: 'STAFF_ATTENDANCE',
+  [t('dash_Boarder')]: 'BOARDER_ATTENDANCE',
+  [t('dash_Sick')]: 'SICK_BOARDERS',
+  [t('dash_BoarderMovement')]: 'BOARDER_MOVEMENT',
+  [t('dash_VisitorRegister')]: 'VISITOR_REGISTER',
+  [t('dash_OtherRecords')]: 'ALL_OTHER_RECORDS',
+  [t('dash_LocationGovtPrivate')]: 'HOSTEL_LOCATION_TYPE',
+  [t('dash_AreBedsAvailableForAll')]: 'BEDS_AVAILABLE_FOR_ALL',
+  [t('dash_AreMattressesAvailableForAll')]: 'MATTRESSES_AVAILABLE_FOR_ALL',
+  [t('dash_IsAccommodationSufficient')]: 'ACCOMMODATION_SUFFICIENT',
+  [t('dash_GPMunicipalityIsRegularlyCleaningTheSolidWaste')]:
+    'GP_MUNICIPALITY_CLEARING_SOLID_WASTE',
+  [t('dash_GreyWaterAndBlackWaterSeparatelyDrainedOut')]:
+    'GREY_BLACK_WATER_SEPARATELY_DRAINED',
+  [t('dash_SepticTankCleanedRegularly')]: 'SEPTIC_TANK_CLEANED_REGULARLY',
+  [t('dash_SoakPitsInTheHostel')]: 'SOAK_PITS_IN_HOSTEL',
+  [t('dash_MoreThan30mDistanceBetweenSepticTankAndBoreWell')]:
+    'SUFFICIENT_DISTANCE_SEPTIC_TANK_BOREWELL',
+  [t('dash_HostelPremisesAreKeptCleanInsideAndOutside')]:
+    'HOSTEL_PREMISES_KEPT_CLEAN',
+  [t('job_AreToiletsSufficient')]: '',
+  [t('dash_TapMunicipalityOrMissionBhageeratha')]:
+    'TAP_MUNICIPALITY_MISSION_BHAGEERATHA',
+  [t('dash_ROPlant')]: 'RO_PLANT',
+  [t('dash_OpenWell')]: 'OPEN_WELL',
+  [t('job_BoreWell')]: 'BORE_WELL',
+  [t('job_MedicalOfficerVisits')]: 'MEDICAL_OFFICER_REGULAR_VISITS',
+  [t('job_FirstAidKitAvailability')]: 'FIRST_AID_KIT_AVAILABLE_IN_HOSTEL',
+  [t('job_StaffNurseAvailability_Available')]: 'AVAILABLE',
+  [t('job_StaffNurseAvailability_NotAvailable')]:
+    'NOT_AVAILABLE_NO_PHC_NURSE_VISITS',
+  [t('job_StaffNurseAvailability_ANMVisits')]:
+    'NOT_AVAILABLE_BUT_PHC_NURSE_VISITS',
+  [t('job_TextbooksSupplied')]: 'TEXTBOOKS',
+  [t('job_NotebooksSupplied')]: 'NOTEBOOKS',
+  [t('job_UniformsSupplied')]: 'UNIFORMS',
+  [t('job_TrunkBoxesSupplied')]: 'TRUNK_BOXES',
+  [t('job_PlatesGlassesSupplied')]: 'PLATES_GLASSES',
+  [t('job_SchoolBagsSupplied')]: 'SCHOOL_BAGS',
+  [t('job_BeddingMaterialSupplied')]: 'BEDDING_MATERIAL',
+  [t('job_TreasuryBillRegisterMaintained')]: 'TREASURY_BILL_REGISTER',
+  [t('job_TeachingAsPerLessonPlan')]: 'TEACHING_ANNUAL_LESSON_PLAN',
+  [t('job_Firewood')]: 'NATURE_OF_COOKING_FUEL',
+  [t('job_LPG')]: 'NATURE_OF_COOKING_FUEL',
+  [t('job_SufficientLPGCylinders')]: 'LPG_CYLINDERS_AVAILABLE',
+  [t('job_NoLPGCylinders')]: 'LPG_CYLINDERS_AVAILABLE',
+  [t('job_NonSufficientLPGCylinders')]: 'LPG_CYLINDERS_AVAILABLE',
+  [t('dash_MenuChartDisplay')]: 'MENU_CHART_DISPLAYED',
+  [t('dash_MenuImplementationAsPrescribed')]: 'MENU_IMPLEMENTED_AS_PRESCRIBED',
+  [t('job_StockRegisterMaintained')]: 'STOCK_REGISTER_MAINTAINED',
+  [t('job_VegetablesStoredAboveGround')]: 'VEGETABLES_STORED_ABOVE_GROUND',
+  [t('job_ExhaustFanInKitchen')]: 'EXHAUST_FAN_IN_KITCHEN',
+  [t('job_OpenSpaceLightingAtNight')]: 'SUFFICIENT_LIGHTING_OPEN_SPACES',
+  [t('job_PolicePatrolRequired')]: 'DAILY_NIGHT_POLICE_PATROLLING_REQUIRED',
+  [t('job_Rats')]: 'RATS',
+  [t('job_Monkeys')]: 'MONKEYS',
+  [t('job_Snakes')]: 'SNAKES',
+  [t('job_Dogs')]: 'DOGS',
+  [t('txt_None')]: 'NONE',
+  [t('job_HWOMeetingsRegular')]: null,
+})

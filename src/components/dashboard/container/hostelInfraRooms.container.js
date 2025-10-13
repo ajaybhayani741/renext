@@ -211,7 +211,14 @@ const hostelInfraRooms = () => {
     }
   }
 
-  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
+  const handleChartClick = async ({
+    e,
+    name,
+    startEnd,
+    newDateRange,
+    chartType,
+    xAxisTitle,
+  }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
@@ -221,7 +228,7 @@ const hostelInfraRooms = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: {...newDateRange},
+      newDateRange: { ...newDateRange },
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -236,7 +243,10 @@ const hostelInfraRooms = () => {
         value: data?.y,
         start: startEnd?.start,
         end: startEnd?.end,
+        range: data?.category,
         newDateRange: { ...newDateRange },
+        chartType: hostelInfraRoomsCharts?.[name]?.chartType,
+        xAxisTitle: xAxisTitle,
       },
       title: name,
       modalTitle: hostelInfraRoomsCharts?.[name]?.modalTitle,

@@ -157,7 +157,13 @@ const staffDetails = () => {
     }
   }
 
-  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
+  const handleChartClick = async ({
+    e,
+    name,
+    startEnd,
+    newDateRange,
+    xAxisTitle,
+  }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
@@ -165,7 +171,7 @@ const staffDetails = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-       newDateRange: {...newDateRange},
+      newDateRange: { ...newDateRange },
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -181,6 +187,8 @@ const staffDetails = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         newDateRange: { ...newDateRange },
+        chartType: staffDetailsCharts?.[name]?.chartType,
+        xAxisTitle: xAxisTitle,
       },
       title: name,
     })

@@ -71,6 +71,8 @@ const LineCharts = ({
                     name,
                     startEnd: { start: Math.round(min), end: Math.round(max) },
                     newDateRange: dateRangeRef.current,
+                    chartType: 'rangeFrequency',
+                    xAxisTitle: xAxisTitle,
                   }) // Action to perform on click
                 },
                 {
@@ -159,6 +161,8 @@ const LineCharts = ({
                   e,
                   name,
                   newDateRange: dateRangeRef.current,
+                  chartType: 'rangeFrequency',
+                  xAxisTitle: xAxisTitle,
                 }),
             },
           },

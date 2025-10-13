@@ -91,7 +91,13 @@ const students = () => {
     }
   }
 
-  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
+  const handleChartClick = async ({
+    e,
+    name,
+    startEnd,
+    newDateRange,
+    xAxisTitle,
+  }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
@@ -99,7 +105,7 @@ const students = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: {...newDateRange},
+      newDateRange: { ...newDateRange },
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -116,6 +122,8 @@ const students = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         newDateRange: { ...newDateRange },
+        chartType: studentCharts?.[name]?.chartType,
+        xAxisTitle: xAxisTitle,
       },
       title: name,
     })
