@@ -393,7 +393,7 @@ const jobs = () => {
 
   const getInspectionOfficerList = async ({ pageNo }) => {
     setInspectionOfficerData(pre => ({ ...pre, loader: true }))
-    const params = `${pageNo}?roleId=${inspectionOfficer}&relationType=${userRelationKey.nonAssociate}`
+    const params = `${pageNo}?roleId=${inspectionOfficer}`
     const result = await getUserList({ params })
     setInspectionOfficerData({ ...result?.data, loader: false })
   }
