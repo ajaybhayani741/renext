@@ -1,11 +1,10 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import HightChart from '.'
 import { notifyMethod } from '../../App'
 import useRedux from '../../hooks/useRedux'
 import useTranslations from '../../hooks/useTranslations'
 import debounce from '../../utils/debounce'
-import { length } from '../../utils/javascript'
 
 const LineCharts = ({
   title,
@@ -18,22 +17,36 @@ const LineCharts = ({
 }) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
-  const { dateRange } = selector(state => state?.app?.fiscalYear)
-  const isData = seriesData && length(seriesData)
+  const dateRange = selector(state => state?.app?.fiscalYear?.dateRange)
+  const dateRangeRef = useRef(dateRange)
+  const xAxisMax = seriesData?.highestCount || 100
+
+  useEffect(() => {
+    dateRangeRef.current = dateRange
+  }, [dateRange])
 
   const debouncedScroll = useCallback(
     debounce((start, end) => {
       const rangeGap = Math.abs(end - start)
+      if (rangeGap < 100) {
+        onRangeChange({ start, end, chartType: [name] })
+      }
+    }, 500),
+    [dateRangeRef.current, name, onRangeChange],
+  )
+
+  const checkRange = useCallback(
+    debounce(rangeGap => {
       if (rangeGap > 100) {
         notifyMethod.error({
           message:
             'The range gap cannot exceed 100. Please select a smaller range.',
         })
-        return // Don't proceed with the range change
+        return false
       }
-      onRangeChange({ start, end, chartType: [name] })
+      return true
     }, 500),
-    [dateRange],
+    [],
   )
 
   const options = useMemo(() => {
@@ -45,13 +58,20 @@ const LineCharts = ({
         events: {
           load: function () {
             const chart = this
+            chart.xAxis[0].setExtremes(1, 100)
             chart.renderer
               .button(
-                'View', // The text of the button
+                t('btn_View'), // The text of the button
                 10, // X position (e.g., from the right)
                 chart.chartHeight - 8, // Y position (e.g., from the top)
                 e => {
-                  // handleChartClick(e) // Action to perform on click
+                  const { min, max } = chart?.xAxis?.[0]?.getExtremes()
+                  handleChartClick({
+                    e,
+                    name,
+                    startEnd: { start: Math.round(min), end: Math.round(max) },
+                    newDateRange: dateRangeRef.current,
+                  }) // Action to perform on click
                 },
                 {
                   // Normal state styling
@@ -76,10 +96,16 @@ const LineCharts = ({
       },
       xAxis: {
         min: 1,
-        max: isData ? 100 : null,
+        max: xAxisMax,
         tickInterval: 1,
         title: { text: t(xAxisTitle) },
         events: {
+          setExtremes: function (e) {
+            if (e.trigger === 'navigator') {
+              const rangeGap = Math.abs(e.max - e.min)
+              checkRange(rangeGap)
+            }
+          },
           afterSetExtremes: function (e) {
             if (e.trigger !== 'navigator') return
             const chart = this.chart
@@ -94,7 +120,6 @@ const LineCharts = ({
 
             const leftX = navAxis.toPixels(min)
             const rightX = navAxis.toPixels(max)
-
             chart.customLeftLabel = chart.renderer
               .label(`${Math.round(min)}`, leftX - 8, chart.plotHeight + 60)
               .css({ color: '#000', fontSize: '10px' })
@@ -112,7 +137,7 @@ const LineCharts = ({
       },
       yAxis: {
         min: 1,
-        max: 100,
+        max: 120,
         tickInterval: 10,
         title: { text: t(yAxisTitle) },
       },
@@ -129,7 +154,12 @@ const LineCharts = ({
           cursor: 'pointer',
           point: {
             events: {
-              click: e => handleChartClick(e, name),
+              click: e =>
+                handleChartClick({
+                  e,
+                  name,
+                  newDateRange: dateRangeRef.current,
+                }),
             },
           },
         },
@@ -144,7 +174,7 @@ const LineCharts = ({
         enabled: true,
         xAxis: {
           min: 1,
-          max: 100,
+          max: xAxisMax,
           tickInterval: 10,
           labels: { format: '{value}' },
         },
@@ -168,14 +198,14 @@ const LineCharts = ({
       series: [
         {
           name: '',
-          data: seriesData,
+          data: seriesData?.series || [],
           color: '#f1725d',
           type: 'line',
           marker: { enabled: true, radius: 3 },
         },
       ],
     }
-  }, [seriesData])
+  }, [seriesData, dateRange?.from, dateRange?.to, xAxisMax])
 
   return (
     <>

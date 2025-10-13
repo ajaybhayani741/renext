@@ -272,6 +272,7 @@
   "msg_PasswordShouldBeSame": "Password and Confirm Password do not match",
   "txt_Active": "Active",
   "job_Complete": "Complete",
+  "job_UnassignHostel": "Désassigner l'Auberge",
   "job_Installation": "Installation",
   "msg_BuildingUpdatedSuccessfully": "Building updated successfully",
   "msg_JobUpdatedSuccessfully": "Job Id: {{jobId}} updated successfully",

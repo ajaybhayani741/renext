@@ -12,9 +12,11 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h2 className="page-title">{t('job_Dashboard')}</h2>
-      {/* <DashboardContext.Provider value={{ handleTabChange, getFilterValue }}> */}
-      <FiscalYearSelect className="ml-auto" setDefault={false} />
+      <div className="d-flex justify-content-between">
+        <h2 className="page-title">{t('job_Dashboard')}</h2>
+        {/* <DashboardContext.Provider value={{ handleTabChange, getFilterValue }}> */}
+        <FiscalYearSelect className="ml-auto" setDefault={false} />
+      </div>
       <div className="card-container">
         {cardList.map(card => {
           return (

@@ -13,6 +13,7 @@ import {
   EditOutlined,
 } from '@ant-design/icons'
 
+import hostIcon from '../assets/appLogo/H-host.jpg'
 import BucketInventory from '../assets/BucketInventory.xlsx'
 import buildingIcon from '../assets/buildingIcon.png'
 import clipboardsImage from '../assets/clipboards.png'
@@ -52,6 +53,7 @@ import { ReactComponent as DigitalRetailerIcon } from '../assets/icons/digital-r
 import { ReactComponent as FieldEngineerIcon } from '../assets/icons/fieldEngineer.svg'
 import { ReactComponent as HomeIcon } from '../assets/icons/home.svg'
 import { ReactComponent as LinkJumpIcon } from '../assets/icons/linkJump.svg'
+import location from '../assets/icons/location.png'
 import noImage from '../assets/icons/no-image.jpg'
 import { ReactComponent as ProductManufactureIcon } from '../assets/icons/product-manufacture.svg'
 import { ReactComponent as ReportIcon } from '../assets/icons/report.svg'
@@ -147,4 +149,6 @@ export {
   JobsIcon,
   CategoryManagementIcon,
   excelIcon,
+  location,
+  hostIcon,
 }

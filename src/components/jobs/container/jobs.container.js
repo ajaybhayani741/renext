@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { notifyMethod } from '../../../App'
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import { setJobActiveTab } from '../../../redux/jobs/reducer'
@@ -9,11 +10,13 @@ import debounce from '../../../utils/debounce'
 import { EVMasterSheet, RefurbishmentRequest } from '../../../utils/icons'
 import { include, isEqual, notEqual, values } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
+import { getUserList, addAssociateApi } from '../../userManagement/user.api'
+import { userRelationKey } from '../../userManagement/user.description'
 import { getJobDetailApi, getJobListApi, searchJobListApi } from '../jobs.api'
 import {
   columnKeys,
   exportExcelOptions,
-  jobTabList,
+  getJobTabList,
   payloadType,
   searchByKeys,
   searchByLabels,
@@ -48,6 +51,7 @@ const jobs = () => {
   const userDetails = JSON.parse(getItem('userData'))
   const { roleId } = { ...userDetails }
   const [data, setData] = useState({})
+  const [hostelData, setHostelData] = useState({})
   const [jobModel, setJobModel] = useState({
     open: false,
     loader: false,
@@ -71,6 +75,14 @@ const jobs = () => {
       'ELV Model',
     ],
   })
+  const [inspectionOfficerModal, setInspectionOfficerModal] = useState({
+    open: false,
+    data: null,
+  })
+  const [inspectionOfficerData, setInspectionOfficerData] = useState({
+    list: [],
+    loader: false,
+  })
 
   const onExportToExcel = async () => {
     setLoading(true)
@@ -85,20 +97,29 @@ const jobs = () => {
     return true
   }
 
-  const tabList = {
-    status: jobTabList.status,
-    type: jobTabList.type.filter(info => jobFilter({ info })),
-  }
+  const tabList = getJobTabList(roleId)
+  tabList.type = isEqual(status, tabKeys.unassignHostel)
+    ? []
+    : tabList.type.filter(info => jobFilter({ info }))
 
   useEffect(() => {
-    if (
+    if (isEqual(status, tabKeys.unassignHostel)) {
+      // When unassign hostel tab is selected, clear the type
+      if (type !== null) {
+        dispatch(
+          setJobActiveTab({
+            type: null,
+          }),
+        )
+      }
+    } else if (
       !tabList.type?.some(
         ({ key, disabled }) => isEqual(key, type) && !disabled,
       )
     ) {
       dispatch(
         setJobActiveTab({
-          status: tabKeys.active,
+          status: status || tabKeys.unassignHostel,
           type: tabList?.type?.find(({ disabled }) => !disabled)?.key,
         }),
       )
@@ -106,15 +127,24 @@ const jobs = () => {
     if (type) {
       setColumnFilters(currentColumns)
     }
-  }, [type])
+  }, [type, status])
 
   useEffect(() => {
     if (!include(currentSearchBy, searchBy)) {
       setSearchBy(searchByKeys.employeeName)
     }
-    if (fiscalYear) apiCall()
     if (status) {
       setColumnFilters(currentColumns)
+    }
+  }, [status, type])
+
+  useEffect(() => {
+    if (fiscalYear) {
+      if (isEqual(status, tabKeys.unassignHostel)) {
+        if (type === null) hostelApiCall()
+      } else if (type) {
+        apiCall()
+      }
     }
   }, [fiscalYear, status, type])
 
@@ -129,21 +159,25 @@ const jobs = () => {
       jobId,
       // jobTitle,
       createdDate,
-      updatedDate,
+      // updatedDate,
       status,
       hostel: hostelCol,
+      hostelAddress: hostelAddressCol,
+      hostelContact: hostelContactCol,
       inspectionOfficer: inspectionOfficerCol,
     } = columnKeys
 
     return [
       jobId,
       // jobTitle,
+      hostelCol,
+      hostelAddressCol,
+      hostelContactCol,
       ...(notEqual(roleId, userWiseRole.inspectionOfficer)
         ? [inspectionOfficerCol]
         : []),
-      hostelCol,
       createdDate,
-      updatedDate,
+
       status,
       // For dynamic columns by role or active tab
       // ...ternary(isEqual(roleId, userWiseRole.admin), ['extra'], []),
@@ -211,6 +245,16 @@ const jobs = () => {
     }))
   }
 
+  const hostelApiCall = async (pageNo = 1) => {
+    setHostelData(pre => ({ ...pre, loader: true }))
+    const params = `${pageNo}?roleId=${userWiseRole.hostel}&relationType=${userRelationKey?.nonAssociate}`
+    const response = await getUserList({ params })
+    setHostelData({
+      ...response?.data,
+      loader: false,
+    })
+  }
+
   const viewApiCall = useCallback(
     async jobId => {
       const response = await getJobDetailApi({
@@ -225,7 +269,11 @@ const jobs = () => {
   )
 
   const handleTableChange = pagination => {
-    apiCall(pagination.current)
+    if (isEqual(status, tabKeys.unassignHostel)) {
+      hostelApiCall(pagination.current)
+    } else {
+      apiCall(pagination.current)
+    }
   }
 
   const onSearch = debounce(async e => {
@@ -338,11 +386,48 @@ const jobs = () => {
     }))
   }
 
+  const handleAssignInspectionOfficer = async ({ rowData }) => {
+    setInspectionOfficerModal({ open: true, data: rowData })
+    await getInspectionOfficerList({ pageNo: 1 })
+  }
+
+  const getInspectionOfficerList = async ({ pageNo }) => {
+    setInspectionOfficerData(pre => ({ ...pre, loader: true }))
+    const params = `${pageNo}?roleId=${inspectionOfficer}&relationType=${userRelationKey.nonAssociate}`
+    const result = await getUserList({ params })
+    setInspectionOfficerData({ ...result?.data, loader: false })
+  }
+
+  const handleInspectionOfficerTableChange = pagination => {
+    getInspectionOfficerList({ pageNo: pagination?.current })
+  }
+
+  const handleCloseInspectionOfficerModal = () => {
+    setInspectionOfficerModal({ open: false, data: null })
+    setInspectionOfficerData({ list: [], loader: false })
+  }
+
+  const onAssignInspectionOfficer = async selectedUsers => {
+    setInspectionOfficerData(pre => ({ ...pre, loader: true }))
+    const payloadData = `?userId=${
+      inspectionOfficerModal?.data?.id
+    }&associateUserId=${selectedUsers?.map(user => user?.id)}`
+    const { data } = await addAssociateApi({ params: payloadData })
+    setInspectionOfficerData(pre => ({ ...pre, loader: false }))
+    if (data?.success) {
+      notifyMethod.success({
+        message: 'msg_UserAssociatedSuccessfully',
+      })
+      handleCloseInspectionOfficerModal()
+      hostelApiCall()
+    }
+  }
+
   const searchSelectOptions = []
 
   return {
     t,
-    data: data[type],
+    data: isEqual(status, tabKeys.unassignHostel) ? hostelData : data[type],
     tabList,
     jobModel,
     isDesktop,
@@ -365,6 +450,13 @@ const jobs = () => {
     selectExportColModal,
     onSelectColumn,
     onSelectAllColumn,
+    hostelApiCall,
+    handleAssignInspectionOfficer,
+    inspectionOfficerModal,
+    inspectionOfficerData,
+    handleInspectionOfficerTableChange,
+    handleCloseInspectionOfficerModal,
+    onAssignInspectionOfficer,
   }
 }
 

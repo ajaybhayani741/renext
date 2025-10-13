@@ -1,44 +1,66 @@
-import useTranslations from '../../../hooks/useTranslations'
-import { include } from '../../../utils/javascript'
+import { useState } from 'react'
 
-const dashboardWrapper = ({ title }) => {
+import useTranslations from '../../../hooks/useTranslations'
+import ANTDButton from '../../../shared/antd/ANTDButton'
+import { getJobDetailApi } from '../../jobs/jobs.api'
+import { payloadType } from '../../jobs/jobs.description'
+
+const dashboardWrapper = ({ title, pageNo, jobType }) => {
   const { t } = useTranslations()
-  const condition = include(
-    [
-      'job_HostelAuthority',
-      'job_RecordMaintenance',
-      'dash_LocationBedsMattresses',
-      'dash_WasteManagement',
-      'dash_ToiletsSufficiency',
-      'job_DrinkingWater',
-      'job_MedicalCare',
-      'dash_IsTheStaffNurseAvailableInTheHostel',
-      'dash_EducationRequirements',
-      'job_FoodProvisions',
-      'dash_PrecautionaryMeasures',
-      'dash_AnimalThreat',
-      'dash_PrincipalHWOSpecialOfficer',
-      'job_NatureOfCookingFuel',
-    ],
-    title,
-  )
+  const [jobModel, setJobModel] = useState({
+    open: false,
+    loader: false,
+    data: null,
+  })
+  // const condition = include(
+  //   [
+  //     'job_HostelAuthority',
+  //     'job_RecordMaintenance',
+  //     'dash_LocationBedsMattresses',
+  //     'dash_WasteManagement',
+  //     'dash_ToiletsSufficiency',
+  //     'job_DrinkingWater',
+  //     'job_MedicalCare',
+  //     'dash_IsTheStaffNurseAvailableInTheHostel',
+  //     'dash_EducationRequirements',
+  //     'job_FoodProvisions',
+  //     'dash_PrecautionaryMeasures',
+  //     'dash_AnimalThreat',
+  //     'dash_PrincipalHWOSpecialOfficer',
+  //     'job_NatureOfCookingFuel',
+  //   ],
+  //   title,
+  // )
 
   const columns = [
     {
-      title: condition ? t('dash_ListOfSchools') : t('user_Hostel'),
+      title: '',
       key: 'id',
-      colSpan: 2,
       render: (_, __, index) => {
-        return index + 1
+        return (pageNo - 1) * 10 + index + 1
       },
     },
     {
-      title: '',
+      title: t('user_Hostel'),
       key: 'lastName',
-      colSpan: 0,
       render: rowData =>
         rowData?.businessName ?? rowData?.lastName ?? rowData?.name ?? '-',
       // hidden: !condition,
+    },
+    {
+      title: t('txt_Action'),
+      key: 'viewJob',
+      render: rowData => {
+        return (
+          <ANTDButton
+            type="primary"
+            size="small"
+            onClick={() => handleHostelClick(rowData)}
+          >
+            {t('txt_ViewJob')}
+          </ANTDButton>
+        )
+      },
     },
     // {
     //   title: '',
@@ -57,7 +79,30 @@ const dashboardWrapper = ({ title }) => {
     // },
   ].filter(item => !item.hidden)
 
-  return { columns }
+  const handleCloseJobModel = () => {
+    setJobModel({ ...jobModel, open: false, data: null })
+  }
+
+  const handleHostelClick = async rowData => {
+    setJobModel({
+      ...jobModel,
+      loader: true,
+    })
+    const resp = await getJobDetailApi({
+      params: {
+        id: rowData?.jobId,
+        jobType: payloadType[jobType],
+      },
+    })
+    setJobModel({
+      ...jobModel,
+      data: resp?.data,
+      open: true,
+      loader: false,
+    })
+  }
+
+  return { columns, jobModel, handleCloseJobModel, handleHostelClick }
 }
 
 export default dashboardWrapper

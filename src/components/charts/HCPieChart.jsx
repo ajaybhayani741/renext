@@ -1,8 +1,12 @@
 import { useMemo } from 'react'
 
 import HightChart from '.'
+import useRedux from '../../hooks/useRedux'
 
 const HCPieChart = ({ handleChartClick, seriesData, title, name }) => {
+  const { selector } = useRedux()
+  const dateRange = selector(state => state?.app?.fiscalYear?.dateRange)
+
   const options = useMemo(
     () => ({
       chart: {
@@ -16,7 +20,8 @@ const HCPieChart = ({ handleChartClick, seriesData, title, name }) => {
           cursor: 'pointer',
           point: {
             events: {
-              click: e => handleChartClick(e, name),
+              click: e =>
+                handleChartClick({ e, name, newDateRange: dateRange }),
             },
           },
           dataLabels: {

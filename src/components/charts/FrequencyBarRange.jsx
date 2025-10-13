@@ -25,7 +25,7 @@ const FrequencyBarRange = ({
                 5, // X position (e.g., from the right)
                 chart.chartHeight - 46, // Y position (e.g., from the top)
                 e => {
-                  handleChartClick(e) // Action to perform on click
+                  handleChartClick({ e }) // Action to perform on click
                 },
                 {
                   // Normal state styling
@@ -96,7 +96,7 @@ const FrequencyBarRange = ({
           cursor: 'pointer',
           point: {
             events: {
-              click: e => handleChartClick(e, name),
+              click: e => handleChartClick({ e, name }),
             },
           },
         },

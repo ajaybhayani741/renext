@@ -1,15 +1,48 @@
 import { userWiseRole } from '../../utils/constant'
 import { isEqual } from '../../utils/javascript'
 
-const { admin, inspectionOfficer } = userWiseRole
+const { admin, inspectionOfficer, districtCollector } = userWiseRole
 
 const tabKeys = {
   active: 'active',
   complete: 'complete',
   inspection: 'inspection',
+  unassignHostel: 'unassignHostel',
 }
 
-const { active, complete, inspection } = tabKeys
+const { active, complete, inspection, unassignHostel } = tabKeys
+
+const getJobTabList = roleId => {
+  const baseStatusTabs = [
+    {
+      label: 'txt_Active',
+      key: active,
+    },
+    {
+      label: 'job_Complete',
+      key: complete,
+    },
+  ]
+
+  // Add unassign hostel tab only for district collector
+  if (isEqual(roleId, districtCollector)) {
+    baseStatusTabs.unshift({
+      label: 'job_Unassign',
+      key: unassignHostel,
+    })
+  }
+
+  return {
+    status: baseStatusTabs,
+    type: [
+      {
+        label: 'job_InspectionJob',
+        key: inspection,
+        permission: [admin, inspectionOfficer],
+      },
+    ],
+  }
+}
 
 const jobTabList = {
   status: [
@@ -20,6 +53,10 @@ const jobTabList = {
     {
       label: 'job_Complete',
       key: complete,
+    },
+    {
+      label: 'job_Unassign',
+      key: unassignHostel,
     },
   ],
   type: [
@@ -41,7 +78,9 @@ const columnKeys = {
   updatedDate: 'job_UpdatedDate',
   status: 'job_Status',
   hostel: 'user_Hostel',
+  hostelAddress: 'user_HostelAddress',
   inspectionOfficer: 'user_InspectionOfficer',
+  hostelContact: 'user_Contact',
 }
 
 const searchByKeys = {
@@ -384,6 +423,7 @@ export {
   dummyJobList,
   exportExcelOptions,
   getDummyJob,
+  getJobTabList,
   jobTabList,
   jobWiseReport,
   payloadType,

@@ -118,6 +118,17 @@ const userChildrenList = [
         {
           payload: { roleId: hostel },
         },
+        // {
+        //   subTitle: 'dash_Assigned',
+        //   payload: { roleId: hostel, relationType: userRelationKey?.associate },
+        // },
+        // {
+        //   subTitle: 'dash_Unassigned',
+        //   payload: {
+        //     roleId: hostel,
+        //     relationType: userRelationKey?.nonAssociate,
+        //   },
+        // },
       ],
       user_AssociatedStateHostelDepartment: [
         {
@@ -196,12 +207,6 @@ const sidebarMenus = [
     sidebar: allUser,
   },
   {
-    key: DASHBOARD_TXT,
-    Icon: DashboardIcon,
-    label: 'job_Dashboard',
-    sidebar: [districtCollector],
-  },
-  {
     key: USER_TXT,
     Icon: UserIcon,
     label: 'menu_User',
@@ -210,6 +215,12 @@ const sidebarMenus = [
       ...prop,
       key: `${USER_TXT}/${prop.key}`,
     })),
+  },
+  {
+    key: DASHBOARD_TXT,
+    Icon: DashboardIcon,
+    label: 'job_Dashboard',
+    sidebar: [districtCollector],
   },
   {
     key: JOBS,

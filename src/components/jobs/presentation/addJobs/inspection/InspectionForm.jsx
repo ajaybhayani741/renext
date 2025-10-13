@@ -79,7 +79,7 @@ const InspectionForm = ({
   }
 
   return (
-    <div className="grey-card-body mb-20">
+    <div>
       <div className="d-flex space-between align-start">
         {/* <h3 className="mb-10 primary-color">
           {t('job_ELV')} {index + 1}

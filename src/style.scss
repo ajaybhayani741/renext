@@ -1,3 +1,16 @@
+@media screen and (max-width: 1440px) {
+  .steps-content {
+    transform: scale(0.8);
+    transform-origin: top left;
+    height: calc(100% + 25%) !important;
+    min-height: calc(125% + 460px) !important;
+    width: calc(100% + 25%) !important;
+
+    & ~ .text-center {
+      margin-top: -70px;
+    }
+  }
+}
 .d-flex {
   display: flex;
 }
@@ -53,6 +66,9 @@
 }
 .m-0 {
   margin: 0;
+}
+.m-2 {
+  margin: 2px;
 }
 .m-3-percent {
   margin: 0 3%;

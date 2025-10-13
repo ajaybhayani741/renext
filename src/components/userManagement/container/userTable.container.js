@@ -1,10 +1,11 @@
 import { useCallback, useRef, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
-import { nameParam } from '../../../utils'
+import { setPopupMessageModel } from '../../../redux/app/reducer'
+import { apiParams, nameParam } from '../../../utils'
 import debounce from '../../../utils/debounce'
 import { entries, notEqual, ternary } from '../../../utils/javascript'
-import { searchUserApi } from '../user.api'
+import { addAssociateApi, searchUserApi } from '../user.api'
 
 const userTable = ({ payload, multiSelect, searchByEmail }) => {
   const [viewModel, setViewModel] = useState({ open: false, userDetails: null })
@@ -14,9 +15,10 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
     data: null,
   })
   const [selectedUsers, setSelectedUsers] = useState([])
-  const { selector } = useRedux()
+  const { dispatch, selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
   const [editInfo, setEditInfo] = useState({ flag: false, data: {} })
+  const userDetail = selector(state => state.user.profile_details)
 
   const handleView = data => {
     setViewModel({ open: true, userDetails: data })
@@ -69,6 +71,33 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
   const handleCancelEdit = () => {
     setEditInfo({ flag: false, data: {} })
   }
+  const handleAssignHostel = async ({ rowData }) => {
+    const payload = {
+      userId: userDetail?.id,
+      associateHostel: true,
+    }
+    const resp = await addAssociateApi({
+      params: apiParams({ params: payload }),
+    })
+    if (resp?.data) {
+      dispatch(
+        setPopupMessageModel({
+          open: true,
+          message: resp?.data?.message,
+          success: true,
+        }),
+      )
+    } else {
+      dispatch(
+        setPopupMessageModel({
+          open: true,
+          message: resp?.data?.message || 'msg_SomethingWentWrong',
+          success: false,
+        }),
+      )
+    }
+  }
+
   return {
     viewModel,
     isDesktop,
@@ -83,6 +112,7 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
     handleCancelEdit,
     editInfo,
     setEditInfo,
+    handleAssignHostel,
   }
 }
 

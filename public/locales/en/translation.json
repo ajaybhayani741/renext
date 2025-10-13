@@ -621,5 +621,13 @@
   "job_Snakes": "Snakes",
   "job_Monkeys": "Monkeys",
   "msg_PleaseSelectHostel": "Please select hostel",
-  "job_HostelPhotos": "Photos of Hostel"
+  "job_HostelPhotos": "Photos of Hostel",
+  "user_AssignHostel": "Assign Hostel",
+  "txt_ViewJob": "View Job",
+  "user_AssignInspectionOfficer": "Assign Inspection Officer",
+  "user_HostelAddress": "Hostel Address",
+  "job_CaptureLocation": "Capture Location",
+  "msg_confirmLocation": "Do you want to start the job? Ensure you are at the actual location of hostel",
+  "msg_confirmEndLocation": "Do you want to end the job? Ensure you are at the actual location of hostel",
+  "job_Unassign": "Unassigned"
 }

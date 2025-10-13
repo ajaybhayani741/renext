@@ -1,11 +1,13 @@
+import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
+import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import { addressFormat } from '../../../utils'
-import { childUsers } from '../../../utils/constant'
+import { childUsers, userWiseRole } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
-import { include, ternary } from '../../../utils/javascript'
+import { include, length, ternary } from '../../../utils/javascript'
 
 const userColumns = ({
   permission,
@@ -17,13 +19,36 @@ const userColumns = ({
   handleEdit,
   isBuilding,
   removeEditBtn,
+  handleAssignHostel,
+  handleAssignInspectionOfficer,
+  showAssignInspectionOfficer,
+  columnFilter,
 }) => {
   const { t } = useTranslations()
+  const { location } = useRouter()
 
   const isChildUser = include(childUsers, roleId)
+  const { inspectionOfficer } = userWiseRole
 
   const actionButtons = rowData => (
     <div className="flex-nowrap d-flex">
+      {showAssignInspectionOfficer && (
+        <ANTDButton
+          className="bg-assign-hostel"
+          onClick={() => handleAssignInspectionOfficer({ rowData })}
+        >
+          {t('user_AssignInspectionOfficer')}
+        </ANTDButton>
+      )}
+      {!include(location.pathname, pathName.JOBS) &&
+        include([inspectionOfficer], roleId) && (
+          <ANTDButton
+            className="bg-assign-hostel"
+            onClick={() => handleAssignHostel({ rowData })}
+          >
+            {t('user_AssignHostel')}
+          </ANTDButton>
+        )}
       <ANTDButton className="bg-view" onClick={() => handleView(rowData)}>
         {t('btn_View')}
       </ANTDButton>
@@ -134,6 +159,12 @@ const userColumns = ({
     },
   ]
 
+  const filteredColumn = length(columnFilter)
+    ? columnFilter
+        .map(filterKey => column.find(item => item.key === filterKey))
+        .filter(Boolean)
+    : column
+
   const cardViewFn = ({
     lastName,
     emailId,
@@ -167,7 +198,7 @@ const userColumns = ({
       },
     ].filter(item => !item.hidden)
 
-  return { column, actionButtons, cardViewFn }
+  return { column: filteredColumn, actionButtons, cardViewFn }
 }
 
 export default userColumns

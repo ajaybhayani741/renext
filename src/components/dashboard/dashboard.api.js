@@ -61,6 +61,9 @@ const {
   GET_AVAILABLE_CCTV_HOSTELS,
   GET_FUNCTIONING_CCTV_CHART,
   GET_FUNCTIONING_CCTV_HOSTELS,
+  GET_FEEDBACK_HOSTELS,
+  GET_PHC_DISTANCE_CHART,
+  GET_PHC_DISTANCE_HOSTELS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -216,6 +219,19 @@ const getMedicalCareBarChartApi = async ({ params }) => {
 
 const getMedicalCareHostelsApi = async ({ params, pageNo = 1 }) => {
   const response = await getMethod(DASHBOARD_MEDICAL_CARE_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+const getPHCDistanceChartApi = async ({ params }) => {
+  const response = await getMethod(GET_PHC_DISTANCE_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getPHCDistanceHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(GET_PHC_DISTANCE_HOSTELS({ pageNo }), {
     params,
   })
   return response?.data
@@ -447,6 +463,12 @@ const getFunctioningCCTVHostelsApi = async ({ pageNo, params }) => {
   })
   return response?.data
 }
+const getFeedbackHostelsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_FEEDBACK_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
 
 export {
   getDiscrepanciesApi,
@@ -507,4 +529,7 @@ export {
   getAvailableCCTVHostelsApi,
   getFunctioningCCTVChartApi,
   getFunctioningCCTVHostelsApi,
+  getFeedbackHostelsApi,
+  getPHCDistanceChartApi,
+  getPHCDistanceHostelsApi,
 }

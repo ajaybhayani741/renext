@@ -34,6 +34,9 @@ function UserTable({
   apiCall,
   searchByEmail,
   isCardView,
+  handleAssignInspectionOfficer,
+  showAssignInspectionOfficer,
+  columnFilter,
 }) {
   const {
     viewModel,
@@ -49,6 +52,7 @@ function UserTable({
     editInfo,
     setEditInfo,
     handleCancelEdit,
+    handleAssignHostel,
   } = userTable({ payload, multiSelect, isBuilding, searchByEmail })
 
   const { column, actionButtons, cardViewFn } = userColumns({
@@ -65,6 +69,10 @@ function UserTable({
     isBuilding,
     handleDAssociate,
     removeEditBtn,
+    handleAssignHostel,
+    handleAssignInspectionOfficer,
+    showAssignInspectionOfficer,
+    columnFilter,
   })
   const { t } = useTranslations()
 
