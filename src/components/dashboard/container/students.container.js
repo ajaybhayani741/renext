@@ -96,7 +96,6 @@ const students = () => {
     name,
     startEnd,
     newDateRange,
-    chartType,
     xAxisTitle,
   }) => {
     const data = e.point
@@ -123,7 +122,7 @@ const students = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         newDateRange: { ...newDateRange },
-        chartType: chartType,
+        chartType: studentCharts?.[name]?.chartType,
         xAxisTitle: xAxisTitle,
       },
       title: name,

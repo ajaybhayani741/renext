@@ -124,6 +124,7 @@ const hostelAuthority = () => {
       chartData: {
         category: data?.category,
         type,
+        chartType: hostelAuthorityCharts?.[name]?.chartType,
       },
       title: name,
       modalTitle: hostelAuthorityCharts?.[name]?.modalTitle,

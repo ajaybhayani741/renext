@@ -244,15 +244,16 @@ const safetySecurity = () => {
     setSelectedColumn({
       selected: true,
       chartData: {
-        category: data?.category,
+        category: isEqual('dash_AnimalThreat', name) ? null : data?.category,
         type: isEqual(name, 'dash_PrecautionaryMeasures')
           ? data?.series?.name
-          : null,
+          : data?.category,
         value: data?.y,
         start: startEnd?.start,
         end: startEnd?.end,
+        range: data?.category,
         newDateRange: { ...newDateRange },
-        chartType: chartType,
+        chartType: safetySecurityCharts?.[name]?.type,
         xAxisTitle: xAxisTitle,
       },
       title: name,

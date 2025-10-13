@@ -116,6 +116,7 @@ const conductionMeeting = () => {
         category,
         type,
         value: data?.y,
+        chartType: conductionMeetingCharts[name]?.type,
       },
       list: response?.data?.hostels || [],
       title: name,

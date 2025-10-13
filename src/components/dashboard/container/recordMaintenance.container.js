@@ -143,6 +143,7 @@ const recordMaintenance = () => {
       chartData: {
         category: data?.category,
         type,
+        chartType: recordMaintenanceCharts?.[name]?.chartType,
       },
       title: name,
       modalTitle: recordMaintenanceCharts?.[name]?.modalTitle,

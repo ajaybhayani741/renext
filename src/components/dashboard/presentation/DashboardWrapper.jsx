@@ -21,7 +21,13 @@ const DashboardWrapper = ({
   const pageSize = 10
   const jobType = tabKeys?.inspection
 
-  const { columns, jobModel, handleCloseJobModel } = dashboardWrapper({
+  const {
+    columns,
+    jobModel,
+    handleCloseJobModel,
+    onGenerateReport,
+    reportLoader,
+  } = dashboardWrapper({
     title: selectedColumn?.title,
     pageNo,
     jobType,
@@ -48,9 +54,15 @@ const DashboardWrapper = ({
             open={selectedColumn?.selected}
             onCancel={handleCloseModal}
             footer={false}
+            width={850}
           >
             <div className="text-end mb-10">
-              <ANTDButton type="primary" className="btn">
+              <ANTDButton
+                type="primary"
+                className="btn"
+                onClick={onGenerateReport}
+                loading={reportLoader}
+              >
                 {t('dash_ExportToPDFExcel')}
               </ANTDButton>
             </div>

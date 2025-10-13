@@ -162,7 +162,6 @@ const staffDetails = () => {
     name,
     startEnd,
     newDateRange,
-    chartType,
     xAxisTitle,
   }) => {
     const data = e.point
@@ -188,7 +187,7 @@ const staffDetails = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         newDateRange: { ...newDateRange },
-        chartType: chartType,
+        chartType: staffDetailsCharts?.[name]?.chartType,
         xAxisTitle: xAxisTitle,
       },
       title: name,

@@ -1,4 +1,4 @@
-import { getMethod } from '../../api/methods'
+import { getMethod, postMethod } from '../../api/methods'
 import API_ROUTES from '../../api/routes'
 import { apiParams } from '../../utils'
 
@@ -64,6 +64,7 @@ const {
   GET_FEEDBACK_HOSTELS,
   GET_PHC_DISTANCE_CHART,
   GET_PHC_DISTANCE_HOSTELS,
+  CHART_REPORT,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -470,6 +471,11 @@ const getFeedbackHostelsApi = async ({ pageNo, params }) => {
   return response?.data
 }
 
+const getChartReportApi = async ({ payload }) => {
+  const response = await postMethod(CHART_REPORT, payload)
+  return response?.data
+}
+
 export {
   getDiscrepanciesApi,
   getShiftReportApi,
@@ -532,4 +538,5 @@ export {
   getFeedbackHostelsApi,
   getPHCDistanceChartApi,
   getPHCDistanceHostelsApi,
+  getChartReportApi,
 }

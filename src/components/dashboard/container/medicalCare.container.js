@@ -179,7 +179,6 @@ const medicalCare = () => {
     name,
     startEnd,
     newDateRange,
-    chartType,
     xAxisTitle,
   }) => {
     const data = e.point
@@ -205,15 +204,17 @@ const medicalCare = () => {
     } else {
       setHostelsData(prev => ({ ...prev, loader: false }))
     }
-
     setSelectedColumn({
       selected: true,
       chartData: {
         category,
         type,
         value: data?.y,
-        chartType: chartType,
+        chartType: medicalCareCharts[name]?.type,
         xAxisTitle: xAxisTitle,
+        range: data?.category,
+        start: startEnd?.start,
+        end: startEnd?.end,
       },
       list: response?.data?.hostels || [],
       title: name,
