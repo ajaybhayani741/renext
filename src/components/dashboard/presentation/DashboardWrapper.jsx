@@ -63,7 +63,7 @@ const DashboardWrapper = ({
                 onClick={onGenerateReport}
                 loading={reportLoader}
               >
-                {t('dash_ExportToPDFExcel')}
+                {t('dash_ExportToExcel')}
               </ANTDButton>
             </div>
             <ANTDTable

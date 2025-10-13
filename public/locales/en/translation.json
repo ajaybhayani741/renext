@@ -622,5 +622,6 @@
   "job_Monkeys": "Monkeys",
   "msg_PleaseSelectHostel": "Please select hostel",
   "job_HostelPhotos": "Photos of Hostel",
-  "txt_ViewJob": "View Job"
+  "txt_ViewJob": "View Job",
+  "dash_ExportToExcel": "Export To Excel"
 }
