@@ -273,7 +273,7 @@ const safetySecurity = () => {
         ? selectedColumn?.chartData?.type === t('btn_Yes')
           ? 'YES'
           : 'NO'
-        : animalThreatCategoryMapping[selectedColumn?.chartData?.category],
+        : animalThreatCategoryMapping[selectedColumn?.chartData?.type],
       range: selectedColumn?.chartData?.category,
       name: selectedColumn?.title,
       pageNo: current,
