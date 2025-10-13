@@ -4,10 +4,9 @@ import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import {
   entries,
-  include,
-  notEqual,
-  keys,
   isEqual,
+  keys,
+  notEqual,
   values,
 } from '../../../utils/javascript'
 import {
@@ -25,9 +24,7 @@ import {
 import {
   drinkingWaterKeys,
   hostelInfraSanitationCharts,
-  hostelsList,
   lineChartRange,
-  schoolsList,
 } from '../dashboard.description'
 import { setLineChartSeriesData } from '../dashboardFunctions'
 
@@ -298,7 +295,13 @@ const hostelInfraSanitation = () => {
     }
   }
 
-  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
+  const handleChartClick = async ({
+    e,
+    name,
+    startEnd,
+    newDateRange,
+    xAxisTitle,
+  }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const type = data?.series?.name
@@ -308,7 +311,6 @@ const hostelInfraSanitation = () => {
     } else if (isEqual(name, 'dash_ToiletsSufficiency')) {
       categoryValue = 'ARE_TOILETS_SUFFICIENT'
     }
-
     const respData = await getHandleClickDataApi({
       category: categoryValue,
       range: data?.category,
@@ -316,7 +318,7 @@ const hostelInfraSanitation = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: {...newDateRange}
+      newDateRange: { ...newDateRange },
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -334,18 +336,11 @@ const hostelInfraSanitation = () => {
         value: data?.y,
         start: startEnd?.start,
         end: startEnd?.end,
+        range: data?.category,
         newDateRange: { ...newDateRange },
+        chartType: hostelInfraSanitationCharts?.[name]?.type,
+        xAxisTitle: xAxisTitle,
       },
-      list: include(
-        [
-          'dash_WasteManagement',
-          'dash_ToiletsSufficiency',
-          'job_DrinkingWater',
-        ],
-        name,
-      )
-        ? [...schoolsList]
-        : [...hostelsList],
       title: name,
       modalTitle: hostelInfraSanitationCharts?.[name]?.modalTitle,
       categoryValue: categoryValue,

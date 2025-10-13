@@ -174,7 +174,13 @@ const medicalCare = () => {
     }
   }
 
-  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
+  const handleChartClick = async ({
+    e,
+    name,
+    startEnd,
+    newDateRange,
+    xAxisTitle,
+  }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const category = data?.category || data?.name
@@ -198,13 +204,17 @@ const medicalCare = () => {
     } else {
       setHostelsData(prev => ({ ...prev, loader: false }))
     }
-
     setSelectedColumn({
       selected: true,
       chartData: {
         category,
         type,
         value: data?.y,
+        chartType: medicalCareCharts[name]?.type,
+        xAxisTitle: xAxisTitle,
+        range: data?.category,
+        start: startEnd?.start,
+        end: startEnd?.end,
       },
       list: response?.data?.hostels || [],
       title: name,

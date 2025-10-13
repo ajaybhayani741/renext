@@ -210,7 +210,14 @@ const safetySecurity = () => {
     }
   }
 
-  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
+  const handleChartClick = async ({
+    e,
+    name,
+    startEnd,
+    newDateRange,
+    chartType,
+    xAxisTitle,
+  }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
@@ -226,7 +233,7 @@ const safetySecurity = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-       newDateRange: {...newDateRange},
+      newDateRange: { ...newDateRange },
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -237,14 +244,17 @@ const safetySecurity = () => {
     setSelectedColumn({
       selected: true,
       chartData: {
-        category: data?.category,
+        category: isEqual('dash_AnimalThreat', name) ? null : data?.category,
         type: isEqual(name, 'dash_PrecautionaryMeasures')
           ? data?.series?.name
-          : null,
+          : data?.category,
         value: data?.y,
         start: startEnd?.start,
         end: startEnd?.end,
+        range: data?.category,
         newDateRange: { ...newDateRange },
+        chartType: safetySecurityCharts?.[name]?.type,
+        xAxisTitle: xAxisTitle,
       },
       title: name,
       modalTitle: safetySecurityCharts?.[name]?.modalTitle,
@@ -263,7 +273,7 @@ const safetySecurity = () => {
         ? selectedColumn?.chartData?.type === t('btn_Yes')
           ? 'YES'
           : 'NO'
-        : animalThreatCategoryMapping[selectedColumn?.chartData?.category],
+        : animalThreatCategoryMapping[selectedColumn?.chartData?.type],
       range: selectedColumn?.chartData?.category,
       name: selectedColumn?.title,
       pageNo: current,

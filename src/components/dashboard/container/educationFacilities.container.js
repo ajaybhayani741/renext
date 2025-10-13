@@ -153,13 +153,13 @@ const educationFacilities = () => {
     } else {
       setHostelsData(prev => ({ ...prev, loader: false }))
     }
-
     setSelectedColumn({
       selected: true,
       chartData: {
         category,
         type,
         value: data?.y,
+        chartType: educationFacilitiesCharts[name]?.type,
       },
       list: response?.data?.hostels || [],
       title: name,

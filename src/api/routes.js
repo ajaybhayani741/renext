@@ -172,5 +172,6 @@ const API_ROUTES = {
     `/dashboard-management/v1/distance-to-nearest-phc-chart/hostels/${pageNo}`,
   GET_FEEDBACK_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/feedback/hostels/${pageNo}`,
+  CHART_REPORT: `/dashboard-management/v1/trigger-report`,
 }
 export default API_ROUTES

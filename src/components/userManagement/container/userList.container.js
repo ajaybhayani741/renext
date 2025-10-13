@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react'
 import { notifyMethod } from '../../../App'
 import useRouter from '../../../hooks/useRouter'
 import { USER_TXT } from '../../../routing/pathName.constant'
+import { userWiseRole } from '../../../utils/constant'
 import { entries, isEqual } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
 import { addAssociateApi, disAssociateApi, getUserList } from '../user.api'
 import { userRelationKey, userTranslationKey } from '../user.description'
 
@@ -21,6 +23,8 @@ const userList = ({ payload, isBuilding }) => {
   })
   const [buildingInfo, setBuildingInfo] = useState({ flag: false, data: {} })
   const modelTitle = userTranslationKey[payload?.roleId]
+  const loginUserRoleId = JSON.parse(getItem('userData'))
+  const { hostel, districtCollector } = userWiseRole
 
   const apiCall = async ({ pageNo }) => {
     let params = `${pageNo}`
@@ -59,7 +63,12 @@ const userList = ({ payload, isBuilding }) => {
 
   const associateApiCall = async ({ pageNo }) => {
     setAssociatedData(pre => ({ ...pre, loader: true }))
-    const params = `${pageNo}?roleId=${payload?.roleId}&userId=${payload?.userId}&relationType=${userRelationKey.nonAssociate}`
+    const districtCollectorId =
+      isEqual(payload?.roleId, hostel) &&
+      isEqual(loginUserRoleId?.roleId, districtCollector)
+        ? loginUserRoleId?.id
+        : null
+    const params = `${pageNo}?roleId=${payload?.roleId}&userId=${districtCollectorId || payload?.userId}&relationType=${userRelationKey.nonAssociate}`
     const result = await getUserList({ params })
     setAssociatedData({ ...result?.data, loader: false })
   }

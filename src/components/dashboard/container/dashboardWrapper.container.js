@@ -1,17 +1,25 @@
 import { useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
+import { downloadReport } from '../../../utils/customFunctions'
+import { include, isEqual } from '../../../utils/javascript'
 import { getJobDetailApi } from '../../jobs/jobs.api'
 import { payloadType } from '../../jobs/jobs.description'
+import { getChartReportApi } from '../dashboard.api'
+import { chartTypeKeys, reportCategoryKeys } from '../dashboard.description'
 
-const dashboardWrapper = ({ title, pageNo, jobType }) => {
+const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
   const { t } = useTranslations()
+  const { selector } = useRedux()
+  const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [jobModel, setJobModel] = useState({
     open: false,
     loader: false,
     data: null,
   })
+  const [reportLoader, setReportLoader] = useState(false)
   // const condition = include(
   //   [
   //     'job_HostelAuthority',
@@ -47,6 +55,24 @@ const dashboardWrapper = ({ title, pageNo, jobType }) => {
         rowData?.businessName ?? rowData?.lastName ?? rowData?.name ?? '-',
       // hidden: !condition,
     },
+    // Dynamic column based on selectedColumn data
+    ...(selectedColumn?.chartData?.chartType === 'rangeFrequency' &&
+    selectedColumn?.chartData?.xAxisTitle
+      ? [
+          {
+            title: t(selectedColumn.chartData.xAxisTitle),
+            dataIndex: 'value',
+            key: 'dynamicColumn',
+            render: rowData => (rowData ? `${rowData}` : '-'),
+          },
+        ]
+      : []),
+    //   title: t('dash_Students'),
+    //   dataIndex: 'total_students',
+    //   key: 'students',
+    //   render: rowData => (rowData ? `${rowData}` : '-'),
+    //   hidden: condition,
+    // },
     {
       title: t('txt_Action'),
       key: 'viewJob',
@@ -62,21 +88,6 @@ const dashboardWrapper = ({ title, pageNo, jobType }) => {
         )
       },
     },
-    // {
-    //   title: '',
-    //   // dataIndex: ['hostel', 'name'],
-    //   key: 'hostel',
-    //   colSpan: 0,
-    //   render: rowData => rowData?.lastName ?? rowData?.name ?? '-',
-    //   hidden: condition,
-    // },
-    // {
-    //   title: t('dash_Students'),
-    //   dataIndex: 'total_students',
-    //   key: 'students',
-    //   render: rowData => (rowData ? `${rowData}` : '-'),
-    //   hidden: condition,
-    // },
   ].filter(item => !item.hidden)
 
   const handleCloseJobModel = () => {
@@ -102,7 +113,51 @@ const dashboardWrapper = ({ title, pageNo, jobType }) => {
     })
   }
 
-  return { columns, jobModel, handleCloseJobModel, handleHostelClick }
+  const onGenerateReport = async () => {
+    setReportLoader(true)
+    const payload = {
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+      chartType: chartTypeKeys?.[selectedColumn?.title],
+      title: isEqual(selectedColumn?.chartData?.chartType, 'rangeFrequency')
+        ? t(selectedColumn?.chartData?.xAxisTitle)
+        : `${t(selectedColumn?.chartData?.category)}${selectedColumn?.chartData?.type ? ` (${selectedColumn?.chartData?.type})` : ''}`,
+    }
+    if (isEqual(selectedColumn?.chartData?.chartType, 'rangeFrequency')) {
+      Object.assign(payload, {
+        ...(selectedColumn?.chartData?.range && {
+          range: selectedColumn?.chartData?.range,
+        }),
+        ...(!selectedColumn?.chartData?.range && {
+          start: selectedColumn?.chartData?.start,
+          end: selectedColumn?.chartData?.end,
+        }),
+      })
+    } else {
+      Object.assign(payload, {
+        category: reportCategoryKeys(t)?.[selectedColumn?.chartData?.category],
+        ...(include(
+          ['column', 'columnCompare'],
+          selectedColumn?.chartData?.chartType,
+        ) && {
+          filterValue: reportCategoryKeys(t)?.[selectedColumn?.chartData?.type],
+        }),
+      })
+    }
+    const response = await getChartReportApi({ payload })
+    if (response?.data) {
+      downloadReport(response?.data?.dmsDetails?.fileUrl)
+    }
+    setReportLoader(false)
+  }
+
+  return {
+    columns,
+    jobModel,
+    handleCloseJobModel,
+    onGenerateReport,
+    reportLoader,
+  }
 }
 
 export default dashboardWrapper

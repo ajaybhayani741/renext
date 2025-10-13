@@ -542,8 +542,8 @@
   "dash_HostelsWithoutCleanPremises": "Hostels without clean premises",
   "job_LocationOfInspection": "Location of Inspection (lat, lng)",
   "dash_Students": "Students",
-  "dash_RegularInCharge": "Is Regular/In-charge",
-  "dash_StayInHeadquarters": "Stays in Headquarters",
+  "dash_RegularInCharge": "Principal Is Regular/In-charge",
+  "dash_StayInHeadquarters": "Principal Stays in Headquarters",
   "dash_ListOfSchools": "List of Schools",
   "dash_ExportToPDFExcel": "Export To PDF/Excel",
   "dash_Staff": "Staff",
@@ -629,5 +629,6 @@
   "job_CaptureLocation": "Capture Location",
   "msg_confirmLocation": "Do you want to start the job? Ensure you are at the actual location of hostel",
   "msg_confirmEndLocation": "Do you want to end the job? Ensure you are at the actual location of hostel",
-  "job_Unassign": "Unassigned"
+  "job_Unassign": "Unassigned",
+  "dash_ExportToExcel": "Export To Excel"
 }
