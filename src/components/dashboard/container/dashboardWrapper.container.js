@@ -5,7 +5,7 @@ import ANTDButton from '../../../shared/antd/ANTDButton'
 import { getJobDetailApi } from '../../jobs/jobs.api'
 import { payloadType } from '../../jobs/jobs.description'
 
-const dashboardWrapper = ({ title, pageNo, jobType }) => {
+const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
   const { t } = useTranslations()
   const [jobModel, setJobModel] = useState({
     open: false,
@@ -47,6 +47,24 @@ const dashboardWrapper = ({ title, pageNo, jobType }) => {
         rowData?.businessName ?? rowData?.lastName ?? rowData?.name ?? '-',
       // hidden: !condition,
     },
+    // Dynamic column based on selectedColumn data
+    ...(selectedColumn?.chartData?.chartType === 'rangeFrequency' &&
+    selectedColumn?.chartData?.xAxisTitle
+      ? [
+          {
+            title: t(selectedColumn.chartData.xAxisTitle),
+            dataIndex: 'value',
+            key: 'dynamicColumn',
+            render: rowData => (rowData ? `${rowData}` : '-'),
+          },
+        ]
+      : []),
+    //   title: t('dash_Students'),
+    //   dataIndex: 'total_students',
+    //   key: 'students',
+    //   render: rowData => (rowData ? `${rowData}` : '-'),
+    //   hidden: condition,
+    // },
     {
       title: t('txt_Action'),
       key: 'viewJob',
@@ -62,21 +80,6 @@ const dashboardWrapper = ({ title, pageNo, jobType }) => {
         )
       },
     },
-    // {
-    //   title: '',
-    //   // dataIndex: ['hostel', 'name'],
-    //   key: 'hostel',
-    //   colSpan: 0,
-    //   render: rowData => rowData?.lastName ?? rowData?.name ?? '-',
-    //   hidden: condition,
-    // },
-    // {
-    //   title: t('dash_Students'),
-    //   dataIndex: 'total_students',
-    //   key: 'students',
-    //   render: rowData => (rowData ? `${rowData}` : '-'),
-    //   hidden: condition,
-    // },
   ].filter(item => !item.hidden)
 
   const handleCloseJobModel = () => {

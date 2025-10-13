@@ -25,6 +25,7 @@ const DashboardWrapper = ({
     title: selectedColumn?.title,
     pageNo,
     jobType,
+    selectedColumn,
   })
 
   return (

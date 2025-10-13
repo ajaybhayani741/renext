@@ -174,7 +174,14 @@ const medicalCare = () => {
     }
   }
 
-  const handleChartClick = async ({ e, name, startEnd, newDateRange }) => {
+  const handleChartClick = async ({
+    e,
+    name,
+    startEnd,
+    newDateRange,
+    chartType,
+    xAxisTitle,
+  }) => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const category = data?.category || data?.name
@@ -205,6 +212,8 @@ const medicalCare = () => {
         category,
         type,
         value: data?.y,
+        chartType: chartType,
+        xAxisTitle: xAxisTitle,
       },
       list: response?.data?.hostels || [],
       title: name,
