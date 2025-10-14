@@ -104,6 +104,9 @@ const InspectionFormField = ({
           if (isEqual(inputType, 'inputNumber')) {
             restProps.formatter = val => val && Number(val)
             restProps.precision = 2 //upto 2 decimal places
+            // pass form and name path to ANTDInputNumber so it can show inline errors on invalid key press
+            restProps.form = form
+            restProps.namePath = ['inspectionList', ...fieldPath, attrKey]
           }
           if (isEqual(inputType, 'vehicleModelSelector')) {
             restProps.fieldName = ['inspectionList', ...fieldPath, attrKey]
