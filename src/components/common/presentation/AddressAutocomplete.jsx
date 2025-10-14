@@ -1,17 +1,30 @@
 import { useJsApiLoader } from '@react-google-maps/api'
 import { AutoComplete, Input } from 'antd'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 
 import debounce from '../../../utils/debounce'
 
 const libraries = ['places']
-const AddressAutocomplete = ({ getAddressData, currentAddress, ...props }) => {
+const AddressAutocomplete = ({
+  getAddressData,
+  currentAddress,
+  value,
+  onChange,
+  ...props
+}) => {
   const [options, setOptions] = useState([])
+  const [inputValue, setInputValue] = useState(value || currentAddress || null)
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_MAP_KEY,
     libraries,
   })
+
+  useEffect(() => {
+    if (currentAddress !== inputValue) {
+      setInputValue(value || currentAddress || null)
+    }
+  }, [currentAddress, value])
 
   const handleSearch = useCallback(
     debounce(value => {
@@ -71,16 +84,31 @@ const AddressAutocomplete = ({ getAddressData, currentAddress, ...props }) => {
   }
 
   const handleSelect = (value, option) => {
+    setInputValue(value)
+    onChange?.(value)
     fetchPlaceDetails(value, option.placeId)
+  }
+
+  const handleChange = value => {
+    setInputValue(value)
+    onChange?.(value)
+    handleSearch(value)
+    // setOptions([])
+  }
+
+  const handleBlur = () => {
+    getAddressData({ currentAddress: inputValue })
   }
 
   return (
     <AutoComplete
       {...props}
+      value={inputValue}
       options={options}
       onSearch={handleSearch}
       onSelect={handleSelect}
-      onBlur={() => getAddressData({ currentAddress: currentAddress })}
+      onChange={handleChange}
+      onBlur={handleBlur}
     >
       <Input />
     </AutoComplete>
