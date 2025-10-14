@@ -133,6 +133,10 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
           end: selectedColumn?.chartData?.end,
         }),
       })
+    } else if (selectedColumn?.chartData?.chartType === 'pie') {
+      Object.assign(payload, {
+        filterValue: selectedColumn?.categoryValue,
+      })
     } else {
       Object.assign(payload, {
         category: reportCategoryKeys(t)?.[selectedColumn?.chartData?.category],
