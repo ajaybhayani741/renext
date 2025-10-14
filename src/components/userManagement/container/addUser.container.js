@@ -630,23 +630,22 @@ const addUser = ({
   const getAddressData = ({ currentAddress, googleAddress }) => {
     if (currentAddress || googleAddress) {
       setCurrentAddress(currentAddress)
-      form.setFieldsValue({
-        ...form.getFieldsValue(),
-        ...(currentAddress && {
+      if (currentAddress) {
+        form.setFieldsValue({
+          ...form.getFieldsValue(),
           address: currentAddress,
-        }),
-        ...(googleAddress && {
+        })
+      }
+      if (googleAddress) {
+        form.setFieldsValue({
+          ...form.getFieldsValue(),
           pincode: googleAddress?.pincode,
           city: googleAddress?.city,
           state: googleAddress?.state,
           country: googleAddress?.country,
-        }),
-      })
+        })
+      }
     }
-    // setUserForm(prev => {
-    //   prev.pincode = { ...prev.pincode, disabled: googleAddress?.pincode }
-    //   return prev
-    // })
   }
 
   return {

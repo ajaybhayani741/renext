@@ -64,6 +64,7 @@
   "error_InvalidEmail": "Invalid Email",
   "error_UserNotExist": "User dose not exist",
   "error_SpacesNotAllowed": "Spaces are not allowed in username",
+  "error_OnlyNumericValuesAllowed": "Only numeric values are allowed",
   "msg_SelectImage": "Select Image",
   "btn_TakePhoto": "Take Photo",
   "btn_Register": "Register",

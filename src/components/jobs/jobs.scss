@@ -263,8 +263,8 @@
   }
 
   .inspection-form-list {
-    .ant-form-item {
-      margin-bottom: 7px;
+    .ant-form-item-label > label.ant-form-item-required {
+      line-height: 1.2;
     }
     .ant-form-item-label {
       margin-top: 0;

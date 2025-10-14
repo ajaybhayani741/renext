@@ -119,7 +119,7 @@ const jobs = () => {
     ) {
       dispatch(
         setJobActiveTab({
-          status: status || tabKeys.unassignHostel,
+          status: status || tabList?.status?.[0]?.key,
           type: tabList?.type?.find(({ disabled }) => !disabled)?.key,
         }),
       )
