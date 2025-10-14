@@ -139,6 +139,9 @@ h6 {
   border-color: var(--color-disable) !important;
   pointer-events: none;
 }
+.ant-form-item {
+  margin-bottom: 5px;
+}
 .en-validation {
   .ant-form-item-label
     > label.ant-form-item-required:not(
@@ -150,7 +153,7 @@ h6 {
     display: flex;
     align-items: flex-start;
     white-space: normal;
-    line-height: 1.2;
+    line-height: 0.1;
     height: auto;
     display: inline-block;
   }
