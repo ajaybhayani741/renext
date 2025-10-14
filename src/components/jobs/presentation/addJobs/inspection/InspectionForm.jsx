@@ -2,6 +2,7 @@ import { CloseOutlined } from '@ant-design/icons'
 import { useMemo } from 'react'
 
 import InspectionFormField from './InspectionFormField'
+import useRouter from '../../../../../hooks/useRouter'
 import useTranslations from '../../../../../hooks/useTranslations'
 import ANTDCollapse from '../../../../../shared/antd/ANTDCollapse'
 import { userWiseRole } from '../../../../../utils/constant'
@@ -25,7 +26,7 @@ const InspectionForm = ({
   onUserClear,
 }) => {
   const { t } = useTranslations()
-
+  const { params } = useRouter()
   const userData = JSON.parse(getItem('userData'))
   const { roleId } = userData || {}
 
@@ -104,6 +105,7 @@ const InspectionForm = ({
           onSelectUser,
           selectedUsers,
           onUserClear,
+          readOnly: params?.jobId,
         }}
       />
 
