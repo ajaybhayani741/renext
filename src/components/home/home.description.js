@@ -4,7 +4,12 @@ import { userWiseRole } from '../../utils/constant'
 import { QuoteIcon } from '../../utils/icons'
 import { tabKeys as jobTabKeys } from '../jobs/jobs.description'
 
-const { admin, districtHostelDepartment, inspectionOfficer } = userWiseRole
+const {
+  admin,
+  districtHostelDepartment,
+  inspectionOfficer,
+  districtCollector,
+} = userWiseRole
 
 // const job_Recovery = [
 //   {
@@ -76,6 +81,7 @@ const roleWiseData = {
   [admin]: [],
   [districtHostelDepartment]: [{ job_InspectionJob }, { home_ActiveJobs }],
   [inspectionOfficer]: [{ job_InspectionJob }, { home_ActiveJobs }],
+  [districtCollector]: [{ home_ActiveJobs }],
 }
 
 export default roleWiseData

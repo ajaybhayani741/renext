@@ -63,7 +63,7 @@ const jobTabList = {
     {
       label: 'job_InspectionJob',
       key: inspection,
-      permission: [admin, inspectionOfficer],
+      permission: [admin, inspectionOfficer, districtCollector],
     },
   ],
 }
