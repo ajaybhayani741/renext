@@ -82,7 +82,7 @@ const inspection = ({
 
   useEffect(() => {
     if (isEdit) {
-      setCurrent(1)
+      setCurrent((editData?.stepNumber || 1) - 1)
       setEditApiDataToForm()
     } else {
       setSelectedUsers({
@@ -229,7 +229,9 @@ const inspection = ({
     })
 
     const preFormValues = {
-      inspectionDate: dayJs(editData?.inspectionDate, 'DD/MM/YYYY HH:mm'),
+      inspectionDate: editData?.inspectionDate
+        ? dayJs(editData?.inspectionDate, 'DD/MM/YYYY HH:mm')
+        : dayJs(new Date()),
       locationInspection:
         editData?.latitude && editData?.longitude
           ? `${editData?.latitude?.toFixed(4)},${editData?.longitude?.toFixed(4)}`
@@ -300,6 +302,7 @@ const inspection = ({
       longitude: latLng?.[1] ? parseFloat(latLng?.[1]) : null,
       latitude2: latLng2?.[0] ? parseFloat(latLng2?.[0]) : null,
       longitude2: latLng2?.[1] ? parseFloat(latLng2?.[1]) : null,
+      stepNumber: current + 1,
     }
 
     const inspectionDetails = formData?.inspectionList?.[0]

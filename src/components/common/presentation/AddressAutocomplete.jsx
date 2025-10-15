@@ -74,9 +74,7 @@ const AddressAutocomplete = ({
           state: getComponent(['administrative_area_level_1']),
           city: getCity(),
           pincode: getComponent(['postal_code']),
-          country: components
-            .find(c => c.types.includes('country'))
-            ?.short_name.toLowerCase(),
+          country: components.find(c => c.types.includes('country'))?.long_name,
         }
         getAddressData({ currentAddress: value, googleAddress: details })
       }

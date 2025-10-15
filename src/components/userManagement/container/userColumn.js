@@ -10,6 +10,7 @@ import { noImage } from '../../../utils/icons'
 import { include, length, ternary } from '../../../utils/javascript'
 
 const userColumns = ({
+  showAssignHostel,
   permission,
   handleView,
   selectedUsers,
@@ -40,7 +41,8 @@ const userColumns = ({
         </ANTDButton>
       )}
       {include(location.pathname, USER_TXT) &&
-        include([inspectionOfficer], roleId) && (
+        include([inspectionOfficer], roleId) &&
+        showAssignHostel && (
           <ANTDButton
             className="bg-assign-hostel"
             onClick={() => handleAssignHostel({ rowData })}

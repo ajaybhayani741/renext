@@ -279,7 +279,7 @@ const JobManagement = () => {
             isSearch
             handleTableChange={handleInspectionOfficerTableChange}
             handleSelect={onAssignInspectionOfficer}
-            multiSelect
+            // multiSelect
           />
         </ANTDModal>
       )}

@@ -103,6 +103,11 @@ const FormLayout = ({
           restProps.currentAddress = currentAddress
         }
 
+        if (isEqual(inputType, 'inputNumber')) {
+          restProps.form = form
+          restProps.namePath = fieldName
+        }
+
         if (typeof render === 'function')
           return (
             <ANTDColumn
