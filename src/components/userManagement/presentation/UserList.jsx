@@ -6,7 +6,8 @@ import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
-import { isEqual, ternary } from '../../../utils/javascript'
+import { userWiseRole } from '../../../utils/constant'
+import { include, isEqual, ternary } from '../../../utils/javascript'
 import userList from '../container/userList.container'
 import { userRelationKey } from '../user.description'
 
@@ -19,6 +20,7 @@ function UserList({
   isBuilding,
   userDetails,
   className,
+  showAssignHostel = true,
 }) {
   const {
     model,
@@ -39,6 +41,7 @@ function UserList({
     handleAssociatedTableChange,
   } = userList({ payload, isBuilding })
   const { t } = useTranslations()
+  const { inspectionOfficer } = userWiseRole
 
   return (
     <div className={className}>
@@ -58,7 +61,7 @@ function UserList({
             {t(subTitle)}
           </h3>
         )}
-        {showAdd && (
+        {showAdd && !include([inspectionOfficer], payload?.roleId) && (
           <div className="d-flex flex-end mt-10">
             <ANTDButton
               type="primary"
@@ -85,6 +88,7 @@ function UserList({
           handleDAssociate: showAdd && handleDAssociate,
           payload,
           apiCall,
+          showAssignHostel,
         }}
       />
 

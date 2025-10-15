@@ -37,6 +37,7 @@ function UserTable({
   handleAssignInspectionOfficer,
   showAssignInspectionOfficer,
   columnFilter,
+  showAssignHostel = true,
 }) {
   const {
     viewModel,
@@ -56,6 +57,7 @@ function UserTable({
   } = userTable({ payload, multiSelect, isBuilding, searchByEmail })
 
   const { column, actionButtons, cardViewFn } = userColumns({
+    showAssignHostel,
     permission,
     handleView,
     roleId: payload?.roleId,
