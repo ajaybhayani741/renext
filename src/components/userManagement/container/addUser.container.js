@@ -515,7 +515,6 @@ const addUser = ({
         setLoader(true)
         const payload = {
           ...data,
-          country: countriesList[data?.country],
           forRoleId: formRoleId,
           forUserId: currentUserDescription?.parent
             ? selectUser?.data?.id
