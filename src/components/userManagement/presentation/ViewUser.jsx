@@ -91,6 +91,7 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
                         isBuilding={v?.isBuilding}
                         userDetails={userDetails}
                         className="mb-15"
+                        showAssignHostel={false}
                       />
                     </Fragment>
                   )
