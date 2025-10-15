@@ -208,6 +208,16 @@ const userFormByRoleId = {}
 
 const RATING_LENGTH = 5
 
+const countriesList = {
+  India: 'in',
+  Japan: 'jp',
+  China: 'cn',
+  NewZealand: 'nz',
+  'United States': 'us',
+  Canada: 'ca',
+  Thailand: 'th',
+}
+
 export {
   RATING_LENGTH,
   roleIdByPath,
@@ -218,4 +228,5 @@ export {
   userFormByRoleId,
   userFormFields,
   childUserFormFields,
+  countriesList,
 }

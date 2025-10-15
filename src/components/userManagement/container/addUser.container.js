@@ -38,6 +38,7 @@ import {
 } from '../user.api'
 import {
   childUserFormFields,
+  countriesList,
   roleIdByPath,
   userFormByRoleId,
   userFormFields,
@@ -155,7 +156,12 @@ const addUser = ({
       }
 
       const formData = setFormData(userForm, editInfo?.data)
-      form.setFieldsValue(formData)
+      form.setFieldsValue({
+        ...formData,
+        country: Object.keys(countriesList).find(key =>
+          isEqual(countriesList[key], formData?.country),
+        ),
+      })
       initialEditData.current = {
         ...formData,
       }
@@ -443,8 +449,7 @@ const addUser = ({
     }
     let data = form.getFieldValue()
     const emailObj = createEmailPayload(data?.emailId)
-    data = { ...data, ...emailObj }
-
+    data = { ...data, ...emailObj, country: countriesList?.[data?.country] }
     if (editInfo?.data?.id) {
       setLoader(true)
       const payload = {
@@ -510,6 +515,7 @@ const addUser = ({
         setLoader(true)
         const payload = {
           ...data,
+          country: countriesList[data?.country],
           forRoleId: formRoleId,
           forUserId: currentUserDescription?.parent
             ? selectUser?.data?.id
