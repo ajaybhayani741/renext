@@ -631,5 +631,6 @@
   "msg_confirmLocation": "Do you want to start the job? Ensure you are at the actual location of hostel",
   "msg_confirmEndLocation": "Do you want to end the job? Ensure you are at the actual location of hostel",
   "job_Unassign": "Unassigned",
-  "dash_ExportToExcel": "Export To Excel"
+  "dash_ExportToExcel": "Export To Excel",
+  "user_LastInspectionDate": "Last Inspection Date"
 }

@@ -152,6 +152,12 @@ const userColumns = ({
       },
     },
     {
+      title: t('user_LastInspectionDate'),
+      dataIndex: 'lastInspectionDate',
+      key: 'user_LastInspectionDate',
+      render: rowData => rowData || '-',
+    },
+    {
       title: t('txt_Action'),
       key: 'txt_Action',
       render: rowData => {

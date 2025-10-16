@@ -105,40 +105,44 @@ const safetySecurity = () => {
       const respData = await getDataApi({ name: key, start, end })
       if (isEqual(key, 'dash_AnimalThreat')) {
         const isData = values(respData?.data)?.find(item => item)
-        const tempSeriesData = isData && [
-          {
-            name: t('job_Count'),
-            data: [
-              respData.data.rats || 0,
-              respData.data.monkeys || 0,
-              respData.data.snakes || 0,
-              respData.data.dogs || 0,
-              respData.data.none || 0,
-            ],
-          },
-        ]
+        const tempSeriesData = isData
+          ? [
+              {
+                name: t('job_Count'),
+                data: [
+                  respData.data.rats || 0,
+                  respData.data.monkeys || 0,
+                  respData.data.snakes || 0,
+                  respData.data.dogs || 0,
+                  respData.data.none || 0,
+                ],
+              },
+            ]
+          : []
         setSeriesData(prev => ({
           ...prev,
           [key]: { series: tempSeriesData },
         }))
       } else if (isEqual(key, 'dash_PrecautionaryMeasures')) {
         const isData = values(respData?.data)?.find(item => item)
-        const tempSeriesData = isData && [
-          {
-            name: t('btn_Yes'),
-            data: [
-              respData.data.sufficientLightingOpenSpacesYes || 0,
-              respData.data.dailyNightPolicePatrollingRequiredYes || 0,
-            ],
-          },
-          {
-            name: t('btn_No'),
-            data: [
-              respData.data.sufficientLightingOpenSpacesNo || 0,
-              respData.data.dailyNightPolicePatrollingRequiredNo || 0,
-            ],
-          },
-        ]
+        const tempSeriesData = isData
+          ? [
+              {
+                name: t('btn_Yes'),
+                data: [
+                  respData.data.sufficientLightingOpenSpacesYes || 0,
+                  respData.data.dailyNightPolicePatrollingRequiredYes || 0,
+                ],
+              },
+              {
+                name: t('btn_No'),
+                data: [
+                  respData.data.sufficientLightingOpenSpacesNo || 0,
+                  respData.data.dailyNightPolicePatrollingRequiredNo || 0,
+                ],
+              },
+            ]
+          : []
         setSeriesData(prev => ({
           ...prev,
           [key]: { series: tempSeriesData },
