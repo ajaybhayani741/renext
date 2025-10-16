@@ -56,22 +56,24 @@ const hostelAuthority = () => {
       const respData = await getDataApi({ name: key })
       if (isEqual(key, 'job_HostelAuthority')) {
         const isData = values(respData?.data)?.find(item => item)
-        const tempSeriesData = isData && [
-          {
-            name: t('btn_Yes'),
-            data: [
-              respData.data.isRegularInChargeYes || 0,
-              respData.data.staysInHeadquartersYes || 0,
-            ],
-          },
-          {
-            name: t('btn_No'),
-            data: [
-              respData.data.isRegularInChargeNo || 0,
-              respData.data.staysInHeadquartersNo || 0,
-            ],
-          },
-        ]
+        const tempSeriesData = isData
+          ? [
+              {
+                name: t('btn_Yes'),
+                data: [
+                  respData.data.isRegularInChargeYes || 0,
+                  respData.data.staysInHeadquartersYes || 0,
+                ],
+              },
+              {
+                name: t('btn_No'),
+                data: [
+                  respData.data.isRegularInChargeNo || 0,
+                  respData.data.staysInHeadquartersNo || 0,
+                ],
+              },
+            ]
+          : []
         setSeriesData(prev => ({
           ...prev,
           [key]: { series: tempSeriesData },

@@ -67,30 +67,32 @@ const recordMaintenance = () => {
       const respData = await getDataApi({ name: key })
       if (isEqual(key, 'job_RecordMaintenance')) {
         const isData = values(respData?.data)?.find(item => item)
-        const tempSeriesData = isData && [
-          {
-            name: t('btn_Yes'),
-            data: [
-              respData.data.staffAttendanceRecordMaintainedYes || 0,
-              respData.data.boarderAttendanceRecordMaintainedYes || 0,
-              respData.data.sickBoardersRecordMaintainedYes || 0,
-              respData.data.boarderMovementRecordMaintainedYes || 0,
-              respData.data.visitorRegisterMaintainedYes || 0,
-              respData.data.allOtherRecordsMaintainedRegularlyYes || 0,
-            ],
-          },
-          {
-            name: t('btn_No'),
-            data: [
-              respData.data.staffAttendanceRecordMaintainedNo || 0,
-              respData.data.boarderAttendanceRecordMaintainedNo || 0,
-              respData.data.sickBoardersRecordMaintainedNo || 0,
-              respData.data.boarderMovementRecordMaintainedNo || 0,
-              respData.data.visitorRegisterMaintainedNo || 0,
-              respData.data.allOtherRecordsMaintainedRegularlyNo || 0,
-            ],
-          },
-        ]
+        const tempSeriesData = isData
+          ? [
+              {
+                name: t('btn_Yes'),
+                data: [
+                  respData.data.staffAttendanceRecordMaintainedYes || 0,
+                  respData.data.boarderAttendanceRecordMaintainedYes || 0,
+                  respData.data.sickBoardersRecordMaintainedYes || 0,
+                  respData.data.boarderMovementRecordMaintainedYes || 0,
+                  respData.data.visitorRegisterMaintainedYes || 0,
+                  respData.data.allOtherRecordsMaintainedRegularlyYes || 0,
+                ],
+              },
+              {
+                name: t('btn_No'),
+                data: [
+                  respData.data.staffAttendanceRecordMaintainedNo || 0,
+                  respData.data.boarderAttendanceRecordMaintainedNo || 0,
+                  respData.data.sickBoardersRecordMaintainedNo || 0,
+                  respData.data.boarderMovementRecordMaintainedNo || 0,
+                  respData.data.visitorRegisterMaintainedNo || 0,
+                  respData.data.allOtherRecordsMaintainedRegularlyNo || 0,
+                ],
+              },
+            ]
+          : []
         setSeriesData(prev => ({
           ...prev,
           [key]: { series: tempSeriesData },
