@@ -214,6 +214,7 @@ const LineCharts = ({
   return (
     <>
       <HightChart
+        key={`line-chart-${name}-${xAxisMax}`} // Stable key based on chart properties
         options={options}
         title={title}
         className="frequency-chart-card"
