@@ -190,6 +190,7 @@ const JobManagement = () => {
             'user_Name',
             'user_Address',
             'user_Contact',
+            'user_LastInspectionDate',
             'txt_Action',
           ]}
         />
