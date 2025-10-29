@@ -52,7 +52,12 @@ function StepsComponent({
 
   return (
     <div>
-      <ANTDSteps current={current} className="mt-3 job-step" size={size}>
+      <ANTDSteps
+        current={current}
+        className="mt-3 job-step"
+        size={size}
+        responsive={false}
+      >
         {steps &&
           steps.length &&
           steps.map(item => <ANTDStep key={item} title={t(item)} />)}

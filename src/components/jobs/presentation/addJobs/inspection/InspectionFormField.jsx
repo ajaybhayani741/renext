@@ -1,5 +1,6 @@
 import { Fragment, memo } from 'react'
 
+import useRedux from '../../../../../hooks/useRedux'
 import useTranslations from '../../../../../hooks/useTranslations'
 import ANTDButton from '../../../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../../../shared/antd/ANTDColumn'
@@ -33,6 +34,28 @@ const InspectionFormField = ({
     form,
   )
   const lang = getItem('lang')
+  const { selector } = useRedux()
+  const isMobile = selector(state => state.app.isMobile)
+
+  const FIELD_LAYOUTS = {
+    vertical: {
+      layout: 'vertical',
+    },
+    horizontal: {
+      layout: 'horizontal',
+      labelCol: { xs: 16, sm: 16, md: 14, lg: 12 },
+      wrapperCol: { xs: 8, sm: 8, md: 10, lg: 12 },
+    },
+  }
+  const FIELD_TYPE_LAYOUT = {
+    textArea: isMobile ? 'vertical' : 'horizontal',
+    select: 'horizontal',
+    input: 'horizontal',
+    inputNumber: 'horizontal',
+    dateTimePicker: 'horizontal',
+    formUpload: 'horizontal',
+    RADIO_BUTTON: 'horizontal',
+  }
 
   return (
     <>
@@ -66,6 +89,7 @@ const InspectionFormField = ({
             fieldSuffix = null,
             fieldPrefix = null,
             colClassName,
+            responsiveInputType = null,
             ...restProps
           } = attributes || {}
           const isHidden = isEqual(typeof hidden, 'function')
@@ -111,7 +135,14 @@ const InspectionFormField = ({
           if (isEqual(inputType, 'vehicleModelSelector')) {
             restProps.fieldName = ['inspectionList', ...fieldPath, attrKey]
           }
-          const InputComponent = getFormInput({ inputType })
+          const currentInputType = isMobile
+            ? responsiveInputType || inputType
+            : inputType
+          const InputComponent = getFormInput({
+            inputType: currentInputType,
+          })
+          const layoutType = FIELD_TYPE_LAYOUT[currentInputType] || 'vertical'
+          const layoutProps = FIELD_LAYOUTS[layoutType]
 
           if (!isHidden && title)
             return (
@@ -170,6 +201,7 @@ const InspectionFormField = ({
                       }
                       initialValue={initialValue}
                       extra={extra}
+                      {...layoutProps}
                     >
                       <InputComponent
                         {...restProps}
@@ -190,7 +222,7 @@ const InspectionFormField = ({
           )
         })}
       </ANTDRow>
-      {showSaveBtn && (
+      {showSaveBtn && !isMobile && (
         <div className="text-center">
           <ANTDButton type="primary" className="btn " onClick={onSaveClick}>
             {t('btn_Save')}

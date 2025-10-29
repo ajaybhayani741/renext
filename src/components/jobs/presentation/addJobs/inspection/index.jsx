@@ -12,7 +12,6 @@ import PopUpConfirm from '../../../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../../../utils/constant'
 import { validationTag } from '../../../../../utils/customFunctions'
 import { clipboardsImage, location } from '../../../../../utils/icons'
-import { isEqual } from '../../../../../utils/javascript'
 import { getItem } from '../../../../../utils/localstorage'
 import inspection from '../../../container/inspection.container'
 import jobContext from '../../../container/jobContext.container'
@@ -57,6 +56,9 @@ const InspectionJob = ({ editData }) => {
     onAcceptConfirmation,
     findingsAttrFn,
     getCurrentLocation,
+    activeFormField,
+    handleActiveFieldModal,
+    formFieldPercentage,
   } = inspection({
     editData,
     selectedUsers,
@@ -107,7 +109,7 @@ const InspectionJob = ({ editData }) => {
               />
             </ANTDFormItem>
           </ANTDColumn>
-          <ANTDColumn md={10} lg={10} sm={21} xs={20}>
+          <ANTDColumn md={10} lg={10} sm={22} xs={22}>
             <ANTDFormItem
               label={t('job_LocationOfInspection')}
               name={'locationInspection'}
@@ -122,8 +124,8 @@ const InspectionJob = ({ editData }) => {
               <ANTDInput disabled />
             </ANTDFormItem>
           </ANTDColumn>
-          <ANTDColumn md={2} lg={2} sm={3} xs={4}>
-            <ANTDFormItem label=" ">
+          <ANTDColumn md={2} lg={2} sm={2} xs={2}>
+            <ANTDFormItem label=" " layout="vertical">
               <ANTDToolTip title={t('job_CaptureLocation')}>
                 <ANTDButton onClick={getCurrentLocation}>
                   <img
@@ -160,10 +162,17 @@ const InspectionJob = ({ editData }) => {
           removeMaterialClick={removeMaterialClick}
           onDownloadTemplate={onDownloadTemplate}
           inspectionFormFieldsAttr={inspectionFormFieldsAttr}
-          onSaveClick={() => handleSave({ redirect: false })}
+          onSaveClick={props => handleSave({ redirect: false, ...props })}
           activeKeys={activeKeys}
           onActiveKeysChange={onActiveKeysChange}
-          {...{ onSelectUser, selectedUsers, onUserClear }}
+          {...{
+            onSelectUser,
+            selectedUsers,
+            onUserClear,
+            activeFormField,
+            handleActiveFieldModal,
+            formFieldPercentage,
+          }}
         />
       </div>
     ),
@@ -222,19 +231,8 @@ const InspectionJob = ({ editData }) => {
           name="inspection"
           initialValues={inspectionInitialValues}
           form={form}
-          layout={isEqual(current, 1) ? 'horizontal' : 'vertical'}
           onValuesChange={onValuesChange}
           colon={false}
-          labelCol={{
-            xs: { span: 24 },
-            sm: { span: 24 },
-            md: { span: isEqual(current, 1) ? 12 : 24 },
-          }}
-          wrapperCol={{
-            xs: { span: 24 },
-            sm: { span: 24 },
-            md: { span: isEqual(current, 1) ? 12 : 24 },
-          }}
           labelAlign="left"
         >
           <StepsComponent

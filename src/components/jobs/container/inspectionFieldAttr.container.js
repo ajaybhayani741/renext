@@ -23,6 +23,7 @@ const inspectionFieldAttr = () => {
       principalIsRegularOrIncharge: {
         label: 'job_WhetherThePrincipalHWOSpecialOfficerIsRegularOrIncharge',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -32,6 +33,7 @@ const inspectionFieldAttr = () => {
         label:
           'job_WhetherThePrincipalHWOSpecialOfficerWasPresentDuringInspection',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -40,6 +42,7 @@ const inspectionFieldAttr = () => {
       principalStaysInHeadquarters: {
         label: 'job_WhetherThePrincipalHWOSpecialOfficerStaysInTheHeadquarters',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -75,6 +78,7 @@ const inspectionFieldAttr = () => {
       staffAttendanceRecordMaintained: {
         label: 'job_IsTheRecordOfStaffAttendanceMaintained',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -83,6 +87,7 @@ const inspectionFieldAttr = () => {
       boarderAttendanceRecordMaintained: {
         label: 'job_IsTheRecordOfBoarderAttendanceMaintained',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -91,6 +96,7 @@ const inspectionFieldAttr = () => {
       sickBoardersRecordMaintained: {
         label: 'job_IsTheRecordOfSickBoardersMaintained',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -99,6 +105,7 @@ const inspectionFieldAttr = () => {
       boarderMovementRecordMaintained: {
         label: 'job_IsTheRecordOfBoarderMovementMaintained',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -107,6 +114,7 @@ const inspectionFieldAttr = () => {
       visitorRegisterMaintained: {
         label: 'job_IsVisitorRegisterMaintained',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -115,6 +123,7 @@ const inspectionFieldAttr = () => {
       allOtherRecordsMaintainedRegularly: {
         label: 'job_AreAllOtherRecordsMaintainedRegularly',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -206,6 +215,7 @@ const inspectionFieldAttr = () => {
       hostelLocationType: {
         label: 'job_HostelLocationType',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: [
           { label: 'dash_Government', value: 'GOVERNMENT' },
           { label: 'dash_Private', value: 'PRIVATE' },
@@ -225,6 +235,7 @@ const inspectionFieldAttr = () => {
       bedsAvailableForAllBoarders: {
         label: 'job_BedsAvailableForAllBoarders',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -245,6 +256,7 @@ const inspectionFieldAttr = () => {
       mattressesAvailableForBoarders: {
         label: 'job_MattressesAvailableForBoarders',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -260,6 +272,7 @@ const inspectionFieldAttr = () => {
       accommodationSufficient: {
         label: 'job_AccommodationSufficient',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -294,6 +307,7 @@ const inspectionFieldAttr = () => {
       properLightingArrangementsMade: {
         label: 'job_ProperLightingArrangements',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -310,6 +324,7 @@ const inspectionFieldAttr = () => {
       properVentilationArrangementsMade: {
         label: 'job_ProperVentilationArrangements',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -318,6 +333,7 @@ const inspectionFieldAttr = () => {
       inverterAvailable: {
         label: 'job_InverterAvailable',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         md: 24,
         xs: 24,
@@ -355,6 +371,7 @@ const inspectionFieldAttr = () => {
       gpMunicipalityClearingSolidWasteRegularly: {
         label: 'job_IsWasteRegularlyCleared',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -363,6 +380,7 @@ const inspectionFieldAttr = () => {
       wasteDisposedInOpenAreaDuringVisit: {
         label: 'job_IsWasteDisposedInOpenArea',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -374,6 +392,7 @@ const inspectionFieldAttr = () => {
       greyBlackWaterSeparatelyDrained: {
         label: 'job_IsWaterSeparatelyDrained',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -382,6 +401,7 @@ const inspectionFieldAttr = () => {
       septicTankCleanedRegularly: {
         label: 'job_IsSepticTankCleanedRegularly',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -390,6 +410,7 @@ const inspectionFieldAttr = () => {
       stagnantWaterOnGround: {
         label: 'job_IsStagnantWaterPresent',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -398,6 +419,7 @@ const inspectionFieldAttr = () => {
       soakPitsInHostel: {
         label: 'job_AreSoakPitsAvailable',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -406,6 +428,7 @@ const inspectionFieldAttr = () => {
       sufficientDistanceSepticTankBorewell: {
         label: 'job_SufficientDistanceBetweenSepticTankAndBoreWell',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -414,6 +437,7 @@ const inspectionFieldAttr = () => {
       hostelPremisesKeptClean: {
         label: 'job_ArePremisesClean',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -448,6 +472,7 @@ const inspectionFieldAttr = () => {
       numberOfToiletsSufficient: {
         label: 'job_AreToiletsSufficient',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -472,6 +497,7 @@ const inspectionFieldAttr = () => {
       numberOfBathroomsSufficient: {
         label: 'job_AreBathroomsSufficient',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -560,6 +586,7 @@ const inspectionFieldAttr = () => {
       medicalOfficerRegularVisits: {
         label: 'job_MedicalOfficerVisits',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -568,6 +595,7 @@ const inspectionFieldAttr = () => {
       firstAidKitAvailableInHostel: {
         label: 'job_FirstAidKitAvailability',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -597,6 +625,7 @@ const inspectionFieldAttr = () => {
       boardersSuppliedTextbooks: {
         label: 'job_TextbooksSupplied',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -605,6 +634,7 @@ const inspectionFieldAttr = () => {
       boardersSuppliedNotebooks: {
         label: 'job_NotebooksSupplied',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -613,6 +643,7 @@ const inspectionFieldAttr = () => {
       boardersSuppliedUniforms: {
         label: 'job_UniformsSupplied',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -621,6 +652,7 @@ const inspectionFieldAttr = () => {
       boardersSuppliedTrunkBoxes: {
         label: 'job_TrunkBoxesSupplied',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         md: 24,
         xs: 24,
@@ -628,6 +660,7 @@ const inspectionFieldAttr = () => {
       boardersSuppliedPlatesGlasses: {
         label: 'job_PlatesGlassesSupplied',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -636,6 +669,7 @@ const inspectionFieldAttr = () => {
       boardersSuppliedSchoolBags: {
         label: 'job_SchoolBagsSupplied',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -644,6 +678,7 @@ const inspectionFieldAttr = () => {
       boardersSuppliedBeddingMaterial: {
         label: 'job_BeddingMaterialSupplied',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -661,6 +696,7 @@ const inspectionFieldAttr = () => {
       treasuryBillRegisterMaintained: {
         label: 'job_TreasuryBillRegisterMaintained',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -669,6 +705,7 @@ const inspectionFieldAttr = () => {
       teachingAsPerAnnualLessonPlan: {
         label: 'job_TeachingAsPerLessonPlan',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -720,6 +757,7 @@ const inspectionFieldAttr = () => {
       menuChartDisplayed: {
         label: 'job_MenuChartDisplayed',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -728,6 +766,7 @@ const inspectionFieldAttr = () => {
       menuImplementedAsPrescribed: {
         label: 'job_MenuImplementedAsPrescribed',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -736,6 +775,7 @@ const inspectionFieldAttr = () => {
       stockRegisterMaintained: {
         label: 'job_StockRegisterMaintained',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -744,6 +784,7 @@ const inspectionFieldAttr = () => {
       vegetablesStoredAboveGround: {
         label: 'job_VegetablesStoredAboveGround',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -752,6 +793,7 @@ const inspectionFieldAttr = () => {
       exhaustFanInKitchen: {
         label: 'job_ExhaustFanInKitchen',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -987,6 +1029,7 @@ const inspectionFieldAttr = () => {
       sufficientLightingOpenSpaces: {
         label: 'job_OpenSpaceLightingAtNight',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -1034,6 +1077,7 @@ const inspectionFieldAttr = () => {
       dailyNightPolicePatrollingRequired: {
         label: 'job_PolicePatrolRequired',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,
@@ -1055,6 +1099,7 @@ const inspectionFieldAttr = () => {
       meetingsConvenedRegularly: {
         label: 'job_HWOMeetingsRegular',
         inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
         required: true,
         md: 24,

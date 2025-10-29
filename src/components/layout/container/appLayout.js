@@ -4,7 +4,7 @@ import { useResizeDetector } from 'react-resize-detector'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
-import { setDeviceStatus } from '../../../redux/app/reducer'
+import { setDeviceStatus, setMobileStatus } from '../../../redux/app/reducer'
 import ANTDTooltip from '../../../shared/antd/ANTDTooltip'
 import {
   entries,
@@ -23,6 +23,7 @@ const appLayout = () => {
   const { navigate, location } = useRouter()
   const { dispatch, selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
+  const isMobile = selector(state => state.app.isMobile)
   const [toggleMenu, setToggleMenu] = useState(false)
   const activeItem1 = location.pathname
   const defaultOpenKeys = [`/${activeItem1.split('/')?.[1]}`]
@@ -47,8 +48,14 @@ const appLayout = () => {
   const onResize = width => {
     if (!width) return
     const isGreaterWidth = width > 991
-    notEqual(isGreaterWidth, isDesktop) &&
+
+    const isMobileWidth = width < 576
+    if (notEqual(isMobileWidth, isMobile)) {
+      dispatch(setMobileStatus(isMobileWidth))
+    }
+    if (notEqual(isGreaterWidth, isDesktop)) {
       dispatch(setDeviceStatus(isGreaterWidth))
+    }
     return isGreaterWidth && toggleMenu && setToggleMenu(false)
   }
   const { ref } = useResizeDetector({
@@ -129,9 +136,9 @@ const appLayout = () => {
     !isDesktop && toggleMenu && setToggleMenu(false)
   }
 
-    const toggleCollapsed = () => {
-      setCollapsed(!collapsed)
-    }
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed)
+  }
 
   return {
     t,
