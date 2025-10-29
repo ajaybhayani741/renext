@@ -263,8 +263,8 @@
   }
 
   .inspection-form-list {
-    .ant-form-item-label > label.ant-form-item-required {
-      line-height: 1.2;
+    .ant-form-item-label > label {
+      line-height: 1.1 !important;
     }
     .ant-form-item-label {
       margin-top: 0;
@@ -296,8 +296,8 @@
 .active-form-modal {
   .ant-modal-content .ant-modal-body {
     background-color: #fff2ea;
-    .ant-form-item-label > label.ant-form-item-required {
-      line-height: 1.2;
+    .ant-form-item-label > label {
+      line-height: 1.1;
     }
     .ant-form-item-label {
       margin-top: 0;
@@ -308,10 +308,6 @@
     border-color: #fff2ea;
     margin-right: 25px;
   }
-}
-
-.ant-progress .ant-progress-inner {
-  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .job-apiLoader {

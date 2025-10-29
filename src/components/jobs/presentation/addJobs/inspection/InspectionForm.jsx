@@ -1,4 +1,4 @@
-import { CheckCircleFilled, CloseOutlined } from '@ant-design/icons'
+import { CloseOutlined } from '@ant-design/icons'
 import { useMemo } from 'react'
 
 import InspectionFormField from './InspectionFormField'
@@ -8,7 +8,6 @@ import useTranslations from '../../../../../hooks/useTranslations'
 import ANTDButton from '../../../../../shared/antd/ANTDButton'
 import ANTDCollapse from '../../../../../shared/antd/ANTDCollapse'
 import ANTDModal from '../../../../../shared/antd/ANTDModal'
-import ANTDProgress from '../../../../../shared/antd/ANTDProgress'
 import { userWiseRole } from '../../../../../utils/constant'
 import { include, isEqual, length } from '../../../../../utils/javascript'
 import { getItem } from '../../../../../utils/localstorage'
@@ -93,13 +92,16 @@ const InspectionForm = ({
       <div className="d-flex space-between">
         <p>{t(label)}</p>
         <div>
-          <ANTDProgress
-            style={{ width: '160px' }}
-            strokeColor="#fff2ea"
+          {/* <ANTDProgress
+            type="circle"
+            trailColor="#fff2ea"
+            strokeWidth={15}
+            size={20}
             showInfo={false}
             percent={formFieldPercentage?.[key] || 0}
-          />
-          <span className="ml-15 text-center">
+          /> */}
+          <p>{`${formFieldPercentage?.[key] || 0}% Completed`}</p>
+          {/* <span className="ml-15 text-center">
             {isEqual(formFieldPercentage?.[key], 100) ? (
               <CheckCircleFilled
                 style={{
@@ -112,7 +114,7 @@ const InspectionForm = ({
             ) : (
               `${formFieldPercentage?.[key] || 0}%`
             )}
-          </span>
+          </span> */}
         </div>
       </div>
     )

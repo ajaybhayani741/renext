@@ -49,7 +49,7 @@ const InspectionFormField = ({
   }
   const FIELD_TYPE_LAYOUT = {
     textArea: isMobile ? 'vertical' : 'horizontal',
-    select: 'horizontal',
+    select: isMobile ? 'vertical' : 'horizontal',
     input: 'horizontal',
     inputNumber: 'horizontal',
     dateTimePicker: 'horizontal',
@@ -222,8 +222,8 @@ const InspectionFormField = ({
           )
         })}
       </ANTDRow>
-      {showSaveBtn && !isMobile && (
-        <div className="text-center">
+      {showSaveBtn && (
+        <div className="text-center mt-10">
           <ANTDButton type="primary" className="btn " onClick={onSaveClick}>
             {t('btn_Save')}
           </ANTDButton>

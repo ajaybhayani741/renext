@@ -854,7 +854,16 @@ const inspection = ({
           return false
         }
         try {
-          return await validatorFn({ onSave, validateAll })
+          const isValid = await validatorFn({ onSave, validateAll })
+          if (!isValid && isMobile) {
+            dispatch(
+              setPopupMessageModel({
+                open: true,
+                message: 'msg_PleaseFillMandatory',
+              }),
+            )
+          }
+          return isValid
         } catch (error) {
           return false
         }
@@ -862,6 +871,14 @@ const inspection = ({
         try {
           return await form.validateFields()
         } catch (error) {
+          if (isMobile) {
+            dispatch(
+              setPopupMessageModel({
+                open: true,
+                message: 'msg_PleaseFillMandatory',
+              }),
+            )
+          }
           return false
         }
 
