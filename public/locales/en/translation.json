@@ -632,5 +632,6 @@
   "msg_confirmEndLocation": "Do you want to end the job? Ensure you are at the actual location of hostel",
   "job_Unassign": "Unassigned",
   "dash_ExportToExcel": "Export To Excel",
-  "user_LastInspectionDate": "Last Inspection Date"
+  "user_LastInspectionDate": "Last Inspection Date",
+  "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the district collector?"
 }

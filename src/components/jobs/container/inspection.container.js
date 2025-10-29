@@ -59,6 +59,9 @@ const inspection = ({
   })
   const [activeFormField, setActiveFormField] = useState({ isOpen: false })
   const [formFieldPercentage, setFormFieldPercentage] = useState({})
+  const [completeConfirmation, setCompleteConfirmation] = useState({
+    open: false,
+  })
   const locationRef = useRef(null)
   const inspectionInitialValues = {
     inspectionDate: dayJs(new Date()),
@@ -871,7 +874,9 @@ const inspection = ({
   }
 
   const handleNext = async () => {
+    console.log('current', current)
     let isValid = await validationFn({ validateAll: true })
+    console.log('isValid', isValid)
     if (!isValid) return
     if (include([1, 2], current)) {
       isValid = await apiCall({
@@ -879,11 +884,8 @@ const inspection = ({
         isLoading: true,
       })
     } else if (isEqual(current, 3)) {
-      isValid = await apiCall({
-        showMsg: true,
-        isComplete: true,
-        isLoading: true,
-      })
+      setCompleteConfirmation({ open: true })
+      return
     }
     if (!isValid) return
 
@@ -892,6 +894,21 @@ const inspection = ({
 
   const handlePrevious = () => {
     setCurrent(current - 1)
+  }
+
+  const onCompleteConfirmationClose = () => {
+    setCompleteConfirmation({ open: false })
+  }
+
+  const onAcceptCompleteConfirmation = async () => {
+    setCompleteConfirmation({ open: false })
+    const isValid = await apiCall({
+      showMsg: true,
+      isComplete: true,
+      isLoading: true,
+    })
+    if (!isValid) return
+    setCurrent(current + 1)
   }
 
   const handleSave = async ({ redirect = true, key, index } = {}) => {
@@ -985,6 +1002,9 @@ const inspection = ({
     activeFormField,
     handleActiveFieldModal,
     formFieldPercentage,
+    completeConfirmation,
+    onCompleteConfirmationClose,
+    onAcceptCompleteConfirmation,
   }
 }
 
