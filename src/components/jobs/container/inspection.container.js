@@ -17,6 +17,7 @@ import debounce from '../../../utils/debounce'
 import {
   entries,
   include,
+  isArray,
   isEqual,
   keys,
   length,
@@ -271,7 +272,9 @@ const inspection = ({
       )
       const totalField = keys(formFields)?.length
       const filledField =
-        keys(formFields)?.filter(v => editData?.[v]).length || 0
+        keys(formFields)?.filter(v =>
+          isArray(editData?.[v]) ? length(editData?.[v]) : editData?.[v],
+        ).length || 0
       return Math.round((filledField / totalField) * 100) || 0
     }
 
@@ -433,7 +436,7 @@ const inspection = ({
         })
       }
     }
-    handleActiveFieldModal(key, index)
+    key && handleActiveFieldModal(key, index)
 
     if (confirm) {
       // reportPolling()
@@ -891,9 +894,7 @@ const inspection = ({
   }
 
   const handleNext = async () => {
-    console.log('current', current)
     let isValid = await validationFn({ validateAll: true })
-    console.log('isValid', isValid)
     if (!isValid) return
     if (include([1, 2], current)) {
       isValid = await apiCall({
@@ -1022,6 +1023,7 @@ const inspection = ({
     completeConfirmation,
     onCompleteConfirmationClose,
     onAcceptCompleteConfirmation,
+    apiCall,
   }
 }
 

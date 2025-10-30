@@ -61,6 +61,7 @@ const InspectionJob = ({ editData }) => {
     completeConfirmation,
     onCompleteConfirmationClose,
     onAcceptCompleteConfirmation,
+    apiCall,
   } = inspection({
     editData,
     selectedUsers,
@@ -172,6 +173,7 @@ const InspectionJob = ({ editData }) => {
             activeFormField,
             handleActiveFieldModal,
             formFieldPercentage,
+            apiCall,
           }}
         />
       </div>
@@ -182,6 +184,7 @@ const InspectionJob = ({ editData }) => {
           {...{
             attrList: findingsAttrFn(),
             name: 'findingsRequestDto',
+            apiCall,
           }}
         />
       </>

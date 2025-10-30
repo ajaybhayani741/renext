@@ -14,6 +14,7 @@ const InspectionFormList = ({
   activeFormField,
   handleActiveFieldModal,
   formFieldPercentage,
+  apiCall,
 }) => {
   // const { t } = useTranslations()
 
@@ -83,6 +84,7 @@ const InspectionFormList = ({
                 activeFormField={activeFormField}
                 handleActiveFieldModal={handleActiveFieldModal}
                 formFieldPercentage={formFieldPercentage}
+                apiCall={apiCall}
               />
             ))}
             {/* {length(fields) < maxFields && (

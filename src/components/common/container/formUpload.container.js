@@ -1,16 +1,21 @@
 import { useCallback, useRef, useState } from 'react'
 
+import { notifyMethod } from '../../../App'
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
+import { useFormInstanceFn } from '../../../shared/antd/ANTDForm'
 import { getBase64 } from '../../../utils'
+import { MAX_FILE_SIZE } from '../../../utils/constant'
 import { pdfImage, videoFileImage } from '../../../utils/icons'
 import { include, isEqual } from '../../../utils/javascript'
+import { getImageFileApi } from '../common.api'
 import {
   FACING_MODE_ENVIRONMENT,
   FACING_MODE_USER,
 } from '../common.description'
 
-const formUpload = ({ form, name, fileList = [] }) => {
+const formUpload = ({ hasApiCall, filePath, apiCall }) => {
+  const form = useFormInstanceFn()
   const { t } = useTranslations()
 
   const { selector } = useRedux()
@@ -85,14 +90,45 @@ const formUpload = ({ form, name, fileList = [] }) => {
     return new File([u8arr], `${Date.now()}.png`, { type: mime })
   }
 
+  const onFileUpload = async ({ file }) => {
+    const isLt5MB = file?.size < MAX_FILE_SIZE
+    if (!isLt5MB) {
+      return notifyMethod.warning({
+        message: t('msg_MaximumSizeAllowed', {
+          maxSize: MAX_FILE_SIZE / 1024 / 1024,
+        }),
+      })
+    }
+    const formData = new FormData()
+    formData.append('file', file)
+    const resp = await getImageFileApi({
+      params: '?source=USER',
+      payload: formData,
+    })
+    return resp?.data?.dmsId
+  }
+
   const handleCapture = async () => {
     const imageSrc = videoElement.current.getScreenshot()
     let file = dataURLtoFile(imageSrc)
-    form.setFieldValue(name, {
-      fileList: [...fileList, { ...file, originFileObj: file }],
-    })
-
+    const fileList = form.getFieldValue(filePath)?.fileList || []
     setTakePhoto(prev => ({ ...prev, flag: false }))
+    if (!hasApiCall) {
+      form.setFieldValue(filePath, {
+        fileList: [...(fileList || []), { ...file, originFileObj: file }],
+      })
+    } else {
+      const dmsId = await onFileUpload({ file })
+      if (dmsId) {
+        form.setFieldValue(filePath, {
+          fileList: [
+            ...(fileList || []),
+            { ...file, dmsId, uid: dmsId, originFileObj: file },
+          ],
+        })
+      }
+    }
+    apiCall && apiCall({})
   }
 
   const handleIconRender = file => {
