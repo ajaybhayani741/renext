@@ -224,7 +224,11 @@ const InspectionFormField = ({
       </ANTDRow>
       {showSaveBtn && (
         <div className="text-center mt-10">
-          <ANTDButton type="primary" className="btn " onClick={onSaveClick}>
+          <ANTDButton
+            type="primary"
+            className="btn "
+            onClick={() => onSaveClick({ key: nestedKey, index })}
+          >
             {t('btn_Save')}
           </ANTDButton>
         </div>
