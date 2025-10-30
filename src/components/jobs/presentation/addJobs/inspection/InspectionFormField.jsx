@@ -44,8 +44,8 @@ const InspectionFormField = ({
     },
     horizontal: {
       layout: 'horizontal',
-      labelCol: { xs: 16, sm: 16, md: 14, lg: 12 },
-      wrapperCol: { xs: 8, sm: 8, md: 10, lg: 12 },
+      labelCol: { xs: 15, sm: 16, md: 14, lg: 12 },
+      wrapperCol: { xs: 9, sm: 8, md: 10, lg: 12 },
     },
   }
   const FIELD_TYPE_LAYOUT = {
