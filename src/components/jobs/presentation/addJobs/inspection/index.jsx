@@ -58,6 +58,10 @@ const InspectionJob = ({ editData }) => {
     activeFormField,
     handleActiveFieldModal,
     formFieldPercentage,
+    completeConfirmation,
+    onCompleteConfirmationClose,
+    onAcceptCompleteConfirmation,
+    apiCall,
   } = inspection({
     editData,
     selectedUsers,
@@ -169,6 +173,7 @@ const InspectionJob = ({ editData }) => {
             activeFormField,
             handleActiveFieldModal,
             formFieldPercentage,
+            apiCall,
           }}
         />
       </div>
@@ -179,6 +184,7 @@ const InspectionJob = ({ editData }) => {
           {...{
             attrList: findingsAttrFn(),
             name: 'findingsRequestDto',
+            apiCall,
           }}
         />
       </>
@@ -256,6 +262,13 @@ const InspectionJob = ({ editData }) => {
         onAccept={onAcceptConfirmation}
         onReject={onConfirmModelClose}
         description={t(confirmModel?.description)}
+      />
+      <PopUpConfirm
+        isOpen={completeConfirmation?.open}
+        onCancelModel={onCompleteConfirmationClose}
+        onAccept={onAcceptCompleteConfirmation}
+        onReject={onCompleteConfirmationClose}
+        description={t('msg_DataCannotBeChanged')}
       />
     </>
   )

@@ -30,6 +30,7 @@ const InspectionForm = ({
   activeFormField,
   handleActiveFieldModal,
   formFieldPercentage,
+  apiCall,
 }) => {
   const { t } = useTranslations()
   const { params } = useRouter()
@@ -139,6 +140,7 @@ const InspectionForm = ({
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
+            apiCall,
           }}
         />
       ),
@@ -161,6 +163,7 @@ const InspectionForm = ({
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
+            apiCall,
           }}
         />
       ),
@@ -184,6 +187,7 @@ const InspectionForm = ({
               showSaveBtn: include([...allPermissionRoles], roleId),
               disabledAll: !include([...allPermissionRoles], roleId),
               onSaveClick,
+              apiCall,
             }}
           />
         </>
@@ -207,6 +211,7 @@ const InspectionForm = ({
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
+            apiCall,
           }}
         />
       ),
@@ -229,6 +234,7 @@ const InspectionForm = ({
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
+            apiCall,
           }}
         />
       ),
@@ -251,6 +257,7 @@ const InspectionForm = ({
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
+            apiCall,
           }}
         />
       ),
@@ -273,6 +280,7 @@ const InspectionForm = ({
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
+            apiCall,
           }}
         />
       ),
@@ -295,6 +303,7 @@ const InspectionForm = ({
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
+            apiCall,
           }}
         />
       ),
@@ -317,6 +326,7 @@ const InspectionForm = ({
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
+            apiCall,
           }}
         />
       ),

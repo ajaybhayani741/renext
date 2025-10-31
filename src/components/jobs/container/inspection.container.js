@@ -17,6 +17,7 @@ import debounce from '../../../utils/debounce'
 import {
   entries,
   include,
+  isArray,
   isEqual,
   keys,
   length,
@@ -59,6 +60,9 @@ const inspection = ({
   })
   const [activeFormField, setActiveFormField] = useState({ isOpen: false })
   const [formFieldPercentage, setFormFieldPercentage] = useState({})
+  const [completeConfirmation, setCompleteConfirmation] = useState({
+    open: false,
+  })
   const locationRef = useRef(null)
   const inspectionInitialValues = {
     inspectionDate: dayJs(new Date()),
@@ -268,7 +272,9 @@ const inspection = ({
       )
       const totalField = keys(formFields)?.length
       const filledField =
-        keys(formFields)?.filter(v => editData?.[v]).length || 0
+        keys(formFields)?.filter(v =>
+          isArray(editData?.[v]) ? length(editData?.[v]) : editData?.[v],
+        ).length || 0
       return Math.round((filledField / totalField) * 100) || 0
     }
 
@@ -430,7 +436,7 @@ const inspection = ({
         })
       }
     }
-    handleActiveFieldModal(key, index)
+    key && handleActiveFieldModal(key, index)
 
     if (confirm) {
       // reportPolling()
@@ -896,11 +902,8 @@ const inspection = ({
         isLoading: true,
       })
     } else if (isEqual(current, 3)) {
-      isValid = await apiCall({
-        showMsg: true,
-        isComplete: true,
-        isLoading: true,
-      })
+      setCompleteConfirmation({ open: true })
+      return
     }
     if (!isValid) return
 
@@ -909,6 +912,21 @@ const inspection = ({
 
   const handlePrevious = () => {
     setCurrent(current - 1)
+  }
+
+  const onCompleteConfirmationClose = () => {
+    setCompleteConfirmation({ open: false })
+  }
+
+  const onAcceptCompleteConfirmation = async () => {
+    setCompleteConfirmation({ open: false })
+    const isValid = await apiCall({
+      showMsg: true,
+      isComplete: true,
+      isLoading: true,
+    })
+    if (!isValid) return
+    setCurrent(current + 1)
   }
 
   const handleSave = async ({ redirect = true, key, index } = {}) => {
@@ -1002,6 +1020,10 @@ const inspection = ({
     activeFormField,
     handleActiveFieldModal,
     formFieldPercentage,
+    completeConfirmation,
+    onCompleteConfirmationClose,
+    onAcceptCompleteConfirmation,
+    apiCall,
   }
 }
 

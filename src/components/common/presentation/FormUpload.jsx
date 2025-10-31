@@ -16,13 +16,16 @@ const FormUpload = ({
   value,
   max = 1,
   form,
-  name,
   listType = 'picture-card',
   className = '',
   uploadDragger,
   isPreview = true,
+  hasApiCall = true,
   uploadText,
   disabled,
+  filePath,
+  apiCall,
+  disableGalleryUpload = false,
   ...props
 }) => {
   const { t } = useTranslations()
@@ -40,7 +43,7 @@ const FormUpload = ({
     handleSwitchCam,
     handleTakePhoto,
     handleIconRender,
-  } = formUpload({ form, name })
+  } = formUpload({ hasApiCall, filePath, apiCall })
 
   const uploadMoreCondition = length(value?.fileList) < max
 
@@ -68,6 +71,7 @@ const FormUpload = ({
           onPreview={isPreview ? handlePreview : false}
           fileList={value?.fileList}
           disabled={disabled}
+          openFileDialogOnClick={!disableGalleryUpload}
           {...props}
         >
           {props?.directory ? (
@@ -77,7 +81,11 @@ const FormUpload = ({
           ) : (
             uploadMoreCondition && (
               <div className={`ant-badge ${className}`}>
-                {t(props?.uploadText || 'txt_Upload')}
+                {t(
+                  props?.uploadText || !disableGalleryUpload
+                    ? 'txt_Upload'
+                    : '',
+                )}
               </div>
             )
           )}

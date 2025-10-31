@@ -26,6 +26,7 @@ const InspectionFormField = ({
   showSaveBtn,
   disabledAll,
   onSaveClick,
+  apiCall,
 }) => {
   const { t } = useTranslations()
   const form = useFormInstanceFn()
@@ -207,6 +208,15 @@ const InspectionFormField = ({
                         {...restProps}
                         options={optionList}
                         disabled={isDisabled}
+                        filePath={
+                          index === undefined
+                            ? [name, attrKey]
+                            : ['inspectionList', index, nestedKey, attrKey]
+                        }
+                        {...(isEqual(currentInputType, 'formUpload') && {
+                          apiCall,
+                          disableGalleryUpload: true,
+                        })}
                       />
                     </ANTDFormItem>
                     {fieldSuffix}
