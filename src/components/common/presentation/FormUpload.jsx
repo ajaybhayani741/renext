@@ -108,6 +108,7 @@ const FormUpload = ({
           handleTakePhoto,
           handleSwitchCam,
           fileList: value?.fileList,
+          showFlipBtn: !isDesktop,
         }}
       />
     </>
