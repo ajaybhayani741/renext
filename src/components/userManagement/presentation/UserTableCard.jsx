@@ -65,7 +65,7 @@ const UserTableCard = ({
                       <tbody>
                         {cardViewFn(item)?.map(({ label, value }, index) => (
                           <tr key={index}>
-                            <td>
+                            <td className="card-table-label">
                               <b>{t(label)}</b>
                             </td>
                             <td> : {ternary(value, value, '-')}</td>

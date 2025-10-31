@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   isDesktop: true,
+  isMobile: false,
   fiscalYear: {
     value: null,
     options: [],
@@ -25,6 +26,9 @@ const appReducer = createSlice({
     setDeviceStatus: (state, action) => {
       state.isDesktop = action.payload
     },
+    setMobileStatus: (state, action) => {
+      state.isMobile = action.payload
+    },
     setFiscalYear: (state, action) => {
       state.fiscalYear = { ...state?.fiscalYear, ...action?.payload }
     },
@@ -42,6 +46,7 @@ const appReducer = createSlice({
 
 export const {
   setDeviceStatus,
+  setMobileStatus,
   setFiscalYear,
   setPopupMessageModel,
   setStoreDetails,

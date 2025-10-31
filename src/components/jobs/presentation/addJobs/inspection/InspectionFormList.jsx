@@ -11,6 +11,9 @@ const InspectionFormList = ({
   onSelectUser,
   selectedUsers,
   onUserClear,
+  activeFormField,
+  handleActiveFieldModal,
+  formFieldPercentage,
 }) => {
   // const { t } = useTranslations()
 
@@ -77,6 +80,9 @@ const InspectionFormList = ({
                 onSelectUser={onSelectUser}
                 selectedUsers={selectedUsers}
                 onUserClear={onUserClear}
+                activeFormField={activeFormField}
+                handleActiveFieldModal={handleActiveFieldModal}
+                formFieldPercentage={formFieldPercentage}
               />
             ))}
             {/* {length(fields) < maxFields && (

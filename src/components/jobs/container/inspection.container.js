@@ -20,6 +20,7 @@ import {
   isEqual,
   keys,
   length,
+  notEqual,
   nullOrUndefined,
   values,
 } from '../../../utils/javascript'
@@ -43,7 +44,7 @@ const inspection = ({
   const { t } = useTranslations()
   const form = useFormFn()
   const { navigate, params } = useRouter()
-  const { dispatch } = useRedux()
+  const { dispatch, selector } = useRedux()
   // eslint-disable-next-line no-unused-vars
   const { createPromise, resolvePromise } = usePromise()
   const [jobId, setJobId] = useState(null)
@@ -56,6 +57,8 @@ const inspection = ({
     open: false,
     description: '',
   })
+  const [activeFormField, setActiveFormField] = useState({ isOpen: false })
+  const [formFieldPercentage, setFormFieldPercentage] = useState({})
   const locationRef = useRef(null)
   const inspectionInitialValues = {
     inspectionDate: dayJs(new Date()),
@@ -66,6 +69,7 @@ const inspection = ({
   const showSave = isEdit || include([1], current)
   const { inspectionOfficer, hostel } = userWiseRole
   const userData = JSON.parse(getItem('userData'))
+  const isMobile = selector(state => state.app.isMobile)
 
   const {
     hostelAdministrationAttrFn,
@@ -90,6 +94,7 @@ const inspection = ({
         [inspectionOfficer]: [userData],
       })
     }
+    setFieldsPercentageFn(editData)
   }, [])
 
   const getCurrentLocation = async () => {
@@ -254,6 +259,43 @@ const inspection = ({
     form.setFieldsValue(preFormValues)
   }
 
+  const setFieldsPercentageFn = editData => {
+    const calculatePercentage = formAttr => {
+      const formFields = Object.fromEntries(
+        entries(formAttr)?.filter(
+          ([_, value]) => value?.label && !value?.disabled,
+        ),
+      )
+      const totalField = keys(formFields)?.length
+      const filledField =
+        keys(formFields)?.filter(v => editData?.[v]).length || 0
+      return Math.round((filledField / totalField) * 100) || 0
+    }
+
+    const inspectionPercentage = {
+      hostelAdministrationRequestDto: calculatePercentage(
+        hostelAdministrationAttrFn(),
+      ),
+      hostelInfraRoomsRequestDto: calculatePercentage(hostelInfraRoomsAttrFn()),
+      hostelInfraSanitationRequestDto: calculatePercentage(
+        hostelInfraSanitationAttrFn(),
+      ),
+      medicalCareRequestDto: calculatePercentage(medicalCareAttrFn()),
+      educationFacilitiesRequestDto: calculatePercentage(
+        educationFacilitiesAttrFn(),
+      ),
+      foodProvisionRequestDto: calculatePercentage(foodProvisionAttrFn()),
+      safetyAndSecurityRequestDto: calculatePercentage(
+        safetyAndSecurityAttrFn(),
+      ),
+      conductionMeetingsRequestDto: calculatePercentage(
+        conductionMeetingsAttrFn(),
+      ),
+      feedbackRequestDto: calculatePercentage(feedbackAttrFn()),
+    }
+    setFormFieldPercentage(inspectionPercentage)
+  }
+
   const payloadConverter = (values, fieldsAttr) => {
     const data = {}
     entries(values)?.forEach(([key, value]) => {
@@ -281,6 +323,8 @@ const inspection = ({
     redirect,
     confirm = false,
     isLoading = false,
+    key,
+    index,
   } = {}) => {
     if (isApiRunning && !jobId) return
     setIsApiRunning(true)
@@ -386,6 +430,7 @@ const inspection = ({
         })
       }
     }
+    handleActiveFieldModal(key, index)
 
     if (confirm) {
       // reportPolling()
@@ -661,6 +706,14 @@ const inspection = ({
       form.setFieldsValue({
         inspectionList: updatedValues,
       })
+
+      const fieldValues = values(updatedValues?.[changeIndex])?.reduce(
+        (acc, curr) => {
+          return { ...acc, ...curr }
+        },
+        0,
+      )
+      setFieldsPercentageFn(fieldValues)
     }
     if (value?.findingsRequestDto) {
       const nestedUpdatedValues = formValues
@@ -801,7 +854,16 @@ const inspection = ({
           return false
         }
         try {
-          return await validatorFn({ onSave, validateAll })
+          const isValid = await validatorFn({ onSave, validateAll })
+          if (!isValid && isMobile) {
+            dispatch(
+              setPopupMessageModel({
+                open: true,
+                message: 'msg_PleaseFillMandatory',
+              }),
+            )
+          }
+          return isValid
         } catch (error) {
           return false
         }
@@ -809,6 +871,14 @@ const inspection = ({
         try {
           return await form.validateFields()
         } catch (error) {
+          if (isMobile) {
+            dispatch(
+              setPopupMessageModel({
+                open: true,
+                message: 'msg_PleaseFillMandatory',
+              }),
+            )
+          }
           return false
         }
 
@@ -841,13 +911,15 @@ const inspection = ({
     setCurrent(current - 1)
   }
 
-  const handleSave = async ({ redirect = true } = {}) => {
+  const handleSave = async ({ redirect = true, key, index } = {}) => {
     const isValid = await validationFn({ onSave: true })
     if (!isValid) return
     setLoader(true)
     apiCall({
       showMsg: true,
       redirect,
+      key,
+      index,
     })
   }
 
@@ -863,9 +935,25 @@ const inspection = ({
   }
 
   const onActiveKeysChange = (keys, index) => {
+    if (isMobile) {
+      const currentKey = keys?.filter(
+        item => !activeKeys?.[index]?.includes(item),
+      )
+      setActiveFormField({ isOpen: true, key: currentKey?.[0] })
+    }
     setActiveKeys(prev => {
       const clonePrev = [...(prev || [])]
       clonePrev[index] = keys
+      return clonePrev
+    })
+  }
+
+  const handleActiveFieldModal = (key, index) => {
+    setActiveFormField({ isOpen: false, key: null })
+    const updatedKeys = activeKeys?.[index]?.filter(v => notEqual(v, key))
+    setActiveKeys(prev => {
+      const clonePrev = [...(prev || [])]
+      clonePrev[index] = updatedKeys
       return clonePrev
     })
   }
@@ -911,6 +999,9 @@ const inspection = ({
     onAcceptConfirmation,
     findingsAttrFn,
     getCurrentLocation,
+    activeFormField,
+    handleActiveFieldModal,
+    formFieldPercentage,
   }
 }
 

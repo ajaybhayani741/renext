@@ -153,7 +153,7 @@ h6 {
     display: flex;
     align-items: flex-start;
     white-space: normal;
-    line-height: 0.1;
+    line-height: 1;
     height: auto;
     display: inline-block;
   }
@@ -626,4 +626,25 @@ h6 {
 }
 .ant-steps.ant-steps-label-vertical .ant-steps-item-content {
   margin-top: 5px;
+}
+
+.job-step {
+  @media screen and (max-width: 576px) {
+    .ant-steps {
+      flex-wrap: nowrap !important;
+      overflow: hidden;
+      justify-content: space-between !important;
+    }
+    .ant-steps-item {
+      min-width: 0 !important;
+    }
+    .ant-steps-item-title {
+      display: none;
+    }
+    /* Show active step title */
+    .ant-steps-item-active .ant-steps-item-title,
+    .ant-steps-item-process .ant-steps-item-title {
+      display: inline-block;
+    }
+  }
 }
