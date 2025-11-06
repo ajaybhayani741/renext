@@ -6,7 +6,7 @@ import UserList from './UserList'
 import UserRating from './UserRating'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDModal from '../../../shared/antd/ANTDModal'
-import { childUsers } from '../../../utils/constant'
+import { childUsers, userWiseRole } from '../../../utils/constant'
 import { entries, include, ternary } from '../../../utils/javascript'
 import viewUser from '../container/viewUser.container'
 
@@ -23,8 +23,12 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
     userDetails,
   })
 
+  const { hostel, inspectionOfficer } = userWiseRole
+
   const { t } = useTranslations()
-  const isChildUser = childUsers.includes(userDetails?.roleId)
+  const isChildUser =
+    !include([hostel, inspectionOfficer], userDetails?.roleId) &&
+    childUsers.includes(userDetails?.roleId)
 
   const viewDetails = () => {
     return (
@@ -62,7 +66,9 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
           </>
         )}
 
-        <UserRating />
+        {!include([hostel, inspectionOfficer], userDetails?.roleId) && (
+          <UserRating />
+        )}
 
         {userListView &&
           entries(userListView).map(([key, value]) => {
