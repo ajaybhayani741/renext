@@ -19,6 +19,10 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
   const { dispatch, selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
   const [editInfo, setEditInfo] = useState({ flag: false, data: {} })
+  const [assignConfirmation, setAssignConfirmation] = useState({
+    open: false,
+    data: null,
+  })
   const { hostel } = userWiseRole
 
   const handleView = data => {
@@ -72,10 +76,18 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
   const handleCancelEdit = () => {
     setEditInfo({ flag: false, data: {} })
   }
-  const handleAssignHostel = async ({ rowData }) => {
+
+  const handleAssignHostelConfirmation = ({ rowData } = {}) => {
+    setAssignConfirmation({
+      open: !assignConfirmation?.open,
+      data: rowData || null,
+    })
+  }
+
+  const handleAssignHostel = async () => {
     const payload = {
       roleId: hostel,
-      userId: rowData?.id,
+      userId: assignConfirmation?.data?.id,
       associateHostel: true,
     }
     const resp = await addAssociateApi({
@@ -98,6 +110,7 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
         }),
       )
     }
+    handleAssignHostelConfirmation()
   }
 
   return {
@@ -115,6 +128,8 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
     editInfo,
     setEditInfo,
     handleAssignHostel,
+    assignConfirmation,
+    handleAssignHostelConfirmation,
   }
 }
 

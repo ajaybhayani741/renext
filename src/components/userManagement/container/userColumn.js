@@ -20,7 +20,7 @@ const userColumns = ({
   handleEdit,
   isBuilding,
   removeEditBtn,
-  handleAssignHostel,
+  handleAssignHostelConfirmation,
   handleAssignInspectionOfficer,
   showAssignInspectionOfficer,
   columnFilter,
@@ -45,7 +45,7 @@ const userColumns = ({
         showAssignHostel && (
           <ANTDButton
             className="bg-assign-hostel"
-            onClick={() => handleAssignHostel({ rowData })}
+            onClick={() => handleAssignHostelConfirmation({ rowData })}
           >
             {t('user_AssignHostel')}
           </ANTDButton>
