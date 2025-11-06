@@ -41,6 +41,7 @@ const userManagement = () => {
     defaultPayload,
     currentUserView,
     handleAdd,
+    pathRoleId,
   }
 }
 
