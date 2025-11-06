@@ -173,6 +173,7 @@ const jobTable = ({
       {
         title: t('txt_Action'),
         key: columnKeys.action,
+        fixed: 'right',
         render: actionButtons,
       },
     ],
