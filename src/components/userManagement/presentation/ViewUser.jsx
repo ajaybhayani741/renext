@@ -7,8 +7,9 @@ import UserRating from './UserRating'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import { childUsers, userWiseRole } from '../../../utils/constant'
-import { entries, include, ternary } from '../../../utils/javascript'
+import { entries, include, isEqual, ternary } from '../../../utils/javascript'
 import viewUser from '../container/viewUser.container'
+import { userTranslationKey } from '../user.description'
 
 const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
   const {
@@ -98,6 +99,7 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
                         userDetails={userDetails}
                         className="mb-15"
                         showAssignHostel={false}
+                        userKey={isEqual(key, 'user_Hostel') ? key : null}
                       />
                     </Fragment>
                   )
@@ -113,7 +115,7 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
     <div>
       {open ? (
         <ANTDModal
-          title={t('txt_Details')}
+          title={`${t('txt_Details')} ${t(userTranslationKey[userDetails?.roleId])}`}
           centered
           open={open}
           onCancel={handleCancel}

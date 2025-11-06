@@ -623,7 +623,7 @@
   "job_Monkeys": "Monkeys",
   "msg_PleaseSelectHostel": "Please select hostel",
   "job_HostelPhotos": "Photos of Hostel",
-  "user_AssignHostel": "Assign Hostel",
+  "user_AssignHostelRandomly": "Assign Hostel Randomly",
   "txt_ViewJob": "View Job",
   "user_AssignInspectionOfficer": "Assign Inspection Officer",
   "user_HostelAddress": "Hostel Address",
@@ -634,5 +634,7 @@
   "dash_ExportToExcel": "Export To Excel",
   "user_LastInspectionDate": "Last Inspection Date",
   "msg_PleaseFillMandatory": "Please fill all mandatory details",
-  "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the district collector?"
+  "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the district collector?",
+  "user_ListOfInspectionOfficer": "List of Inspection Officer",
+  "user_ListOfHostels": "List of Hostels"
 }

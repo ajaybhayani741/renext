@@ -21,6 +21,7 @@ function UserList({
   userDetails,
   className,
   showAssignHostel = true,
+  userKey,
 }) {
   const {
     model,
@@ -68,7 +69,7 @@ function UserList({
               className="btn text-end"
               onClick={handleNonAssociateUser}
             >
-              {t('btn_Add') + ' +'}
+              {`${t('btn_Add')}${userKey ? ` ${t(userKey)}` : ''} +`}
             </ANTDButton>
           </div>
         )}
