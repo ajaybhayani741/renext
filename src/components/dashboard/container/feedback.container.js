@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
-import { isEqual } from '../../../utils/javascript'
+import { isEqual, keys } from '../../../utils/javascript'
 import { getFeedbackHostelsApi } from '../dashboard.api'
 
 const feedback = () => {
@@ -58,17 +58,32 @@ const feedback = () => {
     }
   }
 
+  const feedbackData =
+    selectedHostel && keys(selectedHostel).length
+      ? [
+          {
+            label: 'job_StudentFeedback',
+            description: selectedHostel?.feedbackRequestFromStudents,
+          },
+          {
+            label: 'job_OfficerFeedback',
+            description: selectedHostel?.feedbackRequestFromPrincipal,
+          },
+        ]
+      : []
+
   const feedbackColumns = [
     {
-      title: t('job_StudentFeedback'),
-      key: 'job_StudentFeedback',
-      dataIndex: 'feedbackRequestFromStudents',
+      title: '',
+      key: 'label',
+      dataIndex: 'label',
       width: '50%',
+      render: text => <span>{t(text)}</span>,
     },
     {
-      title: t('job_OfficerFeedback'),
-      key: 'job_OfficerFeedback',
-      dataIndex: 'feedbackRequestFromPrincipal',
+      title: '',
+      key: 'description',
+      dataIndex: 'description',
       width: '50%',
     },
   ]
@@ -79,6 +94,7 @@ const feedback = () => {
     hostelsList,
     selectedHostel,
     feedbackColumns,
+    feedbackData,
   }
 }
 
