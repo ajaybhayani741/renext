@@ -7,7 +7,13 @@ import { addressFormat } from '../../../utils'
 import { childUsers, userWiseRole } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
-import { include, length, ternary } from '../../../utils/javascript'
+import {
+  include,
+  isEqual,
+  length,
+  notEqual,
+  ternary,
+} from '../../../utils/javascript'
 
 const userColumns = ({
   showAssignHostel,
@@ -29,7 +35,7 @@ const userColumns = ({
   const { location } = useRouter()
 
   const isChildUser = include(childUsers, roleId)
-  const { inspectionOfficer } = userWiseRole
+  const { inspectionOfficer, hostel } = userWiseRole
   const actionButtons = rowData => (
     <div className="flex-nowrap d-flex">
       {showAssignInspectionOfficer && (
@@ -122,10 +128,18 @@ const userColumns = ({
       },
     },
     {
+      title: t('user_Designation'),
+      key: 'designation',
+      dataIndex: 'designation',
+      render: rowData => rowData || '-',
+      hidden: notEqual(roleId, inspectionOfficer),
+    },
+    {
       title: t('user_Email'),
       dataIndex: 'emailId',
       key: 'user_Email',
       render: rowData => rowData || '-',
+      hidden: isEqual(roleId, inspectionOfficer),
     },
     {
       title: t('user_Contact'),
@@ -134,7 +148,9 @@ const userColumns = ({
       render: rowData => <div className="w-nowrap">{rowData || '-'}</div>,
     },
     {
-      title: t('user_Address'),
+      title: isEqual(roleId, inspectionOfficer)
+        ? t('user_PlaceOfPosting')
+        : t('user_Address'),
       key: 'user_Address',
       width: '250px',
       className: 'address',
@@ -150,12 +166,14 @@ const userColumns = ({
         const { newDate } = rowData ? dateFormat(rowData) : {}
         return <>{newDate ? newDate : '-'}</>
       },
+      hidden: isEqual(roleId, inspectionOfficer),
     },
     {
       title: t('user_LastInspectionDate'),
       dataIndex: 'lastInspectionDate',
       key: 'user_LastInspectionDate',
       render: rowData => rowData || '-',
+      hidden: notEqual(roleId, hostel),
     },
     {
       title: t('txt_Action'),
