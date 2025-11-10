@@ -634,11 +634,11 @@
   "dash_ExportToExcel": "Export To Excel",
   "user_LastInspectionDate": "Last Inspection Date",
   "msg_PleaseFillMandatory": "Please fill all mandatory details",
-  "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the district collector?",
   "user_ListOfInspectionOfficer": "List of Inspection Officer",
   "user_ListOfHostels": "List of Hostels",
   "job_Inspection": "Inspection",
   "job_viewInspectionStatus": "View Inspection Status",
   "job_startInspectionJob": "Start Inspection Job",
-  "msg_AreYouSureWantToAssign": "Are you sure you want to assign it?"
+  "msg_AreYouSureWantToAssign": "Are you sure you want to assign it?",
+  "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the District Collector?"
 }

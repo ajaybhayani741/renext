@@ -6,6 +6,7 @@ import useTranslations from '../../../hooks/useTranslations'
 import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
+import ANTDTag from '../../../shared/antd/ANTDTag'
 import { addressFormat } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
@@ -174,7 +175,14 @@ const jobTable = ({
         dataIndex: 'status',
         className: 'nowrap',
         render: rowData => {
-          return <>{rowData ? t(rowData) : ''}</>
+          return (
+            <ANTDTag
+              className="pl-15 pr-15 fs-14 py-5 br-10"
+              color={include(rowData, 'INPROGRESS') ? '#FA8128' : '#40A368'}
+            >
+              {rowData ? t(rowData) : ''}
+            </ANTDTag>
+          )
         },
       },
       {
@@ -211,7 +219,7 @@ const jobTable = ({
   }) => {
     return [
       { label: 'job_Id', value: id },
-      { label: 'job_Title', value: jobTitle },
+      // { label: 'job_Title', value: jobTitle },
       {
         label: 'user_CreationDate',
         value: dateFormat(creationDate)?.newDate,
