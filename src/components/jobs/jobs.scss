@@ -294,19 +294,81 @@
   }
 }
 .active-form-modal {
+  .ant-form-item {
+    margin-bottom: 15px;
+  }
+  .ant-form-item .ant-form-item-control-input {
+    align-items: flex-start;
+    align-self: center;
+  }
   .ant-modal-content .ant-modal-body {
     background-color: #fff2ea;
     .ant-form-item-label > label {
-      line-height: 1.1;
+      line-height: 1.2;
     }
     .ant-form-item-label {
       margin-top: 0;
+      padding-right: 25px !important;
     }
   }
   .save-button {
     background-color: #fff2ea;
     border-color: #fff2ea;
     margin-right: 25px;
+  }
+
+  // Square radio buttons with border-radius for inspection job step 2 modal only
+  .ant-radio-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+
+    .ant-radio-wrapper {
+      // flex: 0 0 50%; // col-12 equivalent (50% width)
+      // max-width: 50%;
+      // margin-right: 0;
+      // padding-right: 8px;
+
+      // &:last-child {
+      //   padding-right: 0;
+      // }
+
+      .ant-radio {
+        .ant-radio-inner {
+          border-radius: 5px !important;
+
+          &::after {
+            border-radius: 2px !important;
+          }
+        }
+      }
+      .ant-radio-checked .ant-radio-inner::after {
+        content: '✔';
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-black) !important; /* green check */
+        font-size: 14px;
+        background: var(--color-white);
+        transform: none !important;
+        // top: 45%;
+        // left: 45%;
+        width: 16px;
+        height: 16px;
+        border-radius: 5px !important;
+        padding-bottom: 3px;
+        -webkit-text-fill-color: var(--color-black) !important;
+      }
+    }
+    .ant-radio-checked .ant-radio-inner {
+      background-color: transparent !important;
+      box-shadow: none !important;
+    }
+    .ant-radio {
+      width: 18px;
+      height: 18px;
+    }
   }
 }
 
