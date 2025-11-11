@@ -203,7 +203,7 @@ const jobTable = ({
   }) => {
     return [
       { label: 'job_Id', value: id },
-      { label: 'job_Title', value: jobTitle },
+      // { label: 'job_Title', value: jobTitle },
       {
         label: 'user_CreationDate',
         value: dateFormat(creationDate)?.newDate,

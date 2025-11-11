@@ -16,16 +16,21 @@ const WelcomeUser = () => {
 
   return (
     <div className="username">
-      <span>{t('txt_Welcome')}</span>
-      <span className="user_name">
-        <ANTDToolTip>
-          <span className="review-text">
-            {include([...childUsers, storeEmployee], roleId)
-              ? lastName
-              : businessName}
+      <div className="username-content">
+        <div className="host-label">Host</div>
+        <div className="welcome-text">
+          <span>{t('txt_Welcome')}</span>
+          <span className="user_name">
+            <ANTDToolTip>
+              <span className="review-text">
+                {include([...childUsers, storeEmployee], roleId)
+                  ? lastName
+                  : businessName}
+              </span>
+            </ANTDToolTip>
           </span>
-        </ANTDToolTip>
-      </span>
+        </div>
+      </div>
     </div>
   )
 }
