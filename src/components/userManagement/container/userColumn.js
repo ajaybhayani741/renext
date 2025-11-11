@@ -29,7 +29,7 @@ const userColumns = ({
   const { location } = useRouter()
 
   const isChildUser = include(childUsers, roleId)
-  const { inspectionOfficer } = userWiseRole
+  const { inspectionOfficer, hostel } = userWiseRole
   const actionButtons = rowData => (
     <div className="flex-nowrap d-flex">
       {showAssignInspectionOfficer && (
@@ -89,6 +89,7 @@ const userColumns = ({
       title: t('user_ID'),
       dataIndex: 'id',
       key: 'user_ID',
+      hidden: include([inspectionOfficer, hostel], roleId),
     },
     {
       title: t('user_Image'),

@@ -199,19 +199,22 @@ const jobTable = ({
     creationDate,
     modificationDate,
     jobTitle,
+    hostelInfo = {},
     ...jobData
   }) => {
     return [
-      { label: 'job_Id', value: id },
-      { label: 'job_Title', value: jobTitle },
+      // { label: 'job_Id', value: id },
+      // { label: 'job_Title', value: jobTitle },
+      { label: 'job_hostelName', value: hostelInfo?.lastName },
+      { label: 'user_HostelAddress', value: hostelInfo?.address },
       {
         label: 'user_CreationDate',
         value: dateFormat(creationDate)?.newDate,
       },
-      {
-        label: 'job_UpdatedDate',
-        value: dateFormat(modificationDate)?.newDate,
-      },
+      // {
+      //   label: 'job_UpdatedDate',
+      //   value: dateFormat(modificationDate)?.newDate,
+      // },
       { label: 'job_Status', value: jobData?.status },
     ].filter(item => !item.hidden)
   }

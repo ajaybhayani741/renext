@@ -34,6 +34,8 @@ const viewUser = ({ userDetails }) => {
     vendor,
     manufacturer,
     customer,
+    inspectionOfficer,
+    hostel,
   } = userWiseRole
   const allUser = [
     admin,
@@ -58,7 +60,11 @@ const viewUser = ({ userDetails }) => {
   }
 
   const basicInfoData = [
-    { label: 'user_ID', value: id },
+    {
+      label: 'user_ID',
+      value: id,
+      hidden: include([inspectionOfficer, hostel], loginUserRoleId),
+    },
     {
       label: isEqual(roleId, storeOwner)
         ? 'job_CompanyName'

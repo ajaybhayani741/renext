@@ -9,6 +9,7 @@ import ANTDModal from '../../../shared/antd/ANTDModal'
 import { childUsers } from '../../../utils/constant'
 import { entries, include, ternary } from '../../../utils/javascript'
 import viewUser from '../container/viewUser.container'
+import { userTranslationKey } from '../user.description'
 
 const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
   const {
@@ -107,7 +108,7 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
     <div>
       {open ? (
         <ANTDModal
-          title={t('txt_Details')}
+          title={`${t(userTranslationKey[userDetails?.roleId])} ${t('txt_Details')}`}
           centered
           open={open}
           onCancel={handleCancel}
