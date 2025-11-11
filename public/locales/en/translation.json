@@ -642,5 +642,6 @@
   "msg_AreYouSureWantToAssign": "Are you sure you want to assign it?",
   "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the District Collector?",
   "user_PlaceOfPosting": "Place of Posting",
-  "user_Designation": "Designation"
+  "user_Designation": "Designation",
+  "job_hostelName": "Hostel Name"
 }

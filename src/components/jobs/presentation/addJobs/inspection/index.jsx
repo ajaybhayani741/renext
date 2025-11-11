@@ -199,10 +199,9 @@ const InspectionJob = ({ editData }) => {
     ),
     4: (
       <>
-        <div className="text-center align-center">
+        <div className="text-center align-center m-auto">
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <img
-              className=""
               src={clipboardsImage}
               alt="clipboard"
               height="150px"

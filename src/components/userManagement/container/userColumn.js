@@ -95,6 +95,7 @@ const userColumns = ({
       title: t('user_ID'),
       dataIndex: 'id',
       key: 'user_ID',
+      hidden: include([inspectionOfficer, hostel], roleId),
     },
     {
       title: t('user_Image'),
