@@ -199,6 +199,7 @@ const userColumns = ({
     employeeId,
     companyCode,
     storeCode,
+    designation = '',
     ...user
   }) =>
     [
@@ -209,17 +210,26 @@ const userColumns = ({
       },
       { label: 'user_Name', value: lastName },
       {
+        label: 'user_Designation',
+        value: designation,
+        hidden: notEqual(roleId, inspectionOfficer),
+      },
+      {
         label: 'user_Email',
         value: emailId,
+        hidden: isEqual(roleId, inspectionOfficer),
       },
       { label: 'user_Contact', value: phoneNumber },
       {
-        label: 'user_Address',
+        label: isEqual(roleId, inspectionOfficer)
+          ? 'user_PlaceOfPosting'
+          : 'user_Address',
         value: addressFormat(user),
       },
       {
         label: 'user_DOJ',
         value: ternary(creationDate, dateFormat(creationDate)?.newDate, null),
+        hidden: isEqual(roleId, inspectionOfficer),
       },
     ].filter(item => !item.hidden)
 
