@@ -240,7 +240,11 @@ img {
         line-height: 1.2;
         margin-bottom: 2px;
 
-        @media only screen and (max-width: 767px) {
+        @media only screen and (min-width: 991px) {
+          display: none;
+        }
+
+        @media only screen and (max-width: 990px) {
           font-size: 18px;
         }
 

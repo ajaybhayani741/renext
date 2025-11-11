@@ -19,7 +19,7 @@ const WelcomeUser = () => {
       <div className="username-content">
         <div className="host-label">Host</div>
         <div className="welcome-text">
-          <span>{t('txt_Welcome')}</span>
+          <span className="mr-5">{t('txt_Welcome')}</span>
           <span className="user_name">
             <ANTDToolTip>
               <span className="review-text">
