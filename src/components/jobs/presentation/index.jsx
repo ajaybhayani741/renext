@@ -82,7 +82,7 @@ const JobManagement = () => {
   return (
     <>
       <div className="d-flex flex-wrap space-between">
-        <h2 className="page-title">{t('menu_Jobs')}</h2>
+        {/* <h2 className="page-title">{t('menu_Jobs')}</h2> */}
         <StoreSelect />
       </div>
       {entries(tabList)?.map(([key, value]) =>
