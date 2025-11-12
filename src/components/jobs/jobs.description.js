@@ -416,6 +416,11 @@ export const APPROVED = 'APPROVED'
 export const REJECTED = 'REJECTED'
 export const PENDING = 'PENDING'
 
+export const jobStatusList = {
+  JOB_REQUEST_INPROGRESS: 'INSPECTION IN PROGRESS',
+  JOB_COMPLETED: 'INSPECTION COMPLETED',
+}
+
 export {
   categoryELVOptions,
   certTagProp,

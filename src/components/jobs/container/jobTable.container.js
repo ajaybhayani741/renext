@@ -12,7 +12,7 @@ import { userWiseRole } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
 import { include, length, ternary } from '../../../utils/javascript'
-import { columnKeys } from '../jobs.description'
+import { columnKeys, jobStatusList } from '../jobs.description'
 
 const jobTable = ({
   displayColKeys,
@@ -177,10 +177,16 @@ const jobTable = ({
         render: rowData => {
           return (
             <ANTDTag
-              className="pl-15 pr-15 fs-14 py-5 br-10"
-              color={include(rowData, 'INPROGRESS') ? '#FA8128' : '#40A368'}
+              className="pl-15 pr-15 fs-14 py-5 br-10 color-black"
+              color={
+                include(rowData, 'INPROGRESS')
+                  ? '#FA8128'
+                  : include(rowData, 'COMPLETED')
+                    ? '#40A368'
+                    : ''
+              }
             >
-              {rowData ? t(rowData) : ''}
+              {rowData ? t(jobStatusList?.[rowData]) || rowData : ''}
             </ANTDTag>
           )
         },
