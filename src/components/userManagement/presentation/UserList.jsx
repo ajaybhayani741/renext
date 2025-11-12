@@ -126,6 +126,7 @@ function UserList({
             handleTableChange={handleAssociatedTableChange}
             handleSelect={onAddAssociate}
             multiSelect
+            showAssignHostel={false}
           />
         </ANTDModal>
       )}
