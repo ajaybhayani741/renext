@@ -638,6 +638,6 @@
   "user_ListOfInspectionOfficer": "List of Inspection Officer",
   "user_ListOfHostels": "List of Hostels",
   "job_Inspection": "Inspection",
-  "job_viewInspectionStatus": "View Inspection Status",
-  "job_startInspectionJob": "Start Inspection Job"
+  "job_viewInspectionStatus": "Inspection Status",
+  "job_startInspectionJob": "Start Inspection"
 }
