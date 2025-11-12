@@ -8,6 +8,7 @@ import ANTDModal from '../../../shared/antd/ANTDModal'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../utils/constant'
 import { include, isEqual, ternary } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
 import userList from '../container/userList.container'
 import { userRelationKey } from '../user.description'
 
@@ -41,7 +42,8 @@ function UserList({
     handleAssociatedTableChange,
   } = userList({ payload, isBuilding })
   const { t } = useTranslations()
-  const { inspectionOfficer } = userWiseRole
+  const { inspectionOfficer, hostel, admin } = userWiseRole
+  const loginUserRoleId = JSON.parse(getItem('userData'))
 
   return (
     <div className={className}>
@@ -61,17 +63,20 @@ function UserList({
             {t(subTitle)}
           </h3>
         )}
-        {showAdd && !include([inspectionOfficer], payload?.roleId) && (
-          <div className="d-flex flex-end mt-10">
-            <ANTDButton
-              type="primary"
-              className="btn text-end"
-              onClick={handleNonAssociateUser}
-            >
-              {t('btn_Add') + ' +'}
-            </ANTDButton>
-          </div>
-        )}
+        {showAdd &&
+          (isEqual(loginUserRoleId?.roleId, admin)
+            ? !isEqual(payload?.roleId, hostel)
+            : !include([inspectionOfficer], payload?.roleId)) && (
+            <div className="d-flex flex-end mt-10">
+              <ANTDButton
+                type="primary"
+                className="btn text-end"
+                onClick={handleNonAssociateUser}
+              >
+                {t('btn_Add') + ' +'}
+              </ANTDButton>
+            </div>
+          )}
       </div>
       <UserTable
         {...{
@@ -89,6 +94,7 @@ function UserList({
           payload,
           apiCall,
           showAssignHostel,
+          handleAssignHostel: handleNonAssociateUser,
         }}
       />
 

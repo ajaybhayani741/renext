@@ -7,7 +7,8 @@ import { addressFormat } from '../../../utils'
 import { childUsers, userWiseRole } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
-import { include, length, ternary } from '../../../utils/javascript'
+import { include, isEqual, length, ternary } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
 
 const userColumns = ({
   showAssignHostel,
@@ -22,30 +23,43 @@ const userColumns = ({
   removeEditBtn,
   handleAssignHostel,
   handleAssignInspectionOfficer,
+  handleAssignInspectionOfficerRandomly,
   showAssignInspectionOfficer,
   columnFilter,
 }) => {
   const { t } = useTranslations()
   const { location } = useRouter()
+  const userData = JSON.parse(getItem('userData'))
+  const { roleId: loginUserRoleId } = { ...userData }
 
   const isChildUser = include(childUsers, roleId)
-  const { inspectionOfficer } = userWiseRole
+  const { inspectionOfficer, hostel, districtCollector } = userWiseRole
   const actionButtons = rowData => (
-    <div className="flex-nowrap d-flex">
+    <div className={showAssignInspectionOfficer ? '' : 'flex-nowrap d-flex'}>
       {showAssignInspectionOfficer && (
-        <ANTDButton
-          className="bg-assign-hostel"
-          onClick={() => handleAssignInspectionOfficer({ rowData })}
-        >
-          {t('user_AssignInspectionOfficer')}
-        </ANTDButton>
+        <>
+          <ANTDButton
+            className="bg-assign-hostel-random"
+            onClick={() => handleAssignInspectionOfficerRandomly({ rowData })}
+          >
+            {t('user_AssignInspectionOfficerRandomly')}
+          </ANTDButton>
+          <div className="mb-5" />
+          <ANTDButton
+            className="bg-assign-hostel"
+            onClick={() => handleAssignInspectionOfficer({ rowData })}
+          >
+            {t('user_AssignInspectionOfficer')}
+          </ANTDButton>
+        </>
       )}
       {include(location.pathname, USER_TXT) &&
         include([inspectionOfficer], roleId) &&
+        isEqual(loginUserRoleId, districtCollector) &&
         showAssignHostel && (
           <ANTDButton
             className="bg-assign-hostel"
-            onClick={() => handleAssignHostel({ rowData })}
+            onClick={() => handleAssignHostel({ rowData, roleId: hostel })}
           >
             {t('user_AssignHostel')}
           </ANTDButton>

@@ -35,9 +35,11 @@ function UserTable({
   searchByEmail,
   isCardView,
   handleAssignInspectionOfficer,
+  handleAssignInspectionOfficerRandomly,
   showAssignInspectionOfficer,
   columnFilter,
   showAssignHostel = true,
+  handleAssignHostel,
 }) {
   const {
     viewModel,
@@ -53,7 +55,6 @@ function UserTable({
     editInfo,
     setEditInfo,
     handleCancelEdit,
-    handleAssignHostel,
   } = userTable({ payload, multiSelect, isBuilding, searchByEmail })
 
   const { column, actionButtons, cardViewFn } = userColumns({
@@ -73,6 +74,7 @@ function UserTable({
     removeEditBtn,
     handleAssignHostel,
     handleAssignInspectionOfficer,
+    handleAssignInspectionOfficerRandomly,
     showAssignInspectionOfficer,
     columnFilter,
   })

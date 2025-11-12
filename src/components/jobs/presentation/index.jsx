@@ -19,7 +19,6 @@ import ANTDSelect from '../../../shared/antd/ANTDSelect'
 import ANTDTab from '../../../shared/antd/ANTDTab'
 import Label from '../../../shared/Label'
 import { isDateRangeDefault, resetFiscalYearToDefault } from '../../../utils'
-import { userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual } from '../../../utils/javascript'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 import StoreSelect from '../../common/presentation/StoreSelect'
@@ -28,7 +27,7 @@ import jobs from '../container/jobs.container'
 import { exportExcelOptions, searchByKeys, tabKeys } from '../jobs.description'
 import JobTable from './JobTable'
 import ViewJob from './viewJobs'
-import UserTable from '../../userManagement/presentation/UserTable'
+import UnassignedHostels from './viewJobs/UnassignedHostels'
 
 const JobManagement = () => {
   const {
@@ -56,15 +55,8 @@ const JobManagement = () => {
     onSelectExportCol,
     onSelectColumn,
     onSelectAllColumn,
-    handleAssignInspectionOfficer,
-    inspectionOfficerModal,
-    inspectionOfficerData,
-    handleInspectionOfficerTableChange,
-    handleCloseInspectionOfficerModal,
-    onAssignInspectionOfficer,
   } = jobs()
 
-  const { inspectionOfficer } = userWiseRole
   const { type: jobType, status } = { ...activeTab }
   const { dispatch, selector } = useRedux()
   const { options, dateRange } = selector(state => state?.app?.fiscalYear)
@@ -175,25 +167,7 @@ const JobManagement = () => {
         </>
       )}
       {isUnassignHostelTab ? (
-        <UserTable
-          userData={data}
-          handleTableChange={handleTableChange}
-          handleView={handleViewClick}
-          payload={{ roleId: inspectionOfficer }}
-          removeEditBtn={true}
-          isCardView={false}
-          pagination={true}
-          handleAssignInspectionOfficer={handleAssignInspectionOfficer}
-          showAssignInspectionOfficer={true}
-          columnFilter={[
-            'user_ID',
-            'user_Name',
-            'user_Address',
-            'user_Contact',
-            'user_LastInspectionDate',
-            'txt_Action',
-          ]}
-        />
+        <UnassignedHostels />
       ) : (
         <JobTable
           displayColKeys={columnFilters}
@@ -259,29 +233,6 @@ const JobManagement = () => {
               {t('btn_Save')}
             </ANTDButton>
           </div>
-        </ANTDModal>
-      )}
-      {inspectionOfficerModal?.open && (
-        <ANTDModal
-          title={t('user_InspectionOfficer')}
-          centered
-          open={inspectionOfficerModal?.open}
-          onCancel={handleCloseInspectionOfficerModal}
-          footer={false}
-          width={1000}
-        >
-          <UserTable
-            className="mb-15"
-            userData={inspectionOfficerData}
-            payload={{
-              roleId: inspectionOfficer,
-              relationType: 'nonAssociate',
-            }}
-            isSearch
-            handleTableChange={handleInspectionOfficerTableChange}
-            handleSelect={onAssignInspectionOfficer}
-            // multiSelect
-          />
         </ANTDModal>
       )}
     </>
