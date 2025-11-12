@@ -1,12 +1,12 @@
 import pathName, {
   ADMIN,
+  DASHBOARD_TXT,
   DISTRICT_COLLECTOR,
   HOSTEL,
   INSPECTION_OFFICER,
   STATE_ADMIN_OFFICER,
   STATE_HOSTEL_DEPARTMENT,
   USER_TXT,
-  DASHBOARD_TXT,
 } from '../../routing/pathName.constant'
 import { userWiseRole } from '../../utils/constant'
 import {
@@ -37,7 +37,7 @@ const allUser = [
   stateHostelDepartment,
   stateAdminOfficer,
   districtCollector,
-  inspectionOfficer,
+  // inspectionOfficer,
   hostel,
 ]
 
@@ -63,7 +63,7 @@ const userChildrenList = [
       admin,
       stateAdminOfficer,
       districtCollector,
-      inspectionOfficer,
+      // inspectionOfficer,
       hostel,
     ],
     addEdit: [admin],
@@ -103,7 +103,7 @@ const userChildrenList = [
       admin,
       stateAdminOfficer,
       stateHostelDepartment,
-      inspectionOfficer,
+      // inspectionOfficer,
       hostel,
     ],
     addEdit: [admin],
@@ -173,7 +173,7 @@ const userChildrenList = [
     userId: hostel,
     Icon: DealerIcon,
     label: 'user_Hostel',
-    sidebar: [admin, districtCollector, inspectionOfficer],
+    sidebar: [admin, districtCollector],
     addEdit: [admin, districtCollector],
     level: { 'sub-menu': [admin, inspectionOfficer] },
     userView: {
@@ -216,18 +216,19 @@ const sidebarMenus = [
       key: `${USER_TXT}/${prop.key}`,
     })),
   },
-  {
-    key: DASHBOARD_TXT,
-    Icon: DashboardIcon,
-    label: 'job_Dashboard',
-    sidebar: [districtCollector],
-  },
+
   {
     key: JOBS,
     Icon: ClipboardIcon,
     label: 'menu_Jobs',
     disabled: false,
     sidebar: [admin, districtCollector, inspectionOfficer],
+  },
+  {
+    key: DASHBOARD_TXT,
+    Icon: DashboardIcon,
+    label: 'job_Dashboard',
+    sidebar: [districtCollector],
   },
 ]
 
