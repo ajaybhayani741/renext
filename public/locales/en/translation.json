@@ -643,5 +643,6 @@
   "user_Designation": "Designation",
   "job_hostelName": "Hostel Name",
   "job_viewInspectionStatus": "Inspection Status",
-  "job_startInspectionJob": "Start Inspection"
+  "job_startInspectionJob": "Start Inspection",
+  "user_AssignInspectionOfficerRandomly": "Assign Inspection Officer Randomly"
 }

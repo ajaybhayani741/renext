@@ -21,6 +21,7 @@ const userList = ({ payload, isBuilding }) => {
     open: false,
     userId: null,
   })
+  const [selectedAssigneeUser, setSelectedAssigneeUser] = useState(null)
   const [buildingInfo, setBuildingInfo] = useState({ flag: false, data: {} })
   const modelTitle = userTranslationKey[payload?.roleId]
   const loginUserRoleId = JSON.parse(getItem('userData'))
@@ -61,24 +62,25 @@ const userList = ({ payload, isBuilding }) => {
     apiCall({ pageNo: pagination.current })
   }
 
-  const associateApiCall = async ({ pageNo }) => {
+  const associateApiCall = async ({ pageNo, roleId = null }) => {
     setAssociatedData(pre => ({ ...pre, loader: true }))
     const districtCollectorId =
-      isEqual(payload?.roleId, hostel) &&
+      isEqual(roleId || payload?.roleId, hostel) &&
       isEqual(loginUserRoleId?.roleId, districtCollector)
         ? loginUserRoleId?.id
         : null
-    const params = `${pageNo}?roleId=${payload?.roleId}&userId=${districtCollectorId || payload?.userId}&relationType=${userRelationKey.nonAssociate}`
+    const params = `${pageNo}?roleId=${roleId || payload?.roleId}&userId=${districtCollectorId || payload?.userId}&relationType=${userRelationKey.nonAssociate}`
     const result = await getUserList({ params })
     setAssociatedData({ ...result?.data, loader: false })
   }
 
-  const handleNonAssociateUser = async () => {
+  const handleNonAssociateUser = async ({ rowData, roleId }) => {
     if (isBuilding) {
       setBuildingInfo({ flag: true, data: {} })
     } else {
       setModel(true)
-      associateApiCall({ pageNo: 1 })
+      associateApiCall({ pageNo: 1, roleId })
+      rowData && setSelectedAssigneeUser(rowData)
     }
   }
 
@@ -98,7 +100,7 @@ const userList = ({ payload, isBuilding }) => {
   const onAddAssociate = async selectedUsers => {
     setAssociatedData(pre => ({ ...pre, loader: true }))
     const payloadData = `?userId=${
-      payload?.userId
+      selectedAssigneeUser?.id || payload?.userId
     }&associateUserId=${selectedUsers?.map(user => user?.id)}`
     const { data } = await addAssociateApi({ params: payloadData })
     setAssociatedData(pre => ({ ...pre, loader: false }))
