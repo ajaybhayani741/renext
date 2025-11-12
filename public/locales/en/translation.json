@@ -637,11 +637,11 @@
   "user_ListOfInspectionOfficer": "List of Inspection Officer",
   "user_ListOfHostels": "List of Hostels",
   "job_Inspection": "Inspection",
-  "job_viewInspectionStatus": "View Inspection Status",
-  "job_startInspectionJob": "Start Inspection Job",
   "msg_AreYouSureWantToAssign": "Are you sure you want to assign it?",
   "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the District Collector?",
   "user_PlaceOfPosting": "Place of Posting",
   "user_Designation": "Designation",
-  "job_hostelName": "Hostel Name"
+  "job_hostelName": "Hostel Name",
+  "job_viewInspectionStatus": "Inspection Status",
+  "job_startInspectionJob": "Start Inspection"
 }

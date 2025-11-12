@@ -6,6 +6,7 @@ import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import { setDeviceStatus, setMobileStatus } from '../../../redux/app/reducer'
 import ANTDTooltip from '../../../shared/antd/ANTDTooltip'
+import { userWiseRole } from '../../../utils/constant'
 import {
   entries,
   include,
@@ -28,6 +29,7 @@ const appLayout = () => {
   const activeItem1 = location.pathname
   const defaultOpenKeys = [`/${activeItem1.split('/')?.[1]}`]
   const [collapsed, setCollapsed] = useState(false)
+  const { inspectionOfficer } = userWiseRole
 
   const removeAddFromLastPath = () => {
     let url = ''
@@ -77,9 +79,13 @@ const appLayout = () => {
           menu.sidebar.includes(roleIdToFilter)
         ) {
           const { key, label, Icon, disabled } = menu
+          const updatedLabel =
+            isEqual(roleId, inspectionOfficer) && isEqual(label, 'menu_Jobs')
+              ? 'job_InspectionJob'
+              : label
           const filteredMenu = {
             key,
-            label: <ANTDTooltip>{t(label)}</ANTDTooltip>,
+            label: <ANTDTooltip>{t(updatedLabel)}</ANTDTooltip>,
             className: newClass,
             Icon,
             disabled,

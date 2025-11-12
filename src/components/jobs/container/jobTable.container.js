@@ -31,13 +31,13 @@ const jobTable = ({
   const { inspectionOfficer } = userWiseRole
 
   const actionButtons = rowData => (
-    <div className="d-flex flex-nowrap">
+    <div>
       <ANTDButton className="bg-view" onClick={() => onViewClick(rowData?.id)}>
         {t('job_viewInspectionStatus')}
       </ANTDButton>
       {checkEditPermission && checkEditPermission(rowData) && (
         <ANTDButton
-          className="bg-edit"
+          className="bg-start"
           onClick={() => {
             navigate(
               pathName.EDIT_JOB.replace(':jobId', rowData?.id).replace(
