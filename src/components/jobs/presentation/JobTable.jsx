@@ -7,6 +7,7 @@ import ANTDTable from '../../../shared/antd/ANTDTable'
 import ANTDTag from '../../../shared/antd/ANTDTag'
 import { include, isEqual, length, ternary } from '../../../utils/javascript'
 import jobTable from '../container/jobTable.container'
+import { jobStatusList } from '../jobs.description'
 
 const JobTable = ({
   displayColKeys,
@@ -109,7 +110,7 @@ const JobTable = ({
                                           : '#40A368'
                                       }
                                     >
-                                      {t(value)}
+                                      {t(jobStatusList?.[value])}
                                     </ANTDTag>
                                   </>
                                 ) : (
