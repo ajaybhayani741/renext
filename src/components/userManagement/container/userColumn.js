@@ -174,7 +174,7 @@ const userColumns = ({
         const { newDate } = rowData ? dateFormat(rowData) : {}
         return <>{newDate ? newDate : '-'}</>
       },
-      hidden: isEqual(roleId, inspectionOfficer),
+      hidden: include([inspectionOfficer, hostel], roleId),
     },
     {
       title: t('user_LastInspectionDate'),
