@@ -1,7 +1,8 @@
 import { sidebarMenus } from '../components/layout/sidebar.description'
 import PageNotFound from '../components/PageNotFound'
 import useRouter from '../hooks/useRouter'
-import { USER_TXT } from '../routing/pathName.constant'
+import { USER_TXT, INSPECTION_OFFICER } from '../routing/pathName.constant'
+import { userWiseRole } from '../utils/constant'
 import { include, isEqual, ternary } from '../utils/javascript'
 import { getItem } from '../utils/localstorage'
 
@@ -10,6 +11,8 @@ const withUserRoute = Component => {
     const { location } = useRouter()
     const userData = JSON.parse(getItem('userData'))
     const { roleId } = { ...userData }
+    const { districtCollector } = userWiseRole
+
     const isValid = sidebarMenus
       .find(({ key }) => isEqual(key, USER_TXT))
       .children.some(menu => {
@@ -19,7 +22,17 @@ const withUserRoute = Component => {
         return null
       })
 
-    return <>{ternary(isValid, <Component {...props} />, <PageNotFound />)}</>
+    return (
+      <>
+        {ternary(
+          (isEqual(roleId, districtCollector) &&
+            isEqual(location.pathname, `${USER_TXT}/${INSPECTION_OFFICER}`)) ||
+            isValid,
+          <Component {...props} />,
+          <PageNotFound />,
+        )}
+      </>
+    )
   }
 }
 

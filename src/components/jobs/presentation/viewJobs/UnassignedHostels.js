@@ -1,15 +1,19 @@
 import React from 'react'
 
+import useRouter from '../../../../hooks/useRouter'
 import useTranslations from '../../../../hooks/useTranslations'
+import { HOSTEL } from '../../../../routing/pathName.constant'
 import ANTDModal from '../../../../shared/antd/ANTDModal'
 import PopUpConfirm from '../../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../../utils/constant'
+import { include } from '../../../../utils/javascript'
 import UserTable from '../../../userManagement/presentation/UserTable'
 import unassignedHostels from '../../container/unassignedHostels.container'
 
 const UnassignedHostels = () => {
   const { t } = useTranslations()
-  const { inspectionOfficer } = userWiseRole
+  const { inspectionOfficer, hostel } = userWiseRole
+  const { location } = useRouter()
 
   const {
     hostelData,
@@ -27,11 +31,14 @@ const UnassignedHostels = () => {
   } = unassignedHostels()
   return (
     <>
+      {include(location.pathname, HOSTEL) ? (
+        <h2 className="page-title">{t('job_UnassignedHostels')}</h2>
+      ) : null}
       <UserTable
         userData={hostelData}
         handleTableChange={handleTableChange}
         handleView={handleViewClick}
-        payload={{ roleId: inspectionOfficer }}
+        payload={{ roleId: hostel }}
         removeEditBtn={true}
         isCardView={false}
         pagination={true}
