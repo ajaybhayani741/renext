@@ -1,3 +1,4 @@
+import { dayJs } from './dayjs'
 import {
   include,
   isEqual,
@@ -192,6 +193,13 @@ const getLocation = async () => {
   })
 }
 
+const calendarYearDate = year => {
+  const saveFormat = 'DD/MM/YYYY'
+  const startDate = dayJs(`${year}-01-01`).format(saveFormat)
+  const endDate = dayJs(`${year}-12-31`).format(saveFormat)
+  return { startDate, endDate }
+}
+
 export {
   b64toFile,
   fieldContactFormat,
@@ -203,4 +211,5 @@ export {
   deepClone,
   getLocation,
   modifyFileListKeys,
+  calendarYearDate,
 }

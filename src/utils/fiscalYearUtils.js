@@ -1,3 +1,4 @@
+import { calendarYearDate } from './customFunctions'
 import { dayJs } from './dayjs'
 
 /**
@@ -6,13 +7,10 @@ import { dayJs } from './dayjs'
  */
 export const getDefaultFiscalYear = () => {
   const currentYear = dayJs().year()
-  const currentFiscalYear = dayJs().isBefore(`${currentYear}-04-01`)
+  const currentFiscalYear = dayJs().isBefore(`${currentYear}-01-01`)
     ? currentYear - 1
     : currentYear
-
-  const saveFormat = 'DD/MM/YYYY'
-  const startDate = dayJs(`${currentFiscalYear}-04-01`).format(saveFormat)
-  const endDate = dayJs(`${currentFiscalYear + 1}-03-31`).format(saveFormat)
+  const { startDate, endDate } = calendarYearDate(currentFiscalYear)
 
   return {
     value: currentFiscalYear,
@@ -49,7 +47,7 @@ export const isDateRangeDefault = currentDateRange => {
  */
 export const resetFiscalYearToDefault = (dispatch, options) => {
   const defaultValues = getDefaultFiscalYear()
-  
+
   dispatch({
     type: 'app/setFiscalYear',
     payload: {
