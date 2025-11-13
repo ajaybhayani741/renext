@@ -1,12 +1,12 @@
 import pathName, {
   ADMIN,
+  DASHBOARD_TXT,
   DISTRICT_COLLECTOR,
   HOSTEL,
   INSPECTION_OFFICER,
   STATE_ADMIN_OFFICER,
   STATE_HOSTEL_DEPARTMENT,
   USER_TXT,
-  DASHBOARD_TXT,
 } from '../../routing/pathName.constant'
 import { userWiseRole } from '../../utils/constant'
 import {
@@ -36,8 +36,8 @@ const allUser = [
   admin,
   stateHostelDepartment,
   stateAdminOfficer,
-  districtCollector,
-  inspectionOfficer,
+  // districtCollector,
+  // inspectionOfficer,
   hostel,
 ]
 
@@ -62,8 +62,8 @@ const userChildrenList = [
     sidebar: [
       admin,
       stateAdminOfficer,
-      districtCollector,
-      inspectionOfficer,
+      // districtCollector,
+      // inspectionOfficer,
       hostel,
     ],
     addEdit: [admin],
@@ -103,7 +103,7 @@ const userChildrenList = [
       admin,
       stateAdminOfficer,
       stateHostelDepartment,
-      inspectionOfficer,
+      // inspectionOfficer,
       hostel,
     ],
     addEdit: [admin],
@@ -173,7 +173,7 @@ const userChildrenList = [
     userId: hostel,
     Icon: DealerIcon,
     label: 'user_Hostel',
-    sidebar: [admin, districtCollector, inspectionOfficer],
+    sidebar: [admin, districtCollector],
     addEdit: [admin, districtCollector],
     level: { 'sub-menu': [admin, inspectionOfficer] },
     userView: {
@@ -217,17 +217,29 @@ const sidebarMenus = [
     })),
   },
   {
-    key: DASHBOARD_TXT,
-    Icon: DashboardIcon,
-    label: 'job_Dashboard',
+    key: `${USER_TXT}/${INSPECTION_OFFICER}`,
+    Icon: UserIcon,
+    label: 'user_AssignHostelToInspectionOfficer',
+    sidebar: [districtCollector],
+  },
+  {
+    key: `/${HOSTEL}`,
+    Icon: ClipboardIcon,
+    label: 'user_AssignInspectionOfficerToHostel',
     sidebar: [districtCollector],
   },
   {
     key: JOBS,
     Icon: ClipboardIcon,
-    label: 'menu_Jobs',
+    label: 'job_InspectionJob',
     disabled: false,
     sidebar: [admin, districtCollector, inspectionOfficer],
+  },
+  {
+    key: DASHBOARD_TXT,
+    Icon: DashboardIcon,
+    label: 'job_Dashboard',
+    sidebar: [districtCollector],
   },
 ]
 

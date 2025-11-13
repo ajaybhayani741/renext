@@ -41,7 +41,9 @@ const userColumns = ({
   const isChildUser = include(childUsers, roleId)
   const { inspectionOfficer, hostel, districtCollector } = userWiseRole
   const actionButtons = rowData => (
-    <div className={showAssignInspectionOfficer ? '' : 'flex-nowrap d-flex'}>
+    <div
+      className={showAssignInspectionOfficer ? 'py-5' : 'flex-nowrap d-flex'}
+    >
       {showAssignInspectionOfficer && (
         <>
           <ANTDButton

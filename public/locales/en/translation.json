@@ -631,6 +631,7 @@
   "msg_confirmLocation": "Do you want to start the job? Ensure you are at the actual location of hostel",
   "msg_confirmEndLocation": "Do you want to end the job? Ensure you are at the actual location of hostel",
   "job_Unassign": "Unassigned",
+  "job_UnassignedHostels": "Unassigned Hostels",
   "dash_ExportToExcel": "Export To Excel",
   "user_LastInspectionDate": "Last Inspection Date",
   "msg_PleaseFillMandatory": "Please fill all mandatory details",
@@ -644,5 +645,7 @@
   "job_hostelName": "Hostel Name",
   "job_viewInspectionStatus": "Inspection Status",
   "job_startInspectionJob": "Start Inspection",
-  "user_AssignInspectionOfficerRandomly": "Assign Inspection Officer Randomly"
+  "user_AssignInspectionOfficerRandomly": "Assign Inspection Officer Randomly",
+  "user_AssignInspectionOfficerToHostel": "Assign Inspection Officer to Hostel",
+  "user_AssignHostelToInspectionOfficer": "Assign Hostel to Inspection Officer"
 }

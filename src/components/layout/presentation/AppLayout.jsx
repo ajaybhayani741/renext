@@ -32,6 +32,7 @@ function AppLayout() {
     transformItemsRecursive,
     collapsed,
     toggleCollapsed,
+    handleLogoClick,
   } = appLayout()
   const { logo } = configData
   return (
@@ -54,8 +55,10 @@ function AppLayout() {
         >
           <div className="brand-logo">
             <img
+              className="cursor-pointer"
               src={isDesktop && collapsed ? hostIcon : logo}
               alt="Mat Next"
+              onClick={handleLogoClick}
             />
           </div>
         </div>

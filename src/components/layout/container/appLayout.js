@@ -5,6 +5,7 @@ import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import { setDeviceStatus, setMobileStatus } from '../../../redux/app/reducer'
+import pathName, { USER_TXT } from '../../../routing/pathName.constant'
 import ANTDTooltip from '../../../shared/antd/ANTDTooltip'
 import { userWiseRole } from '../../../utils/constant'
 import {
@@ -29,7 +30,7 @@ const appLayout = () => {
   const activeItem1 = location.pathname
   const defaultOpenKeys = [`/${activeItem1.split('/')?.[1]}`]
   const [collapsed, setCollapsed] = useState(false)
-  const { inspectionOfficer } = userWiseRole
+  const { districtCollector } = userWiseRole
 
   const removeAddFromLastPath = () => {
     let url = ''
@@ -79,13 +80,9 @@ const appLayout = () => {
           menu.sidebar.includes(roleIdToFilter)
         ) {
           const { key, label, Icon, disabled } = menu
-          const updatedLabel =
-            isEqual(roleId, inspectionOfficer) && isEqual(label, 'menu_Jobs')
-              ? 'job_InspectionJob'
-              : label
           const filteredMenu = {
             key,
-            label: <ANTDTooltip>{t(updatedLabel)}</ANTDTooltip>,
+            label: <ANTDTooltip>{t(label)}</ANTDTooltip>,
             className: newClass,
             Icon,
             disabled,
@@ -115,7 +112,9 @@ const appLayout = () => {
             filtered.push(filteredMenu)
           }
         }
-        return filtered
+        return isEqual(roleId, districtCollector)
+          ? filtered.filter(menu => !isEqual(menu.key, USER_TXT))
+          : filtered
       }, []),
     [],
   )
@@ -146,6 +145,11 @@ const appLayout = () => {
     setCollapsed(!collapsed)
   }
 
+  const handleLogoClick = () => {
+    navigate(pathName.HOME)
+    setToggleMenu(false)
+  }
+
   return {
     t,
     ref,
@@ -159,6 +163,7 @@ const appLayout = () => {
     transformItemsRecursive,
     toggleCollapsed,
     collapsed,
+    handleLogoClick,
   }
 }
 
