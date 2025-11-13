@@ -635,5 +635,6 @@
   "user_LastInspectionDate": "Last Inspection Date",
   "msg_PleaseFillMandatory": "Please fill all mandatory details",
   "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the district collector?",
-  "msg_ForgetPasswordConsultDistrictCollector": "If you forget the password please consult the District collector office."
+  "msg_ForgetPasswordContactDistrictCollector": "Please contact the District Collector's office if you forget your password.",
+  "msg_PasswordCannotBeChanged": "Password cannot be changed."
 }

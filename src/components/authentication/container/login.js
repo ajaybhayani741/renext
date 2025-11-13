@@ -79,7 +79,10 @@ const login = () => {
   }
 
   const handleForgotPassword = () => {
-    navigate(pathName.FORGOT_PASSWORD)
+    // navigate(pathName.FORGOT_PASSWORD)
+    notifyMethod.warning({
+      message: 'msg_ForgetPasswordContactDistrictCollector',
+    })
   }
 
   const onFinishFailed = () => {}
