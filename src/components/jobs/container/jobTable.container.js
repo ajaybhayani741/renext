@@ -33,9 +33,10 @@ const jobTable = ({
   const { roleId } = { ...userData }
   const { districtCollector, inspectionOfficer } = userWiseRole
   const activeTab = selector(state => state?.jobs?.activeTab)
+  const isMobile = selector(state => state.app.isMobile)
 
   const actionButtons = rowData => (
-    <div className="d-flex flex-nowrap">
+    <div className={!isMobile ? '' : 'd-flex flex-nowrap'}>
       {isEqual(roleId, districtCollector) &&
         isEqual(jobType, tabKeys.inspection) &&
         isEqual(activeTab?.status, tabKeys.active) && (
@@ -46,9 +47,11 @@ const jobTable = ({
             {t('btn_DisAssociate')}
           </ANTDButton>
         )}
+      <div className="mb-5" />
       <ANTDButton className="bg-view" onClick={() => onViewClick(rowData?.id)}>
         {t('job_viewInspectionStatus')}
       </ANTDButton>
+      <div className="mb-5" />
       {checkEditPermission && checkEditPermission(rowData) && (
         <ANTDButton
           className="bg-start"
@@ -239,7 +242,7 @@ const jobTable = ({
     ...jobData
   }) => {
     return [
-      // { label: 'job_Id', value: id },
+      { label: 'job_Id', value: id },
       // { label: 'job_Title', value: jobTitle },
       { label: 'job_hostelName', value: hostelInfo?.lastName },
       { label: 'user_HostelAddress', value: hostelInfo?.address },

@@ -69,17 +69,17 @@ const JobTable = ({
               <ANTDCard
                 key={item.id}
                 className="list-card-view"
-                title={
-                  <div className="d-flex align-center">
-                    {`${t('job_Id')} : ${item?.id}`}
+                title={null}
+                extra={
+                  <div className="d-flex">
                     {!item?.read && (
                       <div className="blink-btn ml-10">
                         <ANTDButton>{t('txt_New')}</ANTDButton>
                       </div>
                     )}
+                    {actionButtons(item)}
                   </div>
                 }
-                extra={<>{actionButtons(item)}</>}
               >
                 <div className="card-details-container d-flex flex-wrap space-between flex-row-reverse">
                   {/* <ANTDColumn sm={5} xs={24}>
