@@ -807,3 +807,17 @@
   height: 28px;
   padding: 12px;
 }
+
+.list-card-view {
+  .card-details-container {
+    table {
+      tbody {
+        tr {
+          td {
+            vertical-align: top;
+          }
+        }
+      }
+    }
+  }
+}
