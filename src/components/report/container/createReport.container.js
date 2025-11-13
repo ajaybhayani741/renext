@@ -48,7 +48,7 @@ const createReport = ({ editData }) => {
   useEffect(() => {
     columnListApi()
     const todayDate = dayJs().format('DD/MM/YYYY')
-    const fiscalYear = dayJs().isBefore(`${dayJs().year()}-04-01`)
+    const fiscalYear = dayJs().isBefore(`${dayJs().year()}-01-01`)
       ? dayJs().year() - 1
       : dayJs().year()
     dispatch(

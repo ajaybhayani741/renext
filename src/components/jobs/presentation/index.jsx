@@ -1,9 +1,6 @@
 import '../jobs.scss'
 
-import { useLayoutEffect } from 'react'
-
 import withRouteAuth from '../../../hoc/withRouteAuth'
-import useRedux from '../../../hooks/useRedux'
 import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox, {
@@ -18,7 +15,6 @@ import ANTDRow from '../../../shared/antd/ANTDRow'
 import ANTDSelect from '../../../shared/antd/ANTDSelect'
 import ANTDTab from '../../../shared/antd/ANTDTab'
 import Label from '../../../shared/Label'
-import { isDateRangeDefault, resetFiscalYearToDefault } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual } from '../../../utils/javascript'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
@@ -66,18 +62,7 @@ const JobManagement = () => {
 
   const { inspectionOfficer } = userWiseRole
   const { type: jobType, status } = { ...activeTab }
-  const { dispatch, selector } = useRedux()
-  const { options, dateRange } = selector(state => state?.app?.fiscalYear)
   const isUnassignHostelTab = isEqual(status, tabKeys.unassignHostel)
-
-  useLayoutEffect(() => {
-    if (options && options.length > 0 && dateRange?.from && dateRange?.to) {
-      // Check if current date range matches default date range
-      if (!isDateRangeDefault(dateRange)) {
-        resetFiscalYearToDefault(dispatch, options)
-      }
-    }
-  }, [dispatch, options, dateRange])
 
   return (
     <>
