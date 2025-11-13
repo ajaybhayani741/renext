@@ -648,5 +648,6 @@
   "user_AssignInspectionOfficerRandomly": "Assign Inspection Officer Randomly",
   "user_AssignInspectionOfficerToHostel": "Assign Inspection Officer to Hostel",
   "user_AssignHostelToInspectionOfficer": "Assign Hostel to Inspection Officer",
-  "msg_ForgetPasswordConsultDistrictCollector": "If you forget the password please consult the District collector office."
+  "msg_ForgetPasswordContactDistrictCollector": "Please contact the District Collector's office if you forget your password.",
+  "msg_PasswordCannotBeChanged": "Password cannot be changed."
 }

@@ -20,7 +20,7 @@ const profile = () => {
       isEqual(value, tabKeys.password)
     ) {
       notifyMethod.warning({
-        message: t('msg_ForgetPasswordConsultDistrictCollector'),
+        message: t('msg_PasswordCannotBeChanged'),
       })
       return
     }
