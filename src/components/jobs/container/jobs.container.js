@@ -382,7 +382,7 @@ const jobs = () => {
       notifyMethod.success({
         message: 'msg_UserDisAssociatedSuccessfully',
       })
-      apiCall({ pageNo: 1 })
+      apiCall(1)
     }
     setDisAssociateHostel({ open: false, data: null })
   }
