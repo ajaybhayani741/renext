@@ -6,7 +6,7 @@ import { USER_TXT } from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
 import { entries, isEqual } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
-import { addAssociateApi, disAssociateApi, getUserList } from '../user.api'
+import { addAssociateApi, getUserList } from '../user.api'
 import { userRelationKey, userTranslationKey } from '../user.description'
 
 const userList = ({ payload, isBuilding }) => {
@@ -17,10 +17,6 @@ const userList = ({ payload, isBuilding }) => {
     loader: false,
   })
   const [model, setModel] = useState(false)
-  const [disAssociated, setDisAssociated] = useState({
-    open: false,
-    userId: null,
-  })
   const [buildingInfo, setBuildingInfo] = useState({ flag: false, data: {} })
   const modelTitle = userTranslationKey[payload?.roleId]
   const loginUserRoleId = JSON.parse(getItem('userData'))
@@ -85,10 +81,6 @@ const userList = ({ payload, isBuilding }) => {
   const handleCloseModel = () => {
     setModel(false)
     setAssociatedData({})
-    setDisAssociated({ open: false, userId: null })
-  }
-  const handleDAssociate = async user => {
-    setDisAssociated({ open: true, userId: user?.id })
   }
 
   const handleAssociatedTableChange = pagination => {
@@ -111,18 +103,6 @@ const userList = ({ payload, isBuilding }) => {
     }
   }
 
-  const removeAssociateUser = async () => {
-    const payloadData = `?userId=${payload?.userId}&disAssociateUserId=${disAssociated?.userId}`
-    const { data } = await disAssociateApi({ params: payloadData })
-    if (data?.success) {
-      notifyMethod.success({
-        message: 'msg_UserDisAssociatedSuccessfully',
-      })
-      apiCall({ pageNo: 1 })
-    }
-    setDisAssociated({ open: false, userId: null })
-  }
-
   const handleCancelEdit = () => {
     setBuildingInfo({ flag: false, data: {} })
   }
@@ -132,16 +112,13 @@ const userList = ({ payload, isBuilding }) => {
     userData,
     modelTitle,
     associatedData,
-    disAssociated,
     buildingInfo,
     apiCall,
     setBuildingInfo,
     onAddAssociate,
     handleCancelEdit,
     handleCloseModel,
-    handleDAssociate,
     handleTableChange,
-    removeAssociateUser,
     handleNonAssociateUser,
     handleAssociatedTableChange,
   }

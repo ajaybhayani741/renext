@@ -18,6 +18,7 @@ import ANTDRow from '../../../shared/antd/ANTDRow'
 import ANTDSelect from '../../../shared/antd/ANTDSelect'
 import ANTDTab from '../../../shared/antd/ANTDTab'
 import Label from '../../../shared/Label'
+import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { isDateRangeDefault, resetFiscalYearToDefault } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual } from '../../../utils/javascript'
@@ -62,6 +63,9 @@ const JobManagement = () => {
     handleInspectionOfficerTableChange,
     handleCloseInspectionOfficerModal,
     onAssignInspectionOfficer,
+    disAssociateHostel,
+    handleDisAssociateModal,
+    handleConfirmDisAssociate,
   } = jobs()
 
   const { inspectionOfficer } = userWiseRole
@@ -202,6 +206,7 @@ const JobManagement = () => {
           onViewClick={handleViewClick}
           checkEditPermission={checkEditPermission}
           jobType={jobType}
+          handleDisAssociateModal={handleDisAssociateModal}
         />
       )}
       {jobModel?.open && (
@@ -283,6 +288,15 @@ const JobManagement = () => {
             // multiSelect
           />
         </ANTDModal>
+      )}
+      {disAssociateHostel?.open && (
+        <PopUpConfirm
+          isOpen={disAssociateHostel?.open}
+          onCancelModel={handleDisAssociateModal}
+          onAccept={handleConfirmDisAssociate}
+          onReject={handleDisAssociateModal}
+          description={t('msg_disassociateUser')}
+        />
       )}
     </>
   )

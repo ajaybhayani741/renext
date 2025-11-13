@@ -10,7 +10,11 @@ import debounce from '../../../utils/debounce'
 import { EVMasterSheet, RefurbishmentRequest } from '../../../utils/icons'
 import { include, isEqual, notEqual, values } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
-import { getUserList, addAssociateApi } from '../../userManagement/user.api'
+import {
+  getUserList,
+  addAssociateApi,
+  disAssociateApi,
+} from '../../userManagement/user.api'
 import { userRelationKey } from '../../userManagement/user.description'
 import { getJobDetailApi, getJobListApi, searchJobListApi } from '../jobs.api'
 import {
@@ -82,6 +86,10 @@ const jobs = () => {
   const [inspectionOfficerData, setInspectionOfficerData] = useState({
     list: [],
     loader: false,
+  })
+  const [disAssociateHostel, setDisAssociateHostel] = useState({
+    open: false,
+    data: null,
   })
 
   const onExportToExcel = async () => {
@@ -425,6 +433,21 @@ const jobs = () => {
 
   const searchSelectOptions = []
 
+  const handleDisAssociateModal = ({ rowData }) => {
+    setDisAssociateHostel({ open: !disAssociateHostel?.open, data: rowData })
+  }
+
+  const handleConfirmDisAssociate = async () => {
+    const payloadData = `?userId=${disAssociateHostel?.data?.userId}&disAssociateUserId=${disAssociateHostel?.data?.hostelInfo?.id}`
+    const { data } = await disAssociateApi({ params: payloadData })
+    if (data?.success) {
+      notifyMethod.success({
+        message: 'msg_UserDisAssociatedSuccessfully',
+      })
+      apiCall()
+    }
+    setDisAssociateHostel({ open: false, data: null })
+  }
   return {
     t,
     data: isEqual(status, tabKeys.unassignHostel) ? hostelData : data[type],
@@ -457,6 +480,9 @@ const jobs = () => {
     handleInspectionOfficerTableChange,
     handleCloseInspectionOfficerModal,
     onAssignInspectionOfficer,
+    disAssociateHostel,
+    handleDisAssociateModal,
+    handleConfirmDisAssociate,
   }
 }
 
