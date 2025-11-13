@@ -146,8 +146,10 @@ const appLayout = () => {
   }
 
   const handleLogoClick = () => {
-    navigate(pathName.HOME)
     setToggleMenu(false)
+    if (isEqual(roleId, districtCollector)) {
+      navigate(pathName.HOME)
+    }
   }
 
   return {
@@ -164,6 +166,7 @@ const appLayout = () => {
     toggleCollapsed,
     collapsed,
     handleLogoClick,
+    roleId,
   }
 }
 
