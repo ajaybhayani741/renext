@@ -23,7 +23,7 @@ import {
   tabKeys,
 } from '../jobs.description'
 
-const jobs = () => {
+const jobs = ({ userView = false, userId, userJobType } = {}) => {
   const { inspectionOfficer } = userWiseRole
   const { t } = useTranslations()
   const { dispatch, selector } = useRedux()
@@ -140,6 +140,9 @@ const jobs = () => {
 
   useEffect(() => {
     if (fiscalYear) {
+      if (userView) {
+        return
+      }
       if (isEqual(status, tabKeys.unassignHostel)) {
         if (type === null) hostelApiCall()
       } else if (type) {
@@ -147,6 +150,12 @@ const jobs = () => {
       }
     }
   }, [fiscalYear, status, type])
+
+  useEffect(() => {
+    if (fiscalYear && userView) {
+      apiCall()
+    }
+  }, [userView])
 
   useEffect(() => {
     if (searchVal.current) {
@@ -209,15 +218,17 @@ const jobs = () => {
   }))
 
   const apiCall = async (pageNo = 1, range) => {
-    if (!payloadType[type]) return
+    const jobType = payloadType[userView ? userJobType : type]
+    if (!jobType) return
     const params = {
-      jobType: payloadType[type],
+      jobType: jobType,
       fiscalYear,
       active: isEqual(status, tabKeys.active),
+      ...(userView && { userId }),
     }
     setData(pre => ({
       ...pre,
-      [type]: { ...pre?.[type], loader: true },
+      [userJobType || type]: { ...pre?.[userJobType || type], loader: true },
     }))
     let resp
     if (searchVal.current || range) {
@@ -238,7 +249,7 @@ const jobs = () => {
     }
     setData(pre => ({
       ...pre,
-      [type]: {
+      [userJobType || type]: {
         ...resp?.data,
         loader: false,
       },
@@ -427,7 +438,11 @@ const jobs = () => {
 
   return {
     t,
-    data: isEqual(status, tabKeys.unassignHostel) ? hostelData : data[type],
+    data: userView
+      ? data[userJobType]
+      : isEqual(status, tabKeys.unassignHostel)
+        ? hostelData
+        : data[type],
     tabList,
     jobModel,
     isDesktop,

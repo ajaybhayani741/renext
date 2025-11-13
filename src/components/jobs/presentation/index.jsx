@@ -30,7 +30,7 @@ import JobTable from './JobTable'
 import ViewJob from './viewJobs'
 import UserTable from '../../userManagement/presentation/UserTable'
 
-const JobManagement = () => {
+const JobManagement = ({ userView = false, userId, userJobType }) => {
   const {
     t,
     data,
@@ -62,7 +62,7 @@ const JobManagement = () => {
     handleInspectionOfficerTableChange,
     handleCloseInspectionOfficerModal,
     onAssignInspectionOfficer,
-  } = jobs()
+  } = jobs({ userView, userId, userJobType })
 
   const { inspectionOfficer } = userWiseRole
   const { type: jobType, status } = { ...activeTab }
@@ -81,120 +81,7 @@ const JobManagement = () => {
 
   return (
     <>
-      <div className="d-flex flex-wrap space-between">
-        <h2 className="page-title">{t('menu_Jobs')}</h2>
-        <StoreSelect />
-      </div>
-      {entries(tabList)?.map(([key, value]) =>
-        value && value.length > 0 ? (
-          <ANTDTab
-            size="small"
-            key={key}
-            activeKey={activeTab?.[key]}
-            items={value?.map(({ label, ...item }) => ({
-              ...item,
-              label: t(label),
-            }))}
-            centered
-            onChange={tab => handleTabChange({ [key]: tab })}
-          />
-        ) : null,
-      )}
-      {include([tabKeys.smeltingRequest, tabKeys.recovery], jobType) &&
-        isEqual(tabKeys.complete, status) && (
-          <div
-            className="text-end mt-20 d-flex justify-content-end"
-            style={{
-              border: '1px solid #d9d9d9',
-              padding: '8px',
-              maxWidth: 'max-content',
-              marginLeft: 'auto',
-              borderRadius: '10px',
-            }}
-          >
-            <div className="mr-10">
-              <ANTDDateRange format="YYYY/MM/DD" />
-            </div>
-            <div className="mr-10">
-              {/* <ANTDSelect className="w-100" {...exportExcelProps} /> */}
-              <ANTDButton
-                type="primary"
-                onClick={onSelectExportCol}
-                loading={loading}
-              >
-                {t('job_SelectColumnsForExport')}
-              </ANTDButton>
-            </div>
-            <div>
-              <ANTDButton
-                type="primary"
-                onClick={onExportToExcel}
-                loading={loading}
-              >
-                {t('inv_ExportToExcel')}
-              </ANTDButton>
-            </div>
-          </div>
-        )}
-      {!isUnassignHostelTab && (
-        <>
-          <div className="d-flex flex-end">
-            <FiscalYearSelect
-              onDateChange={(from, to) => apiCall(1, { from, to })}
-            />
-          </div>
-          <ANTDRow gutter={10} className="mt-5">
-            <ANTDColumn md={12} lg={12} xs={24}>
-              <Label text={t('job_SearchBy')} />
-              <ANTDSelect className="w-100 mb-5" {...searchByProps} />
-            </ANTDColumn>
-            <ANTDColumn md={12} lg={12} xs={24}>
-              <Label text={t('txt_Search')} />
-              {include([searchByKeys.recoverySource], searchByProps.value) ? (
-                <ANTDSelect
-                  className="w-100 mb-5"
-                  options={searchSelectOptions}
-                  onChange={val => onSearch({ target: val })}
-                />
-              ) : (
-                <ANTDSearch
-                  className="mb-5"
-                  placeholder={t('user_Name')}
-                  onChange={onSearch}
-                />
-              )}
-            </ANTDColumn>
-          </ANTDRow>
-
-          {isDesktop && (
-            <>
-              <Label text={t('job_ColumnFilter')} />
-              <ANTDSelect className="w-100" {...columnFilterProps} />
-            </>
-          )}
-        </>
-      )}
-      {isUnassignHostelTab ? (
-        <UserTable
-          userData={data}
-          handleTableChange={handleTableChange}
-          handleView={handleViewClick}
-          payload={{ roleId: inspectionOfficer }}
-          removeEditBtn={true}
-          isCardView={false}
-          pagination={true}
-          handleAssignInspectionOfficer={handleAssignInspectionOfficer}
-          showAssignInspectionOfficer={true}
-          columnFilter={[
-            'user_ID',
-            'user_Name',
-            'user_Address',
-            'user_Contact',
-            'user_LastInspectionDate',
-            'txt_Action',
-          ]}
-        />
-      ) : (
+      {userView ? (
         <JobTable
           displayColKeys={columnFilters}
           tableData={data}
@@ -202,7 +89,137 @@ const JobManagement = () => {
           onViewClick={handleViewClick}
           checkEditPermission={checkEditPermission}
           jobType={jobType}
+          userView={userView}
         />
+      ) : (
+        <>
+          <div className="d-flex flex-wrap space-between">
+            <h2 className="page-title">{t('menu_Jobs')}</h2>
+            <StoreSelect />
+          </div>
+          {entries(tabList)?.map(([key, value]) =>
+            value && value.length > 0 ? (
+              <ANTDTab
+                size="small"
+                key={key}
+                activeKey={activeTab?.[key]}
+                items={value?.map(({ label, ...item }) => ({
+                  ...item,
+                  label: t(label),
+                }))}
+                centered
+                onChange={tab => handleTabChange({ [key]: tab })}
+              />
+            ) : null,
+          )}
+          {include([tabKeys.smeltingRequest, tabKeys.recovery], jobType) &&
+            isEqual(tabKeys.complete, status) && (
+              <div
+                className="text-end mt-20 d-flex justify-content-end"
+                style={{
+                  border: '1px solid #d9d9d9',
+                  padding: '8px',
+                  maxWidth: 'max-content',
+                  marginLeft: 'auto',
+                  borderRadius: '10px',
+                }}
+              >
+                <div className="mr-10">
+                  <ANTDDateRange format="YYYY/MM/DD" />
+                </div>
+                <div className="mr-10">
+                  {/* <ANTDSelect className="w-100" {...exportExcelProps} /> */}
+                  <ANTDButton
+                    type="primary"
+                    onClick={onSelectExportCol}
+                    loading={loading}
+                  >
+                    {t('job_SelectColumnsForExport')}
+                  </ANTDButton>
+                </div>
+                <div>
+                  <ANTDButton
+                    type="primary"
+                    onClick={onExportToExcel}
+                    loading={loading}
+                  >
+                    {t('inv_ExportToExcel')}
+                  </ANTDButton>
+                </div>
+              </div>
+            )}
+          {!isUnassignHostelTab && (
+            <>
+              <div className="d-flex flex-end">
+                <FiscalYearSelect
+                  onDateChange={(from, to) => apiCall(1, { from, to })}
+                />
+              </div>
+              <ANTDRow gutter={10} className="mt-5">
+                <ANTDColumn md={12} lg={12} xs={24}>
+                  <Label text={t('job_SearchBy')} />
+                  <ANTDSelect className="w-100 mb-5" {...searchByProps} />
+                </ANTDColumn>
+                <ANTDColumn md={12} lg={12} xs={24}>
+                  <Label text={t('txt_Search')} />
+                  {include(
+                    [searchByKeys.recoverySource],
+                    searchByProps.value,
+                  ) ? (
+                    <ANTDSelect
+                      className="w-100 mb-5"
+                      options={searchSelectOptions}
+                      onChange={val => onSearch({ target: val })}
+                    />
+                  ) : (
+                    <ANTDSearch
+                      className="mb-5"
+                      placeholder={t('user_Name')}
+                      onChange={onSearch}
+                    />
+                  )}
+                </ANTDColumn>
+              </ANTDRow>
+
+              {isDesktop && (
+                <>
+                  <Label text={t('job_ColumnFilter')} />
+                  <ANTDSelect className="w-100" {...columnFilterProps} />
+                </>
+              )}
+            </>
+          )}
+          {isUnassignHostelTab ? (
+            <UserTable
+              userData={data}
+              handleTableChange={handleTableChange}
+              handleView={handleViewClick}
+              payload={{ roleId: inspectionOfficer }}
+              removeEditBtn={true}
+              isCardView={false}
+              pagination={true}
+              handleAssignInspectionOfficer={handleAssignInspectionOfficer}
+              showAssignInspectionOfficer={true}
+              columnFilter={[
+                'user_ID',
+                'user_Name',
+                'user_Address',
+                'user_Contact',
+                'user_LastInspectionDate',
+                'txt_Action',
+              ]}
+            />
+          ) : (
+            <JobTable
+              displayColKeys={columnFilters}
+              tableData={data}
+              onChange={handleTableChange}
+              onViewClick={handleViewClick}
+              checkEditPermission={checkEditPermission}
+              jobType={jobType}
+            />
+          )}
+        </>
       )}
       {jobModel?.open && (
         <ANTDModal

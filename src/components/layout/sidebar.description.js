@@ -1,12 +1,12 @@
 import pathName, {
   ADMIN,
+  DASHBOARD_TXT,
   DISTRICT_COLLECTOR,
   HOSTEL,
   INSPECTION_OFFICER,
   STATE_ADMIN_OFFICER,
   STATE_HOSTEL_DEPARTMENT,
   USER_TXT,
-  DASHBOARD_TXT,
 } from '../../routing/pathName.constant'
 import { userWiseRole } from '../../utils/constant'
 import {
@@ -19,6 +19,7 @@ import {
   // Purchasing,
   UserIcon,
 } from '../../utils/icons'
+import { tabKeys } from '../jobs/jobs.description'
 import { userRelationKey } from '../userManagement/user.description'
 
 const { HOME, JOBS } = pathName
@@ -181,6 +182,13 @@ const userChildrenList = [
         {
           payload: { roleId: inspectionOfficer, relationType: associate },
           addAssociate: [admin, districtCollector],
+        },
+      ],
+      user_PreviousInspections: [
+        {
+          viewJobs: true,
+          payload: { jobType: tabKeys.inspection, active: false },
+          addAssociate: [],
         },
       ],
       user_AssociatedStateHostelDepartment: [

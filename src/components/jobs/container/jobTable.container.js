@@ -20,6 +20,7 @@ const jobTable = ({
   selectedJobs,
   handleSelectChange,
   readyOnly,
+  userView,
 }) => {
   const { t } = useTranslations()
   const { navigate } = useRouter()
@@ -81,6 +82,7 @@ const jobTable = ({
             </div>
           )
         },
+        hidden: userView,
       },
       {
         title: t('job_Id'),

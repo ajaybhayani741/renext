@@ -8,6 +8,7 @@ import useTranslations from '../../../hooks/useTranslations'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import { childUsers } from '../../../utils/constant'
 import { entries, include, ternary } from '../../../utils/javascript'
+import JobManagement from '../../jobs/presentation'
 import viewUser from '../container/viewUser.container'
 
 const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
@@ -83,16 +84,24 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
                   }
                   return (
                     <Fragment key={i}>
-                      <UserList
-                        key={i}
-                        payload={payload}
-                        showAdd={showAdd}
-                        subTitle={v?.subTitle}
-                        isBuilding={v?.isBuilding}
-                        userDetails={userDetails}
-                        className="mb-15"
-                        showAssignHostel={false}
-                      />
+                      {v?.viewJobs ? (
+                        <JobManagement
+                          userView={true}
+                          userId={userDetails?.id}
+                          userJobType={v?.payload?.jobType}
+                        />
+                      ) : (
+                        <UserList
+                          key={i}
+                          payload={payload}
+                          showAdd={showAdd}
+                          subTitle={v?.subTitle}
+                          isBuilding={v?.isBuilding}
+                          userDetails={userDetails}
+                          className="mb-15"
+                          showAssignHostel={false}
+                        />
+                      )}
                     </Fragment>
                   )
                 })}
