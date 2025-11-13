@@ -55,7 +55,13 @@ const addUser = ({
   const { params, navigate, location } = useRouter()
   const { dispatch } = useRedux()
   const { country } = configData
-  const { admin, hostel, stateAdminOfficer } = userWiseRole
+  const {
+    admin,
+    hostel,
+    stateAdminOfficer,
+    inspectionOfficer,
+    districtCollector,
+  } = userWiseRole
   const userType = params?.userType
   const formRoleId =
     roleIdByPath[userType] ?? userRoleId ?? editInfo?.data?.roleId
@@ -167,7 +173,10 @@ const addUser = ({
       }
       setUserForm(prevForm => {
         const { username, password, ...editForm } = prevForm || {}
-        return editForm
+        return isEqual(roleId, districtCollector) &&
+          isEqual(editInfo?.data?.roleId, inspectionOfficer)
+          ? { ...prevForm, username: { ...prevForm.username, disabled: true } }
+          : editForm
       })
     }
   }, [editInfo])
