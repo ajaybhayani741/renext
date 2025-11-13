@@ -10,12 +10,7 @@ import debounce from '../../../utils/debounce'
 import { EVMasterSheet, RefurbishmentRequest } from '../../../utils/icons'
 import { include, isEqual, notEqual, values } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
-import {
-  getUserList,
-  addAssociateApi,
-  disAssociateApi,
-} from '../../userManagement/user.api'
-import { userRelationKey } from '../../userManagement/user.description'
+import { disAssociateApi } from '../../userManagement/user.api'
 import { getJobDetailApi, getJobListApi, searchJobListApi } from '../jobs.api'
 import {
   columnKeys,
