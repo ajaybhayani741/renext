@@ -36,7 +36,7 @@ const allUser = [
   admin,
   stateHostelDepartment,
   stateAdminOfficer,
-  districtCollector,
+  // districtCollector,
   // inspectionOfficer,
   hostel,
 ]
@@ -62,7 +62,7 @@ const userChildrenList = [
     sidebar: [
       admin,
       stateAdminOfficer,
-      districtCollector,
+      // districtCollector,
       // inspectionOfficer,
       hostel,
     ],
@@ -216,11 +216,22 @@ const sidebarMenus = [
       key: `${USER_TXT}/${prop.key}`,
     })),
   },
-
+  {
+    key: `${USER_TXT}/${INSPECTION_OFFICER}`,
+    Icon: UserIcon,
+    label: 'user_AssignHostelToInspectionOfficer',
+    sidebar: [districtCollector],
+  },
+  {
+    key: `/${HOSTEL}`,
+    Icon: ClipboardIcon,
+    label: 'user_AssignInspectionOfficerToHostel',
+    sidebar: [districtCollector],
+  },
   {
     key: JOBS,
     Icon: ClipboardIcon,
-    label: 'menu_Jobs',
+    label: 'job_InspectionJob',
     disabled: false,
     sidebar: [admin, districtCollector, inspectionOfficer],
   },
