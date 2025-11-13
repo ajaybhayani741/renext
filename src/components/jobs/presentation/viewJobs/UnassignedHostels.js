@@ -12,7 +12,7 @@ import unassignedHostels from '../../container/unassignedHostels.container'
 
 const UnassignedHostels = () => {
   const { t } = useTranslations()
-  const { inspectionOfficer } = userWiseRole
+  const { inspectionOfficer, hostel } = userWiseRole
   const { location } = useRouter()
 
   const {
@@ -38,7 +38,7 @@ const UnassignedHostels = () => {
         userData={hostelData}
         handleTableChange={handleTableChange}
         handleView={handleViewClick}
-        payload={{ roleId: inspectionOfficer }}
+        payload={{ roleId: hostel }}
         removeEditBtn={true}
         isCardView={false}
         pagination={true}
