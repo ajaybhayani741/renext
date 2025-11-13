@@ -7,10 +7,12 @@ import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import { addressFormat } from '../../../utils'
+import { userWiseRole } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
-import { include, length, ternary } from '../../../utils/javascript'
-import { columnKeys } from '../jobs.description'
+import { include, isEqual, length, ternary } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
+import { columnKeys, tabKeys } from '../jobs.description'
 
 const jobTable = ({
   displayColKeys,
@@ -20,14 +22,29 @@ const jobTable = ({
   selectedJobs,
   handleSelectChange,
   readyOnly,
+  handleDisAssociateModal,
 }) => {
   const { t } = useTranslations()
   const { navigate } = useRouter()
   const { selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
+  const userData = JSON.parse(getItem('userData'))
+  const { roleId } = { ...userData }
+  const { districtCollector } = userWiseRole
+  const activeTab = selector(state => state?.jobs?.activeTab)
 
   const actionButtons = rowData => (
     <div className="d-flex flex-nowrap">
+      {isEqual(roleId, districtCollector) &&
+        isEqual(jobType, tabKeys.inspection) &&
+        isEqual(activeTab?.status, tabKeys.active) && (
+          <ANTDButton
+            className="bg-danger"
+            onClick={() => handleDisAssociateModal({ rowData })}
+          >
+            {t('btn_DisAssociate')}
+          </ANTDButton>
+        )}
       <ANTDButton className="bg-view" onClick={() => onViewClick(rowData?.id)}>
         {t('btn_View')}
       </ANTDButton>
