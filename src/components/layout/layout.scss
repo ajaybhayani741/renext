@@ -383,6 +383,11 @@ img {
 
   .ant-menu-title-content {
     font-size: 110%;
+    text-overflow: unset !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    word-wrap: break-word;
+    word-break: break-word;
   }
 
   @media screen and (max-width: 991px) {
@@ -640,9 +645,32 @@ img {
 .ant-menu-submenu-title {
   display: flex;
   align-items: center;
-  height: 50px;
+  height: auto !important;
+  min-height: 50px;
+  padding: 8px 16px !important;
+
+  .ant-menu-title-content {
+    text-overflow: unset !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    word-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.5;
+  }
 }
 
 .ant-menu-item {
   line-height: 40px;
+  height: auto !important;
+  min-height: 40px;
+  padding: 8px 16px !important;
+
+  .ant-menu-title-content {
+    text-overflow: unset !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    word-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.5;
+  }
 }

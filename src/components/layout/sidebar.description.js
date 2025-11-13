@@ -225,14 +225,14 @@ const sidebarMenus = [
     })),
   },
   {
-    key: `${USER_TXT}/${INSPECTION_OFFICER}`,
-    Icon: UserIcon,
+    key: `/${HOSTEL}`,
+    Icon: ClipboardIcon,
     label: 'user_AssignHostelToInspectionOfficer',
     sidebar: [districtCollector],
   },
   {
-    key: `/${HOSTEL}`,
-    Icon: ClipboardIcon,
+    key: `${USER_TXT}/${INSPECTION_OFFICER}`,
+    Icon: UserIcon,
     label: 'user_AssignInspectionOfficerToHostel',
     sidebar: [districtCollector],
   },
