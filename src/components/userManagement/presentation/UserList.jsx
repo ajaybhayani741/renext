@@ -1,16 +1,15 @@
 import '../user.scss'
 
-import AddUser from './AddUser'
-import UserTable from './UserTable'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDModal from '../../../shared/antd/ANTDModal'
-import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../utils/constant'
 import { include, isEqual, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import userList from '../container/userList.container'
 import { userRelationKey } from '../user.description'
+import AddUser from './AddUser'
+import UserTable from './UserTable'
 
 function UserList({
   permission = false,
@@ -28,7 +27,6 @@ function UserList({
     model,
     userData,
     modelTitle,
-    disAssociated,
     associatedData,
     buildingInfo,
     apiCall,
@@ -36,9 +34,7 @@ function UserList({
     onAddAssociate,
     handleCancelEdit,
     handleCloseModel,
-    handleDAssociate,
     handleTableChange,
-    removeAssociateUser,
     handleNonAssociateUser,
     handleAssociatedTableChange,
   } = userList({ payload, isBuilding })
@@ -91,23 +87,12 @@ function UserList({
             permission,
           ),
           handleTableChange,
-          handleDAssociate: showAdd && handleDAssociate,
           payload,
           apiCall,
           showAssignHostel,
           handleAssignHostel: handleNonAssociateUser,
         }}
       />
-
-      {disAssociated?.open && (
-        <PopUpConfirm
-          isOpen={disAssociated?.open}
-          onCancelModel={handleCloseModel}
-          onAccept={removeAssociateUser}
-          onReject={handleCloseModel}
-          description={t('msg_disassociateUser')}
-        />
-      )}
 
       {model && (
         <ANTDModal

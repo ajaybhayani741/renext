@@ -22,7 +22,6 @@ const userColumns = ({
   handleView,
   selectedUsers,
   handleSelectChange,
-  handleDAssociate,
   roleId,
   handleEdit,
   isBuilding,
@@ -78,14 +77,6 @@ const userColumns = ({
       {!removeEditBtn && (permission || isBuilding) && (
         <ANTDButton className="bg-edit" onClick={() => handleEdit(rowData)}>
           {t('btn_Edit')}
-        </ANTDButton>
-      )}
-      {handleDAssociate && !isBuilding && (
-        <ANTDButton
-          className="bg-danger"
-          onClick={() => handleDAssociate(rowData)}
-        >
-          {t('btn_DisAssociate')}
         </ANTDButton>
       )}
     </div>

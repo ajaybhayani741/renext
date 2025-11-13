@@ -18,6 +18,7 @@ import ANTDRow from '../../../shared/antd/ANTDRow'
 import ANTDSelect from '../../../shared/antd/ANTDSelect'
 import ANTDTab from '../../../shared/antd/ANTDTab'
 import Label from '../../../shared/Label'
+import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { isDateRangeDefault, resetFiscalYearToDefault } from '../../../utils'
 import { entries, include, isEqual } from '../../../utils/javascript'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
@@ -55,6 +56,9 @@ const JobManagement = () => {
     onSelectExportCol,
     onSelectColumn,
     onSelectAllColumn,
+    disAssociateHostel,
+    handleDisAssociateModal,
+    handleConfirmDisAssociate,
   } = jobs()
 
   const { type: jobType, status } = { ...activeTab }
@@ -176,6 +180,7 @@ const JobManagement = () => {
           onViewClick={handleViewClick}
           checkEditPermission={checkEditPermission}
           jobType={jobType}
+          handleDisAssociateModal={handleDisAssociateModal}
         />
       )}
       {jobModel?.open && (
@@ -234,6 +239,15 @@ const JobManagement = () => {
             </ANTDButton>
           </div>
         </ANTDModal>
+      )}
+      {disAssociateHostel?.open && (
+        <PopUpConfirm
+          isOpen={disAssociateHostel?.open}
+          onCancelModel={handleDisAssociateModal}
+          onAccept={handleConfirmDisAssociate}
+          onReject={handleDisAssociateModal}
+          description={t('msg_disassociateUser')}
+        />
       )}
     </>
   )

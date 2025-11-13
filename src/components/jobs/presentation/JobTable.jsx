@@ -18,6 +18,7 @@ const JobTable = ({
   selectedJobs,
   handleSelectChange,
   readyOnly,
+  handleDisAssociateModal,
 }) => {
   const { t, columns, isDesktop, cardViewFn, actionButtons } = jobTable({
     displayColKeys,
@@ -27,6 +28,7 @@ const JobTable = ({
     selectedJobs,
     handleSelectChange,
     readyOnly,
+    handleDisAssociateModal,
   })
   const pageSize = 10
   const { list, pageNo, lastPage, loader } = { ...tableData }
