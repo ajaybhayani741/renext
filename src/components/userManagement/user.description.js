@@ -188,6 +188,14 @@ const addUserForm = {
     xs: 24,
     required: true,
   },
+  designation: {
+    label: 'user_Designation',
+    validateTrigger: 'onChange',
+    inputType: 'input',
+    md: 24,
+    xs: 24,
+    required: false,
+  },
   ...commonWithUserNamePassword,
 }
 const addBuildingForm = {

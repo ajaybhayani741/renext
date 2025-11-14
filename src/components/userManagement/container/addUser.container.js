@@ -109,10 +109,16 @@ const addUser = ({
         fetchData()
       }
     }
+    if (formRoleId !== inspectionOfficer) {
+      const updatedForm = { ...userForm }
+      delete updatedForm.designation
+      setUserForm(updatedForm)
+    }
     if (formRoleId === hostel) {
       const updatedForm = { ...userForm }
       delete updatedForm.username
       delete updatedForm.password
+      delete updatedForm.designation
       setUserForm(updatedForm)
     }
   }, [])
@@ -175,7 +181,11 @@ const addUser = ({
         const { username, password, ...editForm } = prevForm || {}
         return isEqual(roleId, districtCollector) &&
           isEqual(editInfo?.data?.roleId, inspectionOfficer)
-          ? { ...prevForm, username: { ...prevForm.username, disabled: true } }
+          ? {
+              ...prevForm,
+              username: { ...prevForm.username, disabled: true },
+              password: { ...prevForm.password, required: false },
+            }
           : editForm
       })
     }

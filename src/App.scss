@@ -477,6 +477,48 @@ h6 {
       }
     }
   }
+
+  @media screen and (max-width: 767px) {
+    table {
+      table-layout: fixed;
+      width: 100%;
+
+      td {
+        &.ant-table-cell {
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          hyphens: auto;
+          padding: 8px 4px !important;
+
+          &:first-child {
+            width: 50%;
+            max-width: 50%;
+            word-break: break-word;
+          }
+
+          &:last-child {
+            width: 50%;
+            max-width: 50%;
+            word-break: break-word;
+            min-width: auto;
+          }
+        }
+      }
+    }
+
+    .tabuler-cell-wrapper {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tabuler-cell-content {
+      min-width: 0;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      flex: 1 1 auto;
+    }
+  }
 }
 
 .geotagging-details {

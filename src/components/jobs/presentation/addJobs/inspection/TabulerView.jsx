@@ -107,8 +107,8 @@ const CellRender = ({
     label: typeof val.label === 'object' ? val.label : t(val.label),
   }))
   return (
-    <div className="d-flex space-between">
-      <span className="mr-5 w-100">
+    <div className="d-flex space-between tabuler-cell-wrapper">
+      <span className="mr-5 w-100 tabuler-cell-content">
         {isEdit ? (
           <ANTDFormItem
             className="tabuler-form-item"
@@ -433,6 +433,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
       dataIndex: 'value',
       key: 'value',
       width: '49%',
+      className: 'tabuler-value-cell',
       render: (rowData, record) => {
         return (
           <CellRender
