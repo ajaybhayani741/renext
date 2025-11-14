@@ -8,7 +8,13 @@ import { noImage } from '../../../utils/icons'
 import header from '../container/header.container'
 
 const HeaderAction = () => {
-  const { profileDetails, handleProfile, handleLogout } = header()
+  const {
+    profileDetails,
+    handleProfile,
+    handleLogout,
+    notificationCount,
+    onNotificationClick,
+  } = header()
   const { t } = useTranslations()
 
   const items = [
@@ -29,9 +35,9 @@ const HeaderAction = () => {
   return (
     <div className="d-flex space-between align-center">
       <div className="notification-container">
-        <BellFilled />
-        <ANTDBadge count={0}>
-          <span></span>
+        <BellFilled onClick={onNotificationClick} />
+        <ANTDBadge count={notificationCount || 0}>
+          <a href="#" />
         </ANTDBadge>
       </div>
       <ANTDDropdown

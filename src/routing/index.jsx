@@ -18,6 +18,9 @@ const AuthAddUser = lazy(
 )
 const Profile = lazy(() => import('../components/profile/presentation/index'))
 const JobManagement = lazy(() => import('../components/jobs/presentation'))
+const Notifications = lazy(
+  () => import('../components/notifications/presentation'),
+)
 const AddEditJobs = lazy(
   () => import('../components/jobs/presentation/addJobs'),
 )
@@ -80,6 +83,10 @@ const Routing = () => {
         {
           path: pathName.EDIT_JOB,
           element: <AddEditJobs />,
+        },
+        {
+          path: pathName.NOTIFICATIONS,
+          element: <Notifications />,
         },
         { path: '*', element: <PageNotFound /> },
       ],
