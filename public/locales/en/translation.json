@@ -650,5 +650,7 @@
   "user_AssignHostelToInspectionOfficer": "Assign Hostel to Inspection Officer",
   "msg_ForgetPasswordContactDistrictCollector": "Please contact the District Collector's office if you forget your password.",
   "msg_PasswordCannotBeChanged": "Password cannot be changed.",
-  "user_PreviousInspections": "Previous Inspections"
+  "user_PreviousInspections": "Previous Inspections",
+  "txt_Notifications": "Notifications",
+  "msg_hostelAssignedForInspection": "Hostel {{hostelName}} has been assigned for inspection"
 }

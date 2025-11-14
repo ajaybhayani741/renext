@@ -17,6 +17,7 @@ const initialState = {
     shiftType: null,
     shiftId: null,
   },
+  notificationsList: [],
 }
 
 const appReducer = createSlice({
@@ -41,6 +42,9 @@ const appReducer = createSlice({
     setShiftDetails: (state, action) => {
       state.shift = { ...state?.shift, ...action?.payload }
     },
+    setNotificationList: (state, action) => {
+      state.notificationsList = action?.payload
+    },
   },
 })
 
@@ -51,6 +55,7 @@ export const {
   setPopupMessageModel,
   setStoreDetails,
   setShiftDetails,
+  setNotificationList,
 } = appReducer.actions
 
 export default appReducer.reducer

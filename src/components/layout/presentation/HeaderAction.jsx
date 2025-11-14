@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
 import { BellFilled, PoweroffOutlined, UserOutlined } from '@ant-design/icons'
 
 import LanguageSelector from './LanguageSelector'
@@ -8,7 +9,13 @@ import { noImage } from '../../../utils/icons'
 import header from '../container/header.container'
 
 const HeaderAction = () => {
-  const { profileDetails, handleProfile, handleLogout } = header()
+  const {
+    profileDetails,
+    handleProfile,
+    handleLogout,
+    notificationCount,
+    onNotificationClick,
+  } = header()
   const { t } = useTranslations()
 
   const items = [
@@ -28,10 +35,10 @@ const HeaderAction = () => {
 
   return (
     <div className="d-flex space-between align-center">
-      <div className="notification-container">
-        <BellFilled />
-        <ANTDBadge count={0}>
-          <span></span>
+      <div className="notification-container mr-5">
+        <BellFilled onClick={onNotificationClick} />
+        <ANTDBadge count={notificationCount || 0}>
+          <a href="#]" />
         </ANTDBadge>
       </div>
       <ANTDDropdown

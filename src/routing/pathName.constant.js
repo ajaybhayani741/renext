@@ -48,6 +48,7 @@ const pathName = {
   BOOK_KEEPING: `${BOOK_KEEPING_TXT}/:type`,
   REPORTING: `${REPORTING_TXT}/:type`,
   SETTINGS: `/settings`,
+  NOTIFICATIONS: `/notifications`,
 }
 export default pathName
 
