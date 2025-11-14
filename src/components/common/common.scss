@@ -25,6 +25,8 @@
         left: 0;
         right: 0;
         bottom: 0;
+        opacity: 1 !important;
+        visibility: visible !important;
 
         .anticon-eye {
           position: absolute;
@@ -36,7 +38,8 @@
         }
 
         .ant-btn {
-          opacity: 1;
+          opacity: 1 !important;
+          visibility: visible !important;
           transform: none;
           background-color: #ff0000;
           border-radius: 100%;
@@ -45,6 +48,7 @@
           float: right;
           margin-top: -8px;
           margin-right: -8px;
+          display: block !important;
 
           &:before,
           &:after {

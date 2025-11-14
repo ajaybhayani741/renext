@@ -98,7 +98,7 @@ const inspection = ({
         [inspectionOfficer]: [userData],
       })
     }
-    setFieldsPercentageFn(editData)
+    setFieldsPercentageFn(editData, true)
   }, [])
 
   const getCurrentLocation = async () => {
@@ -263,7 +263,7 @@ const inspection = ({
     form.setFieldsValue(preFormValues)
   }
 
-  const setFieldsPercentageFn = editData => {
+  const setFieldsPercentageFn = (editData, onEdit = false) => {
     const calculatePercentage = formAttr => {
       const formFields = Object.fromEntries(
         entries(formAttr)?.filter(
@@ -272,9 +272,27 @@ const inspection = ({
       )
       const totalField = keys(formFields)?.length
       const filledField =
-        keys(formFields)?.filter(v =>
-          isArray(editData?.[v]) ? length(editData?.[v]) : editData?.[v],
-        ).length || 0
+        keys(formFields)?.filter(v => {
+          const fieldType = formFields?.[v]?.inputType
+          const fieldValue = editData?.[v]
+
+          // Handle formUpload fields - check fileList
+          if (isEqual(fieldType, 'formUpload')) {
+            return onEdit
+              ? fieldValue && length(fieldValue) > 0
+              : fieldValue?.fileList && length(fieldValue?.fileList) > 0
+          }
+
+          // Handle array fields
+          if (isArray(fieldValue)) {
+            return length(fieldValue) > 0
+          }
+
+          // Handle other fields (string, number, etc.)
+          return (
+            fieldValue !== null && fieldValue !== undefined && fieldValue !== ''
+          )
+        }).length || 0
       return Math.round((filledField / totalField) * 100) || 0
     }
 
@@ -417,6 +435,9 @@ const inspection = ({
           setLoader(false)
           setIsApiRunning(false)
           if (!res?.data?.data) return false
+          if (res?.data?.data) {
+            setFieldsPercentageFn(res?.data?.data, true)
+          }
         }
       }
       setIsApiRunning(false)
@@ -428,6 +449,7 @@ const inspection = ({
       setLoader(false)
       setIsApiRunning(false)
       if (!res?.data?.data) return false
+      res?.data?.data && setFieldsPercentageFn(res?.data?.data, true)
       if (res?.data?.data && showMsg) {
         notifyMethod.success({
           message: t('msg_JobUpdatedSuccessfully', {
@@ -671,11 +693,21 @@ const inspection = ({
           const fileList =
             nestedUpdatedValues?.[changedKey]?.[nestedKey]?.fileList
 
-          handleFileUpload({
+          await handleFileUpload({
             file,
             fileList,
             filePath: ['inspectionList', changeIndex, changedKey, nestedKey],
           })
+
+          // Update percentage after file upload completes
+          const updatedFormValues = form.getFieldValue()
+          const updatedFieldValues = values(
+            updatedFormValues?.inspectionList?.[changeIndex],
+          )?.reduce((acc, curr) => {
+            return { ...acc, ...curr }
+          }, 0)
+          setFieldsPercentageFn(updatedFieldValues)
+          return
         }
       } else if (isEqual('hostelInfraSanitationRequestDto', changedKey)) {
         if (
@@ -701,11 +733,21 @@ const inspection = ({
           const fileList =
             nestedUpdatedValues?.[changedKey]?.[nestedKey]?.fileList
 
-          handleFileUpload({
+          await handleFileUpload({
             file,
             fileList: fileList && length(fileList) ? fileList : null,
             filePath: ['inspectionList', changeIndex, changedKey, nestedKey],
           })
+
+          // Update percentage after file upload completes
+          const updatedFormValues = form.getFieldValue()
+          const updatedFieldValues = values(
+            updatedFormValues?.inspectionList?.[changeIndex],
+          )?.reduce((acc, curr) => {
+            return { ...acc, ...curr }
+          }, 0)
+          setFieldsPercentageFn(updatedFieldValues)
+          return
         }
       }
 
@@ -741,7 +783,7 @@ const inspection = ({
         const fileList =
           nestedUpdatedValues?.[changedKey]?.[nestedKey]?.fileList
 
-        handleFileUpload({
+        await handleFileUpload({
           file,
           fileList,
           filePath: [changedKey, nestedKey],
