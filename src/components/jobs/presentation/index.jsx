@@ -55,7 +55,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     disAssociateHostel,
     handleDisAssociateModal,
     handleConfirmDisAssociate,
-  } = jobs()
+  } = jobs({ userView, userId, userJobType })
 
   const { type: jobType, status } = { ...activeTab }
   const isUnassignHostelTab = isEqual(status, tabKeys.unassignHostel)
