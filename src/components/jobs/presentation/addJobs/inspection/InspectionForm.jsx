@@ -101,7 +101,7 @@ const InspectionForm = ({
             showInfo={false}
             percent={formFieldPercentage?.[key] || 0}
           /> */}
-          <p>{`${formFieldPercentage?.[key] || 0}% Completed`}</p>
+          <p>{`${formFieldPercentage?.[key] || 0}% ${t('dash_Completed')}`}</p>
           {/* <span className="ml-15 text-center">
             {isEqual(formFieldPercentage?.[key], 100) ? (
               <CheckCircleFilled

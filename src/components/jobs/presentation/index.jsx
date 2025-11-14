@@ -55,7 +55,6 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     disAssociateHostel,
     handleDisAssociateModal,
     handleConfirmDisAssociate,
-    handleAssignInspectionOfficer,
   } = jobs({ userView, userId, userJobType })
 
   const { type: jobType, status } = { ...activeTab }
