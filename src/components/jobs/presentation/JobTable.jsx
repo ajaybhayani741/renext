@@ -70,7 +70,7 @@ const JobTable = ({
                 className="list-card-view"
                 title={
                   <div className="d-flex align-center">
-                    {`${t('user_ID')} : ${item?.id}`}
+                    {`${t('job_Id')} : ${item?.id}`}
                     {!item?.read && (
                       <div className="blink-btn ml-10">
                         <ANTDButton>{t('txt_New')}</ANTDButton>

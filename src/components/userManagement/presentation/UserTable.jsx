@@ -179,6 +179,7 @@ function UserTable({
               onSelect || null,
             )}
             selectedUsers={selectedList || selectedUsers}
+            roleId={payload?.roleId}
           />,
         )}
       </div>

@@ -109,7 +109,7 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
     <div>
       {open ? (
         <ANTDModal
-          title={`${t('txt_Details')} ${t(userTranslationKey[userDetails?.roleId])}`}
+          title={`${t(userTranslationKey[userDetails?.roleId])} ${t('txt_Details')}`}
           centered
           open={open}
           onCancel={handleCancel}

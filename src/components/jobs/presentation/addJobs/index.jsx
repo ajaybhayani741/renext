@@ -4,15 +4,13 @@ import { useEffect, useState } from 'react'
 
 import InspectionJob from './inspection'
 import useRouter from '../../../../hooks/useRouter'
-import useTranslations from '../../../../hooks/useTranslations'
 import ANTDSpin from '../../../../shared/antd/ANTDSpin'
-import { ternary, include } from '../../../../utils/javascript'
+import { include } from '../../../../utils/javascript'
 import PageNotFound from '../../../PageNotFound'
 import { getJobDetailApi } from '../../jobs.api'
 import { tabKeys as jobTabKeys, payloadType } from '../../jobs.description'
 
 const AddEditJobs = () => {
-  const { t } = useTranslations()
   const { params } = useRouter()
   const [editData, setEditData] = useState(null)
   const [loader, setLoader] = useState(false)
@@ -59,7 +57,7 @@ const AddEditJobs = () => {
           <ANTDSpin size="large" />
         </div>
       )}
-      <h2>{ternary(isEdit, t('job_EditJob'), t('job_AddJob'))}</h2>
+      {/* <h2>{ternary(isEdit, t('job_EditJob'), t('job_AddJob'))}</h2> */}
       {notFound ? (
         <PageNotFound />
       ) : (isEdit && !editData) || loader ? null : (

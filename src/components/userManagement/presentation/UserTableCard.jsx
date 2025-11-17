@@ -6,6 +6,7 @@ import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import ANTDPagination from '../../../shared/antd/ANTDPagination'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
+import { userWiseRole } from '../../../utils/constant'
 import { noImage } from '../../../utils/icons'
 import { include, length, ternary } from '../../../utils/javascript'
 
@@ -18,10 +19,12 @@ const UserTableCard = ({
   loader,
   selectedUsers,
   handleSelectChange,
+  roleId,
 }) => {
   const { t } = useTranslations()
   const scrollElem = document.querySelector('.main-layout > main')
   const usersList = selectedUsers?.map(v => v?.id)
+  const { inspectionOfficer, hostel } = userWiseRole
 
   return (
     <>
@@ -45,9 +48,13 @@ const UserTableCard = ({
                       onChange={handleSelectChange}
                       checked={include(usersList, item?.id)}
                     >
-                      {`${t('user_ID')} : ${item?.id}`}
+                      {include([inspectionOfficer, hostel], roleId)
+                        ? null
+                        : `${t('user_ID')} : ${item?.id}`}
                     </ANTDCheckbox>,
-                    `${t('user_ID')} : ${item?.id}`,
+                    include([inspectionOfficer, hostel], roleId)
+                      ? null
+                      : `${t('user_ID')} : ${item?.id}`,
                   )}
                 </>
               }
@@ -68,7 +75,10 @@ const UserTableCard = ({
                             <td className="card-table-label">
                               <b>{t(label)}</b>
                             </td>
-                            <td> : {ternary(value, value, '-')}</td>
+                            <td className="d-flex">
+                              <p>: </p>&nbsp;{' '}
+                              <p>{ternary(value, value, '-')}</p>
+                            </td>
                           </tr>
                         ))}
                       </tbody>

@@ -642,5 +642,6 @@
   "job_startInspectionJob": "Start Inspection",
   "user_PlaceOfPosting": "Place of Posting",
   "user_Designation": "Designation",
-  "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the District Collector?"
+  "msg_DataCannotBeChanged": "Data entered cannot be changed. Are you sure you want to send the inspection report to the District Collector?",
+  "job_hostelName": "Hostel Name"
 }

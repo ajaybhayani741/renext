@@ -221,6 +221,7 @@ const jobTable = ({
     creationDate,
     modificationDate,
     jobTitle,
+    hostelInfo = {},
     ...jobData
   }) => {
     return [
@@ -230,10 +231,10 @@ const jobTable = ({
         label: 'user_CreationDate',
         value: dateFormat(creationDate)?.newDate,
       },
-      {
-        label: 'job_UpdatedDate',
-        value: dateFormat(modificationDate)?.newDate,
-      },
+      // {
+      //   label: 'job_UpdatedDate',
+      //   value: dateFormat(modificationDate)?.newDate,
+      // },
       { label: 'job_Status', value: jobData?.status },
     ].filter(item => !item.hidden)
   }
