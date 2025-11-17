@@ -7,6 +7,7 @@ import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import { addressFormat } from '../../../utils'
+import { userWiseRole } from '../../../utils/constant'
 import { dateFormat } from '../../../utils/dateFormat'
 import { noImage } from '../../../utils/icons'
 import { include, length, ternary } from '../../../utils/javascript'
@@ -25,15 +26,17 @@ const jobTable = ({
   const { navigate } = useRouter()
   const { selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
+  const profile_details = selector(state => state.user.profile_details)
+  const { inspectionOfficer } = userWiseRole
 
   const actionButtons = rowData => (
-    <div className="d-flex flex-nowrap">
+    <div>
       <ANTDButton className="bg-view" onClick={() => onViewClick(rowData?.id)}>
-        {t('btn_View')}
+        {t('job_viewInspectionStatus')}
       </ANTDButton>
       {checkEditPermission && checkEditPermission(rowData) && (
         <ANTDButton
-          className="bg-edit"
+          className="bg-start"
           onClick={() => {
             navigate(
               pathName.EDIT_JOB.replace(':jobId', rowData?.id).replace(
@@ -44,7 +47,11 @@ const jobTable = ({
             )
           }}
         >
-          {t('btn_Edit')}
+          {t(
+            profile_details?.roleId === inspectionOfficer
+              ? 'job_startInspectionJob'
+              : 'btn_Edit',
+          )}
         </ANTDButton>
       )}
     </div>

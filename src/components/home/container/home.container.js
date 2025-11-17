@@ -21,7 +21,11 @@ const home = () => {
     const menus = userManagementMenus
       .filter(menu => include(menu.sidebar, roleId))
       ?.map(menu => ({
-        btnLabel: menu.label,
+        btnLabel: isEqual(menu.label, 'user_InspectionOfficer')
+          ? 'user_ListOfInspectionOfficer'
+          : isEqual(menu.label, 'user_Hostel')
+            ? 'user_ListOfHostels'
+            : menu.label,
         BtnIcon: menu.Icon,
         path: menu.key,
       }))

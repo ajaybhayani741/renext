@@ -47,7 +47,7 @@ const userColumns = ({
             className="bg-assign-hostel"
             onClick={() => handleAssignHostelConfirmation({ rowData })}
           >
-            {t('user_AssignHostel')}
+            {t('user_AssignHostelRandomly')}
           </ANTDButton>
         )}
       <ANTDButton className="bg-view" onClick={() => handleView(rowData)}>
