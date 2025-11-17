@@ -1,7 +1,7 @@
 import { lazy, memo } from 'react'
 import { Navigate, useRoutes } from 'react-router-dom'
 
-import pathName, { DASHBOARD_TXT } from './pathName.constant'
+import pathName, { DASHBOARD_TXT, HOSTEL } from './pathName.constant'
 import ProtectedRoute from './PrivateRoute'
 import DashboardView from '../components/dashboard/presentation/DashboardView'
 import PageNotFound from '../components/PageNotFound'
@@ -18,6 +18,9 @@ const AuthAddUser = lazy(
 )
 const Profile = lazy(() => import('../components/profile/presentation/index'))
 const JobManagement = lazy(() => import('../components/jobs/presentation'))
+const UnassignedHostels = lazy(
+  () => import('../components/jobs/presentation/viewJobs/UnassignedHostels'),
+)
 const AddEditJobs = lazy(
   () => import('../components/jobs/presentation/addJobs'),
 )
@@ -80,6 +83,10 @@ const Routing = () => {
         {
           path: pathName.EDIT_JOB,
           element: <AddEditJobs />,
+        },
+        {
+          path: `/${HOSTEL}`,
+          element: <UnassignedHostels />,
         },
         { path: '*', element: <PageNotFound /> },
       ],

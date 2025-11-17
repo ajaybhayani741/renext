@@ -15,7 +15,9 @@ import ANTDLayout, {
 import ANTDMenu from '../../../shared/antd/ANTDMenu'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
 import configData from '../../../utils/config'
+import { userWiseRole } from '../../../utils/constant'
 import { CloseCircleOutlined, hostIcon } from '../../../utils/icons'
+import { isEqual } from '../../../utils/javascript'
 import appLayout from '../container/appLayout'
 
 function AppLayout() {
@@ -32,6 +34,8 @@ function AppLayout() {
     transformItemsRecursive,
     collapsed,
     toggleCollapsed,
+    handleLogoClick,
+    roleId,
   } = appLayout()
   const { logo } = configData
   return (
@@ -54,8 +58,14 @@ function AppLayout() {
         >
           <div className="brand-logo">
             <img
+              className={
+                isEqual(roleId, userWiseRole.districtCollector)
+                  ? 'cursor-pointer'
+                  : ''
+              }
               src={isDesktop && collapsed ? hostIcon : logo}
               alt="Mat Next"
+              onClick={handleLogoClick}
             />
           </div>
         </div>
