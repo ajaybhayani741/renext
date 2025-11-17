@@ -8,6 +8,7 @@ import ANTDButton from '../../../shared/antd/ANTDButton'
 import { ANTDSearch } from '../../../shared/antd/ANTDInput'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import ANTDTable from '../../../shared/antd/ANTDTable'
+import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { childUsers } from '../../../utils/constant'
 import { include, ternary } from '../../../utils/javascript'
 import userColumns from '../container/userColumn'
@@ -54,6 +55,8 @@ function UserTable({
     setEditInfo,
     handleCancelEdit,
     handleAssignHostel,
+    assignConfirmation,
+    handleAssignHostelConfirmation,
   } = userTable({ payload, multiSelect, isBuilding, searchByEmail })
 
   const { column, actionButtons, cardViewFn } = userColumns({
@@ -71,7 +74,7 @@ function UserTable({
     isBuilding,
     handleDAssociate,
     removeEditBtn,
-    handleAssignHostel,
+    handleAssignHostelConfirmation,
     handleAssignInspectionOfficer,
     showAssignInspectionOfficer,
     columnFilter,
@@ -200,6 +203,15 @@ function UserTable({
             }}
           />
         </ANTDModal>
+      )}
+      {assignConfirmation?.open && (
+        <PopUpConfirm
+          isOpen={assignConfirmation?.open}
+          onCancelModel={handleAssignHostelConfirmation}
+          onAccept={handleAssignHostel}
+          onReject={handleAssignHostelConfirmation}
+          description={t('msg_AreYouSureWantToAssign')}
+        />
       )}
     </div>
   )
