@@ -4,8 +4,10 @@ import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import ANTDPagination from '../../../shared/antd/ANTDPagination'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
 import ANTDTable from '../../../shared/antd/ANTDTable'
-import { length, ternary } from '../../../utils/javascript'
+import ANTDTag from '../../../shared/antd/ANTDTag'
+import { include, isEqual, length, ternary } from '../../../utils/javascript'
 import jobTable from '../container/jobTable.container'
+import { jobStatusList } from '../jobs.description'
 
 const JobTable = ({
   displayColKeys,
@@ -96,7 +98,25 @@ const JobTable = ({
                               <td>
                                 <b>{t(label)}</b>
                               </td>
-                              <td> : {ternary(value, value, '-')}</td>
+                              <td>
+                                :
+                                {isEqual(label, 'job_Status') ? (
+                                  <>
+                                    {' '}
+                                    <ANTDTag
+                                      color={
+                                        include(value, 'INPROGRESS')
+                                          ? '#FA8128'
+                                          : '#40A368'
+                                      }
+                                    >
+                                      {t(jobStatusList?.[value])}
+                                    </ANTDTag>
+                                  </>
+                                ) : (
+                                  ternary(value, value, '-')
+                                )}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
