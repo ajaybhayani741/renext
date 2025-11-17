@@ -186,7 +186,7 @@ const JobManagement = () => {
           handleAssignInspectionOfficer={handleAssignInspectionOfficer}
           showAssignInspectionOfficer={true}
           columnFilter={[
-            'user_ID',
+            'user_Image',
             'user_Name',
             'user_Address',
             'user_Contact',
