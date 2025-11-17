@@ -160,6 +160,7 @@ const userColumns = ({
     {
       title: t('txt_Action'),
       key: 'txt_Action',
+      fixed: 'right',
       render: rowData => {
         return <>{actionButtons(rowData)}</>
       },
