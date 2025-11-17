@@ -216,8 +216,8 @@ const inspection = ({
     calDifferenceInValue({
       nestedUpdatedValues: inspectionDetails,
       changedKey: 'foodProvisionRequestDto',
-      val1Key: 'idliRavaStockRegisterKg',
-      val2Key: 'idliRavaStockGroundBalanceKg',
+      val1Key: 'idliRavaStockRegister',
+      val2Key: 'idliRavaStockGroundBalance',
       accumulationKey: 'variationInIdliRava',
     })
 
