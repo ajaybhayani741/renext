@@ -1,15 +1,16 @@
 import classNames from 'classnames'
 import { Fragment, memo } from 'react'
 
-import BasicInfo from './BasicInfo'
-import UserList from './UserList'
-import UserRating from './UserRating'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import { childUsers } from '../../../utils/constant'
-import { entries, include, isEqual, ternary } from '../../../utils/javascript'
+import { entries, include, ternary } from '../../../utils/javascript'
+import JobManagement from '../../jobs/presentation'
 import viewUser from '../container/viewUser.container'
 import { userTranslationKey } from '../user.description'
+import BasicInfo from './BasicInfo'
+import UserList from './UserList'
+import UserRating from './UserRating'
 
 const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
   const {
@@ -84,17 +85,24 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
                   }
                   return (
                     <Fragment key={i}>
-                      <UserList
-                        key={i}
-                        payload={payload}
-                        showAdd={showAdd}
-                        subTitle={v?.subTitle}
-                        isBuilding={v?.isBuilding}
-                        userDetails={userDetails}
-                        className="mb-15"
-                        showAssignHostel={false}
-                        userKey={isEqual(key, 'user_Hostel') ? key : null}
-                      />
+                      {v?.viewJobs ? (
+                        <JobManagement
+                          userView={true}
+                          userId={userDetails?.id}
+                          userJobType={v?.payload?.jobType}
+                        />
+                      ) : (
+                        <UserList
+                          key={i}
+                          payload={payload}
+                          showAdd={showAdd}
+                          subTitle={v?.subTitle}
+                          isBuilding={v?.isBuilding}
+                          userDetails={userDetails}
+                          className="mb-15"
+                          showAssignHostel={false}
+                        />
+                      )}
                     </Fragment>
                   )
                 })}
