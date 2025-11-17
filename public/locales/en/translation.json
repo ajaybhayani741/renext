@@ -640,5 +640,7 @@
   "user_ListOfHostels": "List of Hostels",
   "job_Inspection": "Inspection",
   "job_viewInspectionStatus": "Inspection Status",
-  "job_startInspectionJob": "Start Inspection"
+  "job_startInspectionJob": "Start Inspection",
+  "user_PlaceOfPosting": "Place of Posting",
+  "user_Designation": "Designation"
 }
