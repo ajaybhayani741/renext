@@ -5,7 +5,7 @@ import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import { profileDetails } from '../../../redux/user_management/reducer'
 import pathName from '../../../routing/pathName.constant'
-import { LOGOUT } from '../../../utils/constant'
+import { LOGOUT, userWiseRole } from '../../../utils/constant'
 import {
   entries,
   isEqual,
@@ -22,6 +22,7 @@ const login = () => {
   const [pageLoader, setPageLoader] = useState(false)
   const { dispatch } = useRedux()
   const FCMToken = getItem('FCMToken')
+  const { inspectionOfficer } = userWiseRole
 
   useEffect(() => {
     const code = queryParams.get('code')
@@ -63,6 +64,12 @@ const login = () => {
       setItem('userExists', response?.data?.data?.userExists)
       setItem('userData', JSON.stringify(response?.data?.data?.userProfile))
       dispatch(profileDetails(response?.data?.data?.userProfile))
+      if (
+        isEqual(response?.data?.data?.userProfile?.roleId, inspectionOfficer)
+      ) {
+        navigate(pathName.JOBS)
+        return
+      }
       if (location?.state?.params?.jobId) {
         const paramObj = removeFalsyValues(location.state.params)
         let params = ''
