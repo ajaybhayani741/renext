@@ -1,19 +1,18 @@
 import { Tag } from 'antd'
 
 import { childUsers } from './constant'
+import { calendarYearDate } from './customFunctions'
 import { dayJs } from './dayjs'
 import { entries, isEqual, ternary } from './javascript'
 import { sidebarMenus } from '../components/layout/sidebar.description'
 
 const getDefaultFiscalYear = () => {
   const currentYear = dayJs().year()
-  const currentFiscalYear = dayJs().isBefore(`${currentYear}-04-01`)
+  const currentFiscalYear = dayJs().isBefore(`${currentYear}-01-01`)
     ? currentYear - 1
     : currentYear
 
-  const saveFormat = 'DD/MM/YYYY'
-  const startDate = dayJs(`${currentFiscalYear}-04-01`).format(saveFormat)
-  const endDate = dayJs(`${currentFiscalYear + 1}-03-31`).format(saveFormat)
+  const { startDate, endDate } = calendarYearDate(currentFiscalYear)
 
   return {
     value: currentFiscalYear,
@@ -49,7 +48,6 @@ const resetFiscalYearToDefault = (dispatch, options) => {
     },
   })
 }
-
 
 const addressFormat = data => {
   if (data?.pincode || data?.address) {

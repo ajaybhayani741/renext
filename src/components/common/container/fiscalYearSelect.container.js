@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import { setFiscalYear } from '../../../redux/app/reducer'
+import { calendarYearDate } from '../../../utils/customFunctions'
 import { dayJs, DISPLAY_DATE_FORMAT, formatDate } from '../../../utils/dayjs'
 
 const fiscalYearSelect = ({
@@ -30,8 +31,7 @@ const fiscalYearSelect = ({
   // }, [options])
 
   const handleFiscalYearChange = value => {
-    const startDate = dayJs(`${value}-04-01`).format(saveFormat)
-    const endDate = dayJs(`${value + 1}-03-31`).format(saveFormat)
+    const { startDate, endDate } = calendarYearDate(value)
     dispatch(
       setFiscalYear({
         value,

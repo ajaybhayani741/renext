@@ -157,7 +157,7 @@
   "job_Status": "Status",
   "job_CustomerBusinessName": "Customer Business Name",
   "job_BuildingName": "Building Name",
-  "txt_FiscalYear": "Fiscal Year",
+  "txt_FiscalYear": "Year",
   "job_AddJob": "Add Job",
   "job_EditJob": "Edit Job",
   "home_JobRequest": "Job Request",

@@ -4,7 +4,7 @@ import useRedux from './useRedux'
 import { getMethod } from '../api/methods'
 import API_ROUTES from '../api/routes'
 import { setFiscalYear } from '../redux/app/reducer'
-import { dayJs } from '../utils/dayjs'
+import { calendarYearDate } from '../utils/customFunctions'
 import { length } from '../utils/javascript'
 import { getItem } from '../utils/localstorage'
 
@@ -36,10 +36,7 @@ const useFiscalYearInitializer = () => {
           list?.map(({ year }) => ({ label: year, value: year })) || []
         const lastElem = fiscalOptions.at(length(fiscalOptions) - 1)
         const year = lastElem?.value
-        const saveFormat = 'DD/MM/YYYY'
-        const startDate = dayJs(`${year}-04-01`).format(saveFormat)
-        const endDate = dayJs(`${year + 1}-03-31`).format(saveFormat)
-
+        const { startDate, endDate } = calendarYearDate(year)
         dispatch(
           setFiscalYear({
             value: year,

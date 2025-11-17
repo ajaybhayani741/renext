@@ -5,6 +5,7 @@ import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import { setFiscalYear } from '../../../redux/app/reducer'
 import { DASHBOARD_TXT } from '../../../routing/pathName.constant'
+import { calendarYearDate } from '../../../utils/customFunctions'
 import { dayJs } from '../../../utils/dayjs'
 import { cardKeys } from '../dashboard.description'
 
@@ -34,7 +35,7 @@ const dashboard = () => {
     const fiscalYearObj = cachedStoreString ? JSON.parse(cachedStoreString) : {}
 
     const currentYear = dayJs().year()
-    const currentFiscalYear = dayJs().isBefore(`${currentYear}-04-01`)
+    const currentFiscalYear = dayJs().isBefore(`${currentYear}-01-01`)
       ? currentYear - 1
       : currentYear
 
@@ -47,9 +48,7 @@ const dashboard = () => {
         ...fiscalYearObj?.dateRange,
       }
     } else {
-      const saveFormat = 'DD/MM/YYYY'
-      const startDate = dayJs(`${currentFiscalYear}-04-01`).format(saveFormat)
-      const endDate = dayJs(`${currentFiscalYear + 1}-03-31`).format(saveFormat)
+      const { startDate, endDate } = calendarYearDate(currentFiscalYear)
       updateValues.dateRange = {
         from: startDate,
         to: endDate,

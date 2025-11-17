@@ -4,7 +4,7 @@ import { getMethod } from '../../../api/methods'
 import API_ROUTES from '../../../api/routes'
 import useRedux from '../../../hooks/useRedux'
 import { setFiscalYear } from '../../../redux/app/reducer'
-import { dayJs } from '../../../utils/dayjs'
+import { calendarYearDate } from '../../../utils/customFunctions'
 import { length } from '../../../utils/javascript'
 
 const fiscalYearProvider = () => {
@@ -15,7 +15,13 @@ const fiscalYearProvider = () => {
 
   useEffect(() => {
     // Only initialize if fiscal year data is not already available
-    if (options && options.length > 0 && value && dateRange?.from && dateRange?.to) {
+    if (
+      options &&
+      options.length > 0 &&
+      value &&
+      dateRange?.from &&
+      dateRange?.to
+    ) {
       return
     }
 
@@ -27,20 +33,19 @@ const fiscalYearProvider = () => {
           list?.map(({ year }) => ({ label: year, value: year })) || []
         const lastElem = fiscalOptions.at(length(fiscalOptions) - 1)
         const year = lastElem?.value
-        const saveFormat = 'DD/MM/YYYY'
-        const startDate = dayJs(`${year}-04-01`).format(saveFormat)
-        const endDate = dayJs(`${year + 1}-03-31`).format(saveFormat)
-
-        dispatch(setFiscalYear({
-          value: year,
-          options: fiscalOptions,
-          dateRange: {
-            min: startDate,
-            max: endDate,
-            from: startDate,
-            to: endDate,
-          },
-        }))
+        const { startDate, endDate } = calendarYearDate(year)
+        dispatch(
+          setFiscalYear({
+            value: year,
+            options: fiscalOptions,
+            dateRange: {
+              min: startDate,
+              max: endDate,
+              from: startDate,
+              to: endDate,
+            },
+          }),
+        )
       } catch (error) {
         // console.error('Error initializing fiscal year:', error)
       }
@@ -50,7 +55,13 @@ const fiscalYearProvider = () => {
   }, [dispatch, options, value, dateRange])
 
   return {
-    isInitialized: !!(options && options.length > 0 && value && dateRange?.from && dateRange?.to),
+    isInitialized: !!(
+      options &&
+      options.length > 0 &&
+      value &&
+      dateRange?.from &&
+      dateRange?.to
+    ),
   }
 }
 
