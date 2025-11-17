@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { notifyMethod } from '../../../App'
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import { setJobActiveTab } from '../../../redux/jobs/reducer'
@@ -9,6 +10,7 @@ import debounce from '../../../utils/debounce'
 import { EVMasterSheet, RefurbishmentRequest } from '../../../utils/icons'
 import { include, isEqual, notEqual, values } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
+import { disAssociateApi } from '../../userManagement/user.api'
 import { getJobDetailApi, getJobListApi, searchJobListApi } from '../jobs.api'
 import {
   columnKeys,
@@ -70,6 +72,10 @@ const jobs = () => {
       'Registration Date',
       'ELV Model',
     ],
+  })
+  const [disAssociateHostel, setDisAssociateHostel] = useState({
+    open: false,
+    data: null,
   })
 
   const onExportToExcel = async () => {
@@ -360,6 +366,21 @@ const jobs = () => {
 
   const searchSelectOptions = []
 
+  const handleDisAssociateModal = ({ rowData }) => {
+    setDisAssociateHostel({ open: !disAssociateHostel?.open, data: rowData })
+  }
+
+  const handleConfirmDisAssociate = async () => {
+    const payloadData = `?userId=${disAssociateHostel?.data?.userId}&disAssociateUserId=${disAssociateHostel?.data?.hostelInfo?.id}`
+    const { data } = await disAssociateApi({ params: payloadData })
+    if (data?.success) {
+      notifyMethod.success({
+        message: 'msg_UserDisAssociatedSuccessfully',
+      })
+      apiCall(1)
+    }
+    setDisAssociateHostel({ open: false, data: null })
+  }
   return {
     t,
     data: data[type],
@@ -385,6 +406,9 @@ const jobs = () => {
     selectExportColModal,
     onSelectColumn,
     onSelectAllColumn,
+    disAssociateHostel,
+    handleDisAssociateModal,
+    handleConfirmDisAssociate,
   }
 }
 
