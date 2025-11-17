@@ -13,6 +13,7 @@ const FeedbackDashboard = () => {
     hostelsList,
     selectedHostel,
     feedbackColumns,
+    feedbackData,
   } = feedback()
 
   return (
@@ -35,7 +36,8 @@ const FeedbackDashboard = () => {
       />
       <ANTDTable
         columns={feedbackColumns}
-        dataSource={selectedHostel ? [selectedHostel] : []}
+        dataSource={feedbackData || []}
+        showHeader={false}
         pagination={false}
       />
     </div>
