@@ -21,6 +21,9 @@ const JobManagement = lazy(() => import('../components/jobs/presentation'))
 const UnassignedHostels = lazy(
   () => import('../components/jobs/presentation/viewJobs/UnassignedHostels'),
 )
+const Notifications = lazy(
+  () => import('../components/notifications/presentation'),
+)
 const AddEditJobs = lazy(
   () => import('../components/jobs/presentation/addJobs'),
 )
@@ -87,6 +90,10 @@ const Routing = () => {
         {
           path: `/${HOSTEL}`,
           element: <UnassignedHostels />,
+        },
+        {
+          path: pathName.NOTIFICATIONS,
+          element: <Notifications />,
         },
         { path: '*', element: <PageNotFound /> },
       ],

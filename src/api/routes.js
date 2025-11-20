@@ -173,5 +173,7 @@ const API_ROUTES = {
   GET_FEEDBACK_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/feedback/hostels/${pageNo}`,
   CHART_REPORT: `/dashboard-management/v1/trigger-report`,
+  GET_NOTIFICATIONS: ({ pageNo }) =>
+    `/user-management/v1/notifications/${pageNo}`,
 }
 export default API_ROUTES
