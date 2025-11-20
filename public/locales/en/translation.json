@@ -652,5 +652,6 @@
   "msg_PasswordCannotBeChanged": "Password cannot be changed.",
   "user_PreviousInspections": "Previous Inspections",
   "txt_Notifications": "Notifications",
-  "msg_hostelAssignedForInspection": "Hostel {{hostelName}} has been assigned for inspection"
+  "msg_hostelAssignedForInspection": "Hostel {{hostelName}} has been assigned for inspection",
+  "user_AssignedHostelsForInspection": "Assigned Hostels for Inspection"
 }

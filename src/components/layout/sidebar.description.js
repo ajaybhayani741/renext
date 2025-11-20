@@ -149,7 +149,7 @@ const userChildrenList = [
     addEdit: [admin, districtCollector],
     level: { 'sub-menu': [admin, hostel] },
     userView: {
-      user_Hostel: [
+      user_AssignedHostelsForInspection: [
         {
           payload: { roleId: hostel, relationType: associate },
           addAssociate: [admin, districtCollector],
