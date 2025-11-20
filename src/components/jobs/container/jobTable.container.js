@@ -246,6 +246,8 @@ const jobTable = ({
     return [
       { label: 'job_Id', value: id },
       // { label: 'job_Title', value: jobTitle },
+      { label: 'job_hostelName', value: hostelInfo?.lastName },
+      { label: 'user_HostelAddress', value: hostelInfo?.address },
       {
         label: 'user_CreationDate',
         value: dateFormat(creationDate)?.newDate,
