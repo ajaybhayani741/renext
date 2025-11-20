@@ -91,6 +91,7 @@ function UserList({
           apiCall,
           showAssignHostel,
           handleAssignHostel: handleNonAssociateUser,
+          userKey,
         }}
       />
 

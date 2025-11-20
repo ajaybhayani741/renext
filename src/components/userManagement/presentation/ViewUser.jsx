@@ -107,6 +107,7 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
                           userDetails={userDetails}
                           className="mb-15"
                           showAssignHostel={false}
+                          userKey={key}
                         />
                       )}
                     </Fragment>

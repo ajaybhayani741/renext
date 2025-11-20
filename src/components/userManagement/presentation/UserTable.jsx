@@ -40,6 +40,7 @@ function UserTable({
   columnFilter,
   showAssignHostel = true,
   handleAssignHostel,
+  userKey,
 }) {
   const {
     viewModel,
@@ -79,6 +80,7 @@ function UserTable({
     showAssignInspectionOfficer,
     handleAssignHostel,
     columnFilter,
+    userKey,
   })
   const { t } = useTranslations()
 

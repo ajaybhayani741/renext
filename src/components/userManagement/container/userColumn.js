@@ -31,6 +31,7 @@ const userColumns = ({
   handleAssignInspectionOfficerRandomly,
   showAssignInspectionOfficer,
   columnFilter,
+  userKey,
 }) => {
   const { t } = useTranslations()
   const { location } = useRouter()
@@ -190,6 +191,7 @@ const userColumns = ({
       render: rowData => {
         return <>{actionButtons(rowData)}</>
       },
+      hidden: isEqual(userKey, 'user_AssignedHostelsForInspection'),
     },
   ]
 
