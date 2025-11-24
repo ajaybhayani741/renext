@@ -78,8 +78,8 @@ function UserTable({
     handleAssignInspectionOfficer,
     handleAssignInspectionOfficerRandomly,
     showAssignInspectionOfficer,
-    columnFilter,
     handleAssignHostel,
+    columnFilter,
     userKey,
   })
   const { t } = useTranslations()
