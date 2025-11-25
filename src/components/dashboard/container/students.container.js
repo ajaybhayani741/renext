@@ -76,7 +76,7 @@ const students = () => {
     const lineParams = {
       fromDate: newDateRange?.from,
       toDate: newDateRange?.to,
-      ...(range && { range }),
+      ...(range && typeof range === 'number' && { range }),
       ...((start || end) && { start, end }),
     }
     switch (name) {

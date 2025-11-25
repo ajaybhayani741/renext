@@ -60,7 +60,8 @@ const HCBarChart = ({
   const navigatorTickInterval = 3
 
   const groupedData = useMemo(() => {
-    if (!seriesData?.series || seriesData?.series?.length === 0) return []
+    if (!seriesData?.series || seriesData?.series?.length === 0 || !binSize)
+      return []
     const result = []
     const valueMap = new Map()
 
@@ -86,6 +87,7 @@ const HCBarChart = ({
   }, [seriesData?.series, min, xAxisMax, binSize])
 
   const xAxisValues = useMemo(() => {
+    if (!binSize) return []
     const result = []
     for (let start = min; start <= xAxisMax; start += binSize) {
       const end = start + binSize - 1
@@ -95,6 +97,7 @@ const HCBarChart = ({
   }, [min, xAxisMax, binSize])
 
   const valuesOnly = useMemo(() => {
+    if (!binSize) return []
     const dataMap = new Map(groupedData)
     return xAxisValues.map(range => dataMap.get(range) || 0)
   }, [xAxisValues, groupedData, binSize])
@@ -103,6 +106,10 @@ const HCBarChart = ({
   const yMaxValue = Math.max(...valuesOnly)
   const yAxisMax =
     yMaxValue < yAxisMin ? yAxisMin : Math.ceil(yMaxValue / 10) * 10
+
+  const getRandomID = useMemo(() => {
+    return Math.random().toString(36).slice(2)
+  }, [valuesOnly])
 
   const options = useMemo(() => {
     return {
@@ -223,14 +230,22 @@ const HCBarChart = ({
           cursor: 'pointer',
           point: {
             events: {
-              click: e =>
+              click: e => {
+                const value = e?.point?.category
+                const minValue = value?.split('-')?.[0]
+                const maxValue = value?.split('-')?.[1]
                 handleChartClick({
                   e,
                   name,
                   newDateRange: dateRangeRef.current,
                   chartType: 'rangeFrequency',
                   xAxisTitle: xAxisTitle,
-                }),
+                  startEnd: {
+                    start: Number(minValue || 0),
+                    end: Number(maxValue || 0),
+                  },
+                })
+              },
             },
           },
         },
@@ -280,7 +295,7 @@ const HCBarChart = ({
         },
       ],
     }
-  }, [dateRange?.from, dateRange?.to, xAxisValues])
+  }, [dateRange?.from, dateRange?.to, xAxisValues, valuesOnly])
 
   return (
     <div style={{ position: 'relative', width: '100%' }}>
@@ -301,13 +316,13 @@ const HCBarChart = ({
           name="binSize"
           value={binSize}
           onChange={e => {
-            setBinSize(e)
+            setBinSize(!e || e <= 0 ? 0 : e)
           }}
           className="w-100"
         />
       </div>
       <HightChart
-        key={`column-chart-${name}-${xAxisValues.length}`} // Stable key to prevent remounting when binSize changes
+        key={`column-chart-${name}-${getRandomID}`} // Stable key to prevent remounting when binSize changes
         options={options}
         title={title}
         className="frequency-chart-card"
