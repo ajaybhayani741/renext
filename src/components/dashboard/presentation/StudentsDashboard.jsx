@@ -1,10 +1,10 @@
-import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries } from '../../../utils/javascript'
-import LineCharts from '../../charts/LineCharts'
+import HCBarChart from '../../charts/HCBarChart'
 import students from '../container/students.container'
 import { studentCharts } from '../dashboard.description'
+import DashboardWrapper from './DashboardWrapper'
 
 const StudentsDashboard = () => {
   const { t } = useTranslations()
@@ -27,11 +27,10 @@ const StudentsDashboard = () => {
         chartClassName: 'w-100',
       }}
     >
-      {' '}
       {entries(studentCharts)?.map(([key, value]) => {
         return (
           <ANTDColumn xs={24} md={24} key={key}>
-            <LineCharts
+            <HCBarChart
               {...{
                 name: key,
                 xAxisTitle: value?.xAxisText,
