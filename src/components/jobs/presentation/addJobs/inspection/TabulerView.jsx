@@ -679,6 +679,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
     safetyAndSecurityAttrFn,
     conductionMeetingsAttrFn,
     feedbackAttrFn,
+    curricularActivitiesAttrFn,
     // findingsAttrFn,
   } = inspectionFieldAttr()
 
@@ -864,6 +865,25 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
                   detailKey: 'feedbackRequestDto',
                   showEdit: showEditPermission({
                     section: 'feedbackRequestDto',
+                  }),
+                })}
+              </>
+            ),
+          },
+          {
+            label: t('job_ExtraCurricularActivities'),
+            key: 'activitiesRequestDto',
+            className: 'coll collapse-header',
+            children: (
+              <>
+                {selectedUserTable('activitiesRequestDto')}
+                {collapseItemUI({
+                  fieldAttr: mapAttributeToTableAttr(
+                    curricularActivitiesAttrFn(),
+                  ),
+                  detailKey: 'activitiesRequestDto',
+                  showEdit: showEditPermission({
+                    section: 'activitiesRequestDto',
                   }),
                 })}
               </>

@@ -91,6 +91,7 @@ const InspectionFormField = ({
             fieldPrefix = null,
             colClassName,
             responsiveInputType = null,
+            galleryUpload = false,
             ...restProps
           } = attributes || {}
           const isHidden = isEqual(typeof hidden, 'function')
@@ -215,7 +216,7 @@ const InspectionFormField = ({
                         }
                         {...(isEqual(currentInputType, 'formUpload') && {
                           apiCall,
-                          disableGalleryUpload: true,
+                          disableGalleryUpload: galleryUpload,
                         })}
                       />
                     </ANTDFormItem>

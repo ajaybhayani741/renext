@@ -622,6 +622,19 @@ export const drinkingWaterKeys = {
     label: 'dash_TapMunicipalityOrMissionBhageeratha',
     value: 'TAP_MUNICIPALITY_MISSION_BHAGEERATHA',
   },
+  waterCansPurchased: {
+    label: 'job_WaterCansPurchased',
+    value: 'WATER_CANS_PURCHASED',
+  },
+}
+export const hotBathingWaterKeys = {
+  firewood: { label: 'job_Firewood', value: 'FIREWOOD' },
+  solarWaterHeater: {
+    label: 'job_SolarWaterHeater',
+    value: 'SOLAR_WATER_HEATER',
+  },
+  geyser: { label: 'job_Geyser', value: 'GEYSER' },
+  none: { label: 'txt_None', value: 'NONE' },
 }
 
 export const availableNursingStaffKeys = {
@@ -637,6 +650,12 @@ export const availableNursingStaffKeys = {
     label: 'job_StaffNurseAvailability_ANMVisits',
     value: 'NOT_AVAILABLE_BUT_PHC_NURSE_VISITS',
   },
+}
+
+export const vegetableQualityKeys = {
+  good: { label: 'job_Good', value: 'GOOD' },
+  medium: { label: 'job_Medium', value: 'MEDIUM' },
+  poor: { label: 'job_Poor', value: 'POOR' },
 }
 
 export const lineChartRange = {
