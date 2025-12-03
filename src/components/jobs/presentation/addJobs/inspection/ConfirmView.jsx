@@ -41,6 +41,7 @@ const ConfirmView = ({
       safetyAndSecurityRequestDto,
       conductionMeetingsRequestDto,
       feedbackRequestDto,
+      activitiesRequestDto,
     } = details || {}
 
     const mapKeyValue = (attributes, values) => {
@@ -110,6 +111,10 @@ const ConfirmView = ({
       feedbackRequestDto: mapKeyValue(
         inspectionFormFieldsAttr?.feedbackAttrFn(),
         feedbackRequestDto,
+      ),
+      activitiesRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.curricularActivitiesAttrFn(),
+        activitiesRequestDto,
       ),
     }
   })

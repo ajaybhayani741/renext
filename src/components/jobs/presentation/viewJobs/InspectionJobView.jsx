@@ -50,6 +50,7 @@ const InspectionJobView = ({ data }) => {
     conductionMeetingsAttrFn,
     feedbackAttrFn,
     findingsAttrFn,
+    curricularActivitiesAttrFn,
   } = inspectionFieldAttr()
 
   useEffect(() => {
@@ -106,6 +107,7 @@ const InspectionJobView = ({ data }) => {
         data,
       ),
       feedbackRequestDto: mapKeyValue(feedbackAttrFn(), data),
+      activitiesRequestDto: mapKeyValue(curricularActivitiesAttrFn(), data),
     }
 
     const calDifferenceInValue = ({

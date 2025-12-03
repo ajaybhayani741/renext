@@ -53,6 +53,7 @@ const InspectionForm = ({
     safetyAndSecurityAttrFn,
     conductionMeetingsAttrFn,
     feedbackAttrFn,
+    curricularActivitiesAttrFn,
   } = inspectionFormFieldsAttr
 
   const hostelAdministrationAttr = useMemo(() => {
@@ -81,6 +82,9 @@ const InspectionForm = ({
   }, [index])
   const feedbackAttr = useMemo(() => {
     return feedbackAttrFn()
+  }, [index])
+  const curricularActivitiesAttr = useMemo(() => {
+    return curricularActivitiesAttrFn()
   }, [index])
 
   const commonCollapseProps = {
@@ -323,6 +327,29 @@ const InspectionForm = ({
             index,
             name,
             nestedKey: 'feedbackRequestDto',
+            showSaveBtn: include([...allPermissionRoles], roleId),
+            disabledAll: !include([...allPermissionRoles], roleId),
+            onSaveClick,
+            apiCall,
+          }}
+        />
+      ),
+    },
+    {
+      label: collapseItemHeader({
+        label: 'job_ExtraCurricularActivities',
+        key: 'activitiesRequestDto',
+      }),
+      header: t('job_ExtraCurricularActivities'),
+      key: 'activitiesRequestDto',
+      ...commonCollapseProps,
+      children: (
+        <InspectionFormField
+          {...{
+            attrList: curricularActivitiesAttr,
+            index,
+            name,
+            nestedKey: 'activitiesRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,

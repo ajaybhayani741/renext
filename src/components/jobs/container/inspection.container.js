@@ -86,6 +86,7 @@ const inspection = ({
     conductionMeetingsAttrFn,
     feedbackAttrFn,
     findingsAttrFn,
+    curricularActivitiesAttrFn,
   } = inspectionFieldAttr()
 
   useEffect(() => {
@@ -178,6 +179,9 @@ const inspection = ({
       },
       feedbackRequestDto: {
         ...formValueFromResponse(editData, feedbackAttrFn()),
+      },
+      activitiesRequestDto: {
+        ...formValueFromResponse(editData, curricularActivitiesAttrFn()),
       },
     }
 
@@ -316,6 +320,7 @@ const inspection = ({
         conductionMeetingsAttrFn(),
       ),
       feedbackRequestDto: calculatePercentage(feedbackAttrFn()),
+      activitiesRequestDto: calculatePercentage(curricularActivitiesAttrFn()),
     }
     setFormFieldPercentage(inspectionPercentage)
   }
@@ -410,6 +415,10 @@ const inspection = ({
       ...payloadConverter(
         inspectionDetails?.feedbackRequestDto,
         feedbackAttrFn(),
+      ),
+      ...payloadConverter(
+        inspectionDetails?.activitiesRequestDto,
+        curricularActivitiesAttrFn(),
       ),
       ...payloadConverter(formData?.findingsRequestDto, findingsAttrFn()),
     })
@@ -1038,6 +1047,7 @@ const inspection = ({
     safetyAndSecurityAttrFn,
     conductionMeetingsAttrFn,
     feedbackAttrFn,
+    curricularActivitiesAttrFn,
   }
 
   return {
