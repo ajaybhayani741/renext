@@ -175,5 +175,6 @@ const API_ROUTES = {
   CHART_REPORT: `/dashboard-management/v1/trigger-report`,
   GET_NOTIFICATIONS: ({ pageNo }) =>
     `/user-management/v1/notifications/${pageNo}`,
+  TRIGGER_JOB_REPORT: `/job-management/v1/triggerreport`,
 }
 export default API_ROUTES

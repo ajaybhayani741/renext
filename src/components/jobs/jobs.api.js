@@ -21,6 +21,7 @@ const {
   QUICK_EDIT,
   GET_GEO_TAG,
   JOB_EDIT_LOG,
+  TRIGGER_JOB_REPORT,
 } = API_ROUTES
 
 const getJobListApi = async ({ pageNo, params }) => {
@@ -117,6 +118,11 @@ const patchJobEditLogApi = async ({ payload }) => {
   return response?.data
 }
 
+const triggerJobReportApi = async ({ payload }) => {
+  const response = await postMethod(TRIGGER_JOB_REPORT, payload)
+  return response?.data
+}
+
 export {
   getJobListApi,
   searchJobListApi,
@@ -136,4 +142,5 @@ export {
   getGeoTagDataApi,
   getJobEditLogApi,
   patchJobEditLogApi,
+  triggerJobReportApi,
 }

@@ -828,3 +828,16 @@
     }
   }
 }
+.download-btn {
+  width: max-content;
+  align-self: end;
+  background-color: #f79308;
+  border-color: #f79308;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: #f79308 !important;
+    border-color: #f79308 !important;
+    color: #000 !important;
+  }
+}

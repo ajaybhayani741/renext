@@ -82,7 +82,7 @@ const modifyFileListKeys = list =>
     [],
   )
 
-const downloadReport = async reportUrl => {
+const downloadReport = async (reportUrl, fileName) => {
   try {
     const response = await fetch(reportUrl)
     const blob = await response.blob()
@@ -92,6 +92,7 @@ const downloadReport = async reportUrl => {
     const link = document.createElement('a')
     link.href = blobUrl
     // link.setAttribute('download', filename); // Set the filename
+    fileName && link.setAttribute('download', fileName || 'file.pdf')
     link.style.display = 'none'
     // Append the link to the document body
     document.body.appendChild(link)

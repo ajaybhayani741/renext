@@ -11,7 +11,11 @@ import pathName from '../../../routing/pathName.constant'
 import { useFormFn } from '../../../shared/antd/ANTDForm'
 import { getBase64 } from '../../../utils'
 import { MAX_FILE_SIZE, userWiseRole } from '../../../utils/constant'
-import { getLocation, modifyFileListKeys } from '../../../utils/customFunctions'
+import {
+  downloadReport,
+  getLocation,
+  modifyFileListKeys,
+} from '../../../utils/customFunctions'
 import { dayJs } from '../../../utils/dayjs'
 import debounce from '../../../utils/debounce'
 import {
@@ -26,13 +30,19 @@ import {
   values,
 } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
-import { addJobPostApi, updateJobPatchApi } from '../jobs.api'
+import {
+  addJobPostApi,
+  getJobDetailApi,
+  triggerJobReportApi,
+  updateJobPatchApi,
+} from '../jobs.api'
 import { payloadType, tabKeys } from '../jobs.description'
 import data from '../recoveryJobDataUpload.xlsx'
 import inspectionFieldAttr from './inspectionFieldAttr.container'
 
 const inspection = ({
   editData,
+  setEditData,
   selectedUsers,
   setSelectedUsers,
   onFileUploadOrRemove,
@@ -62,6 +72,10 @@ const inspection = ({
   const [formFieldPercentage, setFormFieldPercentage] = useState({})
   const [completeConfirmation, setCompleteConfirmation] = useState({
     open: false,
+  })
+  const [triggerLoader, setTriggerLoader] = useState({
+    loader: false,
+    updated: !editData?.inspectionJobReportDetails,
   })
   const locationRef = useRef(null)
   const inspectionInitialValues = {
@@ -458,7 +472,10 @@ const inspection = ({
       setLoader(false)
       setIsApiRunning(false)
       if (!res?.data?.data) return false
-      res?.data?.data && setFieldsPercentageFn(res?.data?.data, true)
+      if (res?.data?.data) {
+        setFieldsPercentageFn(res?.data?.data, true)
+        isEqual(current, 2) && triggerLoader?.updated && triggerJobReport()
+      }
       if (res?.data?.data && showMsg) {
         notifyMethod.success({
           message: t('msg_JobUpdatedSuccessfully', {
@@ -482,6 +499,27 @@ const inspection = ({
       navigate(pathName.JOBS)
     }
     return true
+  }
+
+  const triggerJobReport = async () => {
+    const payload = {
+      jobId: jobId,
+      type: payloadType?.['inspectionReport'],
+    }
+    setTriggerLoader({ ...triggerLoader, loader: true })
+    const response = await triggerJobReportApi({ payload })
+    if (response?.data) {
+      const resp = await getJobDetailApi({
+        params: {
+          id: jobId,
+          jobType: payloadType?.[tabKeys?.inspection],
+        },
+      })
+      if (resp?.data) {
+        setEditData({ ...resp?.data })
+      }
+      setTriggerLoader({ loader: false, updated: false })
+    }
   }
 
   const debounceApiCall = useCallback(debounce(apiCall, 700), [
@@ -802,6 +840,7 @@ const inspection = ({
         findingsRequestDto: nestedUpdatedValues?.findingsRequestDto,
       })
     }
+    setTriggerLoader({ ...triggerLoader, updated: true })
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -1050,6 +1089,13 @@ const inspection = ({
     curricularActivitiesAttrFn,
   }
 
+  const downloadInspectionData = () => {
+    downloadReport(
+      editData?.inspectionJobReportDetails?.fileUrl,
+      editData?.inspectionJobReportDetails?.fileName,
+    )
+  }
+
   return {
     form,
     loader,
@@ -1076,6 +1122,7 @@ const inspection = ({
     onCompleteConfirmationClose,
     onAcceptCompleteConfirmation,
     apiCall,
+    downloadInspectionData,
   }
 }
 
