@@ -451,6 +451,10 @@ const inspection = ({
           setJobId(response?.data?.data?.id)
           form.setFieldValue('jobId', response?.data?.data?.id)
         }
+        isComplete &&
+          response?.data?.data &&
+          isEqual(current, 3) &&
+          triggerJobReport(isComplete)
         if (!isComplete) {
           Object.assign(payload, { id: response?.data?.data?.id })
           const res = await updateJobPatchApi({ payload })
@@ -501,14 +505,14 @@ const inspection = ({
     return true
   }
 
-  const triggerJobReport = async () => {
+  const triggerJobReport = async (isComplete = false) => {
     const payload = {
       jobId: jobId,
       type: payloadType?.['inspectionReport'],
     }
     setTriggerLoader({ ...triggerLoader, loader: true })
     const response = await triggerJobReportApi({ payload })
-    if (response?.data) {
+    if (response?.data && !isComplete) {
       const resp = await getJobDetailApi({
         params: {
           id: jobId,
@@ -518,8 +522,8 @@ const inspection = ({
       if (resp?.data) {
         setEditData({ ...resp?.data })
       }
-      setTriggerLoader({ loader: false, updated: false })
     }
+    setTriggerLoader({ loader: false, updated: false })
   }
 
   const debounceApiCall = useCallback(debounce(apiCall, 700), [
@@ -1123,6 +1127,7 @@ const inspection = ({
     onAcceptCompleteConfirmation,
     apiCall,
     downloadInspectionData,
+    triggerLoader,
   }
 }
 
