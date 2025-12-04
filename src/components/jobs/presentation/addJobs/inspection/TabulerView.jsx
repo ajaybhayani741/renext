@@ -801,6 +801,25 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
             ),
           },
           {
+            label: t('job_ExtraCurricularActivities'),
+            key: 'activitiesRequestDto',
+            className: 'coll collapse-header',
+            children: (
+              <>
+                {selectedUserTable('activitiesRequestDto')}
+                {collapseItemUI({
+                  fieldAttr: mapAttributeToTableAttr(
+                    curricularActivitiesAttrFn(),
+                  ),
+                  detailKey: 'activitiesRequestDto',
+                  showEdit: showEditPermission({
+                    section: 'activitiesRequestDto',
+                  }),
+                })}
+              </>
+            ),
+          },
+          {
             label: t('job_FoodProvisions'),
             key: 'foodProvisionRequestDto',
             className: 'coll collapse-header',
@@ -865,25 +884,6 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
                   detailKey: 'feedbackRequestDto',
                   showEdit: showEditPermission({
                     section: 'feedbackRequestDto',
-                  }),
-                })}
-              </>
-            ),
-          },
-          {
-            label: t('job_ExtraCurricularActivities'),
-            key: 'activitiesRequestDto',
-            className: 'coll collapse-header',
-            children: (
-              <>
-                {selectedUserTable('activitiesRequestDto')}
-                {collapseItemUI({
-                  fieldAttr: mapAttributeToTableAttr(
-                    curricularActivitiesAttrFn(),
-                  ),
-                  detailKey: 'activitiesRequestDto',
-                  showEdit: showEditPermission({
-                    section: 'activitiesRequestDto',
                   }),
                 })}
               </>

@@ -245,6 +245,29 @@ const InspectionForm = ({
     },
     {
       label: collapseItemHeader({
+        label: 'job_ExtraCurricularActivities',
+        key: 'activitiesRequestDto',
+      }),
+      header: t('job_ExtraCurricularActivities'),
+      key: 'activitiesRequestDto',
+      ...commonCollapseProps,
+      children: (
+        <InspectionFormField
+          {...{
+            attrList: curricularActivitiesAttr,
+            index,
+            name,
+            nestedKey: 'activitiesRequestDto',
+            showSaveBtn: include([...allPermissionRoles], roleId),
+            disabledAll: !include([...allPermissionRoles], roleId),
+            onSaveClick,
+            apiCall,
+          }}
+        />
+      ),
+    },
+    {
+      label: collapseItemHeader({
         label: 'job_FoodProvisions',
         key: 'foodProvisionRequestDto',
       }),
@@ -327,29 +350,6 @@ const InspectionForm = ({
             index,
             name,
             nestedKey: 'feedbackRequestDto',
-            showSaveBtn: include([...allPermissionRoles], roleId),
-            disabledAll: !include([...allPermissionRoles], roleId),
-            onSaveClick,
-            apiCall,
-          }}
-        />
-      ),
-    },
-    {
-      label: collapseItemHeader({
-        label: 'job_ExtraCurricularActivities',
-        key: 'activitiesRequestDto',
-      }),
-      header: t('job_ExtraCurricularActivities'),
-      key: 'activitiesRequestDto',
-      ...commonCollapseProps,
-      children: (
-        <InspectionFormField
-          {...{
-            attrList: curricularActivitiesAttr,
-            index,
-            name,
-            nestedKey: 'activitiesRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
