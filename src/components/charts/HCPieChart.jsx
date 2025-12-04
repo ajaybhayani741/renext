@@ -50,7 +50,7 @@ const HCPieChart = ({ handleChartClick, seriesData, title, name }) => {
         },
         useHTML: true,
       },
-      colors: ['#eabf9f', '#f1725d', '#e79a8c', '#b17165'],
+      colors: ['#d7dff8', '#6484cb', '#bad0ff', '#4a80f5'],
       series: seriesData,
       exporting: {
         allowHTML: true,

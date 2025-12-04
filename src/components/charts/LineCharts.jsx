@@ -77,14 +77,14 @@ const LineCharts = ({
                 },
                 {
                   // Normal state styling
-                  fill: '#f6d4be',
+                  fill: '#d7dff8',
                   r: 5,
                   stroke: 'none',
                   padding: 8,
                 },
                 {
                   // Normal state styling
-                  fill: '#f6d4be',
+                  fill: '#d7dff8',
                   r: 5,
                   padding: 8,
                 },
@@ -183,13 +183,13 @@ const LineCharts = ({
           labels: { format: '{value}' },
         },
         handles: {
-          backgroundColor: '#f1725d',
-          borderColor: '#f1725d',
+          backgroundColor: '#6484cb',
+          borderColor: '#6484cb',
         },
-        outlineColor: '#f1725d',
-        maskFill: 'rgba(241, 114, 93, 0.1)',
+        outlineColor: '#6484cb',
+        maskFill: 'rgba(186, 208, 255, 0.2)',
         series: {
-          color: '#f1725d',
+          color: '#6484cb',
         },
         // Set initial range selection to full range
         adaptToUpdatedData: false,
@@ -203,7 +203,7 @@ const LineCharts = ({
         {
           name: '',
           data: seriesData?.series || [],
-          color: '#f1725d',
+          color: '#6484cb',
           type: 'line',
           marker: { enabled: true, radius: 3 },
         },

@@ -102,7 +102,7 @@ const hostelInfraRooms = () => {
         const tempSeriesData = isData && [
           {
             name: '',
-            color: '#eabf9f',
+            color: '#d7dff8',
             data: [
               {
                 y: respData.data.governmentLocationCount || 0,
@@ -124,7 +124,7 @@ const hostelInfraRooms = () => {
           },
           {
             name: '',
-            color: '#f1725d',
+            color: '#6484cb',
             data: [
               {
                 y: respData.data.privateLocationCount || 0,
