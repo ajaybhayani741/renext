@@ -63,6 +63,7 @@ const InspectionJob = ({ editData, setEditData }) => {
     onAcceptCompleteConfirmation,
     apiCall,
     downloadInspectionData,
+    triggerLoader,
   } = inspection({
     editData,
     selectedUsers,
@@ -198,6 +199,7 @@ const InspectionJob = ({ editData, setEditData }) => {
         inspectionFormFieldsAttr={inspectionFormFieldsAttr}
         findingsAttrFn={findingsAttrFn}
         getCurrentLocation={getCurrentLocation}
+        triggerLoader={triggerLoader}
       />
     ),
     4: (
