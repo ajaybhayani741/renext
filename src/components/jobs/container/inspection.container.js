@@ -512,7 +512,7 @@ const inspection = ({
     }
     setTriggerLoader({ ...triggerLoader, loader: true })
     const response = await triggerJobReportApi({ payload })
-    if (response?.data && !isComplete) {
+    if (response?.data && isComplete) {
       const resp = await getJobDetailApi({
         params: {
           id: jobId,

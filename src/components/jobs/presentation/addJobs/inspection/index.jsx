@@ -10,7 +10,7 @@ import ANTDRow from '../../../../../shared/antd/ANTDRow'
 import PopUpConfirm from '../../../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../../../utils/constant'
 import { validationTag } from '../../../../../utils/customFunctions'
-import { clipboardsImage } from '../../../../../utils/icons'
+import { clipboardsImage, DownloadOutlined } from '../../../../../utils/icons'
 import { getItem } from '../../../../../utils/localstorage'
 import inspection from '../../../container/inspection.container'
 import jobContext from '../../../container/jobContext.container'
@@ -194,12 +194,10 @@ const InspectionJob = ({ editData, setEditData }) => {
     ),
     3: (
       <ConfirmView
-        downloadInspectionData={downloadInspectionData}
         selectedUsers={selectedUsers}
         inspectionFormFieldsAttr={inspectionFormFieldsAttr}
         findingsAttrFn={findingsAttrFn}
         getCurrentLocation={getCurrentLocation}
-        triggerLoader={triggerLoader}
       />
     ),
     4: (
@@ -214,6 +212,13 @@ const InspectionJob = ({ editData, setEditData }) => {
             />
           </div>
           <h2 className="mt-10">{t('msg_JobCompleted')}</h2>
+          <ANTDButton
+            className="btn download-btn mt-10"
+            onClick={downloadInspectionData}
+            loading={triggerLoader?.loader}
+          >
+            {t('btn_Download')} <DownloadOutlined />
+          </ANTDButton>
         </div>
       </>
     ),
