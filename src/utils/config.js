@@ -1,4 +1,4 @@
-import logo from '../assets/appLogo/host-app-logo.png'
+import logo from '../assets/appLogo/host-blue-logo.png'
 
 const configData = {
   logo,
