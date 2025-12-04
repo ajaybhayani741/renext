@@ -21,7 +21,7 @@ import {
 import JobUserSelect from '../../common/JobUserSelect'
 import StepsComponent from '../../common/StepsComponent'
 
-const InspectionJob = ({ editData }) => {
+const InspectionJob = ({ editData, setEditData }) => {
   const {
     t,
     roleId,
@@ -62,6 +62,7 @@ const InspectionJob = ({ editData }) => {
     onCompleteConfirmationClose,
     onAcceptCompleteConfirmation,
     apiCall,
+    downloadInspectionData,
   } = inspection({
     editData,
     selectedUsers,
@@ -72,6 +73,7 @@ const InspectionJob = ({ editData }) => {
     getPayloadForUserList,
     onSelectUser,
     onUserClear,
+    setEditData,
   })
   const lang = getItem('lang')
 
@@ -191,6 +193,7 @@ const InspectionJob = ({ editData }) => {
     ),
     3: (
       <ConfirmView
+        downloadInspectionData={downloadInspectionData}
         selectedUsers={selectedUsers}
         inspectionFormFieldsAttr={inspectionFormFieldsAttr}
         findingsAttrFn={findingsAttrFn}

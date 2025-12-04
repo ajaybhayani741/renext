@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { notifyMethod } from '../../../App'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
@@ -9,8 +10,9 @@ import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import ANTDTag from '../../../shared/antd/ANTDTag'
 import { addressFormat } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
+import { downloadReport } from '../../../utils/customFunctions'
 import { dateFormat } from '../../../utils/dateFormat'
-import { noImage } from '../../../utils/icons'
+import { DownloadOutlined, noImage } from '../../../utils/icons'
 import { include, isEqual, length, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { columnKeys, jobStatusList, tabKeys } from '../jobs.description'
@@ -73,6 +75,27 @@ const jobTable = ({
           )}
         </ANTDButton>
       )}
+      {isEqual(activeTab?.status, tabKeys.complete) &&
+        isEqual(jobType, tabKeys.inspection) &&
+        include([districtCollector, inspectionOfficer], roleId) && (
+          <ANTDButton
+            className="download-btn"
+            onClick={() => {
+              if (!rowData?.inspectionJobReportDetails) {
+                notifyMethod.error({
+                  message: t('job_InspectionReportNotGenerated'),
+                })
+                return
+              }
+              downloadReport(
+                rowData?.inspectionJobReportDetails?.fileUrl,
+                rowData?.inspectionJobReportDetails?.fileName,
+              )
+            }}
+          >
+            {t('btn_Download')} <DownloadOutlined />
+          </ANTDButton>
+        )}
     </div>
   )
 

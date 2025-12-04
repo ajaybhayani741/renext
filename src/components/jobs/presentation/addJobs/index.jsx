@@ -39,7 +39,7 @@ const AddEditJobs = () => {
   }
 
   const getJobComponent = type => {
-    const props = { jobType: type, editData }
+    const props = { jobType: type, editData, setEditData }
 
     switch (type) {
       case jobTabKeys.inspection:

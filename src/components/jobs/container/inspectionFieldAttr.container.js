@@ -721,6 +721,7 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
+        required: true,
         md: 24,
         xs: 24,
       },
@@ -1158,6 +1159,7 @@ const inspectionFieldAttr = () => {
         xs: 24,
         acceptFileTypes: '.png,.jpg,.jpeg',
         uploadSingle: true,
+        required: true,
       },
       foodStorageDryItemsPhoto: {
         label: 'job_PhotoOfFoodStorageDryItems',

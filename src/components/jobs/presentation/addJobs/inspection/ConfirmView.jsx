@@ -15,6 +15,7 @@ import ANTDRow from '../../../../../shared/antd/ANTDRow'
 import { userWiseRole } from '../../../../../utils/constant'
 import { validationTag } from '../../../../../utils/customFunctions'
 import { dayJs } from '../../../../../utils/dayjs'
+import { DownloadOutlined } from '../../../../../utils/icons'
 import { entries, isArray } from '../../../../../utils/javascript'
 import { getItem } from '../../../../../utils/localstorage'
 
@@ -23,6 +24,7 @@ const ConfirmView = ({
   inspectionFormFieldsAttr,
   findingsAttrFn,
   getCurrentLocation,
+  downloadInspectionData,
 }) => {
   const { t } = useTranslations()
   const form = useFormInstanceFn()
@@ -127,6 +129,9 @@ const ConfirmView = ({
       }}
     >
       <h2 className="content-title mb-15">{t('job_Preview')}</h2>
+      <ANTDButton className="btn download-btn" onClick={downloadInspectionData}>
+        {t('btn_Download')} <DownloadOutlined />
+      </ANTDButton>
       <ANTDDivider className="mb-10" />
       <ANTDRow
         align="center"

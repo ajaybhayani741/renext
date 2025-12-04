@@ -11,6 +11,7 @@ import {
   CaretDownOutlined,
   LoadingOutlined,
   EditOutlined,
+  DownloadOutlined,
 } from '@ant-design/icons'
 
 import hostIcon from '../assets/appLogo/H-host.png'
@@ -118,6 +119,7 @@ export {
   equipmentIconAC,
   LoadingOutlined,
   EditOutlined,
+  DownloadOutlined,
   daikinLogo,
   QrCode,
   InventoryIcon,
