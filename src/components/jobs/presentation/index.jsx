@@ -85,9 +85,12 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                 size="small"
                 key={key}
                 activeKey={activeTab?.[key]}
+                className={isEqual(key, 'status') ? 'jobs-status-tab' : ''}
                 items={value?.map(({ label, ...item }) => ({
                   ...item,
-                  label: t(label),
+                  label: isEqual(key, 'status')
+                    ? t(label)?.toUpperCase()
+                    : t(label),
                 }))}
                 centered
                 onChange={tab => handleTabChange({ [key]: tab })}
