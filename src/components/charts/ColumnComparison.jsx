@@ -56,14 +56,14 @@ const ColumnComparison = ({
         },
         labelFormatter: function () {
           if (this.name) return this.name
-          if (isEqual(this.color, '#eabf9f'))
+          if (isEqual(this.color, '#d7dff8'))
             return `${t('dash_Government')} / ${t('btn_Yes')}`
-          if (isEqual(this.color, '#f1725d'))
+          if (isEqual(this.color, '#6484cb'))
             return `${t('dash_Private')} / ${t('btn_No')}`
           return ''
         },
       },
-      colors: ['#eabf9f', '#f1725d'],
+      colors: ['#d7dff8', '#6484cb'],
       xAxis: {
         categories: chartData?.category,
         labels: {

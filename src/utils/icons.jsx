@@ -14,7 +14,7 @@ import {
   DownloadOutlined,
 } from '@ant-design/icons'
 
-import hostIcon from '../assets/appLogo/H-host.png'
+import hostIcon from '../assets/appLogo/H-host-blue.png'
 import BucketInventory from '../assets/BucketInventory.xlsx'
 import buildingIcon from '../assets/buildingIcon.png'
 import clipboardsImage from '../assets/clipboards.png'

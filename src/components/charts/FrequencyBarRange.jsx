@@ -101,10 +101,10 @@ const FrequencyBarRange = ({
           },
         },
         spline: {
-          color: '#f1725d',
+          color: '#6484cb',
         },
         column: {
-          color: '#eabf9f',
+          color: '#d7dff8',
         },
       },
       navigator: {
