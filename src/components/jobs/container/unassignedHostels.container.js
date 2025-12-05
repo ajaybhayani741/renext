@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { notifyMethod } from '../../../App'
 import useRedux from '../../../hooks/useRedux'
+import useTranslations from '../../../hooks/useTranslations'
 import { setPopupMessageModel } from '../../../redux/app/reducer'
 import { apiParams } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
@@ -9,6 +9,7 @@ import { addAssociateApi, getUserList } from '../../userManagement/user.api'
 import { userRelationKey } from '../../userManagement/user.description'
 
 const unassignedHostels = () => {
+  const { t } = useTranslations()
   const { dispatch } = useRedux()
   const [hostelData, setHostelData] = useState({})
   const [inspectionOfficerModal, setInspectionOfficerModal] = useState({
@@ -60,9 +61,19 @@ const unassignedHostels = () => {
     const { data } = await addAssociateApi({ params: payloadData })
     setInspectionOfficerData(pre => ({ ...pre, loader: false }))
     if (data?.success) {
-      notifyMethod.success({
-        message: 'msg_UserAssociatedSuccessfully',
-      })
+      dispatch(
+        setPopupMessageModel({
+          open: true,
+          message: t('msg_HostelAssignedToInspectionOfficer', {
+            hostelName: inspectionOfficerModal?.data?.lastName,
+            inspectionOfficer:
+              selectedUsers?.[0]?.businessName ||
+              selectedUsers?.[0]?.lastName ||
+              '-',
+          }),
+          success: true,
+        }),
+      )
       handleCloseInspectionOfficerModal()
       hostelApiCall()
     }
