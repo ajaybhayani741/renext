@@ -691,5 +691,6 @@
   "job_PhotosExtraCurricularActivitiesUniqueAspectsDoneChildren": "Photos of extra-curricular activities or unique aspects done by children",
   "job_AddPhotoOfMainGate": "Add Photo of main gate",
   "job_AddPhotoOfHostelFrontWithName": "Add Photo of the hostel front face with name of hostel",
-  "job_InspectionReportNotGenerated": "Inspection report not generated"
+  "job_InspectionReportNotGenerated": "Inspection report not generated",
+  "msg_HostelAssignedToInspectionOfficer": "{{hostelName}} has been assigned to {{inspectionOfficer}}"
 }

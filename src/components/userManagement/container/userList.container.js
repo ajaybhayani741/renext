@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react'
 
 import { notifyMethod } from '../../../App'
+import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
+import useTranslations from '../../../hooks/useTranslations'
+import { setPopupMessageModel } from '../../../redux/app/reducer'
 import { USER_TXT } from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
-import { entries, isEqual } from '../../../utils/javascript'
+import { entries, include, isEqual } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { addAssociateApi, getUserList } from '../user.api'
 import { userRelationKey, userTranslationKey } from '../user.description'
 
 const userList = ({ payload, isBuilding }) => {
+  const { t } = useTranslations()
   const { params, location, navigate } = useRouter()
+  const { dispatch } = useRedux()
   const [userData, setUserData] = useState({})
   const [associatedData, setAssociatedData] = useState({
     list: [],
@@ -21,7 +26,7 @@ const userList = ({ payload, isBuilding }) => {
   const [buildingInfo, setBuildingInfo] = useState({ flag: false, data: {} })
   const modelTitle = userTranslationKey[payload?.roleId]
   const loginUserRoleId = JSON.parse(getItem('userData'))
-  const { hostel, districtCollector } = userWiseRole
+  const { hostel, districtCollector, inspectionOfficer } = userWiseRole
 
   const apiCall = async ({ pageNo }) => {
     let params = `${pageNo}`
@@ -97,9 +102,25 @@ const userList = ({ payload, isBuilding }) => {
     const { data } = await addAssociateApi({ params: payloadData })
     setAssociatedData(pre => ({ ...pre, loader: false }))
     if (data?.success) {
-      notifyMethod.success({
-        message: 'msg_UserAssociatedSuccessfully',
-      })
+      if (include([inspectionOfficer, hostel], selectedAssigneeUser?.roleId)) {
+        dispatch(
+          setPopupMessageModel({
+            open: true,
+            message: t('msg_HostelAssignedToInspectionOfficer', {
+              hostelName: selectedUsers?.[0]?.lastName,
+              inspectionOfficer:
+                selectedAssigneeUser?.businessName ||
+                selectedAssigneeUser?.lastName ||
+                '-',
+            }),
+            success: true,
+          }),
+        )
+      } else {
+        notifyMethod.success({
+          message: 'msg_UserAssociatedSuccessfully',
+        })
+      }
       handleCloseModel()
       apiCall({ pageNo: 1 })
     }
