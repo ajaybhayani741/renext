@@ -176,7 +176,7 @@ const HCBarChart = ({
           // allowOverlap: true,
           // autoRotation: [0],
           // reserveSpace: false,
-          staggerLines: 1,
+          // staggerLines: 1,
           rotation: xAxisValues.length > 50 ? -45 : 0,
           // style: {
           //   fontSize:
