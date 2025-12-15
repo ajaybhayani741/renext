@@ -75,6 +75,7 @@ const userColumns = ({
       <ANTDButton className="bg-view" onClick={() => handleView(rowData)}>
         {t('btn_View')}
       </ANTDButton>
+      <div className="mb-5" />
       {!removeEditBtn && (permission || isBuilding) && (
         <ANTDButton className="bg-edit" onClick={() => handleEdit(rowData)}>
           {t('btn_Edit')}

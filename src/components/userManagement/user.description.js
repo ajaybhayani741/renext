@@ -171,6 +171,8 @@ const addUserForm = {
     inputType: 'formUpload',
     uploadSingle: true,
     acceptFileTypes: '.png,.jpg,.jpeg,.webp',
+    md: 12,
+    xs: 12,
   },
   businessName: {
     label: 'user_BusinessName',

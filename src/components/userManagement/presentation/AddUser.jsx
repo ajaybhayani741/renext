@@ -42,6 +42,9 @@ function AddUser({
     handleClosePopup,
     getAddressData,
     currentAddress,
+    deleteConfirmation,
+    handleDeletePopup,
+    onDeleteConfirm,
   } = addUser({
     t,
     editInfo,
@@ -161,6 +164,15 @@ function AddUser({
         onCancelModel={handleClosePopup}
         description={popup?.message}
       />
+      {deleteConfirmation?.open && (
+        <PopUpConfirm
+          isOpen={deleteConfirmation?.open}
+          onCancelModel={handleDeletePopup}
+          onAccept={onDeleteConfirm}
+          onReject={handleDeletePopup}
+          description={deleteConfirmation?.message}
+        />
+      )}
     </div>
   )
 }

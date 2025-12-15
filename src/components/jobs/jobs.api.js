@@ -22,6 +22,7 @@ const {
   GET_GEO_TAG,
   JOB_EDIT_LOG,
   TRIGGER_JOB_REPORT,
+  DELETE_USER,
 } = API_ROUTES
 
 const getJobListApi = async ({ pageNo, params }) => {
@@ -123,6 +124,11 @@ const triggerJobReportApi = async ({ payload }) => {
   return response?.data
 }
 
+const deleteUserApi = async ({ id }) => {
+  const response = await deleteMethod(`${DELETE_USER}/${id}`)
+  return response?.data
+}
+
 export {
   getJobListApi,
   searchJobListApi,
@@ -143,4 +149,5 @@ export {
   getJobEditLogApi,
   patchJobEditLogApi,
   triggerJobReportApi,
+  deleteUserApi,
 }
