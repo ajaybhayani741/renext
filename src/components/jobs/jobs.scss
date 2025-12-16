@@ -841,3 +841,11 @@
     color: #000 !important;
   }
 }
+.ant-progress .ant-progress-text-inner {
+  font-size: 12px;
+}
+.ant-progress
+  .ant-progress-bg.ant-progress-bg-inner
+  .ant-progress-text-inner.ant-progress-text-bright {
+  color: #000;
+}

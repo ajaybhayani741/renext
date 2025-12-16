@@ -7,6 +7,7 @@ import useTranslations from '../../../hooks/useTranslations'
 import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
+import ANTDProgress from '../../../shared/antd/ANTDProgress'
 import ANTDTag from '../../../shared/antd/ANTDTag'
 import { addressFormat } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
@@ -52,7 +53,11 @@ const jobTable = ({
         )}
       <div className="mb-5" />
       <ANTDButton className="bg-view" onClick={() => onViewClick(rowData?.id)}>
-        {t('job_viewInspectionStatus')}
+        {t(
+          isEqual(activeTab?.status, tabKeys.complete)
+            ? 'job_ViewInspection'
+            : 'job_viewInspectionStatus',
+        )}
       </ANTDButton>
       <div className="mb-5" />
       {checkEditPermission && checkEditPermission(rowData) && (
@@ -70,11 +75,31 @@ const jobTable = ({
         >
           {t(
             roleId === inspectionOfficer
-              ? 'job_startInspectionJob'
+              ? rowData?.latitude || rowData?.longitude
+                ? 'job_EditInspection'
+                : 'job_startInspectionJob'
               : 'btn_Edit',
           )}
         </ANTDButton>
       )}
+      <div className="mb-5" />
+      {isEqual(activeTab?.status, tabKeys.active) &&
+        isEqual(roleId, inspectionOfficer) && (
+          <ANTDButton
+            className="bg-assign-hostel"
+            onClick={() => {
+              navigate(
+                pathName.EDIT_JOB.replace(':jobId', rowData?.id).replace(
+                  ':jobType',
+                  jobType,
+                ),
+                { state: { status: rowData?.status, restart: true } },
+              )
+            }}
+          >
+            {t('job_RestartInspection')}
+          </ANTDButton>
+        )}
       {isEqual(activeTab?.status, tabKeys.complete) &&
         isEqual(jobType, tabKeys.inspection) &&
         include([districtCollector, inspectionOfficer], roleId) && (
@@ -214,21 +239,30 @@ const jobTable = ({
       {
         title: t('job_Status'),
         key: columnKeys.status,
-        dataIndex: 'status',
+        // dataIndex: 'status',
         className: 'nowrap',
         render: rowData => {
-          return (
+          return isEqual(activeTab?.status, tabKeys.active) ? (
+            <ANTDProgress
+              percent={Number(rowData?.progressPercentage || 0) || 0}
+              percentPosition={{ align: 'center', type: 'inner' }}
+              size={[100, 20]}
+              strokeColor="#FA8128"
+            />
+          ) : (
             <ANTDTag
               className="pl-15 pr-15 fs-14 py-5 br-10 color-black"
               color={
-                include(rowData, 'INPROGRESS')
+                include(rowData?.status, 'INPROGRESS')
                   ? '#FA8128'
-                  : include(rowData, 'COMPLETED')
+                  : include(rowData?.status, 'COMPLETED')
                     ? '#40A368'
                     : ''
               }
             >
-              {rowData ? t(jobStatusList?.[rowData]) || rowData : ''}
+              {rowData?.status
+                ? t(jobStatusList?.[rowData?.status]) || rowData?.status
+                : ''}
             </ANTDTag>
           )
         },
