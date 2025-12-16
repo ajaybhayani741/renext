@@ -25,7 +25,7 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
     userDetails,
   })
 
-  const { hostel, inspectionOfficer } = userWiseRole
+  const { hostel, inspectionOfficer, districtCollector } = userWiseRole
 
   const { t } = useTranslations()
   const isChildUser =
@@ -68,9 +68,10 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
           </>
         )}
 
-        {!include([hostel, inspectionOfficer], userDetails?.roleId) && (
-          <UserRating />
-        )}
+        {!include(
+          [hostel, inspectionOfficer, districtCollector],
+          userDetails?.roleId,
+        ) && <UserRating />}
 
         {userListView &&
           entries(userListView).map(([key, value]) => {
