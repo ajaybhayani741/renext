@@ -187,10 +187,12 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   }, [type, status, roleId])
 
   const currentSearchBy = useMemo(() => {
-    const { jobId } = searchByKeys
+    const { jobId, inspectionOfficer, hostel } = searchByKeys
 
     return [
       jobId,
+      inspectionOfficer,
+      hostel,
       // For dynamic searchBy by role or active tab
       // ...ternary(isEqual(roleId, userWiseRole.admin), ['extra'], []),
       // ...ternary(isEqual(type, tabKeys.quote), ['extra2'], []),
