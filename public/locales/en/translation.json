@@ -691,5 +691,15 @@
   "job_PhotosExtraCurricularActivitiesUniqueAspectsDoneChildren": "Photos of extra-curricular activities or unique aspects done by children",
   "job_AddPhotoOfMainGate": "Add Photo of main gate",
   "job_AddPhotoOfHostelFrontWithName": "Add Photo of the hostel front face with name of hostel",
-  "job_InspectionReportNotGenerated": "Inspection report not generated"
+  "job_InspectionReportNotGenerated": "Inspection report not generated",
+  "job_Photos": "Photos",
+  "dash_PhotosOfToilets": "Photos of Toilets",
+  "dash_PhotoOfBathrooms": "Photo of Bathrooms",
+  "dash_PhotoOfFoodStorageVegetables": "Photo of Food Storage - Vegetables",
+  "dash_PhotoOfFoodStorageDryItems": "Photo of Food Storage - Dry Items",
+  "dash_PhotoOfInspectingOfficerWithStaff": "Photo of Inspecting Officer with Staff",
+  "dash_PhotoOfInspectingOfficerWithChildren": "Photo of Inspecting Officer with Children",
+  "dash_PhotoOfMainGate": "Photo of Main Gate",
+  "dash_PhotoOfHostelFace": "Photo of hostel front face with the name of hostel",
+  "dash_DateOfInspectionCompletion": "Date of Inspection Completion"
 }

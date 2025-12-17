@@ -20,6 +20,7 @@ const cardKeys = {
   safetyAndSecurity: 'safety-and-security',
   conductionMeetings: 'conduction-meetings',
   feedback: 'feedback',
+  photos: 'photos',
 }
 
 const {
@@ -301,6 +302,10 @@ const cardList = [
   {
     label: 'job_Feedback',
     key: cardKeys.feedback,
+  },
+  {
+    label: 'job_Photos',
+    key: cardKeys.photos,
   },
 ]
 
@@ -763,3 +768,199 @@ export const reportCategoryKeys = t => ({
   [t('txt_None')]: 'NONE',
   [t('job_HWOMeetingsRegular')]: null,
 })
+
+export const photosDashboardData = {
+  dash_PhotosOfToilets: { key: 'toilets', type: 'TOILET_PHOTO' },
+  dash_PhotoOfBathrooms: { key: 'bathrooms', type: 'BATHROOM_PHOTO' },
+  dash_PhotoOfFoodStorageVegetables: {
+    key: 'food-storage-vegetables',
+    type: 'FOOD_STORAGE_VEGETABLES_PHOTO',
+  },
+  dash_PhotoOfFoodStorageDryItems: {
+    key: 'food-storage-dry-items',
+    type: 'FOOD_STORAGE_DRY_ITEMS_PHOTO',
+  },
+  dash_PhotoOfInspectingOfficerWithStaff: {
+    key: 'inspecting-officer-staff',
+    type: 'INSPECTING_OFFICER_WITH_STAFF_PHOTO',
+  },
+  dash_PhotoOfInspectingOfficerWithChildren: {
+    key: 'inspecting-officer-children',
+    type: 'INSPECTING_OFFICER_WITH_CHILDREN_PHOTO',
+  },
+  dash_PhotoOfMainGate: { key: 'main-gate', type: 'PHOTOS_OF_MAIN_GATE' },
+  dash_PhotoOfHostelFace: { key: 'hostel', type: 'HOSTEL_PHOTOS' },
+  job_ExtraCurricularActivities: {
+    key: 'extra-curricular-activities',
+    type: 'PHOTOS_OF_EXTRA_CURRICULAR_ACTIVITIES',
+  },
+}
+
+// export const photosDummyData = {
+//   dash_PhotosOfToilets: {
+//     pageNo: 1,
+//     list: Array.from({ length: 23 }, (_, i) => ({
+//       id: i + 1,
+//       status: 'done',
+//       name: 'image.png',
+//       url: `https://picsum.photos/seed/toilets${i + 1}/800/600`,
+//     })),
+//     lastPage: 3,
+//     hasMore: true,
+//     fullCount: 23,
+//   },
+//   dash_PhotoOfBathrooms: {
+//     pageNo: 1,
+//     list: Array.from({ length: 11 }, (_, i) => ({
+//       id: i + 1,
+//       status: 'done',
+//       name: 'image.png',
+//       url: `https://picsum.photos/seed/bathrooms${i + 1}/800/600`,
+//     })),
+//     lastPage: 2,
+//     hasMore: true,
+//     fullCount: 11,
+//   },
+//   dash_PhotoOfFoodStorageVegetables: {
+//     pageNo: 1,
+//     list: Array.from({ length: 17 }, (_, i) => ({
+//       id: i + 1,
+//       status: 'done',
+//       name: 'image.png',
+//       url: `https://picsum.photos/seed/vegetables${i + 1}/800/600`,
+//     })),
+//     lastPage: 2,
+//     hasMore: true,
+//     fullCount: 17,
+//   },
+//   dash_PhotoOfFoodStorageDryItems: {
+//     pageNo: 1,
+//     list: Array.from({ length: 27 }, (_, i) => ({
+//       id: i + 1,
+//       status: 'done',
+//       name: 'image.png',
+//       url: `https://picsum.photos/seed/dryitems${i + 1}/800/600`,
+//     })),
+//     lastPage: 3,
+//     hasMore: true,
+//     fullCount: 27,
+//   },
+//   dash_PhotoOfInspectingOfficerWithStaff: {
+//     pageNo: 1,
+//     list: Array.from({ length: 9 }, (_, i) => ({
+//       id: i + 1,
+//       status: 'done',
+//       name: 'image.png',
+//       url: `https://picsum.photos/seed/officerstaff${i + 1}/800/600`,
+//     })),
+//     lastPage: 1,
+//     hasMore: true,
+//     fullCount: 9,
+//   },
+//   dash_PhotoOfInspectingOfficerWithChildren: {
+//     pageNo: 1,
+//     list: Array.from({ length: 22 }, (_, i) => ({
+//       id: i + 1,
+//       status: 'done',
+//       name: 'image.png',
+//       url: `https://picsum.photos/seed/officerchildren${i + 1}/800/600`,
+//     })),
+//     lastPage: 3,
+//     hasMore: true,
+//     fullCount: 22,
+//   },
+//   dash_PhotoOfMainGate: {
+//     pageNo: 1,
+//     list: Array.from({ length: 33 }, (_, i) => ({
+//       id: i + 1,
+//       status: 'done',
+//       name: 'image.png',
+//       url: `https://picsum.photos/seed/maingate${i + 1}/800/600`,
+//     })),
+//     lastPage: 4,
+//     hasMore: true,
+//     fullCount: 33,
+//   },
+//   dash_PhotoOfHostelFace: {
+//     pageNo: 1,
+//     list: Array.from({ length: 19 }, (_, i) => ({
+//       id: i + 1,
+//       status: 'done',
+//       name: 'image.png',
+//       url: `https://picsum.photos/seed/hostel${i + 1}/800/600`,
+//     })),
+//     lastPage: 2,
+//     hasMore: true,
+//     fullCount: 19,
+//   },
+// }
+
+export const dummyData = {
+  error: null,
+  data: {
+    list: [
+      {
+        photos: [
+          {
+            fileName: '15539.jpg',
+            fileUrl:
+              'https://dnum2o6eykwnz.cloudfront.net/brand_documents_us/1761717846172.jpg',
+            dmsId: 283,
+            modificationDate: '29/10/2025',
+            addedByUser: {},
+          },
+        ],
+        hostelInfo: {
+          id: 92,
+          firstName: null,
+          lastName: 'Hostel 10',
+          emailId: '',
+          country: 'in',
+          state: 'Telangana',
+          city: 'Hyderabad',
+          address:
+            'Hyderabad Decan Railway Station, Red Hills, Malakpet, Hyderabad, Telangana, India',
+          pincode: '500036',
+          phoneNumber: null,
+          averageRating: null,
+          roleId: 6,
+          businessName: null,
+          adminId: 18,
+          registrationNumber: null,
+          currentLanguage: null,
+          username: null,
+          password: null,
+          companyAssociation: null,
+          creationDate: 1759919386694,
+          registrantId: 18,
+          emailId1: null,
+          emailId2: null,
+          emailId3: null,
+          emailId4: null,
+          emailId5: null,
+          emailId6: null,
+          emailId7: null,
+          emailId8: null,
+          emailId9: null,
+          emailId10: null,
+          deleted: false,
+          allParentId: [18, 17],
+          departmentName: null,
+          inchargeName: null,
+          parentDetails: null,
+          userType: null,
+          appName: null,
+          jobId: null,
+          profileDmsId: null,
+          profile: null,
+        },
+        inspectionJobCompletionDate: 1761718260001,
+        jobId: 1,
+      },
+    ],
+    pageNo: 1,
+    hasMore: true,
+    lastPage: 1,
+    fullCount: 10,
+  },
+}

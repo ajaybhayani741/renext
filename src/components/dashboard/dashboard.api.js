@@ -65,6 +65,7 @@ const {
   GET_PHC_DISTANCE_CHART,
   GET_PHC_DISTANCE_HOSTELS,
   CHART_REPORT,
+  DASHBOARD_PHOTOS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -476,6 +477,13 @@ const getChartReportApi = async ({ payload }) => {
   return response?.data
 }
 
+const getDashboardPhotosApi = async ({ pageNo, params }) => {
+  const response = await getMethod(DASHBOARD_PHOTOS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
 export {
   getDiscrepanciesApi,
   getShiftReportApi,
@@ -539,4 +547,5 @@ export {
   getPHCDistanceChartApi,
   getPHCDistanceHostelsApi,
   getChartReportApi,
+  getDashboardPhotosApi,
 }
