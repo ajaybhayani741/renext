@@ -22,6 +22,7 @@ import {
   values,
 } from '../../../utils/javascript'
 import { getItem, setItem } from '../../../utils/localstorage'
+import { deleteUserApi } from '../../jobs/jobs.api'
 import { userChildrenList } from '../../layout/sidebar.description'
 import {
   cityOptions,
@@ -72,6 +73,10 @@ const addUser = ({
   })
   const [loader, setLoader] = useState(false)
   const [popup, setPopup] = useState({ open: false, message: '' })
+  const [deleteConfirmation, setDeleteConfirmation] = useState({
+    open: false,
+    message: '',
+  })
   const userDetails = JSON.parse(getItem('userData'))
   const { roleId, id: loginUserId } = { ...userDetails }
   const formField =
@@ -178,15 +183,45 @@ const addUser = ({
         ...formData,
       }
       setUserForm(prevForm => {
-        const { username, password, ...editForm } = prevForm || {}
+        const { profile, username, password, ...editForm } = prevForm || {}
         return isEqual(roleId, districtCollector) &&
           isEqual(editInfo?.data?.roleId, inspectionOfficer)
           ? {
+              profile: { ...profile },
+              deleteBtn: {
+                inputType: 'button',
+                type: 'primary',
+                className: 'bg-danger',
+                children: t('btn_Delete'),
+                onClick: handleDeletePopup,
+                md: 12,
+                xs: 12,
+                colClassName: 'text-end',
+              },
               ...prevForm,
               username: { ...prevForm.username, disabled: true },
               password: { ...prevForm.password, required: false },
             }
-          : editForm
+          : {
+              ...(profile ? { profile: { ...profile } } : {}),
+              ...(include(
+                [hostel, inspectionOfficer],
+                editInfo?.data?.roleId,
+              ) &&
+                notEqual(roleId, editInfo?.data?.roleId) && {
+                  deleteBtn: {
+                    inputType: 'button',
+                    type: 'primary',
+                    className: 'bg-danger',
+                    children: t('btn_Delete'),
+                    onClick: handleDeletePopup,
+                    md: 24,
+                    xs: 24,
+                    colClassName: 'text-end',
+                  },
+                }),
+              ...editForm,
+            }
       })
     }
   }, [editInfo])
@@ -209,6 +244,30 @@ const addUser = ({
       })
     }
   }, [selectUser?.data])
+
+  const handleDeletePopup = () => {
+    setDeleteConfirmation({
+      open: !deleteConfirmation?.open,
+      message: deleteConfirmation?.open
+        ? ''
+        : t('msg_WantToDeletePermanently', {
+            userName: editInfo?.data?.lastName,
+          }),
+    })
+  }
+
+  const onDeleteConfirm = async () => {
+    const response = await deleteUserApi({ id: editInfo?.data?.id })
+    if (response?.data?.success) {
+      notifyMethod.success({
+        message: t('msg_UserDeletedSuccessfully', {
+          userName: editInfo?.data?.lastName,
+        }),
+      })
+      handleCancelEdit(true)
+    }
+    setDeleteConfirmation({ open: false, message: '' })
+  }
 
   const currentUserDescription = userChildrenList.find(item =>
     isEqual(item?.userId, formRoleId),
@@ -691,6 +750,9 @@ const addUser = ({
     handleSameAsParent,
     getAddressData,
     currentAddress,
+    deleteConfirmation,
+    handleDeletePopup,
+    onDeleteConfirm,
   }
 }
 

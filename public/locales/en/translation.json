@@ -692,5 +692,7 @@
   "job_AddPhotoOfMainGate": "Add Photo of main gate",
   "job_AddPhotoOfHostelFrontWithName": "Add Photo of the hostel front face with name of hostel",
   "job_InspectionReportNotGenerated": "Inspection report not generated",
-  "msg_HostelAssignedToInspectionOfficer": "{{hostelName}} has been assigned to {{inspectionOfficer}}"
+  "msg_HostelAssignedToInspectionOfficer": "{{hostelName}} has been assigned to {{inspectionOfficer}}",
+  "msg_WantToDeletePermanently": "Are you sure you want to delete {{userName}} permanently?",
+  "msg_UserDeletedSuccessfully": "User {{userName}} deleted successfully"
 }
