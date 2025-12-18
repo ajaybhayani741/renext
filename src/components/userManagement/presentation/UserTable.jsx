@@ -42,6 +42,7 @@ function UserTable({
   handleAssignHostel,
   userKey,
   getUsersData = null,
+  searchPayload = null,
 }) {
   const {
     viewModel,
@@ -65,6 +66,7 @@ function UserTable({
     isBuilding,
     searchByEmail,
     getUsersData,
+    searchPayload,
   })
 
   const { column, actionButtons, cardViewFn } = userColumns({

@@ -7,7 +7,7 @@ import { userWiseRole } from '../../../utils/constant'
 import { include, isEqual, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import userList from '../container/userList.container'
-import { userRelationKey } from '../user.description'
+import { userRelationKey, userTranslationKey } from '../user.description'
 import AddUser from './AddUser'
 import UserTable from './UserTable'
 
@@ -37,6 +37,7 @@ function UserList({
     handleTableChange,
     handleNonAssociateUser,
     handleAssociatedTableChange,
+    modelData,
   } = userList({ payload, isBuilding })
   const { t } = useTranslations()
   const { inspectionOfficer, hostel, admin } = userWiseRole
@@ -98,7 +99,11 @@ function UserList({
 
       {model && (
         <ANTDModal
-          title={t(modelTitle)}
+          title={
+            modelData?.roleId
+              ? t(userTranslationKey?.[modelData?.roleId])
+              : t(modelTitle)
+          }
           centered
           open={model}
           onCancel={handleCloseModel}
@@ -109,6 +114,10 @@ function UserList({
             className="mb-15"
             userData={associatedData}
             payload={{ ...payload, relationType: userRelationKey.nonAssociate }}
+            searchPayload={{
+              roleId: modelData?.roleId,
+              relationType: userRelationKey.associate,
+            }}
             isSearch
             handleTableChange={handleAssociatedTableChange}
             handleSelect={onAddAssociate}

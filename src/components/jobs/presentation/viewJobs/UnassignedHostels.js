@@ -8,6 +8,7 @@ import PopUpConfirm from '../../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../../utils/constant'
 import { include, isEqual, notEqual } from '../../../../utils/javascript'
 import UserTable from '../../../userManagement/presentation/UserTable'
+import { userRelationKey } from '../../../userManagement/user.description'
 import unassignedHostels from '../../container/unassignedHostels.container'
 
 const UnassignedHostels = () => {
@@ -71,7 +72,11 @@ const UnassignedHostels = () => {
             userData={inspectionOfficerData}
             payload={{
               roleId: inspectionOfficer,
-              relationType: 'nonAssociate',
+              relationType: userRelationKey.nonAssociate,
+            }}
+            searchPayload={{
+              roleId: inspectionOfficer,
+              relationType: userRelationKey.associate,
             }}
             isSearch
             handleTableChange={handleInspectionOfficerTableChange}

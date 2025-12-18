@@ -13,6 +13,7 @@ const userTable = ({
   multiSelect,
   searchByEmail,
   getUsersData = null,
+  searchPayload,
 }) => {
   const [viewModel, setViewModel] = useState({ open: false, userDetails: null })
   const searchValue = useRef(null)
@@ -47,11 +48,13 @@ const userTable = ({
       roleId: payload?.roleId,
       searchByEmail,
     })}=${value}`
-    entries(payload)?.forEach(([key, value]) => {
-      if (value) {
-        params += `&${key}=${value}`
-      }
-    })
+    entries(searchPayload ? searchPayload : payload)?.forEach(
+      ([key, value]) => {
+        if (value) {
+          params += `&${key}=${value}`
+        }
+      },
+    )
     const result = await searchUserApi({ params })
     setSearchResult({ loader: false, data: result?.data })
   }, [])
