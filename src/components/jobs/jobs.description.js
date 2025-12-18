@@ -1,5 +1,5 @@
 import { userWiseRole } from '../../utils/constant'
-import { isEqual } from '../../utils/javascript'
+import { isEqual, notEqual } from '../../utils/javascript'
 
 const { admin, inspectionOfficer, districtCollector } = userWiseRole
 
@@ -81,16 +81,22 @@ const columnKeys = {
   hostelAddress: 'user_HostelAddress',
   inspectionOfficer: 'user_InspectionOfficer',
   hostelContact: 'user_Contact',
+  hostelName: 'job_hostelName',
+  inspectionOfficerName: 'job_InspectionOfficerName',
 }
 
 const searchByKeys = {
   jobId: 'JOB_ID',
+  inspectionOfficerName: 'INSPECTION_OFFICER_NAME',
+  hostelName: 'HOSTEL_NAME',
 }
 
-const { jobId } = searchByKeys
+const { jobId, inspectionOfficerName, hostelName } = searchByKeys
 
 const searchByLabels = {
   [jobId]: 'job_Id',
+  [inspectionOfficerName]: 'job_InspectionOfficerName',
+  [hostelName]: 'job_hostelName',
 }
 
 const payloadType = {
@@ -420,6 +426,20 @@ export const PENDING = 'PENDING'
 export const jobStatusList = {
   JOB_REQUEST_INPROGRESS: 'INSPECTION IN PROGRESS',
   JOB_COMPLETED: 'INSPECTION COMPLETED',
+}
+
+export const jobTypeRoleSearchBy = (jobType, roleId) => {
+  switch (jobType) {
+    case tabKeys.inspection:
+      return [
+        jobId,
+        ...(notEqual(roleId, inspectionOfficer) ? [inspectionOfficerName] : []),
+        hostelName,
+      ]
+
+    default:
+      return [jobId]
+  }
 }
 
 export {

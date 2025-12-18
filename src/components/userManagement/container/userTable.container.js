@@ -8,7 +8,7 @@ import debounce from '../../../utils/debounce'
 import { entries, notEqual, ternary } from '../../../utils/javascript'
 import { addAssociateApi, searchUserApi } from '../user.api'
 
-const userTable = ({ payload, multiSelect, searchByEmail }) => {
+const userTable = ({ payload, multiSelect, searchByEmail, searchPayload }) => {
   const [viewModel, setViewModel] = useState({ open: false, userDetails: null })
   const searchValue = useRef(null)
   const [searchResult, setSearchResult] = useState({
@@ -42,11 +42,13 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
       roleId: payload?.roleId,
       searchByEmail,
     })}=${value}`
-    entries(payload)?.forEach(([key, value]) => {
-      if (value) {
-        params += `&${key}=${value}`
-      }
-    })
+    entries(searchPayload ? searchPayload : payload)?.forEach(
+      ([key, value]) => {
+        if (value) {
+          params += `&${key}=${value}`
+        }
+      },
+    )
     const result = await searchUserApi({ params })
     setSearchResult({ loader: false, data: result?.data })
   }, [])

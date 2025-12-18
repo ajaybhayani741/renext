@@ -17,6 +17,7 @@ const userList = ({ payload, isBuilding }) => {
     loader: false,
   })
   const [model, setModel] = useState(false)
+  const [modelData, setModelData] = useState(null)
   const [selectedAssigneeUser, setSelectedAssigneeUser] = useState(null)
   const [buildingInfo, setBuildingInfo] = useState({ flag: false, data: {} })
   const modelTitle = userTranslationKey[payload?.roleId]
@@ -75,6 +76,7 @@ const userList = ({ payload, isBuilding }) => {
       setBuildingInfo({ flag: true, data: {} })
     } else {
       setModel(true)
+      setModelData({ roleId })
       associateApiCall({ pageNo: 1, roleId })
       rowData && setSelectedAssigneeUser(rowData)
     }
@@ -82,6 +84,7 @@ const userList = ({ payload, isBuilding }) => {
 
   const handleCloseModel = () => {
     setModel(false)
+    setModelData({ roleId: null })
     setAssociatedData({})
   }
 
@@ -111,6 +114,7 @@ const userList = ({ payload, isBuilding }) => {
 
   return {
     model,
+    modelData,
     userData,
     modelTitle,
     associatedData,

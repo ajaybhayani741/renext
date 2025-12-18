@@ -163,12 +163,12 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                 </ANTDColumn>
               </ANTDRow>
 
-              {isDesktop && (
+              {/* {isDesktop && (
                 <>
                   <Label text={t('job_ColumnFilter')} />
                   <ANTDSelect className="w-100" {...columnFilterProps} />
                 </>
-              )}
+              )} */}
             </>
           )}
           {isUnassignHostelTab ? (

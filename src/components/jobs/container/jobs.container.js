@@ -16,6 +16,7 @@ import {
   columnKeys,
   exportExcelOptions,
   getJobTabList,
+  jobTypeRoleSearchBy,
   payloadType,
   searchByKeys,
   searchByLabels,
@@ -188,13 +189,16 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
 
   const currentSearchBy = useMemo(() => {
     const { jobId } = searchByKeys
+    const searchValues = jobTypeRoleSearchBy(jobType, roleId)
 
-    return [
-      jobId,
-      // For dynamic searchBy by role or active tab
-      // ...ternary(isEqual(roleId, userWiseRole.admin), ['extra'], []),
-      // ...ternary(isEqual(type, tabKeys.quote), ['extra2'], []),
-    ]
+    return (
+      searchValues || [
+        jobId,
+        // For dynamic searchBy by role or active tab
+        // ...ternary(isEqual(roleId, userWiseRole.admin), ['extra'], []),
+        // ...ternary(isEqual(type, tabKeys.quote), ['extra2'], []),
+      ]
+    )
   }, [type, roleId])
 
   const columnFilterOptions = [columnKeys.all, ...values(currentColumns)].map(

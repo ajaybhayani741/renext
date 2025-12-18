@@ -41,6 +41,7 @@ function UserTable({
   showAssignHostel = true,
   handleAssignHostel,
   userKey,
+  searchPayload = null,
 }) {
   const {
     viewModel,
@@ -58,7 +59,13 @@ function UserTable({
     handleCancelEdit,
     assignConfirmation,
     handleAssignHostelConfirmation,
-  } = userTable({ payload, multiSelect, isBuilding, searchByEmail })
+  } = userTable({
+    payload,
+    multiSelect,
+    isBuilding,
+    searchByEmail,
+    searchPayload,
+  })
 
   const { column, actionButtons, cardViewFn } = userColumns({
     showAssignHostel,
