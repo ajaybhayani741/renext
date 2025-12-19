@@ -37,6 +37,7 @@ const HeaderAction = () => {
       <div className="notification-container">
         <BellFilled onClick={onNotificationClick} />
         <ANTDBadge count={notificationCount || 0}>
+          {/* eslint-disable-next-line */}
           <a href="#" />
         </ANTDBadge>
       </div>
