@@ -130,7 +130,7 @@ const jobTable = ({
             </div>
           )
         },
-        hidden: userView,
+        hidden: isEqual(activeTab?.status, tabKeys.complete),
       },
       {
         title: t('job_Id'),
