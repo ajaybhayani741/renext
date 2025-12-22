@@ -851,3 +851,20 @@
     }
   }
 }
+.help-float-button-container {
+  .ant-float-btn-primary {
+    background-color: transparent;
+  }
+  .ant-float-btn-primary .ant-float-btn-body {
+    // background-color: var(--color-primary-medium) !important;
+    width: 55px !important;
+    height: 55px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    // display: none;
+  }
+  .ant-float-btn-icon {
+    color: var(--color-white) !important;
+    font-size: 27px !important;
+    width: 27px !important;
+  }
+}

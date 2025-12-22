@@ -12,6 +12,7 @@ import {
   LoadingOutlined,
   EditOutlined,
   DownloadOutlined,
+  QuestionCircleOutlined,
 } from '@ant-design/icons'
 
 import hostIcon from '../assets/appLogo/H-host-blue.png'
@@ -153,4 +154,5 @@ export {
   excelIcon,
   location,
   hostIcon,
+  QuestionCircleOutlined,
 }

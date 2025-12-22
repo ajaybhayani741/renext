@@ -78,6 +78,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     open: false,
     data: null,
   })
+  const [helpModal, setHelpModal] = useState(false)
 
   const onExportToExcel = async () => {
     setLoading(true)
@@ -397,6 +398,10 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     setDisAssociateHostel({ open: false, data: null })
   }
 
+  const handleFloatModal = () => {
+    setHelpModal(!helpModal)
+  }
+
   return {
     t,
     data: userView ? data[userJobType] : data[type],
@@ -425,6 +430,8 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     disAssociateHostel,
     handleDisAssociateModal,
     handleConfirmDisAssociate,
+    helpModal,
+    handleFloatModal,
   }
 }
 
