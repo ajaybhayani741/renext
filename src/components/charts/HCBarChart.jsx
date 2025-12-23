@@ -5,7 +5,7 @@ import useRedux from '../../hooks/useRedux'
 import useTranslations from '../../hooks/useTranslations'
 import ANTDInputNumber from '../../shared/antd/ANTDInputNumber'
 import Label from '../../shared/Label'
-import { isEqual, length } from '../../utils/javascript'
+import { isEqual } from '../../utils/javascript'
 
 const HCBarChart = ({
   title,
@@ -27,6 +27,8 @@ const HCBarChart = ({
       : seriesData?.highestCount
     : 100
   const xAxisMax = xAxisHighestCount >= 100 ? xAxisHighestCount : 100
+  const isMobile = selector(state => state.app.isMobile)
+  const isDesktop = selector(state => state.app.isDesktop)
 
   useEffect(() => {
     dateRangeRef.current = dateRange
@@ -57,7 +59,7 @@ const HCBarChart = ({
   // )
 
   const min = 1
-  const navigatorTickInterval = 3
+  // const navigatorTickInterval = 3
 
   const groupedData = useMemo(() => {
     if (!seriesData?.series || seriesData?.series?.length === 0 || !binSize)
@@ -107,6 +109,14 @@ const HCBarChart = ({
   const yAxisMax =
     yMaxValue < yAxisMin ? yAxisMin : Math.ceil(yMaxValue / 10) * 10
 
+  const xAxisTickInterval = useMemo(() => {
+    const maxLength = isMobile ? 10 : !isDesktop ? 15 : 20
+    if (xAxisValues.length > maxLength) {
+      return Math.ceil(xAxisValues.length / maxLength)
+    }
+    return 0
+  }, [xAxisValues.length, isMobile, isDesktop])
+
   const getRandomID = useMemo(() => {
     return Math.random().toString(36).slice(2)
   }, [valuesOnly])
@@ -118,59 +128,106 @@ const HCBarChart = ({
       },
       chart: {
         type: 'column',
-        events: {
-          load: function () {
-            const chart = this
-            // chart.xAxis[0].setExtremes(1, 100)
-            chart.renderer
-              .button(
-                t('btn_View'), // The text of the button
-                10, // X position (e.g., from the right)
-                chart.chartHeight - 8, // Y position (e.g., from the top)
-                e => {
-                  const { min, max } = chart?.xAxis?.[0]?.getExtremes()
-                  const minVal = Math.round(min)
-                  const maxVal = Math.round(max)
-                  const minValue = xAxisValues[minVal]?.split('-')?.[0]
-                  const maxValue = xAxisValues[maxVal]?.split('-')?.[1]
-                  handleChartClick({
-                    e,
-                    name,
-                    startEnd: {
-                      start: Number(minValue || 0),
-                      end: Number(maxValue || 0),
-                    },
-                    newDateRange: dateRangeRef.current,
-                    chartType: 'rangeFrequency',
-                    xAxisTitle: xAxisTitle,
-                  }) // Action to perform on click
-                },
-                {
-                  // Normal state styling
-                  fill: '#d7dff8',
-                  r: 5,
-                  stroke: 'none',
-                  padding: 8,
-                },
-                {
-                  // Normal state styling
-                  fill: '#d7dff8',
-                  r: 5,
-                  padding: 8,
-                },
-              )
-              .css({
-                border: 'none',
-              })
-              .add() // Adds the button to the chart
-          },
-        },
+        // events: {
+        //   load: function () {
+        //     const chart = this
+        //     // chart.xAxis[0].setExtremes(1, 100)
+        //     chart.renderer
+        //       .button(
+        //         t('btn_View'), // The text of the button
+        //         10, // X position (e.g., from the right)
+        //         chart.chartHeight - 8, // Y position (e.g., from the top)
+        //         e => {
+        //           const { min, max } = chart?.xAxis?.[0]?.getExtremes()
+        //           const minVal = Math.round(min)
+        //           const maxVal = Math.round(max)
+        //           const minValue = xAxisValues[minVal]?.split('-')?.[0]
+        //           const maxValue = xAxisValues[maxVal]?.split('-')?.[1]
+        //           handleChartClick({
+        //             e,
+        //             name,
+        //             startEnd: {
+        //               start: Number(minValue || 0),
+        //               end: Number(maxValue || 0),
+        //             },
+        //             newDateRange: dateRangeRef.current,
+        //             chartType: 'rangeFrequency',
+        //             xAxisTitle: xAxisTitle,
+        //           }) // Action to perform on click
+        //         },
+        //         {
+        //           // Normal state styling
+        //           fill: '#f6d4be',
+        //           r: 5,
+        //           stroke: 'none',
+        //           padding: 8,
+        //         },
+        //         {
+        //           // Normal state styling
+        //           fill: '#f6d4be',
+        //           r: 5,
+        //           padding: 8,
+        //         },
+        //       )
+        //       .css({
+        //         border: 'none',
+        //       })
+        //       .add() // Adds the button to the chart
+        //   },
+        // },
       },
       xAxis: {
         min: 0,
-        max: length(xAxisValues) < 15 ? length(xAxisValues) - 1 : 15 - 1,
+        // max: length(xAxisValues) < 15 ? length(xAxisValues) - 1 : 15 - 1,
         categories: xAxisValues,
         title: { text: t(xAxisTitle) },
+        labels: {
+          step: xAxisTickInterval,
+          // allowOverlap: true,
+          // autoRotation: [0],
+          // reserveSpace: false,
+          // staggerLines: 1,
+          rotation: xAxisValues.length > 50 ? -45 : 0,
+          // style: {
+          //   fontSize:
+          //     xAxisValues.length > 100
+          //       ? '8px'
+          //       : xAxisValues.length > 50
+          //         ? '9px'
+          //         : '11px',
+          // },
+          // formatter: function () {
+          //   // Always return the label to ensure it's displayed
+          //   return this.value
+          // },
+        },
+        // events: {
+        // afterSetExtremes: function () {
+        // Force step: 0 after extremes are set
+        // const axis = this
+        // if (axis.options.labels.step !== 0) {
+        //   axis.update(
+        //     {
+        //       labels: {
+        //         step: 0,
+        //         allowOverlap: true,
+        //         autoRotation: [0],
+        //       },
+        //     },
+        //     false,
+        //   )
+        // }
+        // Force all labels to show
+        // if (axis.ticks) {
+        //   Object.keys(axis.ticks).forEach(key => {
+        //     const tick = axis.ticks[key]
+        //     if (tick && tick.label) {
+        //       tick.label.show()
+        //     }
+        //   })
+        // }
+        // },
+        // },
         // events: {
         //   setExtremes: function (e) {
         //     if (e.trigger === 'navigator') {
@@ -225,6 +282,8 @@ const HCBarChart = ({
         column: {
           pointPadding: 0.1,
           borderWidth: 0,
+          groupPadding: 0.05,
+          pointWidth: null, // Let Highcharts calculate, but we'll make it narrower if needed
         },
         series: {
           cursor: 'pointer',
@@ -257,30 +316,30 @@ const HCBarChart = ({
         enabled: false,
       },
       navigator: {
-        enabled: true,
-        xAxis: {
-          min: 0,
-          max: xAxisValues.length - 1,
-          tickInterval: navigatorTickInterval,
-          labels: {
-            formatter: value => {
-              return xAxisValues[value?.pos]
-            },
-          },
-        },
-        handles: {
-          backgroundColor: '#6484cb',
-          borderColor: '#6484cb',
-        },
-        outlineColor: '#6484cb',
-        maskFill: 'rgba(186, 208, 255, 0.2)',
-        series: {
-          color: '#6484cb',
-        },
-        // Set initial range selection to full range
-        adaptToUpdatedData: false,
-        height: 40,
-        margin: 10,
+        enabled: false,
+        // xAxis: {
+        //   min: 0,
+        //   max: xAxisValues.length - 1,
+        //   tickInterval: navigatorTickInterval,
+        //   labels: {
+        //     formatter: value => {
+        //       return xAxisValues[value?.pos]
+        //     },
+        //   },
+        // },
+        // handles: {
+        //   backgroundColor: '#f1725d',
+        //   borderColor: '#f1725d',
+        // },
+        // outlineColor: '#f1725d',
+        // maskFill: 'rgba(241, 114, 93, 0.1)',
+        // series: {
+        //   color: '#f1725d',
+        // },
+        // // Set initial range selection to full range
+        // adaptToUpdatedData: false,
+        // height: 40,
+        // margin: 10,
       },
       scrollbar: {
         enabled: true,
@@ -295,7 +354,19 @@ const HCBarChart = ({
         },
       ],
     }
-  }, [dateRange?.from, dateRange?.to, xAxisValues, valuesOnly])
+  }, [
+    dateRange?.from,
+    dateRange?.to,
+    xAxisValues,
+    valuesOnly,
+    xAxisTickInterval,
+    t,
+    xAxisTitle,
+    yAxisTitle,
+    yAxisMax,
+    handleChartClick,
+    name,
+  ])
 
   return (
     <div style={{ position: 'relative', width: '100%' }}>
