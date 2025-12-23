@@ -37,7 +37,7 @@ const HeaderAction = () => {
       <div className="notification-container">
         <BellFilled onClick={onNotificationClick} />
         <ANTDBadge count={notificationCount || 0}>
-          <a href="#" />
+          <span />
         </ANTDBadge>
       </div>
       <ANTDDropdown

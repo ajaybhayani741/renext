@@ -6,7 +6,7 @@ import { HOSTEL } from '../../../../routing/pathName.constant'
 import ANTDModal from '../../../../shared/antd/ANTDModal'
 import PopUpConfirm from '../../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../../utils/constant'
-import { include } from '../../../../utils/javascript'
+import { include, isEqual, notEqual } from '../../../../utils/javascript'
 import UserTable from '../../../userManagement/presentation/UserTable'
 import unassignedHostels from '../../container/unassignedHostels.container'
 
@@ -39,7 +39,7 @@ const UnassignedHostels = () => {
         handleTableChange={handleTableChange}
         handleView={handleViewClick}
         payload={{ roleId: hostel }}
-        removeEditBtn={true}
+        removeEditBtn={notEqual(location.pathname, `/${HOSTEL}`)}
         isCardView={false}
         pagination={true}
         handleAssignInspectionOfficer={handleAssignInspectionOfficer}
@@ -55,6 +55,7 @@ const UnassignedHostels = () => {
           'user_LastInspectionDate',
           'txt_Action',
         ]}
+        permission={isEqual(location.pathname, `/${HOSTEL}`)}
       />
       {inspectionOfficerModal?.open && (
         <ANTDModal

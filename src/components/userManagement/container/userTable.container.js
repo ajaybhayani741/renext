@@ -8,7 +8,12 @@ import debounce from '../../../utils/debounce'
 import { entries, notEqual, ternary } from '../../../utils/javascript'
 import { addAssociateApi, searchUserApi } from '../user.api'
 
-const userTable = ({ payload, multiSelect, searchByEmail }) => {
+const userTable = ({
+  payload,
+  multiSelect,
+  searchByEmail,
+  getUsersData = null,
+}) => {
   const [viewModel, setViewModel] = useState({ open: false, userDetails: null })
   const searchValue = useRef(null)
   const [searchResult, setSearchResult] = useState({
@@ -73,7 +78,12 @@ const userTable = ({ payload, multiSelect, searchByEmail }) => {
   const handleEdit = rowData => {
     setEditInfo({ flag: true, data: rowData })
   }
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (updateList = false) => {
+    if (updateList && getUsersData) {
+      searchValue?.current
+        ? apiCall({ pageNo: 1, value: searchValue?.current })
+        : getUsersData({ pageNo: 1 })
+    }
     setEditInfo({ flag: false, data: {} })
   }
 
