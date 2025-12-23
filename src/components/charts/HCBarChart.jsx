@@ -27,6 +27,8 @@ const HCBarChart = ({
       : seriesData?.highestCount
     : 100
   const xAxisMax = xAxisHighestCount >= 100 ? xAxisHighestCount : 100
+  const isMobile = selector(state => state.app.isMobile)
+  const isDesktop = selector(state => state.app.isDesktop)
 
   useEffect(() => {
     dateRangeRef.current = dateRange
@@ -107,6 +109,14 @@ const HCBarChart = ({
   const yAxisMax =
     yMaxValue < yAxisMin ? yAxisMin : Math.ceil(yMaxValue / 10) * 10
 
+  const xAxisTickInterval = useMemo(() => {
+    const maxLength = isMobile ? 10 : !isDesktop ? 15 : 20
+    if (xAxisValues.length > maxLength) {
+      return Math.ceil(xAxisValues.length / maxLength)
+    }
+    return 0
+  }, [xAxisValues.length, isMobile, isDesktop])
+
   const getRandomID = useMemo(() => {
     return Math.random().toString(36).slice(2)
   }, [valuesOnly])
@@ -172,7 +182,7 @@ const HCBarChart = ({
         categories: xAxisValues,
         title: { text: t(xAxisTitle) },
         labels: {
-          // step: 0,
+          step: xAxisTickInterval,
           // allowOverlap: true,
           // autoRotation: [0],
           // reserveSpace: false,
@@ -344,7 +354,19 @@ const HCBarChart = ({
         },
       ],
     }
-  }, [dateRange?.from, dateRange?.to, xAxisValues, valuesOnly])
+  }, [
+    dateRange?.from,
+    dateRange?.to,
+    xAxisValues,
+    valuesOnly,
+    xAxisTickInterval,
+    t,
+    xAxisTitle,
+    yAxisTitle,
+    yAxisMax,
+    handleChartClick,
+    name,
+  ])
 
   return (
     <div style={{ position: 'relative', width: '100%' }}>
