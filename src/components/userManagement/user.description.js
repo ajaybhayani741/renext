@@ -173,6 +173,7 @@ const addUserForm = {
     acceptFileTypes: '.png,.jpg,.jpeg,.webp',
     hasApiCall: false,
     filePath: ['profile'],
+    disableGalleryUpload: true,
     md: 12,
     xs: 12,
   },
