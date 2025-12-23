@@ -173,6 +173,9 @@ const addUserForm = {
     acceptFileTypes: '.png,.jpg,.jpeg,.webp',
     md: 12,
     xs: 12,
+    disableGalleryUpload: true,
+    hasApiCall: false,
+    filePath: ['profile'],
   },
   businessName: {
     label: 'user_BusinessName',
