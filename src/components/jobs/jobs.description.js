@@ -85,12 +85,20 @@ const columnKeys = {
 
 const searchByKeys = {
   jobId: 'JOB_ID',
+  inspectionOfficer: 'INSPECTION_OFFICER_NAME',
+  hostel: 'HOSTEL_NAME',
 }
 
-const { jobId } = searchByKeys
+const {
+  jobId,
+  inspectionOfficer: inspectionOfficerLabel,
+  hostel: hostelLabel,
+} = searchByKeys
 
 const searchByLabels = {
   [jobId]: 'job_Id',
+  [inspectionOfficerLabel]: 'user_InspectionOfficer',
+  [hostelLabel]: 'user_Hostel',
 }
 
 const payloadType = {
