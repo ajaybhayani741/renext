@@ -54,13 +54,13 @@ const inspection = ({
 }) => {
   const { t } = useTranslations()
   const form = useFormFn()
-  const { navigate, params } = useRouter()
+  const { navigate, params, location } = useRouter()
   const { dispatch, selector } = useRedux()
   // eslint-disable-next-line no-unused-vars
   const { createPromise, resolvePromise } = usePromise()
   const [jobId, setJobId] = useState(null)
   const isEdit = !!params?.jobId
-  const [current, setCurrent] = useState(isEdit ? 1 : 0)
+  const [current, setCurrent] = useState(0)
   const [loader, setLoader] = useState(false)
   const [isApiRunning, setIsApiRunning] = useState(false)
   const [activeKeys, setActiveKeys] = useState([])
@@ -80,8 +80,6 @@ const inspection = ({
   const locationRef = useRef(null)
   const inspectionInitialValues = {
     inspectionDate: dayJs(new Date()),
-    managementNumber: '',
-    remark: '',
     jobType: payloadType?.[tabKeys?.inspection],
   }
   const showSave = isEdit || include([1], current)
@@ -105,7 +103,11 @@ const inspection = ({
 
   useEffect(() => {
     if (isEdit) {
-      setCurrent((editData?.stepNumber || 1) - 1)
+      setCurrent(
+        location?.state?.restart || !editData?.latitude || !editData?.longitude
+          ? 0
+          : (editData?.stepNumber || 1) - 1,
+      )
       setEditApiDataToForm()
     } else {
       setSelectedUsers({
@@ -142,6 +144,15 @@ const inspection = ({
 
   const setEditApiDataToForm = async () => {
     setJobId(editData?.id)
+    setSelectedUsers(pre => ({
+      ...pre,
+      [inspectionOfficer]: [editData?.userInfo],
+      [hostel]: [editData?.hostelInfo],
+    }))
+    if (location?.state?.restart) {
+      apiCall({ hostelId: editData?.hostelInfo, currentJobId: editData?.id })
+      return
+    }
 
     const dateToDayJs = date => (date ? dayJs(date, 'DD/MM/YYYY') : null)
 
@@ -272,12 +283,6 @@ const inspection = ({
         ...formValueFromResponse(editData, findingsAttrFn()),
       },
     }
-
-    setSelectedUsers(pre => ({
-      ...pre,
-      [inspectionOfficer]: [editData?.userInfo],
-      [hostel]: [editData?.hostelInfo],
-    }))
     form.setFieldsValue(preFormValues)
   }
 
@@ -360,6 +365,39 @@ const inspection = ({
     return data
   }
 
+  const countProgressPercentage = ({ formData }) => {
+    if (location?.state?.restart) {
+      return { percentage: 0 }
+    }
+    const inspectionListData = formData?.inspectionList?.[0] || {}
+    const flattenedInspectionData = {}
+
+    entries(inspectionListData)?.forEach(([key, value]) => {
+      if (value && typeof value === 'object') {
+        entries(value)?.forEach(([nestedKey, nestedValue]) => {
+          flattenedInspectionData[nestedKey] = nestedValue
+        })
+      } else {
+        flattenedInspectionData[key] = value
+      }
+    })
+
+    const totalFields = {
+      locationInspection: formData?.locationInspection,
+      endLocationInspection: formData?.endLocationInspection,
+      inspectionDate: formData?.inspectionDate,
+      ...formData?.findingsRequestDto,
+      ...flattenedInspectionData,
+    }
+    const totalFieldCount = keys(totalFields)?.length
+    const filledFieldCount = values(totalFields)?.filter(
+      value => value !== null && value !== undefined && value !== '',
+    )?.length
+
+    const percentage = Math.round((filledFieldCount / totalFieldCount) * 100)
+    return { percentage }
+  }
+
   const apiCall = async ({
     isComplete,
     showMsg,
@@ -368,6 +406,8 @@ const inspection = ({
     isLoading = false,
     key,
     index,
+    hostelId = null,
+    currentJobId = null,
   } = {}) => {
     if (isApiRunning && !jobId) return
     setIsApiRunning(true)
@@ -379,17 +419,18 @@ const inspection = ({
     const latLng2 = formData.endLocationInspection
       ? formData.endLocationInspection?.split(',')
       : []
-
     const payload = {
-      id: jobId,
+      id: jobId || currentJobId,
       jobType: payloadType?.[tabKeys?.inspection],
       inspectionDate: formData.inspectionDate.format('DD/MM/YYYY HH:MM'),
-      hostelId: selectedUsers?.[userWiseRole?.hostel]?.[0]?.id,
+      hostelId: selectedUsers?.[userWiseRole?.hostel]?.[0]?.id || hostelId?.id,
       latitude: latLng?.[0] ? parseFloat(latLng?.[0]) : null,
       longitude: latLng?.[1] ? parseFloat(latLng?.[1]) : null,
       latitude2: latLng2?.[0] ? parseFloat(latLng2?.[0]) : null,
       longitude2: latLng2?.[1] ? parseFloat(latLng2?.[1]) : null,
-      stepNumber: current + 1,
+      stepNumber: location?.state?.restart ? 1 : current + 1,
+      progressPercentage: countProgressPercentage({ formData })?.percentage,
+      restartJob: !!location?.state?.restart,
     }
 
     const inspectionDetails = formData?.inspectionList?.[0]
@@ -479,6 +520,15 @@ const inspection = ({
       if (res?.data?.data) {
         setFieldsPercentageFn(res?.data?.data, true)
         isEqual(current, 2) && triggerLoader?.updated && triggerJobReport()
+      }
+      if (location?.state?.restart) {
+        navigate('.', {
+          replace: true,
+          state: {
+            ...location.state,
+            restart: false,
+          },
+        })
       }
       if (res?.data?.data && showMsg) {
         notifyMethod.success({

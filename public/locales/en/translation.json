@@ -695,5 +695,8 @@
   "msg_HostelAssignedToInspectionOfficer": "{{hostelName}} has been assigned to {{inspectionOfficer}}",
   "msg_WantToDeletePermanently": "Are you sure you want to delete {{userName}} permanently?",
   "msg_UserDeletedSuccessfully": "User {{userName}} deleted successfully",
-  "job_InspectionOfficerName": "Inspection Officer Name"
+  "job_InspectionOfficerName": "Inspection Officer Name",
+  "job_ViewInspection": "View Inspection",
+  "job_RestartInspection": "Restart Inspection",
+  "job_EditInspection": "Edit Inspection"
 }
