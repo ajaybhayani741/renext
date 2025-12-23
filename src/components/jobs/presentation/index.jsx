@@ -16,9 +16,13 @@ import ANTDSelect from '../../../shared/antd/ANTDSelect'
 import ANTDTab from '../../../shared/antd/ANTDTab'
 import Label from '../../../shared/Label'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
+import { userWiseRole } from '../../../utils/constant'
+import { QuestionCircleOutlined } from '../../../utils/icons'
 import { entries, include, isEqual } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 import StoreSelect from '../../common/presentation/StoreSelect'
+import HOSTManual from '../../home/HOSTManual.pdf'
 import { sidebarMenus } from '../../layout/sidebar.description'
 import jobs from '../container/jobs.container'
 import { exportExcelOptions, searchByKeys, tabKeys } from '../jobs.description'
@@ -32,11 +36,11 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     data,
     tabList,
     jobModel,
-    isDesktop,
+    // isDesktop,
     activeTab,
     columnFilters,
     searchByProps,
-    columnFilterProps,
+    // columnFilterProps,
     selectExportColModal,
     loading,
     searchSelectOptions,
@@ -55,10 +59,15 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     disAssociateHostel,
     handleDisAssociateModal,
     handleConfirmDisAssociate,
+    handleFloatModal,
+    helpModal,
   } = jobs({ userView, userId, userJobType })
 
   const { type: jobType, status } = { ...activeTab }
   const isUnassignHostelTab = isEqual(status, tabKeys.unassignHostel)
+  const userData = JSON.parse(getItem('userData') || '{}')
+  const { roleId } = userData || {}
+  const { inspectionOfficer } = userWiseRole
 
   return (
     <>
@@ -254,6 +263,36 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
           onReject={handleDisAssociateModal}
           description={t('msg_disassociateUser')}
         />
+      )}
+      {isEqual(roleId, inspectionOfficer) && (
+        <div className="help-float-button-container">
+          <ANTDButton
+            icon={<QuestionCircleOutlined />}
+            type="primary"
+            // style={{
+            //   right: 40,
+            //   bottom: 40,
+            // }}
+            onClick={handleFloatModal}
+          />
+          <ANTDModal
+            open={helpModal}
+            onCancel={handleFloatModal}
+            footer={[]}
+            width={1000}
+            closable={false}
+            bodyStyle={{ height: '85vh', padding: 0 }}
+          >
+            <iframe
+              title="help-manual"
+              type="application/pdf"
+              src={`${HOSTManual}`}
+              width="100%"
+              height="100%"
+              style={{ border: 'none' }}
+            />
+          </ANTDModal>
+        </div>
       )}
     </>
   )

@@ -851,3 +851,31 @@
     }
   }
 }
+.help-float-button-container {
+  margin-top: 10px;
+  text-align: right;
+
+  .ant-btn-primary {
+    background-color: var(--color-primary-light) !important;
+    border: none;
+    width: 55px !important;
+    height: 55px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 50%;
+    @media screen and (max-width: 576px) {
+      width: 35px !important;
+      height: 35px !important;
+    }
+    // display: none;
+  }
+  .ant-btn-icon {
+    color: var(--color-white) !important;
+    font-size: 27px !important;
+    width: 27px !important;
+
+    @media screen and (max-width: 576px) {
+      font-size: 20px !important;
+      width: 20px !important;
+    }
+  }
+}

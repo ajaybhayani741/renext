@@ -68,10 +68,13 @@ const JobTable = ({
             </div>
           )}
           {length(list) ? (
-            list?.map(item => (
+            list?.map((item, index) => (
               <ANTDCard
                 key={item.id}
-                className="list-card-view"
+                className={`list-card-view `}
+                style={{
+                  marginBottom: index === list?.length - 1 ? '0' : '',
+                }}
                 title={null}
                 extra={
                   <div className="d-flex">
