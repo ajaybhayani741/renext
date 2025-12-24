@@ -574,6 +574,13 @@ export const foodPrevisionsCharts = {
     md: 24,
     modalTitle: true,
   },
+  job_Variation: {
+    type: 'columnCompare',
+    xAxisText: '',
+    yAxisText: '',
+    md: 24,
+    modalTitle: true,
+  },
 }
 
 export const safetySecurityCharts = {
