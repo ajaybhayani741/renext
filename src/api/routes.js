@@ -180,5 +180,6 @@ const API_ROUTES = {
   DASHBOARD_VARIATION_BAR_CHART: `/dashboard-management/v1/food-provisions-variation/bar-chart`,
   DASHBOARD_VARIATION_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/food-provisions-variation/hostels/${pageNo}`,
+  DASHBOARD_PHOTOS: ({ pageNo }) => `/dashboard-management/v1/photos/${pageNo}`,
 }
 export default API_ROUTES

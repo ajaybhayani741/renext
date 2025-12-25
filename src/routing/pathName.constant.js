@@ -30,6 +30,7 @@ const FLEXIBLE = 'flexible'
 const SALES = 'sales'
 const STOCK = 'stock'
 const TALLY = 'tally'
+const PHOTOS = 'photos'
 
 const pathName = {
   ROOT: '/',
@@ -45,6 +46,7 @@ const pathName = {
   ADD_JOB: '/jobs/:jobType/add',
   EDIT_JOB: '/jobs/:jobType/edit/:jobId',
   DASHBOARD: `${DASHBOARD_TXT}/:type`,
+  PHOTO_DASHBOARD: `${DASHBOARD_TXT}/${PHOTOS}/:photoType`,
   BOOK_KEEPING: `${BOOK_KEEPING_TXT}/:type`,
   REPORTING: `${REPORTING_TXT}/:type`,
   SETTINGS: `/settings`,
@@ -78,4 +80,5 @@ export {
   SALES,
   STOCK,
   TALLY,
+  PHOTOS,
 }

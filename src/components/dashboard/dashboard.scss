@@ -341,6 +341,42 @@
     background-color: var(--color-primary-xlight);
   }
 }
+.photo-card {
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // min-height: 120px;
+  background-color: var(--color-primary-xlight);
+  text-align: start;
+  margin: 5px 5px;
+}
+
+.photo-dashboard-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  height: calc(
+    100vh - 150px
+  ); // Fixed height based on screen: 100vh - header(70px) - breadcrumb(~50px) - padding(~30px)
+  overflow-y: auto;
+
+  .photos-list {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.image-preview-modal {
+  img {
+    width: 350px;
+    height: 350px;
+    justify-self: center;
+  }
+}
 
 .highcharts-legend-item {
   pointer-events: none !important;
