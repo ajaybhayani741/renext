@@ -6,6 +6,7 @@ import { DASHBOARD_TXT, PHOTOS } from '../../../routing/pathName.constant'
 import ANTDBreadcrumb from '../../../shared/antd/ANTDBreadcrumb'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import ANTDUpload from '../../../shared/antd/ANTDUpload'
+import { dayJs, DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 import { EyeOutlined } from '../../../utils/icons'
 import { entries, isEqual } from '../../../utils/javascript'
 import { getDashboardPhotosApi } from '../dashboard.api'
@@ -177,13 +178,20 @@ const SelectedPhotoDashboard = () => {
               <td>
                 <b>{t('job_hostelName')}</b>
               </td>
-              : <td>{imagePreview?.data?.hostelName || '-'}</td>
+              :&nbsp; <td>{imagePreview?.data?.hostelName || '-'}</td>
             </tr>
             <tr className="basic-table-user-info">
               <td>
                 <b>{t('dash_DateOfInspectionCompletion')}</b>
               </td>
-              : <td>{imagePreview?.data?.inspectionDate || '-'}</td>
+              :&nbsp;
+              <td className="ml-5">
+                {imagePreview?.data?.inspectionDate
+                  ? dayJs(imagePreview?.data?.inspectionDate).format(
+                      DISPLAY_DATE_FORMAT,
+                    )
+                  : '-'}
+              </td>
             </tr>
           </div>
         </ANTDModal>
