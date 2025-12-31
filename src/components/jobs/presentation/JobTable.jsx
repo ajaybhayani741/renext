@@ -77,7 +77,7 @@ const JobTable = ({
                 }}
                 title={null}
                 extra={
-                  <div className="d-flex">
+                  <div className="card-extra-buttons">
                     {!item?.read && (
                       <div className="blink-btn ml-10">
                         <ANTDButton>{t('txt_New')}</ANTDButton>
