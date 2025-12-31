@@ -177,5 +177,6 @@ const API_ROUTES = {
     `/user-management/v1/notifications/${pageNo}`,
   TRIGGER_JOB_REPORT: `/job-management/v1/triggerreport`,
   DELETE_USER: `/user-management/v1/user`,
+  GET_LOCATION_ADDRESS: `/job-management/v1/lat-long-address`,
 }
 export default API_ROUTES

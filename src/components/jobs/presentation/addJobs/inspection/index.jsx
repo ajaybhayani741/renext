@@ -125,7 +125,7 @@ const InspectionJob = ({ editData, setEditData }) => {
           >
             <ANTDFormItem
               label={t('job_LocationOfInspection')}
-              name={'locationInspection'}
+              name={'addressInspection'}
               className={`${validationTag(lang)} date-label w-100`}
               rules={[
                 {
