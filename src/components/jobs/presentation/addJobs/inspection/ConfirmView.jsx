@@ -160,7 +160,7 @@ const ConfirmView = ({
         >
           <ANTDFormItem
             label={t('job_LocationOfInspection')}
-            name={'endLocationInspection'}
+            name={'endAddressInspection'}
             className={`${validationTag(lang)} date-label w-100`}
             rules={[
               {

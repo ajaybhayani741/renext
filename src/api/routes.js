@@ -181,5 +181,6 @@ const API_ROUTES = {
   DASHBOARD_VARIATION_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/food-provisions-variation/hostels/${pageNo}`,
   DASHBOARD_PHOTOS: ({ pageNo }) => `/dashboard-management/v1/photos/${pageNo}`,
+  GET_LOCATION_ADDRESS: `/job-management/v1/lat-long-address`,
 }
 export default API_ROUTES
