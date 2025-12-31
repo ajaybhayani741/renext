@@ -27,6 +27,7 @@ const recordMaintenance = () => {
       t('dash_Sick'),
       t('dash_BoarderMovement'),
       t('dash_VisitorRegister'),
+      t('job_TreasuryBillRegisterMaintained'),
       t('dash_OtherRecords'),
     ],
   }
@@ -37,6 +38,7 @@ const recordMaintenance = () => {
     [t('dash_Sick')]: 'SICK_BOARDERS',
     [t('dash_BoarderMovement')]: 'BOARDER_MOVEMENT',
     [t('dash_VisitorRegister')]: 'VISITOR_REGISTER',
+    [t('job_TreasuryBillRegisterMaintained')]: 'TREASURY_BILL_REGISTER',
     [t('dash_OtherRecords')]: 'ALL_OTHER_RECORDS',
   }
 
@@ -77,6 +79,7 @@ const recordMaintenance = () => {
                   respData.data.sickBoardersRecordMaintainedYes || 0,
                   respData.data.boarderMovementRecordMaintainedYes || 0,
                   respData.data.visitorRegisterMaintainedYes || 0,
+                  respData.data.treasuryBillRegisterMaintainedYes || 0,
                   respData.data.allOtherRecordsMaintainedRegularlyYes || 0,
                 ],
               },
@@ -88,6 +91,7 @@ const recordMaintenance = () => {
                   respData.data.sickBoardersRecordMaintainedNo || 0,
                   respData.data.boarderMovementRecordMaintainedNo || 0,
                   respData.data.visitorRegisterMaintainedNo || 0,
+                  respData.data.treasuryBillRegisterMaintainedNo || 0,
                   respData.data.allOtherRecordsMaintainedRegularlyNo || 0,
                 ],
               },
