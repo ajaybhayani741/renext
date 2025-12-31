@@ -50,8 +50,25 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      numberOfStudentsEnrolled: {
-        label: 'job_NumberOfStudentsEnrolled',
+      // numberOfStudentsEnrolled: {
+      //   label: 'job_NumberOfStudentsEnrolled',
+      //   inputType: 'inputNumber',
+      //   className: 'w-100',
+      //   required: true,
+      //   md: 24,
+      //   xs: 24,
+      // },
+      numberOfBoys: {
+        headerTitle: 'job_NumberOfStudentsEnrolled',
+        label: 'job_NumberOfBoys',
+        inputType: 'inputNumber',
+        className: 'w-100',
+        required: true,
+        md: 24,
+        xs: 24,
+      },
+      numberOfGirls: {
+        label: 'job_NumberOfGirls',
         inputType: 'inputNumber',
         className: 'w-100',
         required: true,
@@ -122,8 +139,8 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      allOtherRecordsMaintainedRegularly: {
-        label: 'job_AreAllOtherRecordsMaintainedRegularly',
+      treasuryBillRegisterMaintained: {
+        label: 'job_TreasuryBillRegisterMaintained',
         inputType: 'select',
         responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
@@ -131,8 +148,8 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
-      treasuryBillRegisterMaintained: {
-        label: 'job_TreasuryBillRegisterMaintained',
+      allOtherRecordsMaintainedRegularly: {
+        label: 'job_AreAllOtherRecordsMaintainedRegularly',
         inputType: 'select',
         responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
@@ -598,6 +615,13 @@ const inspectionFieldAttr = () => {
         md: 24,
         xs: 24,
       },
+      feedbackOnDrinkingWater: {
+        label: 'job_FeedbackOnDrinkingWater',
+        inputType: 'input',
+        required: true,
+        md: 24,
+        xs: 24,
+      },
     }),
     [],
   )
@@ -655,6 +679,18 @@ const inspectionFieldAttr = () => {
         inputType: 'select',
         responsiveInputType: 'RADIO_BUTTON',
         options: booleanOptions,
+        required: true,
+        md: 24,
+        xs: 24,
+      },
+      areSanitaryPadsBeingGiven: {
+        label: 'job_AreSanitaryPadsBeingGiven',
+        inputType: 'select',
+        responsiveInputType: 'RADIO_BUTTON',
+        options: [
+          ...booleanOptions,
+          { label: 'job_NotApplicable', value: 'NOT_APPLICABLE' },
+        ],
         required: true,
         md: 24,
         xs: 24,
