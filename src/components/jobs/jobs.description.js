@@ -103,6 +103,7 @@ const payloadType = {
   [inspection]: 'INSPECTION_JOB',
   inspectionReport: 'INSPECTION_REPORT',
   inspectionSheet: 'INSPECTION_SHEET',
+  inspectionSheetMultiple: 'INSPECTION_SHEET_MULTIPLE',
 }
 
 const inspectionSteps = [

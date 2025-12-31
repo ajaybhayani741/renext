@@ -709,5 +709,8 @@
   "job_InspectionOfficerName": "Inspection Officer Name",
   "job_ViewInspection": "View Inspection",
   "job_RestartInspection": "Restart Inspection",
-  "job_EditInspection": "Edit Inspection"
+  "job_EditInspection": "Edit Inspection",
+  "job_GenerateMasterSheet": "Generate Master Sheet",
+  "job_ViewPreviousRequests": "View Previous Requests",
+  "msg_MasterSheetGeneratedSuccessfully": "Master sheet generated successfully"
 }

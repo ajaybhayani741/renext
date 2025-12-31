@@ -11,7 +11,12 @@ import { EVMasterSheet, RefurbishmentRequest } from '../../../utils/icons'
 import { include, isEqual, notEqual, values } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { disAssociateApi } from '../../userManagement/user.api'
-import { getJobDetailApi, getJobListApi, searchJobListApi } from '../jobs.api'
+import {
+  generateMasterSheetApi,
+  getJobDetailApi,
+  getJobListApi,
+  searchJobListApi,
+} from '../jobs.api'
 import {
   columnKeys,
   exportExcelOptions,
@@ -28,7 +33,9 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   const { t } = useTranslations()
   const { dispatch, selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
-  const { value: fiscalYear } = selector(state => state?.app?.fiscalYear)
+  const { value: fiscalYear, dateRange } = selector(
+    state => state?.app?.fiscalYear,
+  )
   const activeTab = selector(state => state?.jobs?.activeTab)
   const { type, status } = { ...activeTab }
   const [searchBy, setSearchBy] = useState(searchByKeys.jobId)
@@ -47,6 +54,9 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     'job_ELVModel',
     'job_Category',
   ])
+  const [viewRequestsModal, setViewRequestsModal] = useState({ open: false })
+  const [masterSheetLoader, setMasterSheetLoader] = useState(false)
+
   const searchVal = useRef(null)
   const userDetails = JSON.parse(getItem('userData'))
   const { roleId } = { ...userDetails }
@@ -402,6 +412,26 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     setHelpModal(!helpModal)
   }
 
+  const generateMasterSheet = async () => {
+    const payload = {
+      type: payloadType['inspectionSheetMultiple'],
+      fromDate: dateRange?.from,
+      toDate: dateRange?.to,
+    }
+    setMasterSheetLoader(true)
+    const response = await generateMasterSheetApi({ payload })
+    if (response?.data?.success) {
+      notifyMethod.success({
+        message: 'msg_MasterSheetGeneratedSuccessfully',
+      })
+    }
+    setMasterSheetLoader(false)
+  }
+
+  const handleViewRequestModal = () => {
+    setViewRequestsModal(prev => ({ ...prev, open: !prev.open }))
+  }
+
   return {
     t,
     data: userView ? data[userJobType] : data[type],
@@ -432,6 +462,10 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     handleConfirmDisAssociate,
     helpModal,
     handleFloatModal,
+    generateMasterSheet,
+    handleViewRequestModal,
+    viewRequestsModal,
+    masterSheetLoader,
   }
 }
 
