@@ -18,17 +18,23 @@ import Label from '../../../shared/Label'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../utils/constant'
 import { QuestionCircleOutlined } from '../../../utils/icons'
-import { entries, include, isEqual } from '../../../utils/javascript'
+import { entries, include, isEqual, notEqual } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 import StoreSelect from '../../common/presentation/StoreSelect'
 import HOSTManual from '../../home/HOSTManual.pdf'
 import { sidebarMenus } from '../../layout/sidebar.description'
 import jobs from '../container/jobs.container'
-import { exportExcelOptions, searchByKeys, tabKeys } from '../jobs.description'
+import {
+  exportExcelOptions,
+  payloadType,
+  searchByKeys,
+  tabKeys,
+} from '../jobs.description'
 import JobTable from './JobTable'
 import ViewJob from './viewJobs'
 import UnassignedHostels from './viewJobs/UnassignedHostels'
+import ViewPreviousRequest from './viewJobs/ViewPreviousRequest'
 
 const JobManagement = ({ userView = false, userId, userJobType }) => {
   const {
@@ -61,6 +67,10 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     handleConfirmDisAssociate,
     handleFloatModal,
     helpModal,
+    generateMasterSheet,
+    handleViewRequestModal,
+    viewRequestsModal,
+    masterSheetLoader,
   } = jobs({ userView, userId, userJobType })
 
   const { type: jobType, status } = { ...activeTab }
@@ -149,6 +159,20 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                   onDateChange={(from, to) => apiCall(1, { from, to })}
                 />
               </div>
+              {notEqual(roleId, inspectionOfficer) && (
+                <div className="d-flex flex-end mt-10 generate-master-sheet">
+                  <ANTDButton
+                    type="primary"
+                    onClick={generateMasterSheet}
+                    loading={masterSheetLoader}
+                  >
+                    {t('job_GenerateMasterSheet')}
+                  </ANTDButton>
+                  <ANTDButton type="primary" onClick={handleViewRequestModal}>
+                    {t('job_ViewPreviousRequests')}
+                  </ANTDButton>
+                </div>
+              )}
               <ANTDRow gutter={10} className="mt-5">
                 <ANTDColumn md={12} lg={12} xs={24}>
                   <Label text={t('job_SearchBy')} />
@@ -293,6 +317,21 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
             />
           </ANTDModal>
         </div>
+      )}
+      {viewRequestsModal?.open && (
+        <ANTDModal
+          title={t('job_ViewPreviousRequests')}
+          centered
+          open={viewRequestsModal?.open}
+          onCancel={handleViewRequestModal}
+          footer={false}
+          width={900}
+        >
+          <ViewPreviousRequest
+            sheetType={payloadType['inspectionSheetMultiple']}
+            modal={viewRequestsModal}
+          />
+        </ANTDModal>
       )}
     </>
   )

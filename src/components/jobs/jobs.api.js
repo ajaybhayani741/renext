@@ -23,6 +23,7 @@ const {
   JOB_EDIT_LOG,
   TRIGGER_JOB_REPORT,
   DELETE_USER,
+  GENERATE_MASTER_SHEET,
 } = API_ROUTES
 
 const getJobListApi = async ({ pageNo, params }) => {
@@ -129,6 +130,18 @@ const deleteUserApi = async ({ id }) => {
   return response?.data
 }
 
+const getMasterSheetApi = async ({ pageNo, params }) => {
+  const response = await getMethod(`${GENERATE_MASTER_SHEET}/${pageNo}`, {
+    params,
+  })
+  return response?.data
+}
+
+const generateMasterSheetApi = async ({ payload }) => {
+  const response = await postMethod(GENERATE_MASTER_SHEET, payload)
+  return response?.data
+}
+
 export {
   getJobListApi,
   searchJobListApi,
@@ -150,4 +163,6 @@ export {
   patchJobEditLogApi,
   triggerJobReportApi,
   deleteUserApi,
+  getMasterSheetApi,
+  generateMasterSheetApi,
 }
