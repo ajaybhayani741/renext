@@ -827,6 +827,102 @@
       }
     }
   }
+
+  // Mobile card extra section styles
+  @media screen and (max-width: 768px) {
+    .ant-card-extra {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      padding: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      overflow: visible;
+
+      .card-extra-buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      // Action buttons container
+      .mobile-action-buttons {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 5px;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+      }
+
+      // Reduce button size on mobile
+      .ant-btn {
+        height: 28px;
+        padding: 4px 12px;
+        font-size: 12px;
+        line-height: 1.2;
+        white-space: nowrap;
+        flex-shrink: 0;
+
+        &.ant-btn-sm {
+          height: 24px;
+          padding: 2px 8px;
+          font-size: 11px;
+        }
+      }
+
+      // Blink button wrapper
+      .blink-btn {
+        margin-left: 0 !important;
+        margin-right: 0;
+        flex-shrink: 0;
+
+        &.ml-10 {
+          margin-left: 0 !important;
+        }
+
+        .ant-btn {
+          height: 28px;
+          padding: 4px 12px;
+          font-size: 12px;
+        }
+      }
+
+      // Spacer divs
+      .mb-5 {
+        display: none;
+      }
+    }
+
+    // Ensure card header doesn't overflow
+    .ant-card-head {
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      min-height: auto;
+
+      .ant-card-head-title {
+        padding: 0;
+        flex: 0 0 auto;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+
+      .ant-card-extra {
+        padding: 0;
+        width: 100%;
+        flex: 1 1 100%;
+      }
+    }
+  }
 }
 .download-btn {
   width: max-content;
