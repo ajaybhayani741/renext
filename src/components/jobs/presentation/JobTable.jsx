@@ -1,13 +1,15 @@
+import useRedux from '../../../hooks/useRedux'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCard from '../../../shared/antd/ANTDCard'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import ANTDPagination from '../../../shared/antd/ANTDPagination'
+import ANTDProgress from '../../../shared/antd/ANTDProgress'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
 import ANTDTable from '../../../shared/antd/ANTDTable'
 import ANTDTag from '../../../shared/antd/ANTDTag'
 import { include, isEqual, length, ternary } from '../../../utils/javascript'
 import jobTable from '../container/jobTable.container'
-import { jobStatusList } from '../jobs.description'
+import { jobStatusList, tabKeys } from '../jobs.description'
 
 const JobTable = ({
   displayColKeys,
@@ -22,6 +24,7 @@ const JobTable = ({
   handleDisAssociateModal,
   userView,
 }) => {
+  const { selector } = useRedux()
   const { t, columns, isDesktop, cardViewFn, actionButtons } = jobTable({
     displayColKeys,
     onViewClick,
@@ -37,6 +40,7 @@ const JobTable = ({
   const { list, pageNo, lastPage, loader } = { ...tableData }
   // const isAnyUnread = length(list) && list?.some(record => !record?.read)
   const scrollElem = document.querySelector('.main-layout > main')
+  const activeTab = selector(state => state?.jobs?.activeTab)
 
   return (
     <>
@@ -105,12 +109,31 @@ const JobTable = ({
                               <td>
                                 <b>{t(label)}</b>
                               </td>
-                              <td className="d-flex">
-                                <p>: </p>&nbsp;
-                                <p>
-                                  {isEqual(label, 'job_Status') ? (
-                                    <>
-                                      {' '}
+                              <td
+                                className={`${isEqual(label, 'job_Status') ? 'status-progress' : ''}`}
+                              >
+                                :
+                                {isEqual(label, 'job_Status') ? (
+                                  <>
+                                    {' '}
+                                    {isEqual(
+                                      activeTab?.status,
+                                      tabKeys.active,
+                                    ) ? (
+                                      <ANTDProgress
+                                        percent={
+                                          Number(
+                                            item?.progressPercentage || 0,
+                                          ) || 0
+                                        }
+                                        percentPosition={{
+                                          align: 'center',
+                                          type: 'inner',
+                                        }}
+                                        size={[100, 20]}
+                                        strokeColor="#FA8128"
+                                      />
+                                    ) : (
                                       <ANTDTag
                                         color={
                                           include(value, 'INPROGRESS')
@@ -120,11 +143,11 @@ const JobTable = ({
                                       >
                                         {t(jobStatusList?.[value])}
                                       </ANTDTag>
-                                    </>
-                                  ) : (
-                                    ternary(value, value, '-')
-                                  )}
-                                </p>
+                                    )}
+                                  </>
+                                ) : (
+                                  ternary(value, value, '-')
+                                )}
                               </td>
                             </tr>
                           ))}
