@@ -707,6 +707,7 @@ export const chartTypeKeys = {
   dash_TotalNumberOfScavengersAvailable: 'HOSTEL_SCAVENGERS_AVAILABLE',
   dash_TotalNumberOfScavengersRequired: 'HOSTEL_SCAVENGERS_REQUIRED',
   dash_EducationRequirements: 'EDUCATION_FACILITIES',
+  job_Variation: 'FOOD_PROVISIONS_VARIATION',
 }
 
 export const reportCategoryKeys = t => ({
@@ -774,6 +775,12 @@ export const reportCategoryKeys = t => ({
   [t('job_Dogs')]: 'DOGS',
   [t('txt_None')]: 'NONE',
   [t('job_HWOMeetingsRegular')]: null,
+  [t('job_VariationInRice')]: 'VARIATION_IN_RICE',
+  [t('job_VariationInDal')]: 'VARIATION_IN_DAL',
+  [t('job_VariationInCookingOil')]: 'VARIATION_IN_COOKING_OIL',
+  [t('job_VariationInSugar')]: 'VARIATION_IN_SUGAR',
+  [t('job_VariationInIdliRava')]: 'VARIATION_IN_IDLI_RAVA',
+  [t('job_VariationInRagiMalt')]: 'VARIATION_IN_RAGI_MALT',
 })
 
 export const photosDashboardData = {
