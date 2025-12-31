@@ -102,6 +102,7 @@ const searchByLabels = {
 const payloadType = {
   [inspection]: 'INSPECTION_JOB',
   inspectionReport: 'INSPECTION_REPORT',
+  inspectionSheet: 'INSPECTION_SHEET',
 }
 
 const inspectionSteps = [

@@ -1,7 +1,10 @@
+import ExcelIcon from '../../../assets/excel.png'
+import PdfIcon from '../../../assets/pdfIcon.png'
 import useRedux from '../../../hooks/useRedux'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCard from '../../../shared/antd/ANTDCard'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
+import ANTDModal from '../../../shared/antd/ANTDModal'
 import ANTDPagination from '../../../shared/antd/ANTDPagination'
 import ANTDProgress from '../../../shared/antd/ANTDProgress'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
@@ -25,7 +28,16 @@ const JobTable = ({
   userView,
 }) => {
   const { selector } = useRedux()
-  const { t, columns, isDesktop, cardViewFn, actionButtons } = jobTable({
+  const {
+    t,
+    columns,
+    isDesktop,
+    cardViewFn,
+    actionButtons,
+    reportDownloadModal,
+    handleDownloadReportModal,
+    downloadReportFn,
+  } = jobTable({
     displayColKeys,
     onViewClick,
     checkEditPermission,
@@ -178,6 +190,45 @@ const JobTable = ({
             />
           </div>
         </div>,
+      )}
+      {reportDownloadModal?.open && (
+        <ANTDModal
+          title={t('btn_Download')}
+          open={reportDownloadModal?.open}
+          onCancel={handleDownloadReportModal}
+          centered
+          width={300}
+          footer={[]}
+        >
+          <div className="d-flex space-around mt-30 mb-20">
+            <img
+              src={ExcelIcon}
+              alt="excel"
+              width="70"
+              height="80"
+              className="cursor-pointer"
+              onClick={() =>
+                downloadReportFn(
+                  reportDownloadModal?.data?.inspectionJobSheetDetails,
+                  'xls',
+                )
+              }
+            />
+            <img
+              src={PdfIcon}
+              alt="pdf"
+              width="70"
+              height="80"
+              className="cursor-pointer"
+              onClick={() =>
+                downloadReportFn(
+                  reportDownloadModal?.data?.inspectionJobReportDetails,
+                  'pdf',
+                )
+              }
+            />
+          </div>
+        </ANTDModal>
       )}
     </>
   )

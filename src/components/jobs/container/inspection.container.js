@@ -556,13 +556,17 @@ const inspection = ({
   }
 
   const triggerJobReport = async (isComplete = false) => {
-    const payload = {
-      jobId: jobId,
-      type: payloadType?.['inspectionReport'],
-    }
+    const [reportResp, sheetResp] = await Promise.all([
+      triggerJobReportApi({
+        payload: { jobId: jobId, type: payloadType?.['inspectionReport'] },
+      }),
+
+      triggerJobReportApi({
+        payload: { jobId: jobId, type: payloadType?.['inspectionSheet'] },
+      }),
+    ])
     setTriggerLoader({ ...triggerLoader, loader: true })
-    const response = await triggerJobReportApi({ payload })
-    if (response?.data && isComplete) {
+    if ((sheetResp?.data || reportResp?.data) && isComplete) {
       const resp = await getJobDetailApi({
         params: {
           id: jobId,

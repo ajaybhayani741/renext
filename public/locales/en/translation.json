@@ -692,13 +692,6 @@
   "job_AddPhotoOfMainGate": "Add Photo of main gate",
   "job_AddPhotoOfHostelFrontWithName": "Add Photo of the hostel front face with name of hostel",
   "job_InspectionReportNotGenerated": "Inspection report not generated",
-  "msg_HostelAssignedToInspectionOfficer": "{{hostelName}} has been assigned to {{inspectionOfficer}}",
-  "msg_WantToDeletePermanently": "Are you sure you want to delete {{userName}} permanently?",
-  "msg_UserDeletedSuccessfully": "User {{userName}} deleted successfully",
-  "job_InspectionOfficerName": "Inspection Officer Name",
-  "job_ViewInspection": "View Inspection",
-  "job_RestartInspection": "Restart Inspection",
-  "job_EditInspection": "Edit Inspection",
   "job_Variation": "Variation",
   "job_Photos": "Photos",
   "dash_PhotosOfToilets": "Photos of Toilets",
@@ -709,5 +702,12 @@
   "dash_PhotoOfInspectingOfficerWithChildren": "Photo of Inspecting Officer with Children",
   "dash_PhotoOfMainGate": "Photo of Main Gate",
   "dash_PhotoOfHostelFace": "Photo of hostel front face with the name of hostel",
-  "dash_DateOfInspectionCompletion": "Date of Inspection Completion"
+  "dash_DateOfInspectionCompletion": "Date of Inspection Completion",
+  "msg_WantToDeletePermanently": "Are you sure you want to delete {{userName}} permanently?",
+  "msg_UserDeletedSuccessfully": "User {{userName}} deleted successfully",
+  "msg_HostelAssignedToInspectionOfficer": "{{hostelName}} has been assigned to {{inspectionOfficer}}",
+  "job_InspectionOfficerName": "Inspection Officer Name",
+  "job_ViewInspection": "View Inspection",
+  "job_RestartInspection": "Restart Inspection",
+  "job_EditInspection": "Edit Inspection"
 }
