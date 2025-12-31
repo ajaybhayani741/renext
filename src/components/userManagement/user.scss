@@ -366,6 +366,11 @@
     }
   }
 }
+.status-progress {
+  .ant-progress-line {
+    width: auto;
+  }
+}
 
 .rating-bar {
   display: flex;
