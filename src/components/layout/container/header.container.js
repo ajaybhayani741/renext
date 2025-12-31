@@ -15,7 +15,7 @@ const header = () => {
   const { dispatch, selector } = useRedux()
   const profileDetails = selector(state => state.user?.profile_details)
   const notificationCount =
-    selector(state => state.app.notificationsList?.fullCount) || 0
+    selector(state => state.app.notificationsList?.unreadCount) || 0
 
   useEffect(() => {
     getNotification()
