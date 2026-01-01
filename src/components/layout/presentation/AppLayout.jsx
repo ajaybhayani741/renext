@@ -142,7 +142,7 @@ function AppLayout() {
           className={classNames('footer', { 'footer-collapsed': collapsed })}
         >
           <div className="d-flex space-between w-100">
-            <div className="">Host</div>
+            <div>Host</div>
             <span>©{new Date().getFullYear()} GenbaNEXT Limited</span>
           </div>
         </ANTDFooter>
