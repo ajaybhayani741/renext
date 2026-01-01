@@ -20,6 +20,7 @@ import { userWiseRole } from '../../../utils/constant'
 import { QuestionCircleOutlined } from '../../../utils/icons'
 import { entries, include, isEqual, notEqual } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
+import EmbedPDFViewer from '../../common/presentation/EmbedPDFViewer'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 import StoreSelect from '../../common/presentation/StoreSelect'
 import HOSTManual from '../../home/HOSTManual.pdf'
@@ -42,7 +43,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     data,
     tabList,
     jobModel,
-    // isDesktop,
+    isDesktop,
     activeTab,
     columnFilters,
     searchByProps,
@@ -295,28 +296,16 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
           <ANTDButton
             icon={<QuestionCircleOutlined />}
             type="primary"
-            // style={{
-            //   right: 40,
-            //   bottom: 40,
-            // }}
             onClick={handleFloatModal}
           />
           <ANTDModal
             open={helpModal}
             onCancel={handleFloatModal}
             footer={[]}
-            width={1000}
+            width={950}
             closable={false}
-            bodyStyle={{ height: '85vh', padding: 0 }}
           >
-            <iframe
-              title="help-manual"
-              type="application/pdf"
-              src={`${HOSTManual}`}
-              width="100%"
-              height="100%"
-              style={{ border: 'none' }}
-            />
+            <EmbedPDFViewer src={`${HOSTManual}`} isDesktop={isDesktop} />
           </ANTDModal>
         </div>
       )}
