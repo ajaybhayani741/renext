@@ -698,5 +698,6 @@
   "job_InspectionOfficerName": "Inspection Officer Name",
   "job_ViewInspection": "View Inspection",
   "job_RestartInspection": "Restart Inspection",
-  "job_EditInspection": "Edit Inspection"
+  "job_EditInspection": "Edit Inspection",
+  "job_Variation": "Variation"
 }

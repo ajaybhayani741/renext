@@ -4,7 +4,7 @@ import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import { downloadReport } from '../../../utils/customFunctions'
-import { include, isEqual } from '../../../utils/javascript'
+import { include, isEqual, notEqual } from '../../../utils/javascript'
 import { getJobDetailApi } from '../../jobs/jobs.api'
 import { payloadType } from '../../jobs/jobs.description'
 import { getChartReportApi } from '../dashboard.api'
@@ -73,6 +73,15 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
     //   render: rowData => (rowData ? `${rowData}` : '-'),
     //   hidden: condition,
     // },
+    {
+      title: t('job_Variation'),
+      dataIndex: 'value',
+      key: 'variation',
+      render: rowData => {
+        return rowData || '-'
+      },
+      hidden: notEqual(title, 'job_Variation'),
+    },
     {
       title: t('txt_Action'),
       key: 'viewJob',

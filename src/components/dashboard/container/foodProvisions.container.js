@@ -8,6 +8,8 @@ import {
   getFoodProvisionsHostelsApi,
   getCookingFuelBarChartApi,
   getCookingFuelHostelsApi,
+  getVariationBarChartApi,
+  getVariationHostelsApi,
 } from '../dashboard.api'
 import { axisOptionsList, foodPrevisionsCharts } from '../dashboard.description'
 
@@ -31,6 +33,12 @@ const foodProvisions = () => {
     [t('job_StockRegisterMaintained')]: 'STOCK_REGISTER_MAINTAINED',
     [t('job_VegetablesStoredAboveGround')]: 'VEGETABLES_STORED_ABOVE_GROUND',
     [t('job_ExhaustFanInKitchen')]: 'EXHAUST_FAN_IN_KITCHEN',
+    [t('job_VariationInRice')]: 'VARIATION_IN_RICE',
+    [t('job_VariationInDal')]: 'VARIATION_IN_DAL',
+    [t('job_VariationInCookingOil')]: 'VARIATION_IN_COOKING_OIL',
+    [t('job_VariationInSugar')]: 'VARIATION_IN_SUGAR',
+    [t('job_VariationInIdliRava')]: 'VARIATION_IN_IDLI_RAVA',
+    [t('job_VariationInRagiMalt')]: 'VARIATION_IN_RAGI_MALT',
   }
 
   const cookingFuelCategoryMapping = {
@@ -79,6 +87,8 @@ const foodProvisions = () => {
     switch (name) {
       case 'job_FoodProvisions':
         return getFoodProvisionsBarChartApi({ params })
+      case 'job_Variation':
+        return getVariationBarChartApi({ params })
       case 'job_NatureOfCookingFuel':
         return getCookingFuelBarChartApi({ params })
       default:
@@ -123,6 +133,45 @@ const foodProvisions = () => {
                       response.data.stockRegisterMaintainedNo || 0,
                       response.data.vegetablesStoredAboveGroundNo || 0,
                       response.data.exhaustFanInKitchenNo || 0,
+                    ],
+                  },
+                ]
+              : [],
+          }
+        } else if (key === 'job_Variation') {
+          tempSeriesData[key] = {
+            chartData: {
+              category: [
+                t('job_VariationInRice'),
+                t('job_VariationInDal'),
+                t('job_VariationInCookingOil'),
+                t('job_VariationInSugar'),
+                t('job_VariationInIdliRava'),
+                t('job_VariationInRagiMalt'),
+              ],
+            },
+            seriesData: isData
+              ? [
+                  {
+                    name: t('btn_Yes'),
+                    data: [
+                      response.data.variationInRiceYes || 0,
+                      response.data.variationInDalYes || 0,
+                      response.data.variationInCookingOilYes || 0,
+                      response.data.variationInSugarYes || 0,
+                      response.data.variationInIdliRavaYes || 0,
+                      response.data.variationInRagiMaltYes || 0,
+                    ],
+                  },
+                  {
+                    name: t('btn_No'),
+                    data: [
+                      response.data.variationInRiceNo || 0,
+                      response.data.variationInDalNo || 0,
+                      response.data.variationInCookingOilNo || 0,
+                      response.data.variationInSugarNo || 0,
+                      response.data.variationInIdliRavaNo || 0,
+                      response.data.variationInRagiMaltNo || 0,
                     ],
                   },
                 ]
@@ -224,6 +273,17 @@ const foodProvisions = () => {
         return getFoodProvisionsHostelsApi({
           pageNo,
           params: { ...params, category: apiCategory, filterValue },
+        })
+      case 'job_Variation':
+        const filteredValue = type === t('btn_Yes') ? 'YES' : 'NO'
+        const apiCategoryValue = categoryMapping[category]
+        return getVariationHostelsApi({
+          pageNo,
+          params: {
+            ...params,
+            category: apiCategoryValue,
+            filterValue: filteredValue,
+          },
         })
       case 'job_NatureOfCookingFuel':
         const mapping = cookingFuelCategoryMapping[type]?.[category]

@@ -65,6 +65,8 @@ const {
   GET_PHC_DISTANCE_CHART,
   GET_PHC_DISTANCE_HOSTELS,
   CHART_REPORT,
+  DASHBOARD_VARIATION_BAR_CHART,
+  DASHBOARD_VARIATION_HOSTELS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -350,6 +352,20 @@ const getFoodProvisionsHostelsApi = async ({ params, pageNo = 1 }) => {
   return response?.data
 }
 
+const getVariationBarChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_VARIATION_BAR_CHART, {
+    params,
+  })
+  return response?.data
+}
+
+const getVariationHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(DASHBOARD_VARIATION_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
 const getPrecautionaryMeasuresBarChartApi = async ({ params }) => {
   const response = await getMethod(DASHBOARD_PRECAUTIONARY_MEASURES_BAR_CHART, {
     params,
@@ -539,4 +555,6 @@ export {
   getPHCDistanceChartApi,
   getPHCDistanceHostelsApi,
   getChartReportApi,
+  getVariationBarChartApi,
+  getVariationHostelsApi,
 }
