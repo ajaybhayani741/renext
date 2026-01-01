@@ -141,6 +141,16 @@
   .business-name {
     min-width: 180px;
   }
+  .card-extra-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+
+    .ant-btn {
+      margin: 0 !important;
+    }
+  }
 }
 
 .view-user-modal {
@@ -276,9 +286,15 @@
   }
 }
 
-.list-card-view {
+.user-list-card-view {
   margin-bottom: 15px;
   border-radius: 10px;
+  overflow: hidden;
+
+  .ant-card {
+    overflow: visible;
+  }
+
   .card-details-container {
     position: relative;
 
@@ -287,6 +303,104 @@
     }
     .card-table-label {
       align-content: baseline;
+    }
+  }
+
+  // Card header - allow wrapping
+  .ant-card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 12px 16px;
+    min-height: auto;
+    overflow: visible;
+
+    .ant-card-head-title {
+      flex: 1 1 auto;
+      min-width: 0;
+      margin-right: 16px;
+    }
+
+    .ant-card-extra {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0;
+      margin-left: 8px;
+      overflow: visible;
+
+      .card-extra-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 3px;
+        width: auto;
+        max-width: 100%;
+        min-width: 0;
+        flex: 0 1 auto;
+
+        .ant-btn {
+          flex-shrink: 0;
+          white-space: nowrap;
+          margin: 0 !important;
+        }
+      }
+    }
+  }
+
+  // Mobile responsive styles
+  @media screen and (max-width: 768px) {
+    .ant-card-head {
+      flex-wrap: wrap;
+      padding: 8px 12px;
+      min-height: auto;
+      align-items: center;
+
+      .ant-card-extra {
+        padding: 0;
+        flex: 1 1 100%;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+
+    .ant-card-extra {
+      .card-extra-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 4px;
+        width: auto;
+        max-width: 100%;
+        flex: 0 1 auto;
+
+        .ant-btn {
+          padding: 3px 8px;
+          font-size: 12px;
+          line-height: 1.2;
+          white-space: nowrap;
+          flex-shrink: 0;
+          margin: 0 !important;
+        }
+      }
+    }
+  }
+
+  // Very small screens
+  @media screen and (max-width: 480px) {
+    .ant-card-head {
+      .ant-card-extra {
+        width: 100%;
+        margin-top: 8px;
+      }
     }
   }
 }

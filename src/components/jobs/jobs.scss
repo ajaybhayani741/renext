@@ -781,6 +781,86 @@
     }
   }
 
+  // Desktop: Card extra buttons - all buttons in same line
+  .ant-card-extra {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0;
+    overflow: visible;
+
+    .card-extra-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 100%;
+
+      .blink-btn {
+        margin: 0;
+        flex-shrink: 0;
+        display: inline-flex;
+
+        &.ml-10 {
+          margin-left: 0;
+        }
+
+        .ant-btn {
+          margin: 0 !important;
+        }
+      }
+
+      // Action buttons container (from actionButtons function) - flatten to inline
+      > div:not(.blink-btn) {
+        display: contents;
+
+        .mb-5 {
+          display: none;
+        }
+
+        .ant-btn {
+          margin: 0 !important;
+        }
+      }
+
+      // Hide any direct spacer divs
+      > .mb-5 {
+        display: none;
+      }
+
+      // All buttons should be inline
+      .ant-btn {
+        margin: 0 !important;
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  // Card header - allow wrapping on small screens
+  .ant-card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 12px 16px;
+    min-height: auto;
+    overflow: visible;
+
+    .ant-card-head-title {
+      flex: 1 1 auto;
+      min-width: 0;
+      margin-right: 16px;
+    }
+
+    .ant-card-extra {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 100%;
+    }
+  }
+
   // Mobile card extra section styles
   @media screen and (max-width: 768px) {
     .ant-card-extra {
@@ -803,33 +883,39 @@
         gap: 8px;
         width: 100%;
         max-width: 100%;
+
+        // Action buttons container - flatten on mobile too
+        > div:not(.blink-btn) {
+          display: contents;
+        }
       }
 
       // Action buttons container
       .mobile-action-buttons {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 5px;
-        width: 100%;
-        max-width: 100%;
+        display: contents !important;
         margin: 0;
+        padding: 0;
+
+        .mb-5 {
+          display: none;
+        }
       }
 
       // Reduce button size on mobile
       .ant-btn {
-        height: 28px;
-        padding: 4px 12px;
+        // height: 26px;
+        padding: 3px 4px;
         font-size: 12px;
         line-height: 1.2;
         white-space: nowrap;
         flex-shrink: 0;
+        border-radius: 7px;
 
         &.ant-btn-sm {
-          height: 24px;
-          padding: 2px 8px;
+          height: 22px;
+          padding: 2px 6px;
           font-size: 11px;
+          margin: auto 1px !important;
         }
       }
 
@@ -844,9 +930,11 @@
         }
 
         .ant-btn {
-          height: 28px;
-          padding: 4px 12px;
+          // height: 26px;
+          padding: 3px 4px;
           font-size: 12px;
+          border-radius: 7px;
+          margin: auto 1px !important;
         }
       }
 
@@ -858,8 +946,8 @@
 
     // Ensure card header doesn't overflow
     .ant-card-head {
-      flex-wrap: wrap;
-      padding: 12px 16px;
+      flex-wrap: nowrap;
+      padding: 6px 3px;
       min-height: auto;
 
       .ant-card-head-title {

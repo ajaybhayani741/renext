@@ -38,7 +38,7 @@ const UserTableCard = ({
           <Fragment key={item.id}>
             <ANTDCard
               key={item.id}
-              className="list-card-view"
+              className="user-list-card-view"
               title={
                 <>
                   {ternary(
@@ -90,7 +90,7 @@ const UserTableCard = ({
           </Fragment>
         ))
       ) : (
-        <ANTDCard className="list-card-view">
+        <ANTDCard className="user-list-card-view">
           <h4 className="text-center">{t('txt_NoData')}</h4>
         </ANTDCard>
       )}
