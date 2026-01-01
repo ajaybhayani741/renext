@@ -23,6 +23,26 @@
     max-width: 335px;
   }
 }
+
+.banner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  img {
+    max-width: 100%;
+    height: auto;
+
+    @media screen and (max-width: 991px) {
+      max-width: 70%;
+    }
+
+    @media screen and (max-width: 576px) {
+      max-width: 60%;
+    }
+  }
+}
 .third-party-signin-btn {
   align-items: center;
   display: flex;

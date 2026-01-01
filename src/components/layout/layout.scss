@@ -12,13 +12,15 @@ img {
 .footer {
   background: var(--color-primary);
   z-index: 9;
-  padding: 20px;
-  margin-left: 255px;
+  padding: 10px;
   color: var(--color-white);
   display: flex;
   align-items: flex-end;
   justify-content: end;
-  margin-top: auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   transition: all 0.3s ease-in-out;
 
   // Set footer height as CSS variable for use in other components
@@ -31,12 +33,11 @@ img {
     width: calc(100% - 255px);
 
     &.footer-collapsed {
-      margin-left: 80px;
+      width: calc(100% - 80px);
     }
   }
 
   @media screen and (max-width: 991px) {
-    margin-left: 0;
     display: inline-block;
     text-align: end;
   }
@@ -145,11 +146,11 @@ img {
 
   .ant-layout-content {
     margin-top: 70px;
-    padding: 0px 20px 10px;
+    padding: 0px 20px 80px;
     position: relative;
 
     @media screen and (max-width: 991px) {
-      padding: 0px 15px 5px;
+      padding: 0px 15px 80px;
     }
   }
 }
@@ -484,6 +485,30 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 991px) {
+    height: 105px;
+  }
+
+  @media screen and (max-width: 576px) {
+    height: 90px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    transition: all 0.3s ease-in-out;
+
+    @media screen and (max-width: 991px) {
+      max-width: 70%;
+      max-height: 105px;
+    }
+
+    @media screen and (max-width: 576px) {
+      max-width: 60%;
+      max-height: 90px;
+    }
+  }
 }
 
 .close-sidebar {

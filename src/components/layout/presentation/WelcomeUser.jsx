@@ -17,7 +17,6 @@ const WelcomeUser = () => {
   return (
     <div className="username">
       <div className="username-content">
-        <div className="host-label">Host</div>
         <div className="welcome-text">
           <span className="mr-5">{t('txt_Welcome')}</span>
           <span className="user_name">

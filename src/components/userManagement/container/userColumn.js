@@ -41,9 +41,7 @@ const userColumns = ({
   const isChildUser = include(childUsers, roleId)
   const { inspectionOfficer, hostel, districtCollector } = userWiseRole
   const actionButtons = rowData => (
-    <div
-      className={showAssignInspectionOfficer ? 'py-5' : 'flex-nowrap d-flex'}
-    >
+    <div className="card-extra-buttons">
       {showAssignInspectionOfficer && (
         <>
           <ANTDButton
@@ -52,7 +50,6 @@ const userColumns = ({
           >
             {t('user_AssignInspectionOfficerRandomly')}
           </ANTDButton>
-          <div className="mb-5" />
           <ANTDButton
             className="bg-assign-hostel"
             onClick={() => handleAssignInspectionOfficer({ rowData })}
@@ -75,7 +72,6 @@ const userColumns = ({
       <ANTDButton className="bg-view" onClick={() => handleView(rowData)}>
         {t('btn_View')}
       </ANTDButton>
-      <div className="mb-5" />
       {!removeEditBtn && (permission || isBuilding) && (
         <ANTDButton className="bg-edit" onClick={() => handleEdit(rowData)}>
           {t('btn_Edit')}
