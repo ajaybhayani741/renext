@@ -18,7 +18,7 @@ import Label from '../../../shared/Label'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../utils/constant'
 import { QuestionCircleOutlined } from '../../../utils/icons'
-import { entries, include, isEqual } from '../../../utils/javascript'
+import { entries, include, isEqual, notEqual } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 import StoreSelect from '../../common/presentation/StoreSelect'
@@ -144,11 +144,13 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
             )}
           {!isUnassignHostelTab && (
             <>
-              <div className="d-flex flex-end">
-                <FiscalYearSelect
-                  onDateChange={(from, to) => apiCall(1, { from, to })}
-                />
-              </div>
+              {notEqual(roleId, inspectionOfficer) && (
+                <div className="d-flex flex-end">
+                  <FiscalYearSelect
+                    onDateChange={(from, to) => apiCall(1, { from, to })}
+                  />
+                </div>
+              )}
               <ANTDRow gutter={10} className="mt-5">
                 <ANTDColumn md={12} lg={12} xs={24}>
                   <Label text={t('job_SearchBy')} />
