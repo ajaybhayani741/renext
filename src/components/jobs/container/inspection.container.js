@@ -132,7 +132,10 @@ const inspection = ({
       const locationAddress = await getLocationAddressApi({
         params: { latitude: data?.latitude, longitude: data?.longitude },
       })
-      const latLng = `${locationAddress?.data?.latitude},${locationAddress?.data?.longitude}`
+      const latLng =
+        locationAddress?.data?.latitude && locationAddress?.data?.longitude
+          ? `${locationAddress?.data?.latitude},${locationAddress?.data?.longitude}`
+          : `${data?.latitude},${data?.longitude}`
       const address = locationAddress?.data?.address
         ? locationAddress?.data?.address
         : latLng
@@ -279,8 +282,14 @@ const inspection = ({
       accumulationKey: 'percentageOfToiletFunctioning',
     })
 
-    const latLng = `${editData?.latitude},${editData?.longitude}`
-    const latLng1 = `${editData?.latitude2},${editData?.longitude2}`
+    const latLng =
+      editData?.latitude && editData?.longitude
+        ? `${editData?.latitude},${editData?.longitude}`
+        : ''
+    const latLng1 =
+      editData?.latitude2 && editData?.longitude2
+        ? `${editData?.latitude2},${editData?.longitude2}`
+        : ''
     const preFormValues = {
       inspectionDate: editData?.inspectionDate
         ? dayJs(editData?.inspectionDate, 'DD/MM/YYYY HH:mm')
