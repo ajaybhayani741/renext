@@ -261,6 +261,26 @@ h6 {
   padding: 5px 10px;
   display: flex;
   justify-content: space-between;
+
+  @media screen and (max-width: 768px) {
+    position: relative;
+    right: auto;
+    padding: 5px 0;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 5px 0;
+    gap: 6px;
+  }
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .confirmation-btn {

@@ -198,6 +198,14 @@ img {
       @media only screen and (min-width: 992px) {
         display: none;
       }
+
+      @media only screen and (max-width: 991px) {
+        font-size: 24px;
+
+        svg {
+          font-size: 24px;
+        }
+      }
     }
 
     .username {
@@ -207,11 +215,11 @@ img {
       max-width: 85%;
       display: flex;
       line-height: normal;
-      align-items: flex-start;
+      align-items: center;
       flex-direction: column;
       justify-content: center;
       height: auto;
-      margin: 12px 0;
+      margin: 0;
 
       @media only screen and (max-width: 1549px) {
         max-width: 60%;
@@ -219,16 +227,16 @@ img {
 
       @media only screen and (max-width: 767px) {
         max-width: 50%;
-        font-size: 18px;
+        font-size: 22px;
       }
 
       @media only screen and (max-width: 575px) {
-        font-size: 16px;
+        font-size: 20px;
       }
 
       @media only screen and (max-width: 480px) {
         // max-width: 40%;
-        font-size: 14px;
+        font-size: 18px;
         flex-wrap: wrap;
       }
 
@@ -240,6 +248,10 @@ img {
         display: flex;
         flex-direction: column;
         width: 100%;
+
+        @media only screen and (max-width: 991px) {
+          padding: 4px 0;
+        }
       }
 
       .host-label {
@@ -270,12 +282,33 @@ img {
         display: flex;
         align-items: center;
         line-height: normal;
+
+        @media only screen and (max-width: 991px) {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .welcome-label {
+          @media only screen and (max-width: 991px) {
+            display: block;
+            width: 100%;
+            margin-bottom: 1px;
+          }
+        }
       }
 
       .user_name {
         display: block;
         text-overflow: ellipsis;
         overflow: hidden;
+
+        @media only screen and (max-width: 991px) {
+          text-overflow: unset;
+          overflow: visible;
+          white-space: normal;
+          word-wrap: break-word;
+          margin-bottom: 4px;
+        }
 
         span:first-child {
           margin-right: 0;
@@ -284,6 +317,13 @@ img {
           text-overflow: ellipsis;
           display: block;
           white-space: nowrap;
+
+          @media only screen and (max-width: 991px) {
+            overflow: visible;
+            text-overflow: unset;
+            white-space: normal;
+            word-wrap: break-word;
+          }
         }
       }
 
