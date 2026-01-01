@@ -9,6 +9,7 @@ import ANTDCheckbox, {
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { ANTDDateRange } from '../../../shared/antd/ANTDDatePicker'
 import ANTDDivider from '../../../shared/antd/ANTDDivider'
+import ANTDFloatButton from '../../../shared/antd/ANTDFloatButton'
 import { ANTDSearch } from '../../../shared/antd/ANTDInput'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import ANTDRow from '../../../shared/antd/ANTDRow'
@@ -20,6 +21,7 @@ import { userWiseRole } from '../../../utils/constant'
 import { QuestionCircleOutlined } from '../../../utils/icons'
 import { entries, include, isEqual, notEqual } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
+import EmbedPDFViewer from '../../common/presentation/EmbedPDFViewer'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 import StoreSelect from '../../common/presentation/StoreSelect'
 import HOSTManual from '../../home/HOSTManual.pdf'
@@ -36,7 +38,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     data,
     tabList,
     jobModel,
-    // isDesktop,
+    isDesktop,
     activeTab,
     columnFilters,
     searchByProps,
@@ -62,7 +64,6 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     handleFloatModal,
     helpModal,
   } = jobs({ userView, userId, userJobType })
-
   const { type: jobType, status } = { ...activeTab }
   const isUnassignHostelTab = isEqual(status, tabKeys.unassignHostel)
   const userData = JSON.parse(getItem('userData') || '{}')
@@ -268,31 +269,23 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
       )}
       {isEqual(roleId, inspectionOfficer) && (
         <div className="help-float-button-container">
-          <ANTDButton
+          <ANTDFloatButton
             icon={<QuestionCircleOutlined />}
             type="primary"
-            // style={{
-            //   right: 40,
-            //   bottom: 40,
-            // }}
+            style={{
+              right: 20,
+              bottom: 30,
+            }}
             onClick={handleFloatModal}
           />
           <ANTDModal
             open={helpModal}
             onCancel={handleFloatModal}
             footer={[]}
-            width={1000}
+            width={950}
             closable={false}
-            bodyStyle={{ height: '85vh', padding: 0 }}
           >
-            <iframe
-              title="help-manual"
-              type="application/pdf"
-              src={`${HOSTManual}`}
-              width="100%"
-              height="100%"
-              style={{ border: 'none' }}
-            />
+            <EmbedPDFViewer src={`${HOSTManual}`} isDesktop={isDesktop} />
           </ANTDModal>
         </div>
       )}
