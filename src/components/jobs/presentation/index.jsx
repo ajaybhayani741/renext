@@ -9,6 +9,7 @@ import ANTDCheckbox, {
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { ANTDDateRange } from '../../../shared/antd/ANTDDatePicker'
 import ANTDDivider from '../../../shared/antd/ANTDDivider'
+import ANTDFloatButton from '../../../shared/antd/ANTDFloatButton'
 import { ANTDSearch } from '../../../shared/antd/ANTDInput'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import ANTDRow from '../../../shared/antd/ANTDRow'
@@ -73,7 +74,6 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     viewRequestsModal,
     masterSheetLoader,
   } = jobs({ userView, userId, userJobType })
-
   const { type: jobType, status } = { ...activeTab }
   const isUnassignHostelTab = isEqual(status, tabKeys.unassignHostel)
   const userData = JSON.parse(getItem('userData') || '{}')
@@ -293,9 +293,13 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
       )}
       {isEqual(roleId, inspectionOfficer) && (
         <div className="help-float-button-container">
-          <ANTDButton
+          <ANTDFloatButton
             icon={<QuestionCircleOutlined />}
             type="primary"
+            style={{
+              right: 20,
+              bottom: 30,
+            }}
             onClick={handleFloatModal}
           />
           <ANTDModal

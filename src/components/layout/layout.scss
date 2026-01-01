@@ -23,6 +23,10 @@ img {
   right: 0;
   transition: all 0.3s ease-in-out;
 
+  // Set footer height as CSS variable for use in other components
+  min-height: 40px;
+  --footer-height: 40px;
+
   @media screen and (min-width: 992px) {
     left: auto;
     right: 0;
