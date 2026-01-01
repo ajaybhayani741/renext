@@ -93,7 +93,6 @@ const InspectionFormField = ({
             colClassName,
             responsiveInputType = null,
             galleryUpload = false,
-            headerTitle = null,
             ...restProps
           } = attributes || {}
           const isHidden = isEqual(typeof hidden, 'function')
@@ -183,9 +182,6 @@ const InspectionFormField = ({
                     className={colClassName}
                   >
                     {fieldPrefix}
-                    {headerTitle && (
-                      <div className="sub-title ml-5">{t(headerTitle)}</div>
-                    )}
                     <ANTDFormItem
                       name={[...fieldPath, attrKey]}
                       label={t(label)}
