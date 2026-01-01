@@ -138,7 +138,7 @@ const getMasterSheetApi = async ({ pageNo, params }) => {
 }
 
 const generateMasterSheetApi = async ({ payload }) => {
-  const response = await postMethod(GENERATE_MASTER_SHEET, payload)
+  const response = await postMethod(TRIGGER_JOB_REPORT, payload)
   return response?.data
 }
 
