@@ -299,9 +299,7 @@ const inspection = ({
       endLocationInspection:
         editData?.latitude2 && editData?.longitude2 ? latLng1 : '',
       addressInspection: editData?.address ? editData?.address : latLng,
-      endAddressInspection: editData?.endAddress
-        ? editData?.endAddress
-        : latLng1,
+      endAddressInspection: editData?.address2 ? editData?.address2 : latLng1,
       inspectionList: [inspectionDetails],
       findingsRequestDto: {
         ...formValueFromResponse(editData, findingsAttrFn()),
