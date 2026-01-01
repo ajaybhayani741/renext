@@ -14,21 +14,24 @@ function BasicInformation() {
   return (
     <div className="basic-info-container">
       <ANTDCard className="info-card">
-        <div className="header-line responsive-header">
-          <div>
-            <ANTDButton
-              type="primary"
-              className="btn mr-15 bg-edit"
-              onClick={handleEdit}
-            >
-              {t('btn_Edit')}
-            </ANTDButton>
-            <ANTDButton type="primary" className="btn bg-danger">
-              {t('btn_Delete')}
-            </ANTDButton>
-          </div>
-        </div>
-        <ViewUser userDetails={userDetails} hasAction={true} />
+        <ViewUser 
+          userDetails={userDetails} 
+          hasAction={true} 
+          editButtons={
+            <>
+              <ANTDButton
+                type="primary"
+                className="btn mr-15 bg-edit"
+                onClick={handleEdit}
+              >
+                {t('btn_Edit')}
+              </ANTDButton>
+              <ANTDButton type="primary" className="btn bg-danger">
+                {t('btn_Delete')}
+              </ANTDButton>
+            </>
+          } 
+        />
       </ANTDCard>
       {editInfo?.flag && (
         <ANTDModal

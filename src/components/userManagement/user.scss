@@ -86,6 +86,19 @@
   color: black !important;
   margin: auto 3px !important;
   border-radius: 10px;
+  padding: 4px 12px !important;
+
+  @media screen and (max-width: 768px) {
+    padding: 3px 10px !important;
+    font-size: 13px;
+    margin: auto 2px !important;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 2px 8px !important;
+    font-size: 12px;
+    margin: auto 1px !important;
+  }
 }
 
 .bg-edit {
@@ -94,6 +107,19 @@
   color: black !important;
   margin: auto 3px !important;
   border-radius: 10px;
+  padding: 4px 12px !important;
+
+  @media screen and (max-width: 768px) {
+    padding: 3px 10px !important;
+    font-size: 13px;
+    margin: auto 2px !important;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 2px 8px !important;
+    font-size: 12px;
+    margin: auto 1px !important;
+  }
 }
 .bg-start {
   background-color: #f4c095 !important;
@@ -109,12 +135,94 @@
   margin-bottom: 15px;
 }
 
+.content-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-primary-light);
+  padding: 5px 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  .content-title {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+
+    @media screen and (max-width: 768px) {
+      font-size: 16px;
+    }
+
+    @media screen and (max-width: 480px) {
+      font-size: 14px;
+    }
+  }
+
+  .header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: auto;
+    white-space: nowrap;
+
+    .bg-edit,
+    .bg-danger {
+      margin: 0 !important;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 5px 8px;
+    gap: 8px;
+    flex-wrap: nowrap;
+
+    .content-title {
+      font-size: 16px;
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .header-buttons {
+      gap: 6px;
+      flex-shrink: 0;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 5px 6px;
+    gap: 6px;
+    flex-wrap: nowrap;
+
+    .content-title {
+      font-size: 14px;
+    }
+
+    .header-buttons {
+      gap: 4px;
+    }
+  }
+}
+
 .content-title {
   background: var(--color-primary-light);
   padding: 5px 10px;
   align-items: center;
   &:not(.title-text) {
     padding: 0 10px;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: 14px;
   }
 }
 
@@ -525,6 +633,13 @@
   border-radius: 8px;
   max-width: 1080px;
   margin: 0 auto 15px;
+  position: relative;
+
+  @media screen and (max-width: 768px) {
+    .header-line {
+      margin-bottom: 10px;
+    }
+  }
 }
 .info-wrapper {
   margin: 10px 2%;

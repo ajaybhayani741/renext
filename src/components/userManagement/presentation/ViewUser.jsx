@@ -12,7 +12,13 @@ import BasicInfo from './BasicInfo'
 import UserList from './UserList'
 import UserRating from './UserRating'
 
-const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
+const ViewUser = ({
+  open,
+  userDetails,
+  hasAction,
+  handleCancel,
+  editButtons,
+}) => {
   const {
     parentData,
     otherDetail,
@@ -35,11 +41,16 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
   const viewDetails = () => {
     return (
       <div className="view-user-modal">
-        <h2
-          className={classNames('content-title', { 'title-text': hasAction })}
+        <div
+          className={classNames('content-title-wrapper', {
+            'title-text': hasAction,
+          })}
         >
-          {t('user_BasicInformation')}
-        </h2>
+          <h2 className="content-title">{t('user_BasicInformation')}</h2>
+          {hasAction && editButtons && (
+            <div className="header-buttons">{editButtons}</div>
+          )}
+        </div>
         <BasicInfo
           {...{
             basicInfoData,
@@ -50,13 +61,7 @@ const ViewUser = ({ open, userDetails, hasAction, handleCancel }) => {
         />
         {isChildUser && (
           <>
-            <h2
-              className={classNames('content-title', {
-                'title-text': hasAction,
-              })}
-            >
-              {t('user_ParentInformation')}
-            </h2>
+            <h2 className="content-title">{t('user_ParentInformation')}</h2>
             <BasicInfo
               {...{
                 basicInfoData: parentInfoData,
