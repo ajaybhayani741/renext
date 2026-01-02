@@ -137,7 +137,13 @@ const ConfirmView = ({
           <ANTDFormItem
             label={t('job_DateOfInspectionAndTime')}
             name={'inspectionDate'}
-            className={`date-label`}
+            className={`${validationTag(lang)} date-label`}
+            rules={[
+              {
+                required: true,
+                message: t('error_FieldISRequire'),
+              },
+            ]}
           >
             <ANTDDatePicker
               showTime
@@ -160,7 +166,7 @@ const ConfirmView = ({
         >
           <ANTDFormItem
             label={t('job_LocationOfInspection')}
-            name={'endLocationInspection'}
+            name={'endAddressInspection'}
             className={`${validationTag(lang)} date-label w-100`}
             rules={[
               {

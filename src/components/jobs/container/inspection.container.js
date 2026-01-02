@@ -33,6 +33,7 @@ import { getItem } from '../../../utils/localstorage'
 import {
   addJobPostApi,
   getJobDetailApi,
+  getLocationAddressApi,
   triggerJobReportApi,
   updateJobPatchApi,
 } from '../jobs.api'
@@ -128,14 +129,29 @@ const inspection = ({
     if (isAccepted) {
       const data = await getLocation()
       locationRef.current = data
+      const locationAddress = await getLocationAddressApi({
+        params: { latitude: data?.latitude, longitude: data?.longitude },
+      })
+      const latLng =
+        locationAddress?.data?.latitude && locationAddress?.data?.longitude
+          ? `${locationAddress?.data?.latitude},${locationAddress?.data?.longitude}`
+          : `${data?.latitude},${data?.longitude}`
+      const address = locationAddress?.data?.address
+        ? locationAddress?.data?.address
+        : latLng
       form.setFieldsValue({
         ...form.getFieldsValue(),
-        locationInspection: `${data?.latitude?.toFixed(4)},${data?.longitude?.toFixed(4)}`,
         ...(current === 3
           ? {
-              endLocationInspection: `${data?.latitude?.toFixed(4)},${data?.longitude?.toFixed(4)}`,
+              endAddressInspection: address,
+              endLocationInspection: latLng,
             }
-          : {}),
+          : current === 0
+            ? {
+                addressInspection: address,
+                locationInspection: latLng,
+              }
+            : {}),
       })
 
       jobId && debounceApiCall({})
@@ -266,18 +282,24 @@ const inspection = ({
       accumulationKey: 'percentageOfToiletFunctioning',
     })
 
+    const latLng =
+      editData?.latitude && editData?.longitude
+        ? `${editData?.latitude},${editData?.longitude}`
+        : ''
+    const latLng1 =
+      editData?.latitude2 && editData?.longitude2
+        ? `${editData?.latitude2},${editData?.longitude2}`
+        : ''
     const preFormValues = {
       inspectionDate: editData?.inspectionDate
         ? dayJs(editData?.inspectionDate, 'DD/MM/YYYY HH:mm')
         : dayJs(new Date()),
       locationInspection:
-        editData?.latitude && editData?.longitude
-          ? `${editData?.latitude?.toFixed(4)},${editData?.longitude?.toFixed(4)}`
-          : '',
+        editData?.latitude && editData?.longitude ? latLng : '',
       endLocationInspection:
-        editData?.latitude2 && editData?.longitude2
-          ? `${editData?.latitude2?.toFixed(4)},${editData?.longitude2?.toFixed(4)}`
-          : '',
+        editData?.latitude2 && editData?.longitude2 ? latLng1 : '',
+      addressInspection: editData?.address ? editData?.address : latLng,
+      endAddressInspection: editData?.address2 ? editData?.address2 : latLng1,
       inspectionList: [inspectionDetails],
       findingsRequestDto: {
         ...formValueFromResponse(editData, findingsAttrFn()),
