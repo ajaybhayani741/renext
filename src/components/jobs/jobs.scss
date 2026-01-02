@@ -258,53 +258,6 @@
   }
 }
 
-.inner-repair-wrapper {
-  margin: 0 2%;
-  margin-top: 10px;
-
-  .content-title {
-    padding: 2px 0 2px 10px;
-    font-size: 18px;
-  }
-  @media screen and (max-width: 575px) {
-    .ant-collapse-header {
-      p {
-        font-size: 12px;
-      }
-    }
-  }
-
-  .inspection-form-list {
-    .ant-form-item-label > label {
-      line-height: 1.1 !important;
-    }
-    .ant-form-item-label {
-      margin-top: 0;
-    }
-  }
-
-  .recycle-job-station {
-    .ant-steps {
-      margin-top: 0px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding-bottom: 10px;
-    }
-    .steps-content {
-      max-height: calc(100vh - 565px);
-      min-height: calc(100vh - 565px);
-      height: 100%;
-    }
-  }
-  .ant-steps {
-    margin-top: 15px;
-
-    .ant-steps-item-title {
-      font-size: 14px;
-      line-height: 16px;
-    }
-  }
-}
 .active-form-modal {
   .ant-form-item {
     margin-bottom: 15px;
@@ -987,4 +940,51 @@
   .ant-progress-bg.ant-progress-bg-inner
   .ant-progress-text-inner.ant-progress-text-bright {
   color: #000;
+}
+.inner-repair-wrapper {
+  margin: 0 2%;
+  margin-top: 10px;
+
+  .content-title {
+    padding: 2px 0 2px 10px;
+    font-size: 18px;
+  }
+  @media screen and (max-width: 575px) {
+    .ant-collapse-header {
+      p {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .inspection-form-list {
+    .ant-form-item-label > label {
+      line-height: 1.1 !important;
+    }
+    .ant-form-item-label {
+      margin-top: 0;
+    }
+  }
+
+  .recycle-job-station {
+    .ant-steps {
+      margin-top: 0px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 10px;
+    }
+    .steps-content {
+      max-height: calc(100vh - 565px);
+      min-height: calc(100vh - 565px);
+      height: 100%;
+    }
+  }
+  .ant-steps {
+    margin-top: 15px;
+
+    .ant-steps-item-title {
+      font-size: 14px;
+      line-height: 16px;
+    }
+  }
 }

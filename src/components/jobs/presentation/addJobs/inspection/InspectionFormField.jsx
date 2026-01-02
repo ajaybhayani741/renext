@@ -89,6 +89,7 @@ const InspectionFormField = ({
             extra,
             fieldSuffix = null,
             fieldPrefix = null,
+            titleClassName = '',
             colClassName,
             responsiveInputType = null,
             galleryUpload = false,
@@ -148,7 +149,10 @@ const InspectionFormField = ({
 
           if (!isHidden && title)
             return (
-              <h3 className="mb-10 w-100 px-5" key={attrKey}>
+              <h3
+                className={`mb-10 w-100 px-5 ${titleClassName}`}
+                key={attrKey}
+              >
                 {t(title)}
               </h3>
             )
