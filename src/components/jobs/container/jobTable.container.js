@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { notifyMethod } from '../../../App'
 import useRedux from '../../../hooks/useRedux'
@@ -38,6 +38,10 @@ const jobTable = ({
   const { districtCollector, inspectionOfficer } = userWiseRole
   const activeTab = selector(state => state?.jobs?.activeTab)
   const isMobile = selector(state => state.app.isMobile)
+  const [reportDownloadModal, setReportDownloadModal] = useState({
+    open: false,
+    data: '',
+  })
 
   const actionButtons = rowData => (
     <div className={!isMobile ? '' : 'mobile-action-buttons'}>
@@ -106,16 +110,7 @@ const jobTable = ({
           <ANTDButton
             className="download-btn"
             onClick={() => {
-              if (!rowData?.inspectionJobReportDetails) {
-                notifyMethod.error({
-                  message: t('job_InspectionReportNotGenerated'),
-                })
-                return
-              }
-              downloadReport(
-                rowData?.inspectionJobReportDetails?.fileUrl,
-                rowData?.inspectionJobReportDetails?.fileName,
-              )
+              handleDownloadReportModal(rowData)
             }}
           >
             {t('btn_Download')} <DownloadOutlined />
@@ -317,12 +312,34 @@ const jobTable = ({
     ].filter(item => !item.hidden)
   }
 
+  const handleDownloadReportModal = data => {
+    setReportDownloadModal({
+      open: !reportDownloadModal?.open,
+      data: data || null,
+    })
+  }
+
+  const downloadReportFn = (data, type) => {
+    if (!data) {
+      notifyMethod.error({
+        message: t('job_InspectionReportNotGenerated'),
+      })
+      handleDownloadReportModal()
+      return
+    }
+    downloadReport(data?.fileUrl, data?.fileName, type)
+    handleDownloadReportModal()
+  }
+
   return {
     t,
     columns,
     isDesktop,
     cardViewFn,
     actionButtons,
+    reportDownloadModal,
+    handleDownloadReportModal,
+    downloadReportFn,
   }
 }
 
