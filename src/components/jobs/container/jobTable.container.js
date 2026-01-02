@@ -40,7 +40,7 @@ const jobTable = ({
   const isMobile = selector(state => state.app.isMobile)
 
   const actionButtons = rowData => (
-    <div className={!isMobile ? '' : 'd-flex flex-nowrap'}>
+    <div className={!isMobile ? '' : 'mobile-action-buttons'}>
       {isEqual(roleId, districtCollector) &&
         isEqual(jobType, tabKeys.inspection) &&
         isEqual(activeTab?.status, tabKeys.active) && (
