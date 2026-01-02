@@ -200,10 +200,10 @@ img {
       }
 
       @media only screen and (max-width: 991px) {
-        font-size: 24px;
+        font-size: 20px;
 
         svg {
-          font-size: 24px;
+          font-size: 20px;
         }
       }
     }
@@ -227,16 +227,16 @@ img {
 
       @media only screen and (max-width: 767px) {
         max-width: 50%;
-        font-size: 22px;
+        font-size: 18px;
       }
 
       @media only screen and (max-width: 575px) {
-        font-size: 20px;
+        font-size: 16px;
       }
 
       @media only screen and (max-width: 480px) {
         // max-width: 40%;
-        font-size: 18px;
+        font-size: 16px;
         flex-wrap: wrap;
       }
 
