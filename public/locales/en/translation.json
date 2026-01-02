@@ -714,5 +714,8 @@
   "dash_PhotoOfInspectingOfficerWithChildren": "Photo of Inspecting Officer with Children",
   "dash_PhotoOfMainGate": "Photo of Main Gate",
   "dash_PhotoOfHostelFace": "Photo of hostel front face with the name of hostel",
-  "dash_DateOfInspectionCompletion": "Date of Inspection Completion"
+  "dash_DateOfInspectionCompletion": "Date of Inspection Completion",
+  "job_GenerateMasterSheet": "Generate Master Sheet",
+  "job_ViewPreviousRequests": "View Previous Requests",
+  "msg_MasterSheetGeneratedSuccessfully": "Master sheet generated successfully"
 }

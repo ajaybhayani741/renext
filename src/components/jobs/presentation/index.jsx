@@ -27,10 +27,16 @@ import StoreSelect from '../../common/presentation/StoreSelect'
 import HOSTManual from '../../home/HOSTManual.pdf'
 import { sidebarMenus } from '../../layout/sidebar.description'
 import jobs from '../container/jobs.container'
-import { exportExcelOptions, searchByKeys, tabKeys } from '../jobs.description'
+import {
+  exportExcelOptions,
+  payloadType,
+  searchByKeys,
+  tabKeys,
+} from '../jobs.description'
 import JobTable from './JobTable'
 import ViewJob from './viewJobs'
 import UnassignedHostels from './viewJobs/UnassignedHostels'
+import ViewPreviousRequest from './viewJobs/ViewPreviousRequest'
 
 const JobManagement = ({ userView = false, userId, userJobType }) => {
   const {
@@ -63,6 +69,10 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     handleConfirmDisAssociate,
     handleFloatModal,
     helpModal,
+    generateMasterSheet,
+    handleViewRequestModal,
+    viewRequestsModal,
+    masterSheetLoader,
   } = jobs({ userView, userId, userJobType })
   const { type: jobType, status } = { ...activeTab }
   const isUnassignHostelTab = isEqual(status, tabKeys.unassignHostel)
@@ -150,6 +160,20 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                   <FiscalYearSelect
                     onDateChange={(from, to) => apiCall(1, { from, to })}
                   />
+                </div>
+              )}
+              {notEqual(roleId, inspectionOfficer) && (
+                <div className="d-flex flex-end mt-10 generate-master-sheet">
+                  <ANTDButton
+                    type="primary"
+                    onClick={generateMasterSheet}
+                    loading={masterSheetLoader}
+                  >
+                    {t('job_GenerateMasterSheet')}
+                  </ANTDButton>
+                  <ANTDButton type="primary" onClick={handleViewRequestModal}>
+                    {t('job_ViewPreviousRequests')}
+                  </ANTDButton>
                 </div>
               )}
               <ANTDRow gutter={10} className="mt-5">
@@ -288,6 +312,21 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
             <EmbedPDFViewer src={`${HOSTManual}`} isDesktop={isDesktop} />
           </ANTDModal>
         </div>
+      )}
+      {viewRequestsModal?.open && (
+        <ANTDModal
+          title={t('job_ViewPreviousRequests')}
+          centered
+          open={viewRequestsModal?.open}
+          onCancel={handleViewRequestModal}
+          footer={false}
+          width={900}
+        >
+          <ViewPreviousRequest
+            sheetType={payloadType['inspectionSheetMultiple']}
+            modal={viewRequestsModal}
+          />
+        </ANTDModal>
       )}
     </>
   )
