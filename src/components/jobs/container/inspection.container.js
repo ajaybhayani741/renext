@@ -391,26 +391,47 @@ const inspection = ({
     if (location?.state?.restart) {
       return { percentage: 0 }
     }
-    const inspectionListData = formData?.inspectionList?.[0] || {}
-    const flattenedInspectionData = {}
+    const jobData = {
+      locationInspection: formData?.locationInspection,
+      endLocationInspection: formData?.endLocationInspection,
+      inspectionDate: formData?.inspectionDate,
+      ...(formData?.findingsRequestDto || {}),
+      ...values(formData?.inspectionList?.[0] || {})?.reduce(
+        (acc, curr) => ({ ...acc, ...curr }),
+        {},
+      ),
+    }
 
-    entries(inspectionListData)?.forEach(([key, value]) => {
-      if (value && typeof value === 'object') {
-        entries(value)?.forEach(([nestedKey, nestedValue]) => {
-          flattenedInspectionData[nestedKey] = nestedValue
-        })
-      } else {
-        flattenedInspectionData[key] = value
-      }
-    })
-
+    const getKeys = obj => {
+      return (
+        entries(obj)
+          ?.filter(([_, value]) => value?.label && value?.inputType)
+          ?.map(([key]) => key) || []
+      )
+    }
+    const inspectionJobData = [
+      ...getKeys(hostelAdministrationAttrFn()),
+      ...getKeys(hostelInfraRoomsAttrFn()),
+      ...getKeys(hostelInfraSanitationAttrFn()),
+      ...getKeys(medicalCareAttrFn()),
+      ...getKeys(educationFacilitiesAttrFn()),
+      ...getKeys(foodProvisionAttrFn()),
+      ...getKeys(safetyAndSecurityAttrFn()),
+      ...getKeys(conductionMeetingsAttrFn()),
+      ...getKeys(feedbackAttrFn()),
+      ...getKeys(findingsAttrFn()),
+      ...getKeys(curricularActivitiesAttrFn()),
+    ]
     const totalFields = {
       locationInspection: formData?.locationInspection,
       endLocationInspection: formData?.endLocationInspection,
       inspectionDate: formData?.inspectionDate,
-      ...formData?.findingsRequestDto,
-      ...flattenedInspectionData,
+      ...inspectionJobData?.reduce((acc, key) => {
+        acc[key] = jobData?.[key]
+        return acc
+      }, {}),
     }
+
     const totalFieldCount = keys(totalFields)?.length
     const filledFieldCount = values(totalFields)?.filter(
       value => value !== null && value !== undefined && value !== '',
