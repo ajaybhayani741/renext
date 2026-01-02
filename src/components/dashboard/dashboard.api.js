@@ -67,6 +67,7 @@ const {
   CHART_REPORT,
   DASHBOARD_VARIATION_BAR_CHART,
   DASHBOARD_VARIATION_HOSTELS,
+  DASHBOARD_PHOTOS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -492,6 +493,13 @@ const getChartReportApi = async ({ payload }) => {
   return response?.data
 }
 
+const getDashboardPhotosApi = async ({ pageNo, params }) => {
+  const response = await getMethod(DASHBOARD_PHOTOS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
 export {
   getDiscrepanciesApi,
   getShiftReportApi,
@@ -557,4 +565,5 @@ export {
   getChartReportApi,
   getVariationBarChartApi,
   getVariationHostelsApi,
+  getDashboardPhotosApi,
 }

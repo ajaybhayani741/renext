@@ -27,6 +27,9 @@ const Notifications = lazy(
 const AddEditJobs = lazy(
   () => import('../components/jobs/presentation/addJobs'),
 )
+const SelectedPhotoDashboard = lazy(
+  () => import('../components/dashboard/presentation/SelectedPhotoDashboard'),
+)
 // const BookKeeping = lazy(
 //   () => import('../components/bookKeeping/presentation/Index'),
 // )
@@ -62,6 +65,10 @@ const Routing = () => {
         {
           path: pathName.DASHBOARD,
           element: <DashboardView />,
+        },
+        {
+          path: pathName.PHOTO_DASHBOARD,
+          element: <SelectedPhotoDashboard />,
         },
         {
           path: pathName.USER,

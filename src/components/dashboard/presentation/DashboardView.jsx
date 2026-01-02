@@ -8,6 +8,7 @@ import HostelAuthorityDashboard from './HostelAuthorityDashboard'
 import HostelInfraRoomsDashboard from './HostelInfraRoomsDashboard'
 import HostelInfraSanitationDashboard from './HostelInfraSanitationDashboard'
 import MedicalCareDashboard from './MedicalCareDashboard'
+import PhotosDashboard from './PhotosDashboard'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import PageNotFound from '../../PageNotFound'
@@ -51,6 +52,8 @@ const DashboardView = () => {
         return <ConductionMeetingsDashboard />
       case cardKeys.feedback:
         return <FeedbackDashboard />
+      case cardKeys.photos:
+        return <PhotosDashboard />
 
       default:
         return <PageNotFound />
