@@ -4,7 +4,7 @@ import useTranslations from '../../../../hooks/useTranslations'
 import ANTDButton from '../../../../shared/antd/ANTDButton'
 import ANTDModal from '../../../../shared/antd/ANTDModal'
 import ANTDTable from '../../../../shared/antd/ANTDTable'
-import { dayJs } from '../../../../utils/dayjs'
+import { dayJs, DISPLAY_DATE_FORMAT } from '../../../../utils/dayjs'
 import { isEqual } from '../../../../utils/javascript'
 // import JobManagementContext from '../../JobManagementContext'
 import { getJobEditLogApi, patchJobEditLogApi } from '../../jobs.api'
@@ -113,7 +113,9 @@ const EditLogTable = ({
           )?.label,
         )
       case 'dateTimePicker':
-        return value ? dayJs(value, 'DD/MM/YYYY').format('YYYY/MM/DD') : '-'
+        return value
+          ? dayJs(value, 'DD/MM/YYYY').format(DISPLAY_DATE_FORMAT)
+          : '-'
 
       default:
         return value || isEqual(value, 0) ? value : '-'
@@ -130,7 +132,9 @@ const EditLogTable = ({
       title: t('txt_DateAndTime'),
       dataIndex: 'creationDate',
       render: rowData =>
-        rowData ? dayJs(rowData).format('YYYY/MM/DD HH:mm:ss') : '-',
+        rowData
+          ? dayJs(rowData).format(`${DISPLAY_DATE_FORMAT} HH:mm:ss`)
+          : '-',
     },
     {
       title: t('txt_PreviousValue'),
