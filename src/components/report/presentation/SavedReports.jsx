@@ -7,7 +7,7 @@ import ANTDBreadcrumb from '../../../shared/antd/ANTDBreadcrumb'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDSwitch from '../../../shared/antd/ANTDSwitch'
 import ANTDTable from '../../../shared/antd/ANTDTable'
-import { dayJs } from '../../../utils/dayjs'
+import { dayJs, DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 import { length } from '../../../utils/javascript'
 import {
   getSaveReportListApi,
@@ -91,7 +91,7 @@ const SavedReports = () => {
       title: t('inv_DateOfCreation'),
       dataIndex: 'creationDate',
       render: rowData => {
-        return rowData ? dayJs(rowData).format('YYYY/MM/DD') : '-'
+        return rowData ? dayJs(rowData).format(DISPLAY_DATE_FORMAT) : '-'
       },
     },
     {

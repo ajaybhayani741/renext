@@ -2,7 +2,7 @@ import React from 'react'
 
 import useTranslations from '../../../../hooks/useTranslations'
 import ANTDTag from '../../../../shared/antd/ANTDTag'
-import { dayJs } from '../../../../utils/dayjs'
+import { dayJs, DISPLAY_DATE_FORMAT } from '../../../../utils/dayjs'
 import { editImage, pdfImage, ShareAltOutlined } from '../../../../utils/icons'
 import { certTagProp } from '../../jobs.description'
 
@@ -68,7 +68,7 @@ const JobReportUI = ({
       {isUpdatedDate && (
         <div className="d-flex space-between mt-10 mb-10">
           <h3 className="ml-15">
-            <b>{t('job_UpdatedOn')}</b> : {dayJs().format('YYYY/MM/DD')}
+            <b>{t('job_UpdatedOn')}</b> : {dayJs().format(DISPLAY_DATE_FORMAT)}
           </h3>
         </div>
       )}

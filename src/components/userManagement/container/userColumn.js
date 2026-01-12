@@ -236,7 +236,7 @@ const userColumns = ({
       },
       {
         label: 'user_DOJ',
-        value: ternary(creationDate, dateFormat(creationDate)?.newDate, null),
+        value: ternary(creationDate, dateFormat(creationDate)?.dmyDate, null),
         hidden: isEqual(roleId, inspectionOfficer),
       },
     ].filter(item => !item.hidden)

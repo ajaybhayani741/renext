@@ -2,7 +2,7 @@ import React from 'react'
 
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDSkeleton from '../../../shared/antd/ANTDSkeleton'
-import { dayJs } from '../../../utils/dayjs'
+import { dayJs, DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 import { equipmentIconAC } from '../../../utils/icons'
 import { length } from '../../../utils/javascript'
 
@@ -49,7 +49,7 @@ const EquipmentDetailsView = ({ details }) => {
               <li>
                 <b>{t('dvz_Time')}: </b>
                 {dayJs(details?.lastJobDetails?.creationDate).format(
-                  'YYYY/MM/DD',
+                  DISPLAY_DATE_FORMAT,
                 ) || '-'}
               </li>
               <li>

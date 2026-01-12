@@ -9,6 +9,7 @@ import ANTDSelect from '../../../shared/antd/ANTDSelect'
 import ANTDTable from '../../../shared/antd/ANTDTable'
 import Label from '../../../shared/Label'
 import { validationTag } from '../../../utils/customFunctions'
+import { DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 import { include, keys, length } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
@@ -81,7 +82,7 @@ const CreateReport = ({ editData }) => {
                 />
                 <ANTDDateRange
                   className
-                  format="YYYY/MM/DD"
+                  format={DISPLAY_DATE_FORMAT}
                   value={selectedFilters[key]}
                   onChange={dates => handleDateRangeChange({ key, dates })}
                 />

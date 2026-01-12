@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 import { values } from '../../../utils/javascript'
 import {
   availableNursingStaffKeys,
@@ -700,7 +701,7 @@ const inspectionFieldAttr = () => {
         label: 'job_WhenLastChildHealthMeasurementsTaken',
         inputType: 'dateTimePicker',
         className: 'w-100',
-        format: 'YYYY/MM/DD',
+        format: DISPLAY_DATE_FORMAT,
         required: true,
         md: 24,
         xs: 24,
@@ -810,7 +811,7 @@ const inspectionFieldAttr = () => {
         label: 'job_CosmeticChargesLastPaid',
         inputType: 'dateTimePicker',
         className: 'w-100',
-        format: 'YYYY/MM/DD',
+        format: DISPLAY_DATE_FORMAT,
         required: true,
         md: 24,
         xs: 24,
@@ -1323,7 +1324,7 @@ const inspectionFieldAttr = () => {
         inputType: 'dateTimePicker',
         required: true,
         className: 'w-100',
-        format: 'YYYY/MM/DD',
+        format: DISPLAY_DATE_FORMAT,
         md: 24,
         xs: 24,
       },

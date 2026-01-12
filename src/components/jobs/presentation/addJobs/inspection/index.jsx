@@ -111,7 +111,7 @@ const InspectionJob = ({ editData, setEditData }) => {
                 name="inspectionDate"
                 placeholder={t('job_SelectDate')}
                 allowClear={false}
-                format={'YYYY/MM/DD HH:mm'}
+                format={'DD/MM/YYYY HH:mm'}
               />
             </ANTDFormItem>
           </ANTDColumn>

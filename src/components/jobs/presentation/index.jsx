@@ -37,6 +37,7 @@ import JobTable from './JobTable'
 import ViewJob from './viewJobs'
 import UnassignedHostels from './viewJobs/UnassignedHostels'
 import ViewPreviousRequest from './viewJobs/ViewPreviousRequest'
+import { DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 
 const JobManagement = ({ userView = false, userId, userJobType }) => {
   const {
@@ -130,7 +131,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                 }}
               >
                 <div className="mr-10">
-                  <ANTDDateRange format="YYYY/MM/DD" />
+                  <ANTDDateRange format={DISPLAY_DATE_FORMAT} />
                 </div>
                 <div className="mr-10">
                   {/* <ANTDSelect className="w-100" {...exportExcelProps} /> */}

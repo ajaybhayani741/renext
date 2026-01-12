@@ -2,6 +2,7 @@ import useTranslations from '../../../../hooks/useTranslations'
 import { ANTDDatePicker } from '../../../../shared/antd/ANTDDatePicker'
 import { ANTDFormItem } from '../../../../shared/antd/ANTDForm'
 import { validationTag } from '../../../../utils/customFunctions'
+import { DISPLAY_DATE_FORMAT } from '../../../../utils/dayjs'
 import { ternary } from '../../../../utils/javascript'
 import { getItem } from '../../../../utils/localstorage'
 
@@ -25,7 +26,7 @@ function JobCompletionDate({ readOnly }) {
         name="jobCompletionDate"
         placeholder={t('job_SelectDate')}
         allowClear={false}
-        format={'YYYY/MM/DD'}
+        format={DISPLAY_DATE_FORMAT}
         disabled={readOnly}
       />
     </ANTDFormItem>

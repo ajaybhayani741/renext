@@ -302,11 +302,11 @@ const jobTable = ({
       { label: 'user_HostelAddress', value: hostelInfo?.address },
       {
         label: 'user_CreationDate',
-        value: dateFormat(creationDate)?.newDate,
+        value: dateFormat(creationDate)?.dmyDate,
       },
       // {
       //   label: 'job_UpdatedDate',
-      //   value: dateFormat(modificationDate)?.newDate,
+      //   value: dateFormat(modificationDate)?.dmyDate,
       // },
       { label: 'job_Status', value: jobData?.status },
     ].filter(item => !item.hidden)

@@ -3,7 +3,7 @@ import React from 'react'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDSkeleton from '../../../shared/antd/ANTDSkeleton'
 import { addressFormat } from '../../../utils'
-import { dayJs } from '../../../utils/dayjs'
+import { dayJs, DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 import { buildingIcon } from '../../../utils/icons'
 import { buildingDetails, customerNames } from '../visualization.description'
 
@@ -44,7 +44,7 @@ const BuildingDetailsView = ({ details, formData }) => {
             <div>
               <li>
                 <b>{t('dvz_Time')}: </b>
-                {dayJs().format('YYYY/MM/DD') || '-'}
+                {dayJs().format(DISPLAY_DATE_FORMAT) || '-'}
               </li>
             </div>
           </div>
