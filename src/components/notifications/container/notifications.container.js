@@ -94,6 +94,7 @@ const notifications = () => {
         ':jobId',
         notification?.notificationContentDto?.jobId,
       ).replace(':jobType', 'inspection'),
+      { state: { fromNotification: true } },
     )
   }
 
