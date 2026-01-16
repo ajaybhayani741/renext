@@ -5,7 +5,10 @@ import usePromise from '../../../hooks/usePromise'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
-import { setPopupMessageModel } from '../../../redux/app/reducer'
+import {
+  setNotificationList,
+  setPopupMessageModel,
+} from '../../../redux/app/reducer'
 import { setJobActiveTab } from '../../../redux/jobs/reducer'
 import pathName from '../../../routing/pathName.constant'
 import { useFormFn } from '../../../shared/antd/ANTDForm'
@@ -30,6 +33,7 @@ import {
   values,
 } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
+import { getNotificationsApi } from '../../notifications/notification.api'
 import {
   addJobPostApi,
   getJobDetailApi,
@@ -87,6 +91,7 @@ const inspection = ({
   const { inspectionOfficer, hostel } = userWiseRole
   const userData = JSON.parse(getItem('userData'))
   const isMobile = selector(state => state.app.isMobile)
+  const fromNotification = location?.state?.fromNotification || false
 
   const {
     hostelAdministrationAttrFn,
@@ -101,6 +106,27 @@ const inspection = ({
     findingsAttrFn,
     curricularActivitiesAttrFn,
   } = inspectionFieldAttr()
+
+  useEffect(() => {
+    if (fromNotification && jobId) {
+      apiCall({ showMsg: false, isLoading: false, fromNotification })
+        .then(resp => {
+          if (resp?.success) {
+            return getNotificationsApi({ pageNo: 1 })
+          }
+          return null
+        })
+        .then(response => {
+          if (response?.data) {
+            dispatch(setNotificationList(response?.data))
+          }
+        })
+        .catch(error => {})
+        .finally(() => {
+          navigate(location.pathname, { replace: true, state: {} })
+        })
+    }
+  }, [fromNotification, jobId])
 
   useEffect(() => {
     if (isEdit) {
@@ -451,6 +477,7 @@ const inspection = ({
     index,
     hostelId = null,
     currentJobId = null,
+    fromNotification = false,
   } = {}) => {
     if (isApiRunning && !jobId) return
     setIsApiRunning(true)
@@ -472,7 +499,9 @@ const inspection = ({
       latitude2: latLng2?.[0] ? parseFloat(latLng2?.[0]) : null,
       longitude2: latLng2?.[1] ? parseFloat(latLng2?.[1]) : null,
       stepNumber: location?.state?.restart ? 1 : current + 1,
-      progressPercentage: countProgressPercentage({ formData })?.percentage,
+      progressPercentage: fromNotification
+        ? 0
+        : countProgressPercentage({ formData })?.percentage,
       restartJob: !!location?.state?.restart,
     }
 
@@ -522,6 +551,7 @@ const inspection = ({
     })
 
     setNextBtnLoader(isLoading)
+    let updatedResponse = null
     if (!payload?.id || isComplete) {
       const response = await addJobPostApi({ payload })
       setNextBtnLoader(false)
@@ -563,6 +593,7 @@ const inspection = ({
       if (res?.data?.data) {
         setFieldsPercentageFn(res?.data?.data, true)
         isEqual(current, 2) && triggerLoader?.updated && triggerJobReport()
+        updatedResponse = res?.data?.data
       }
       if (location?.state?.restart) {
         navigate('.', {
@@ -595,7 +626,7 @@ const inspection = ({
       )
       navigate(pathName.JOBS)
     }
-    return true
+    return updatedResponse || true
   }
 
   const triggerJobReport = async (isComplete = false) => {
