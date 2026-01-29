@@ -1,12 +1,12 @@
+import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries, isEqual } from '../../../utils/javascript'
 import ColumnComparison from '../../charts/ColumnComparison'
+import HCBarChart from '../../charts/HCBarChart'
 import HCPieChart from '../../charts/HCPieChart'
-import LineCharts from '../../charts/LineCharts'
 import medicalCare from '../container/medicalCare.container'
 import { medicalCareCharts } from '../dashboard.description'
-import DashboardWrapper from './DashboardWrapper'
 
 const MedicalCareDashboard = () => {
   const {
@@ -37,7 +37,7 @@ const MedicalCareDashboard = () => {
                 }}
               />
             ) : isEqual(value?.type, 'rangeFrequency') ? (
-              <LineCharts
+              <HCBarChart
                 {...{
                   name: key,
                   xAxisTitle: value?.xAxisText,

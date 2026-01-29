@@ -21,14 +21,20 @@ const HCBarChart = ({
   const dateRange = selector(state => state?.app?.fiscalYear?.dateRange)
   const dateRangeRef = useRef(dateRange)
   const [binSize, setBinSize] = useState(3)
-  const xAxisHighestCount = seriesData?.highestCount
-    ? binSize > seriesData?.highestCount
-      ? binSize
-      : seriesData?.highestCount
-    : 100
-  const xAxisMax = xAxisHighestCount >= 100 ? xAxisHighestCount : 100
   const isMobile = selector(state => state.app.isMobile)
   const isDesktop = selector(state => state.app.isDesktop)
+
+  const maxDataValue = useMemo(() => {
+    if (!seriesData?.series?.length) return seriesData?.highestCount ?? 100
+    return Math.max(...seriesData.series.map(([x]) => x))
+  }, [seriesData?.series, seriesData?.highestCount])
+
+  const xAxisMax = useMemo(() => {
+    if (!binSize) return 100
+    const min = 1
+    const binStart = Math.floor((maxDataValue - min) / binSize) * binSize + min
+    return binStart + binSize - 1
+  }, [maxDataValue, binSize])
 
   useEffect(() => {
     dateRangeRef.current = dateRange
@@ -373,12 +379,12 @@ const HCBarChart = ({
       <div
         style={{
           position: 'absolute',
-          top: '-12px',
+          top: '0px',
           right: '10px',
           width: '200px',
           height: '30px',
-          padding: '4px 8px',
-          zIndex: 10,
+          padding: '0px 8px',
+          zIndex: 1,
           textAlign: 'left',
         }}
       >
