@@ -107,7 +107,7 @@ const conductionMeeting = () => {
     if (response?.data) {
       setHostelsData({ ...response?.data, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
 
     setSelectedColumn({
@@ -164,7 +164,7 @@ const conductionMeeting = () => {
     if (response?.data) {
       setHostelsData({ ...response?.data, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
   }
 

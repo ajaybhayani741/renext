@@ -172,11 +172,13 @@ const hostelInfraRooms = () => {
     end,
     newDateRange = dateRange,
   } = {}) => {
+    const isRangeFrequency = hostelInfraRoomsCharts?.[name]?.chartType === 'rangeFrequency'
+    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
     const lineParams = {
       fromDate: newDateRange?.from,
       toDate: newDateRange?.to,
-      ...(range && { range }),
-      ...((start || end) && { start, end }),
+      ...(rangeValue && { range: rangeValue }),
+      ...(!rangeValue && (start || end) && { start, end }),
     }
     const columnParams = {
       fromDate: dateRange?.from,
@@ -233,7 +235,7 @@ const hostelInfraRooms = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
     setSelectedColumn({
       selected: true,
@@ -280,7 +282,7 @@ const hostelInfraRooms = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
   }
 

@@ -134,13 +134,8 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
     }
     if (isEqual(selectedColumn?.chartData?.chartType, 'rangeFrequency')) {
       Object.assign(payload, {
-        ...(selectedColumn?.chartData?.range && {
-          range: selectedColumn?.chartData?.range,
-        }),
-        ...(!selectedColumn?.chartData?.range && {
-          start: selectedColumn?.chartData?.start,
-          end: selectedColumn?.chartData?.end,
-        }),
+        start: selectedColumn?.chartData?.start,
+        end: selectedColumn?.chartData?.end,
       })
     } else if (selectedColumn?.chartData?.chartType === 'pie') {
       Object.assign(payload, {

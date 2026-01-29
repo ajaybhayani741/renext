@@ -297,8 +297,8 @@ const HCBarChart = ({
             events: {
               click: e => {
                 const value = e?.point?.category
-                const minValue = value?.split('-')?.[0]
-                const maxValue = value?.split('-')?.[1]
+                const minValue = binSize > 1 ? value?.split('-')?.[0] : value
+                const maxValue = binSize > 1 ? value?.split('-')?.[1] : value
                 handleChartClick({
                   e,
                   name,
