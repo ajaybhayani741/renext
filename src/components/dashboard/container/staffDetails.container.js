@@ -108,11 +108,13 @@ const staffDetails = () => {
     end,
     newDateRange = dateRange,
   } = {}) => {
+    const isRangeFrequency = staffDetailsCharts?.[name]?.chartType === 'rangeFrequency'
+    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
     const lineParams = {
       fromDate: newDateRange?.from,
       toDate: newDateRange?.to,
-      ...(range && { range }),
-      ...((start || end) && { start, end }),
+      ...(rangeValue && { range: rangeValue }),
+      ...(!rangeValue && (start || end) && { start, end }),
     }
     switch (name) {
       case 'dash_TotalNumberOfWorkersOnPayroll':
@@ -176,7 +178,7 @@ const staffDetails = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
     setSelectedColumn({
       selected: true,
@@ -207,7 +209,7 @@ const staffDetails = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
   }
 

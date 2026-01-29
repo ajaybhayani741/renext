@@ -236,11 +236,14 @@ const hostelInfraSanitation = () => {
     end,
     newDateRange = dateRange,
   }) => {
+    const isRangeFrequency =
+      hostelInfraSanitationCharts?.[name]?.type === 'rangeFrequency'
+    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
     const lineParams = {
       fromDate: newDateRange?.from,
       toDate: newDateRange?.to,
-      ...(range && { range }),
-      ...((start || end) && { start, end }),
+      ...(rangeValue && { range: rangeValue }),
+      ...(!rangeValue && (start || end) && { start, end }),
     }
     switch (name) {
       case 'job_DrinkingWater':
@@ -323,7 +326,7 @@ const hostelInfraSanitation = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
 
     setSelectedColumn({
@@ -363,7 +366,7 @@ const hostelInfraSanitation = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
   }
 

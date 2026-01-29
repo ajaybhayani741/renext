@@ -170,11 +170,13 @@ const safetySecurity = () => {
     end,
     newDateRange = dateRange,
   } = {}) => {
+    const isRangeFrequency = safetySecurityCharts?.[name]?.type === 'rangeFrequency'
+    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
     const lineParams = {
       fromDate: newDateRange?.from,
       toDate: newDateRange?.to,
-      ...(range && { range }),
-      ...((start || end) && { start, end }),
+      ...(rangeValue && { range: rangeValue }),
+      ...(!rangeValue && (start || end) && { start, end }),
     }
     const columnParams = {
       fromDate: dateRange?.from,
@@ -242,7 +244,7 @@ const safetySecurity = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
 
     setSelectedColumn({
@@ -288,7 +290,7 @@ const safetySecurity = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
   }
 

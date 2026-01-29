@@ -137,7 +137,7 @@ const recordMaintenance = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
 
     setSelectedColumn({
@@ -164,7 +164,7 @@ const recordMaintenance = () => {
     if (respData) {
       setHostelsData({ ...respData, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
   }
 
