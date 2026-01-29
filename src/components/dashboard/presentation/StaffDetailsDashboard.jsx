@@ -1,10 +1,10 @@
+import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries } from '../../../utils/javascript'
-import LineCharts from '../../charts/LineCharts'
+import HCBarChart from '../../charts/HCBarChart'
 import staffDetails from '../container/staffDetails.container'
 import { staffDetailsCharts } from '../dashboard.description'
-import DashboardWrapper from './DashboardWrapper'
 
 const StaffDetailsDashboard = () => {
   const { t } = useTranslations()
@@ -30,15 +30,15 @@ const StaffDetailsDashboard = () => {
       {entries(staffDetailsCharts)?.map(([key, value]) => {
         return (
           <ANTDColumn xs={24} md={24} key={key}>
-            <LineCharts
+            <HCBarChart
               {...{
                 name: key,
-                onRangeChange,
+                xAxisTitle: value?.xAxisText,
+                yAxisTitle: value?.yAxisText,
                 handleChartClick,
                 seriesData: seriesData?.[key],
                 title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
-                xAxisTitle: value?.xAxisText,
-                yAxisTitle: value?.yAxisText,
+                onRangeChange,
               }}
             />
           </ANTDColumn>

@@ -2,7 +2,7 @@ import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries, isEqual } from '../../../utils/javascript'
 import ColumnComparison from '../../charts/ColumnComparison'
-import LineCharts from '../../charts/LineCharts'
+import HCBarChart from '../../charts/HCBarChart'
 import hostelInfraRooms from '../container/hostelInfraRooms.container'
 import { hostelInfraRoomsCharts } from '../dashboard.description'
 import DashboardWrapper from './DashboardWrapper'
@@ -42,15 +42,15 @@ const HostelInfraRoomsDashboard = () => {
                 }}
               />
             ) : (
-              <LineCharts
+              <HCBarChart
                 {...{
                   name: key,
-                  onRangeChange,
+                  xAxisTitle: value?.xAxisText,
+                  yAxisTitle: value?.yAxisText,
                   handleChartClick,
                   seriesData: seriesData?.[key],
                   title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
-                  xAxisTitle: value?.xAxisText,
-                  yAxisTitle: value?.yAxisText,
+                  onRangeChange,
                 }}
               />
             )}
