@@ -717,5 +717,7 @@
   "dash_DateOfInspectionCompletion": "Date of Inspection Completion",
   "job_GenerateMasterSheet": "Generate Master Sheet",
   "job_ViewPreviousRequests": "View Previous Requests",
-  "msg_MasterSheetGeneratedSuccessfully": "Master sheet generated successfully"
+  "msg_MasterSheetGeneratedSuccessfully": "Master sheet generated successfully",
+  "txt_ForTechnicalIssuesPleaseContact": "For Technical Issues, Please Contact",
+  "txt_technicalSupport": "Technical Support"
 }
