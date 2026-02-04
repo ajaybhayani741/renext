@@ -89,6 +89,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     data: null,
   })
   const [helpModal, setHelpModal] = useState(false)
+  const [technicalModal, setTechnicalModal] = useState(false)
 
   const onExportToExcel = async () => {
     setLoading(true)
@@ -412,6 +413,10 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     setHelpModal(!helpModal)
   }
 
+  const handleTechnicalModal = () => {
+    setTechnicalModal(!technicalModal)
+  }
+
   const generateMasterSheet = async () => {
     const payload = {
       type: payloadType['inspectionSheetMultiple'],
@@ -466,6 +471,8 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     handleViewRequestModal,
     viewRequestsModal,
     masterSheetLoader,
+    technicalModal,
+    handleTechnicalModal,
   }
 }
 

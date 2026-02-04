@@ -1,5 +1,6 @@
 import '../jobs.scss'
 
+import technicalIcon from '../../../assets/icons/technical-icon.png'
 import withRouteAuth from '../../../hoc/withRouteAuth'
 import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
@@ -74,12 +75,14 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     handleViewRequestModal,
     viewRequestsModal,
     masterSheetLoader,
+    technicalModal,
+    handleTechnicalModal,
   } = jobs({ userView, userId, userJobType })
   const { type: jobType, status } = { ...activeTab }
   const isUnassignHostelTab = isEqual(status, tabKeys.unassignHostel)
   const userData = JSON.parse(getItem('userData') || '{}')
   const { roleId } = userData || {}
-  const { inspectionOfficer } = userWiseRole
+  const { inspectionOfficer, districtCollector } = userWiseRole
 
   return (
     <>
@@ -303,15 +306,53 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
             }}
             onClick={handleFloatModal}
           />
-          <ANTDModal
-            open={helpModal}
-            onCancel={handleFloatModal}
-            footer={[]}
-            width={950}
-            closable={false}
-          >
-            <EmbedPDFViewer src={`${HOSTManual}`} isDesktop={isDesktop} />
-          </ANTDModal>
+          {handleFloatModal && (
+            <ANTDModal
+              open={helpModal}
+              onCancel={handleFloatModal}
+              footer={[]}
+              width={950}
+              closable={false}
+            >
+              <EmbedPDFViewer src={`${HOSTManual}`} isDesktop={isDesktop} />
+            </ANTDModal>
+          )}
+        </div>
+      )}
+      {include([inspectionOfficer, districtCollector], roleId) && (
+        <div className="technical-float-button-container">
+          <ANTDFloatButton
+            icon={<img src={technicalIcon} alt="technical" />}
+            type="primary"
+            style={{
+              right: 20,
+              bottom: 30,
+            }}
+            onClick={handleTechnicalModal}
+          />
+          {technicalModal && (
+            <ANTDModal
+              open={technicalModal}
+              onCancel={handleTechnicalModal}
+              footer={[]}
+              title={t('txt_technicalSupport')}
+            >
+              <div className="technical-modal-content">
+                <p>{t('txt_ForTechnicalIssuesPleaseContact')}</p>
+                <ul type="circle" className="ml-15">
+                  <li>
+                    <b>Shashank</b>: +91 8985878263
+                  </li>
+                  <li>
+                    <b>Vishal</b>: +91 9769474676
+                  </li>
+                  <li>
+                    <b>Mahit</b>: +91 9642245339
+                  </li>
+                </ul>
+              </div>
+            </ANTDModal>
+          )}
         </div>
       )}
       {viewRequestsModal?.open && (
