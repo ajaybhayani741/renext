@@ -94,7 +94,7 @@ const userList = ({ payload, isBuilding }) => {
   }
 
   const handleAssociatedTableChange = pagination => {
-    associateApiCall({ pageNo: pagination?.current })
+    associateApiCall({ pageNo: pagination?.current, roleId: modelData?.roleId })
   }
 
   const onAddAssociate = async selectedUsers => {
