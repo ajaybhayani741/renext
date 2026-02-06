@@ -341,10 +341,10 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                 <p>{t('txt_ForTechnicalIssuesPleaseContact')}</p>
                 <ul type="circle" className="ml-15">
                   <li>
-                    <b>Shashank</b>: +91 8985878263
+                    <b>Vishal</b>: +91 9769474676
                   </li>
                   <li>
-                    <b>Vishal</b>: +91 9769474676
+                    <b>Shashank</b>: +91 8985878263
                   </li>
                   <li>
                     <b>Mahit</b>: +91 9642245339
