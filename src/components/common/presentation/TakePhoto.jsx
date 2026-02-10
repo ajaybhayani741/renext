@@ -74,6 +74,7 @@ const TakePhoto = ({
         </div>
       ) : (
         <Webcam
+          key={Math.random()}
           screenshotFormat="image/png"
           audio={false}
           videoConstraints={{ ...videoConstraints, facingMode }}
