@@ -29,11 +29,10 @@ const formUpload = ({ hasApiCall, filePath, apiCall }) => {
     flag: false,
     valid: '',
   })
-
-  const [facingMode, setFacingMode] = useState(FACING_MODE_USER)
+  const [facingMode, setFacingMode] = useState(FACING_MODE_ENVIRONMENT)
   const videoElement = useRef(null)
   const videoConstraints = {
-    facingMode: FACING_MODE_USER,
+    facingMode: FACING_MODE_ENVIRONMENT,
   }
 
   const handleTakePhoto = () => {
@@ -41,6 +40,15 @@ const formUpload = ({ hasApiCall, filePath, apiCall }) => {
       ...prev,
       flag: !prev.flag,
     }))
+    if (takePhoto?.flag) {
+      stopCamera()
+    }
+  }
+
+  const stopCamera = () => {
+    if (videoElement.current?.stream) {
+      videoElement.current.stream.getTracks().forEach(track => track.stop())
+    }
   }
 
   const handlePreview = async file => {
@@ -129,6 +137,7 @@ const formUpload = ({ hasApiCall, filePath, apiCall }) => {
       }
     }
     apiCall && apiCall({})
+    stopCamera()
   }
 
   const handleIconRender = file => {
