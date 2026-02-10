@@ -5,5 +5,9 @@ function ANTDFloatButton({ ...props }) {
   return <FloatButton {...props} />
 }
 
-export default ANTDFloatButton
+function ANTDFloatButtonGroup({ ...props }) {
+  return <FloatButton.Group {...props} />
+}
 
+export default ANTDFloatButton
+export { ANTDFloatButtonGroup }
