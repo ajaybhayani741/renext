@@ -997,79 +997,50 @@
     }
   }
 }
-.help-float-button-container {
-  margin-top: 10px;
-  text-align: right;
 
-  .ant-btn-primary,
-  .ant-float-btn {
-    background-color: var(--color-primary-light) !important;
-    border: none;
-    width: 55px !important;
-    height: 55px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-    border-radius: 50%;
-    bottom: calc(var(--footer-height, 40px) + 75px) !important;
-
-    @media screen and (max-width: 576px) {
-      width: 35px !important;
-      height: 35px !important;
-      bottom: calc(var(--footer-height, 40px) + 55px) !important;
-    }
-    // display: none;
+.jobs-float-button-group {
+  .ant-float-btn-group-circle .ant-float-btn-group-wrap {
+    gap: 8px;
   }
-  .ant-btn-icon,
-  .ant-float-btn-icon {
-    color: var(--color-white) !important;
-    font-size: 32px !important;
-    width: 32px !important;
-
-    @media screen and (max-width: 576px) {
-      font-size: 20px !important;
-      width: 20px !important;
-    }
-  }
-}
-.technical-float-button-container {
-  margin-top: 10px;
-  text-align: right;
-
-  .ant-btn-primary,
   .ant-float-btn {
-    background-color: var(--color-primary-light) !important;
-    border: none;
-    width: 55px !important;
-    height: 55px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-    border-radius: 50%;
-    bottom: calc(var(--footer-height, 40px) + 10px) !important;
-    img {
-      width: 27px;
-      height: 27px;
-      margin: 0 auto;
+    background-color: var(--color-primary) !important;
+
+    &:hover {
+      background-color: var(--color-primary-dark) !important;
     }
 
-    @media screen and (max-width: 576px) {
-      width: 35px !important;
-      height: 35px !important;
-      bottom: calc(var(--footer-height, 40px) + 15px) !important;
-      img {
-        width: 18px;
-        height: 18px;
-        margin: 0 auto;
+    .ant-float-btn-body {
+      background-color: var(--color-primary) !important;
+    }
+
+    .ant-float-btn-icon {
+      color: #fff !important;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        filter: brightness(0) invert(1);
       }
     }
-    // display: none;
-  }
-  .ant-btn-icon,
-  .ant-float-btn-icon {
-    color: var(--color-white) !important;
-    font-size: 32px !important;
-    width: 32px !important;
-
-    @media screen and (max-width: 576px) {
-      font-size: 20px !important;
-      width: 20px !important;
+    .ant-float-btn-content {
+      .ant-float-btn-icon svg {
+        height: 22px;
+        width: 22px;
+      }
+    }
+    .manual-icon {
+      width: 20px;
+      height: 22px;
+    }
+    .question-icon {
+      width: 15px;
+      height: 20px;
+    }
+    .technical-icon {
+      width: 20px;
+      height: 22px;
     }
   }
 }

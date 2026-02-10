@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { Suspense, memo } from 'react'
 import { Outlet } from 'react-router-dom'
 
+import FloatButtonUI from './FloatButtonUI'
 import Header from './Header'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDLayout, {
@@ -147,6 +148,7 @@ function AppLayout() {
           </div>
         </ANTDFooter>
       </ANTDLayout>
+      <FloatButtonUI />
     </div>
   )
 }
