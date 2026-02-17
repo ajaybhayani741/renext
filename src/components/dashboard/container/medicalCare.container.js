@@ -159,13 +159,17 @@ const medicalCare = () => {
           params: { ...params, category: apiCategory, filterValue },
         })
       case 'job_DistanceToNearestPHC':
+        const isRangeFrequency =
+          medicalCareCharts?.[name]?.type === 'rangeFrequency'
+        const rangeValue =
+          isRangeFrequency && range && typeof range === 'number' ? range : null
         return getPHCDistanceHostelsApi({
           pageNo,
           params: {
             fromDate: newDateRange?.from,
             toDate: newDateRange?.to,
-            ...(range && { range }),
-            ...((start || end) && { start, end }),
+            ...(rangeValue && { range: rangeValue }),
+            ...(!rangeValue && (start || end) && { start, end }),
             // ...params,
           },
         })
@@ -178,7 +182,7 @@ const medicalCare = () => {
     e,
     name,
     startEnd,
-    newDateRange,
+    newDateRange = dateRange,
     xAxisTitle,
   }) => {
     const data = e.point
@@ -202,7 +206,7 @@ const medicalCare = () => {
     if (response?.data) {
       setHostelsData({ ...response?.data, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
     setSelectedColumn({
       selected: true,
@@ -244,7 +248,7 @@ const medicalCare = () => {
     if (response?.data) {
       setHostelsData({ ...response?.data, loader: false })
     } else {
-      setHostelsData(prev => ({ ...prev, loader: false }))
+      setHostelsData(prev => ({ loader: false }))
     }
   }
 

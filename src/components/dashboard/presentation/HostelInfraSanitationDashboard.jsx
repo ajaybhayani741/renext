@@ -3,8 +3,8 @@ import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries, isEqual } from '../../../utils/javascript'
 import ColumnComparison from '../../charts/ColumnComparison'
+import HCBarChart from '../../charts/HCBarChart'
 import HCPieChart from '../../charts/HCPieChart'
-import LineCharts from '../../charts/LineCharts'
 import hostelInfraSanitation from '../container/hostelInfraSanitation.container'
 import { hostelInfraSanitationCharts } from '../dashboard.description'
 
@@ -28,15 +28,14 @@ const HostelInfraSanitationDashboard = () => {
         return (
           <ANTDColumn xs={24} md={value?.md || 12} key={key}>
             {isEqual(value?.type, 'rangeFrequency') ? (
-              <LineCharts
+              <HCBarChart
                 {...{
                   name: key,
-                  // axisOptions: axisOptions?.[key],
+                  xAxisTitle: value?.xAxisText,
+                  yAxisTitle: value?.yAxisText,
                   handleChartClick,
                   seriesData: seriesData?.[key],
                   title: `${t(key)}: ${seriesData?.[key]?.total || 0}`,
-                  xAxisTitle: value?.xAxisText,
-                  yAxisTitle: value?.yAxisText,
                   onRangeChange,
                 }}
               />
