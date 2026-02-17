@@ -182,7 +182,7 @@ const medicalCare = () => {
     e,
     name,
     startEnd,
-    newDateRange,
+    newDateRange = dateRange,
     xAxisTitle,
   }) => {
     const data = e.point
