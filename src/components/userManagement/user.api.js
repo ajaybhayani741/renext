@@ -13,6 +13,7 @@ const {
   GET_BUILDING,
   ADD_BUILDING,
   USER_VALIDATION,
+  GENERATE_MASTER_SHEET,
 } = API_ROUTES
 
 const getUserList = async ({ params }) => {
@@ -70,6 +71,13 @@ const userValidationApi = async ({ params }) => {
   return response?.data
 }
 
+const getPreviousExportRequestsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(`${GENERATE_MASTER_SHEET}/${pageNo}`, {
+    params,
+  })
+  return response?.data
+}
+
 export {
   getUserList,
   addNewUserApi,
@@ -83,4 +91,5 @@ export {
   addNewBuildingApi,
   updateBuildingApi,
   userValidationApi,
+  getPreviousExportRequestsApi,
 }

@@ -104,6 +104,7 @@ const payloadType = {
   inspectionReport: 'INSPECTION_REPORT',
   inspectionSheet: 'INSPECTION_SHEET',
   inspectionSheetMultiple: 'INSPECTION_SHEET_MULTIPLE',
+  hostelListSheet: 'HOSTEL_LIST_SHEET',
 }
 
 const inspectionSteps = [
