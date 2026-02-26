@@ -83,6 +83,9 @@ const modifyFileListKeys = list =>
   )
 
 const downloadReport = async (reportUrl, fileName, fileType) => {
+  if (!reportUrl) {
+    return
+  }
   try {
     const response = await fetch(reportUrl)
     const blob = await response.blob()

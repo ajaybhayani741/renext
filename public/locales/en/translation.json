@@ -719,5 +719,7 @@
   "job_ViewPreviousRequests": "View Previous Requests",
   "msg_MasterSheetGeneratedSuccessfully": "Master sheet generated successfully",
   "txt_ForTechnicalIssuesPleaseContact": "For Technical Issues, Please Contact",
-  "txt_technicalSupport": "Technical Support"
+  "txt_technicalSupport": "Technical Support",
+  "msg_ReportGenerated": "Your report is being generated. Please check the status and download the report by clicking the ‘View Previous Requests’ button after some time",
+  "user_Excel": "Excel"
 }
