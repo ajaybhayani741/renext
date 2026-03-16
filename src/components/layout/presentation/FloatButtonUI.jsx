@@ -106,9 +106,9 @@ const FloatButtonUI = () => {
               <li>
                 <b>Shashank</b>: +91 8985878263
               </li>
-              <li>
+              {/* <li>
                 <b>Vishal</b>: +91 9769474676
-              </li>
+              </li> */}
               <li>
                 <b>Mahit</b>: +91 9642245339
               </li>
