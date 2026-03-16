@@ -340,9 +340,9 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
               <div className="technical-modal-content">
                 <p>{t('txt_ForTechnicalIssuesPleaseContact')}</p>
                 <ul type="circle" className="ml-15">
-                  <li>
+                  {/* <li>
                     <b>Vishal</b>: +91 9769474676
-                  </li>
+                  </li> */}
                   <li>
                     <b>Shashank</b>: +91 8985878263
                   </li>
