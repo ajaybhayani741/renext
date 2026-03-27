@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
 import excelIcon from '../../../../assets/excel.png'
+import pdfIcon from '../../../../assets/pdfIcon.png'
 import useRedux from '../../../../hooks/useRedux'
 import useTranslations from '../../../../hooks/useTranslations'
 import ANTDCard from '../../../../shared/antd/ANTDCard'
@@ -8,14 +9,21 @@ import ANTDPagination from '../../../../shared/antd/ANTDPagination'
 import ANTDSpin from '../../../../shared/antd/ANTDSpin'
 import ANTDTable from '../../../../shared/antd/ANTDTable'
 import { downloadReport } from '../../../../utils/customFunctions'
-import { length, notEqual, ternary } from '../../../../utils/javascript'
+import {
+  isEqual,
+  length,
+  notEqual,
+  ternary,
+} from '../../../../utils/javascript'
 import { getMasterSheetApi } from '../../jobs.api'
+import { tabKeys } from '../../jobs.description'
 
 const ViewPreviousRequest = ({ sheetType, modal }) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
   const [sheetData, setSheetData] = useState({ loader: false })
+  const activeTab = selector(state => state?.jobs?.activeTab)
 
   const getRequestSheetData = async ({ pageNo = 1 } = {}) => {
     setSheetData(prev => ({ ...prev, loader: true }))
@@ -76,7 +84,9 @@ const ViewPreviousRequest = ({ sheetType, modal }) => {
       render: rowData => rowData || '-',
     },
     {
-      title: 'Excel',
+      title: isEqual(activeTab.status, tabKeys.active)
+        ? t('txt_PDF')
+        : t('user_Excel'),
       dataIndex: 'dmsDetails',
       key: 'excel',
       render: (rowData, record) => {
@@ -90,11 +100,18 @@ const ViewPreviousRequest = ({ sheetType, modal }) => {
     const fileName = rowData?.fileName || item?.dmsDetails?.fileName
     return (
       <img
-        src={excelIcon}
+        src={isEqual(activeTab.status, tabKeys.active) ? pdfIcon : excelIcon}
         alt="excel"
         height={30}
-        width={30}
-        onClick={() => fileUrl && downloadReport(fileUrl, fileName, 'xls')}
+        width={isEqual(activeTab.status, tabKeys.active) ? 25 : 30}
+        onClick={() =>
+          fileUrl &&
+          downloadReport(
+            fileUrl,
+            fileName,
+            isEqual(activeTab.status, tabKeys.active) ? 'pdf' : 'xls',
+          )
+        }
         className={fileUrl ? 'cursor-pointer' : 'disabled-illusion'}
         style={{
           cursor: fileUrl ? 'pointer' : 'not-allowed',

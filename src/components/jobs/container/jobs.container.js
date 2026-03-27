@@ -408,7 +408,11 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
 
   const generateMasterSheet = async () => {
     const payload = {
-      type: payloadType['inspectionSheetMultiple'],
+      type: payloadType[
+        isEqual(activeTab.status, tabKeys.active)
+          ? 'activeInspectionSheetMultiple'
+          : 'inspectionSheetMultiple'
+      ],
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
     }
@@ -416,7 +420,9 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     const response = await generateMasterSheetApi({ payload })
     if (response?.data?.success) {
       notifyMethod.success({
-        message: 'msg_MasterSheetGeneratedSuccessfully',
+        message: isEqual(activeTab.status, tabKeys.active)
+          ? 'msg_PendingListGeneratedSuccessfully'
+          : 'msg_MasterSheetGeneratedSuccessfully',
       })
     }
     setMasterSheetLoader(false)

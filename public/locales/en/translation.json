@@ -721,5 +721,8 @@
   "txt_ForTechnicalIssuesPleaseContact": "For Technical Issues, Please Contact",
   "txt_technicalSupport": "Technical Support",
   "msg_ReportGenerated": "Your report is being generated. Please check the status and download the report by clicking the ‘View Previous Requests’ button after some time",
-  "user_Excel": "Excel"
+  "user_Excel": "Excel",
+  "job_GeneratePendingList": "Generate Pending List",
+  "txt_PDF": "PDF",
+  "msg_PendingListGeneratedSuccessfully": "Pending List generated successfully"
 }
