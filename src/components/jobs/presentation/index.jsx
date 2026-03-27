@@ -173,7 +173,9 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                     onClick={generateMasterSheet}
                     loading={masterSheetLoader}
                   >
-                    {t('job_GenerateMasterSheet')}
+                    {isEqual(status, tabKeys.active)
+                      ? t('job_GeneratePendingList')
+                      : t('job_GenerateMasterSheet')}
                   </ANTDButton>
                   <ANTDButton type="primary" onClick={handleViewRequestModal}>
                     {t('job_ViewPreviousRequests')}
@@ -365,7 +367,13 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
           width={900}
         >
           <ViewPreviousRequest
-            sheetType={payloadType['inspectionSheetMultiple']}
+            sheetType={
+              payloadType[
+                isEqual(activeTab.status, tabKeys.active)
+                  ? 'activeInspectionSheetMultiple'
+                  : 'inspectionSheetMultiple'
+              ]
+            }
             modal={viewRequestsModal}
           />
         </ANTDModal>
