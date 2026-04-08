@@ -116,7 +116,9 @@ function UserList({
             payload={{ ...payload, relationType: userRelationKey.nonAssociate }}
             searchPayload={{
               roleId: modelData?.roleId,
-              relationType: userRelationKey.associate,
+              relationType: isEqual(modelData?.roleId, hostel)
+                ? userRelationKey.nonAssociate
+                : userRelationKey.associate,
             }}
             isSearch
             handleTableChange={handleAssociatedTableChange}
