@@ -39,7 +39,11 @@ const UnassignedHostels = () => {
         userData={hostelData}
         handleTableChange={handleTableChange}
         handleView={handleViewClick}
-        payload={{ roleId: hostel }}
+        payload={{
+          roleId: hostel,
+          relationType: userRelationKey.nonAssociate,
+        }}
+        isSearch
         removeEditBtn={notEqual(location.pathname, `/${HOSTEL}`)}
         isCardView={false}
         pagination={true}
