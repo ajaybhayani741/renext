@@ -12,6 +12,7 @@ import { include, isEqual, notEqual, values } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { disAssociateApi } from '../../userManagement/user.api'
 import {
+  addJobPostApi,
   generateMasterSheetApi,
   getJobDetailApi,
   getJobListApi,
@@ -88,6 +89,13 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     open: false,
     data: null,
   })
+  const [revertJobModal, setRevertJobModal] = useState({
+    open: false,
+    data: null,
+    loader: false,
+  })
+  const [helpModal, setHelpModal] = useState(false)
+
   const onExportToExcel = async () => {
     setLoading(true)
     const report = isEqual(tabKeys.smeltingRequest, jobType)
@@ -406,6 +414,38 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     setDisAssociateHostel({ open: false, data: null })
   }
 
+  const handleRevertJobModal = ({ rowData } = {}) => {
+    setRevertJobModal({
+      open: !revertJobModal?.open,
+      data: rowData || null,
+      loader: false,
+    })
+  }
+
+  const handleConfirmRevertJob = async () => {
+    const payload = {
+      id: revertJobModal?.data?.id,
+      jobType: payloadType[userView ? userJobType : type],
+      actionType: 'DELETE_ADD',
+    }
+    setRevertJobModal(prev => ({ ...prev, loader: true }))
+    try {
+      const response = await addJobPostApi({ payload })
+      if (response?.data?.data) {
+        await apiCall(data?.[userView ? userJobType : type]?.pageNo || 1)
+        notifyMethod.success({
+          message: 'msg_JobRevertedSuccessfully',
+        })
+      }
+    } finally {
+      setRevertJobModal({ open: false, data: null, loader: false })
+    }
+  }
+
+  const handleFloatModal = () => {
+    setHelpModal(!helpModal)
+  }
+
   const generateMasterSheet = async () => {
     const payload = {
       type: payloadType[
@@ -460,6 +500,11 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     disAssociateHostel,
     handleDisAssociateModal,
     handleConfirmDisAssociate,
+    revertJobModal,
+    handleRevertJobModal,
+    handleConfirmRevertJob,
+    helpModal,
+    handleFloatModal,
     generateMasterSheet,
     handleViewRequestModal,
     viewRequestsModal,

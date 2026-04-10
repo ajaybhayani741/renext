@@ -16,6 +16,7 @@ const PopUpConfirm = ({
   onCancelModel,
   onAccept,
   onReject,
+  acceptLoader = false,
 }) => {
   const { t } = useTranslations()
   return (
@@ -49,7 +50,11 @@ const PopUpConfirm = ({
         </div>
         <div className="confirmation-btn">
           {onAccept && (
-            <ANTDButton className="bg-danger" onClick={onAccept}>
+            <ANTDButton
+              className="bg-danger"
+              onClick={onAccept}
+              loader={acceptLoader}
+            >
               {t('btn_Yes')}
             </ANTDButton>
           )}

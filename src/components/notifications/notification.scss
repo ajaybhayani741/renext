@@ -46,6 +46,17 @@
         background-color: var(--color-primary);
       }
     }
+
+    &.revert-job {
+      cursor: default;
+
+      .item-wrapper {
+        &:before {
+          background-color: #fad4c0;
+        }
+      }
+      background-color: #fad4c0;
+    }
   }
   .new {
     background-color: var(--color-primary-xlight);

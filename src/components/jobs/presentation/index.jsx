@@ -63,6 +63,9 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     disAssociateHostel,
     handleDisAssociateModal,
     handleConfirmDisAssociate,
+    revertJobModal,
+    handleRevertJobModal,
+    handleConfirmRevertJob,
     generateMasterSheet,
     handleViewRequestModal,
     viewRequestsModal,
@@ -85,6 +88,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
           checkEditPermission={checkEditPermission}
           jobType={jobType}
           handleDisAssociateModal={handleDisAssociateModal}
+          handleRevertJobModal={handleRevertJobModal}
           userView={userView}
         />
       ) : (
@@ -217,6 +221,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
               checkEditPermission={checkEditPermission}
               jobType={jobType}
               handleDisAssociateModal={handleDisAssociateModal}
+              handleRevertJobModal={handleRevertJobModal}
             />
           )}
         </>
@@ -287,6 +292,16 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
           description={t('msg_disassociateUser')}
         />
       )}
+      {revertJobModal?.open && (
+        <PopUpConfirm
+          isOpen={revertJobModal?.open}
+          onCancelModel={handleRevertJobModal}
+          onAccept={handleConfirmRevertJob}
+          onReject={handleRevertJobModal}
+          description={t('msg_AreYouSureWantToRevertJob')}
+        />
+      )}
+
       {viewRequestsModal?.open && (
         <ANTDModal
           title={t('job_ViewPreviousRequests')}

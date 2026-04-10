@@ -4,7 +4,6 @@ import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import { setNotificationList } from '../../../redux/app/reducer'
 import pathName from '../../../routing/pathName.constant'
-import { length } from '../../../utils/javascript'
 import { getNotificationsApi } from '../notification.api'
 
 const notifications = () => {
@@ -83,9 +82,9 @@ const notifications = () => {
 
   // Initial load
   useEffect(() => {
-    if (!notificationsList?.list || length(notificationsList?.list) === 0) {
-      getNotification({ pageNo: 1, append: false })
-    }
+    // if (!notificationsList?.list || length(notificationsList?.list) === 0) {
+    getNotification({ pageNo: 1, append: false })
+    // }
   }, [])
 
   const handleNotificationClick = notification => {
