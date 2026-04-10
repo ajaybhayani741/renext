@@ -25,6 +25,7 @@ const JobTable = ({
   handleSelectChange,
   readyOnly,
   handleDisAssociateModal,
+  handleRevertJobModal,
   userView,
 }) => {
   const { selector } = useRedux()
@@ -46,6 +47,7 @@ const JobTable = ({
     handleSelectChange,
     readyOnly,
     handleDisAssociateModal,
+    handleRevertJobModal,
     userView,
   })
   const pageSize = 10

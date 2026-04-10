@@ -27,6 +27,7 @@ const jobTable = ({
   handleSelectChange,
   readyOnly,
   handleDisAssociateModal,
+  handleRevertJobModal,
   userView,
 }) => {
   const { t } = useTranslations()
@@ -115,6 +116,19 @@ const jobTable = ({
           >
             {t('btn_Download')} <DownloadOutlined />
           </ANTDButton>
+        )}
+      <div className="mb-5" />
+      {isEqual(activeTab?.status, tabKeys.complete) &&
+        isEqual(jobType, tabKeys.inspection) &&
+        isEqual(roleId, districtCollector) && (
+          <>
+            <ANTDButton
+              className="bg-revert"
+              onClick={() => handleRevertJobModal({ rowData })}
+            >
+              {t('job_Revert')}
+            </ANTDButton>
+          </>
         )}
     </div>
   )
