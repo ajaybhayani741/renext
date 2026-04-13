@@ -59,6 +59,8 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   const [masterSheetLoader, setMasterSheetLoader] = useState(false)
 
   const searchVal = useRef(null)
+  const searchDraftRef = useRef('')
+  const [searchInput, setSearchInput] = useState('')
   const userDetails = JSON.parse(getItem('userData'))
   const { roleId } = { ...userDetails }
   const [data, setData] = useState({})
@@ -270,6 +272,19 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     }))
   }
 
+  const apiCallRef = useRef(apiCall)
+  apiCallRef.current = apiCall
+
+  const debouncedSearch = useMemo(
+    () =>
+      debounce(() => {
+        const v = (searchDraftRef.current || '').trim()
+        searchVal.current = v || null
+        apiCallRef.current()
+      }, 600),
+    [],
+  )
+
   const viewApiCall = useCallback(
     async jobId => {
       const response = await getJobDetailApi({
@@ -287,11 +302,15 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     apiCall(pagination.current)
   }
 
-  const onSearch = debounce(async e => {
-    const { value } = e.target
-    searchVal.current = value?.trim()
-    apiCall()
-  }, 600)
+  const onSearch = e => {
+    const raw =
+      typeof e?.target === 'string' || typeof e?.target === 'number'
+        ? String(e.target)
+        : (e?.target?.value ?? '')
+    searchDraftRef.current = raw
+    setSearchInput(raw)
+    debouncedSearch()
+  }
 
   const handleTabChange = tab => {
     if (tab?.status) {
@@ -309,6 +328,10 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
 
   const handleSearchByChange = value => {
     setSearchBy(value)
+    searchDraftRef.current = ''
+    setSearchInput('')
+    searchVal.current = null
+    apiCall(1)
   }
 
   const handleColumnFilterChange = values => {
@@ -486,6 +509,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     activeTab,
     columnFilters,
     searchByProps,
+    searchInput,
     columnFilterProps,
     searchSelectOptions,
     apiCall,
