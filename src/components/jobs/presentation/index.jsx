@@ -44,6 +44,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     activeTab,
     columnFilters,
     searchByProps,
+    searchInput,
     // columnFilterProps,
     selectExportColModal,
     loading,
@@ -189,12 +190,14 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                   ) ? (
                     <ANTDSelect
                       className="w-100 mb-5"
+                      value={searchInput || undefined}
                       options={searchSelectOptions}
                       onChange={val => onSearch({ target: val })}
                     />
                   ) : (
                     <ANTDSearch
                       className="mb-5"
+                      value={searchInput}
                       placeholder={t('user_Name')}
                       onChange={onSearch}
                     />
