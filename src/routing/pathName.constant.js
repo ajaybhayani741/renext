@@ -1,5 +1,6 @@
 const USER_TXT = '/user'
 const DASHBOARD_TXT = '/dashboard'
+const NEW_DASHBOARD_TXT = '/new-dashboard'
 
 const ADMIN = 'admin'
 const STATE_HOSTEL_DEPARTMENT = 'state-hostel-department'
@@ -81,4 +82,5 @@ export {
   STOCK,
   TALLY,
   PHOTOS,
+  NEW_DASHBOARD_TXT,
 }

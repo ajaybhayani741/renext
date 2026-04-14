@@ -2,6 +2,7 @@ import pathName, {
   ADMIN,
   DASHBOARD_TXT,
   DISTRICT_COLLECTOR,
+  NEW_DASHBOARD_TXT,
   HOSTEL,
   INSPECTION_OFFICER,
   STATE_ADMIN_OFFICER,
@@ -247,6 +248,12 @@ const sidebarMenus = [
     key: DASHBOARD_TXT,
     Icon: DashboardIcon,
     label: 'job_Dashboard',
+    sidebar: [districtCollector],
+  },
+  {
+    key: NEW_DASHBOARD_TXT,
+    Icon: DashboardIcon,
+    label: 'job_DashboardUpdated',
     sidebar: [districtCollector],
   },
 ]
