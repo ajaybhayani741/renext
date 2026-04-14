@@ -1,5 +1,5 @@
 import { setJobActiveTab } from '../../redux/jobs/reducer'
-import pathName from '../../routing/pathName.constant'
+import pathName, { NEW_DASHBOARD_TXT } from '../../routing/pathName.constant'
 import { userWiseRole } from '../../utils/constant'
 import { DashboardIcon, QuoteIcon } from '../../utils/icons'
 import { tabKeys as jobTabKeys } from '../jobs/jobs.description'
@@ -32,6 +32,11 @@ const job_Dashboard = [
     btnLabel: 'job_Dashboard',
     BtnIcon: DashboardIcon,
     path: pathName.DASHBOARD.replace(':type', ''),
+  },
+  {
+    btnLabel: 'job_DashboardUpdated',
+    BtnIcon: DashboardIcon,
+    path: NEW_DASHBOARD_TXT,
   },
 ]
 
