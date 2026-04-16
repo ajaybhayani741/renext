@@ -57,6 +57,14 @@
       }
       background-color: #fad4c0;
     }
+    &.revert-assign-job {
+      .item-wrapper {
+        &:before {
+          background-color: #8ae1b6;
+        }
+      }
+      background-color: #bfecd6;
+    }
   }
   .new {
     background-color: var(--color-primary-xlight);

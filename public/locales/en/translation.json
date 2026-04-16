@@ -729,5 +729,6 @@
   "msg_AreYouSureWantToRevertJob": "Are you sure want to revert this job?",
   "msg_JobRevertedForInspection": "{{hostelName}} job has been reverted. Please complete the job again.",
   "msg_JobRevertedSuccessfully": "Job reverted successfully",
-  "job_DashboardUpdated": "Dashboard (Updated)"
+  "job_DashboardUpdated": "Dashboard (Updated)",
+  "msg_hostelReAssignedForInspection": "Hostel {{hostelName}} has been re-assigned for inspection"
 }
