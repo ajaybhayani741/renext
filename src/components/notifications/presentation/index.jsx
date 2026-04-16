@@ -29,7 +29,11 @@ const Notifications = () => {
                   <div
                     key={notification?.id}
                     className={`item-container ${!notification?.read ? 'new' : ''} ${
-                      isRevertJob ? 'revert-job' : ''
+                      isEqual(notification?.type, 'HOSTEL_REASSOCIATION')
+                        ? 'revert-assign-job'
+                        : isRevertJob
+                          ? 'revert-job'
+                          : ''
                     }`}
                     onClick={
                       isRevertJob
@@ -41,9 +45,11 @@ const Notifications = () => {
                       <div className={`item-wrapper type-job`}>
                         <p>
                           {t(
-                            isRevertJob
-                              ? 'msg_JobRevertedForInspection'
-                              : 'msg_hostelAssignedForInspection',
+                            isEqual(notification?.type, 'HOSTEL_REASSOCIATION')
+                              ? 'msg_hostelReAssignedForInspection'
+                              : isRevertJob
+                                ? 'msg_JobRevertedForInspection'
+                                : 'msg_hostelAssignedForInspection',
                             {
                               hostelName:
                                 notification?.notificationContentDto
