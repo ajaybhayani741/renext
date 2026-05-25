@@ -52,6 +52,7 @@ const pathName = {
   REPORTING: `${REPORTING_TXT}/:type`,
   SETTINGS: `/settings`,
   NOTIFICATIONS: `/notifications`,
+  ICC: '/icc',
 }
 export default pathName
 

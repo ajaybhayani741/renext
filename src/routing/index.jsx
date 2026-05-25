@@ -8,6 +8,7 @@ import pathName, {
 } from './pathName.constant'
 import ProtectedRoute from './PrivateRoute'
 import DashboardView from '../components/dashboard/presentation/DashboardView'
+import IccPortal from '../components/icc/presentation/IccPortal'
 import PageNotFound from '../components/PageNotFound'
 import UserManagement from '../components/userManagement/presentation'
 
@@ -118,6 +119,7 @@ const Routing = () => {
     },
     { path: pathName.LOGIN, element: <Auth /> },
     { path: pathName.FORGOT_PASSWORD, element: <Auth /> },
+    { path: pathName.ICC, element: <IccPortal /> },
   ])
 
   return routes
