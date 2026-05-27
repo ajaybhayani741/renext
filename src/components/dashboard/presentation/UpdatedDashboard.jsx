@@ -1,4 +1,4 @@
-const IFRAME_SRC = 'https://lucent-sable-32f7b5.netlify.app/'
+const IFRAME_SRC = 'https://stupendous-blini-a6fcba.netlify.app/'
 
 const UpdatedDashboard = () => {
   return (
