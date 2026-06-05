@@ -23,12 +23,13 @@ body {
   }
 }
 
-// Prevent auto-zoom on mobile devices by ensuring inputs have minimum 16px font-size
 .ant-input,
 .ant-input-password input,
 .ant-input-number input,
 .ant-select-selector,
 textarea.ant-input {
+  font-size: 15px !important; // Premium readable size
+  
   @media screen and (max-width: 767px) {
     font-size: 16px !important;
   }
@@ -104,13 +105,15 @@ h6 {
 .ant-modal-content {
   padding: 0 !important;
   .ant-modal-close-x {
-    color: var(--color-white);
+    color: #666666;
   }
   .ant-modal-header {
-    background: var(--color-primary-dark) !important;
+    background: #ffffff !important;
     padding: 15px 25px !important;
+    border-bottom: 1px solid #f0f0f0;
     .ant-modal-title {
-      color: var(--color-white);
+      color: #000000;
+      font-weight: 600;
     }
   }
   .ant-modal-body {
@@ -238,6 +241,10 @@ h6 {
 .ant-form-item-explain.ant-form-item-explain-error {
   margin-bottom: 2px;
   color: var(--color-mandatory);
+}
+
+.m-3-percent {
+  margin: 3%;
 }
 .submit-btn {
   font-size: 15px;
@@ -370,14 +377,13 @@ h6 {
 }
 
 .ant-table-thead > tr > th {
-  background-color: var(--color-primary-xlight) !important;
-  &:not(:last-child):not(.ant-table-selection-column):not(
-      .ant-table-row-expand-icon-cell
-    ):not([colspan])::before {
-    background-color: var(--color-primary-light) !important;
-  }
-  &:before {
-    content: normal !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid #e5e5ea !important;
+  font-weight: 600 !important;
+  color: #86868b !important;
+  
+  &::before {
+    content: none !important;
   }
 }
 

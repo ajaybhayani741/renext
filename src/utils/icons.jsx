@@ -14,6 +14,7 @@ import {
   DownloadOutlined,
   QuestionCircleOutlined,
   EyeOutlined,
+  LeftOutlined,
 } from '@ant-design/icons'
 
 import hostIcon from '../assets/appLogo/H-host-blue.png'
@@ -96,6 +97,7 @@ export {
   GlobalOutlined,
   HomeIcon,
   MenuOutlined,
+  LeftOutlined,
   PoweroffOutlined,
   ReportIcon,
   TransportContractorIcon,

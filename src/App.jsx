@@ -59,8 +59,42 @@ function App() {
         <ANTDConfigProvider
           theme={{
             token: {
-              colorPrimary: '#1d5be0',
+              colorPrimary: '#4F46E5', // Keep vibrant primary color
+              colorBgBase: '#ffffff',
+              colorBgLayout: '#F5F5F7', // Apple-like subtle gray background
+              colorText: '#1d1d1f', // Softer, premium black
+              borderRadius: 12,
+              fontFamily: '"Inter", "-apple-system", "BlinkMacSystemFont", "Roboto", sans-serif',
+              colorBorder: 'transparent', // Remove harsh borders globally
             },
+            components: {
+              Button: {
+                borderRadius: 9999, // Pill buttons
+                controlHeight: 40,
+                fontWeight: 600,
+              },
+              Card: {
+                borderRadiusLG: 20,
+                boxShadowTertiary: '0 4px 24px rgba(0,0,0,0.04)',
+              },
+              Input: {
+                colorBgContainer: '#F5F5F7', // Filled look instead of outlined
+                controlHeight: 44, // Taller, luxurious inputs
+                hoverBorderColor: '#4F46E5',
+                activeBorderColor: '#4F46E5',
+              },
+              Select: {
+                colorBgContainer: '#F5F5F7',
+                controlHeight: 44,
+              },
+              Table: {
+                headerBg: 'transparent', // Remove ugly colored headers
+                headerColor: '#86868b', // Subtle gray header text
+                headerSplitColor: 'transparent',
+                rowHoverBg: '#F5F5F7',
+                paddingContentVertical: 16,
+              }
+            }
           }}
         >
           {contextHolder}

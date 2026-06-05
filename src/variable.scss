@@ -1,22 +1,40 @@
 :root {
-  --color-primary: #1d5be0;
-  --color-primary-dark: #1d5be0;
-  --color-primary-medium: #8babf0;
-  --color-primary-light: #79a0f5;
-  --color-primary-xlight: #bad0ff;
-  --color-primary-ylight: #ffece0;
-  --color-black: #000;
-  --color-white: #fff;
-  --color-mandatory: #ff4d4f;
-  --color-red: #ff7171;
-  --color-green: #92ca6d;
-  --color-disable: #b8b8b8;
-  --light-gray: #ddd;
-  --primary-light-gray: #cdcdcd;
-  --color-bg: #fff9f6;
-  --color-link: rgb(49, 61, 236);
-  --light-yellow: #fffbe6;
-  --yellow: #ffe58f;
-  --color-font: #000000;
+  --color-primary: #4F46E5;
+  --color-primary-dark: #4338CA;
+  --color-primary-medium: #818CF8;
+  --color-primary-light: #A5B4FC;
+  --color-primary-xlight: #E0E7FF;
+  --color-primary-ylight: #EEF2FF;
+  
+  // Card Pastel Colors (from the mockup)
+  --color-pastel-purple: #F3E8FF;
+  --color-pastel-green: #DCFCE7;
+  --color-pastel-orange: #FFEDD5;
+  --color-pastel-blue: #DBEAFE;
+  --color-pastel-red: #FEE2E2;
+  --color-pastel-yellow: #FEF9C3;
+
+  --color-black: #0F172A;
+  --color-white: #ffffff;
+  --color-mandatory: #EF4444;
+  --color-red: #F87171;
+  --color-green: #34D399;
+  --color-disable: #94A3B8;
+  --light-gray: #E2E8F0;
+  --primary-light-gray: #CBD5E1;
+  
+  // Keep background essentially white but very slightly off-white for depth
+  --color-bg: #F8FAFC; 
+  
+  --color-link: #3B82F6;
+  --light-yellow: #FEF3C7;
+  --yellow: #FDE047;
+  --color-font: #1E293B;
+  
+  // UI Refactor Variables
   --footer-height: 40px;
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --shadow-floating: 0 10px 30px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.03);
+  --radius-card: 20px;
+  --radius-pill: 9999px;
 }
