@@ -18,7 +18,6 @@ import SafetySecurityDashboard from './SafetySecurityDashboard'
 import StaffDetailsDashboard from './StaffDetailsDashboard'
 import StudentsDashboard from './StudentsDashboard'
 import { DASHBOARD_TXT } from '../../../routing/pathName.constant'
-import ANTDBreadcrumb from '../../../shared/antd/ANTDBreadcrumb'
 import { isEqual } from '../../../utils/javascript'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 
@@ -62,27 +61,21 @@ const DashboardView = () => {
 
   const handleOnClick = path => (path ? navigate(path) : null)
 
-  const getCurrentPath = () => {
-    const currentData = cardList.find(card => isEqual(card.key, params?.type))
-    let pathItems = [
-      {
-        title: t('job_Dashboard'),
-        className: 'cursor-pointer text-underline',
-        onClick: () => handleOnClick(DASHBOARD_TXT),
-      },
-      { title: t(currentData?.label) },
-      ...(currentData?.subLabel ? [{ title: t(currentData?.subLabel) }] : []),
-    ]
-    return <ANTDBreadcrumb separator=">" items={pathItems} />
-  }
+  const currentData = cardList.find(card => isEqual(card.key, params?.type))
 
   return (
-    <div className="dashboard-view">
-      <div className="d-flex justify-content-between">
-        <div className="breadCrumb">{getCurrentPath()}</div>
-        <FiscalYearSelect className="ml-auto mb-10" setDefault={false} />
+    <div className="dashboard-view bg-background min-h-screen">
+      <div className="flex flex-wrap items-center justify-between px-4 md:px-8 py-4 border-b border-gray-100 bg-white gap-4 shadow-sm sticky top-0 z-10">
+        <div className="flex items-center gap-4">
+          <h1 className="text-xl font-bold text-slate-800 m-0">
+            {currentData ? t(currentData.subLabel || currentData.label) : t('job_Dashboard')}
+          </h1>
+        </div>
+        <FiscalYearSelect setDefault={false} className="ml-auto" />
       </div>
-      {getDashboardComponent(params?.type)}
+      <div className="flex-1">
+        {getDashboardComponent(params?.type)}
+      </div>
     </div>
   )
 }

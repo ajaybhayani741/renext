@@ -26,7 +26,7 @@ const PopUpConfirm = ({
       open={isOpen}
       onCancel={onCancelModel}
       footer={footer}
-      className="warning-modal"
+      className={`warning-modal ${success ? 'success-modal' : ''}`}
       destroyOnClose
     >
       <div>

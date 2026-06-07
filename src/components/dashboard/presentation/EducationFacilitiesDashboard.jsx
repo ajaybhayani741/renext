@@ -4,7 +4,7 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries, isEqual } from '../../../utils/javascript'
-import ColumnComparison from '../../charts/ColumnComparison'
+import ModernCompareChart from '../shared/ModernCompareChart'
 import educationFacilities from '../container/educationFacilities.container'
 import { educationFacilitiesCharts } from '../dashboard.description'
 
@@ -28,7 +28,7 @@ const EducationFacilitiesDashboard = () => {
           return (
             <ANTDColumn xs={24} md={value?.md || 12} key={key}>
               {isEqual(value?.type, 'columnCompare') ? (
-                <ColumnComparison
+                <ModernCompareChart
                   {...{
                     name: key,
                     chartData: seriesData?.[key]?.chartData,

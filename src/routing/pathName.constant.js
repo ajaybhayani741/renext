@@ -35,6 +35,7 @@ const PHOTOS = 'photos'
 
 const pathName = {
   ROOT: '/',
+  LANDING: '/landing',
   HOME: '/home',
   USER: `${USER_TXT}/:userType`,
   LOGIN: '/login',

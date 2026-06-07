@@ -1,8 +1,8 @@
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries, isEqual } from '../../../utils/javascript'
-import ColumnComparison from '../../charts/ColumnComparison'
-import HCBarChart from '../../charts/HCBarChart'
+import ModernCompareChart from '../shared/ModernCompareChart'
+import ModernFrequencyChart from '../shared/ModernFrequencyChart'
 import safetySecurity from '../container/safetySecurity.container'
 import { safetySecurityCharts } from '../dashboard.description'
 import DashboardWrapper from './DashboardWrapper'
@@ -27,7 +27,7 @@ const SafetySecurityDashboard = () => {
         return (
           <ANTDColumn xs={24} md={value?.md || 12} key={key}>
             {isEqual(value?.type, 'rangeFrequency') ? (
-              <HCBarChart
+              <ModernFrequencyChart
                 {...{
                   name: key,
                   xAxisTitle: value?.xAxisText,
@@ -39,7 +39,7 @@ const SafetySecurityDashboard = () => {
                 }}
               />
             ) : isEqual(value?.type, 'columnCompare') ? (
-              <ColumnComparison
+              <ModernCompareChart
                 {...{
                   name: key,
                   chartData: axisOptions?.[key],

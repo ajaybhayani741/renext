@@ -35,10 +35,9 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="d-flex justify-content-between">
-        <h2 className="page-title">{t('job_Dashboard')}</h2>
-        {/* <DashboardContext.Provider value={{ handleTabChange, getFilterValue }}> */}
-        <FiscalYearSelect className="ml-auto" setDefault={false} />
+      <div className="flex flex-wrap items-center justify-between px-4 md:px-8 py-4 border-b border-gray-100 bg-white gap-4 shadow-sm mb-6 sticky top-0 z-10 -mx-4 md:-mx-8">
+        <h1 className="text-2xl font-bold text-slate-800 m-0">{t('job_Dashboard')}</h1>
+        <FiscalYearSelect setDefault={false} />
       </div>
       <div className="card-container">
         {cardList.map((card, index) => {
@@ -58,7 +57,7 @@ const Dashboard = () => {
                 {aesthetic.icon}
               </div>
               <h3>{t(card.subLabel || card.label)}</h3>
-              <h4>{t(card.subLabel ? card.label : 'dash_DescriptionNotAvailable')}</h4>
+              {card.subLabel && <h4>{t(card.label)}</h4>}
             </ANTDCard>
           )
         })}

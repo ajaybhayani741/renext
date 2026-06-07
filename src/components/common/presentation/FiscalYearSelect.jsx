@@ -1,9 +1,6 @@
 import useTranslations from '../../../hooks/useTranslations'
-import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { ANTDDateRange } from '../../../shared/antd/ANTDDatePicker'
-import ANTDRow from '../../../shared/antd/ANTDRow'
 import ANTDSelect from '../../../shared/antd/ANTDSelect'
-import Label from '../../../shared/Label'
 import fiscalYearSelect from '../container/fiscalYearSelect.container'
 
 const FiscalYearSelect = ({
@@ -19,18 +16,19 @@ const FiscalYearSelect = ({
     setDefault,
     isDateRange,
   })
+
   return (
-    <ANTDColumn className={`fiscal-year-select ${className}`}>
-      <Label text={t('txt_FiscalYear')} />
-      <ANTDRow>
-        <ANTDSelect {...fiscalYearSelector} className="w-100" />
-      </ANTDRow>
+    <div className={`flex items-center gap-4 flex-wrap ${className}`}>
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-slate-500 font-medium whitespace-nowrap">{t('txt_FiscalYear')}:</span>
+        <ANTDSelect {...fiscalYearSelector} className="min-w-[100px]" size="middle" />
+      </div>
       {showDateRange && (
-        <ANTDRow className="mt-10" span={24}>
-          <ANTDDateRange {...dateRangeProps} />
-        </ANTDRow>
+        <div className="flex items-center">
+          <ANTDDateRange {...dateRangeProps} size="middle" />
+        </div>
       )}
-    </ANTDColumn>
+    </div>
   )
 }
 

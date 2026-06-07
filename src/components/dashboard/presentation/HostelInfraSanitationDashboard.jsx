@@ -2,9 +2,9 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries, isEqual } from '../../../utils/javascript'
-import ColumnComparison from '../../charts/ColumnComparison'
-import HCBarChart from '../../charts/HCBarChart'
-import HCPieChart from '../../charts/HCPieChart'
+import ModernCompareChart from '../shared/ModernCompareChart'
+import ModernFrequencyChart from '../shared/ModernFrequencyChart'
+import ModernPieChart from '../shared/ModernPieChart'
 import hostelInfraSanitation from '../container/hostelInfraSanitation.container'
 import { hostelInfraSanitationCharts } from '../dashboard.description'
 
@@ -28,7 +28,7 @@ const HostelInfraSanitationDashboard = () => {
         return (
           <ANTDColumn xs={24} md={value?.md || 12} key={key}>
             {isEqual(value?.type, 'rangeFrequency') ? (
-              <HCBarChart
+              <ModernFrequencyChart
                 {...{
                   name: key,
                   xAxisTitle: value?.xAxisText,
@@ -40,7 +40,7 @@ const HostelInfraSanitationDashboard = () => {
                 }}
               />
             ) : isEqual(value?.type, 'columnCompare') ? (
-              <ColumnComparison
+              <ModernCompareChart
                 {...{
                   name: key,
                   chartData: seriesData?.[key]?.chartData,
@@ -50,7 +50,7 @@ const HostelInfraSanitationDashboard = () => {
                 }}
               />
             ) : isEqual(value?.type, 'pie') ? (
-              <HCPieChart
+              <ModernPieChart
                 {...{
                   handleChartClick,
                   seriesData: seriesData?.[key]?.series,

@@ -252,59 +252,68 @@ const dealerPaymentData = [
 
 const cardList = [
   {
-    label: 'job_HostelAdministration',
+    label: 'Authority & governance data',
     subLabel: 'job_HostelAuthority',
     key: cardKeys.hostelAuthority,
   },
   {
-    label: 'job_HostelAdministration',
+    label: 'Enrollment & attendance data',
     subLabel: 'dash_Students',
     key: cardKeys.students,
   },
   {
-    label: 'job_HostelAdministration',
+    label: 'Documentation & records status',
     subLabel: 'job_RecordMaintenance',
     key: cardKeys.recordMaintenance,
   },
   {
-    label: 'job_HostelAdministration',
+    label: 'Staff presence & vacancies',
     subLabel: 'job_StaffDetails',
     key: cardKeys.staffDetails,
   },
   {
-    label: 'job_HostelInfraRooms',
+    label: 'Building & facility conditions',
+    subLabel: 'job_HostelInfraRooms',
     key: cardKeys.hostelInfraRooms,
   },
   {
-    label: 'job_HostelInfraSanitation',
+    label: 'Hygiene & cleanliness metrics',
+    subLabel: 'job_HostelInfraSanitation',
     key: cardKeys.hostelInfraSanitation,
   },
   {
-    label: 'job_MedicalCare',
+    label: 'Health checkups & first-aid',
+    subLabel: 'job_MedicalCare',
     key: cardKeys.medicalCare,
   },
   {
-    label: 'job_EducationFacilities',
+    label: 'Learning activities & ECCE',
+    subLabel: 'job_EducationFacilities',
     key: cardKeys.educationFacilities,
   },
   {
-    label: 'job_FoodProvisions',
+    label: 'Food availability & distribution',
+    subLabel: 'job_FoodProvisions',
     key: cardKeys.foodProvisions,
   },
   {
-    label: 'job_SafetyAndSecurity',
+    label: 'Safety measures & protocols',
+    subLabel: 'job_SafetyAndSecurity',
     key: cardKeys.safetyAndSecurity,
   },
   {
-    label: 'job_ConductionMeetings',
+    label: 'Meeting schedules & minutes',
+    subLabel: 'job_ConductionMeetings',
     key: cardKeys.conductionMeetings,
   },
   {
-    label: 'job_Feedback',
+    label: 'Feedback & suggestions',
+    subLabel: 'job_Feedback',
     key: cardKeys.feedback,
   },
   {
-    label: 'job_Photos',
+    label: 'Photo Documentation',
+    subLabel: 'job_Photos',
     key: cardKeys.photos,
   },
 ]

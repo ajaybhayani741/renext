@@ -1,56 +1,26 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
-import { BellFilled, PoweroffOutlined, UserOutlined } from '@ant-design/icons'
+import { BellOutlined } from '@ant-design/icons'
 
 import LanguageSelector from './LanguageSelector'
-import useTranslations from '../../../hooks/useTranslations'
 import ANTDBadge from '../../../shared/antd/ANTDBadge'
-import ANTDDropdown from '../../../shared/antd/ANTDDropdown'
-import { noImage } from '../../../utils/icons'
 import header from '../container/header.container'
 
 const HeaderAction = () => {
-  const {
-    profileDetails,
-    handleProfile,
-    handleLogout,
-    notificationCount,
-    onNotificationClick,
-  } = header()
-  const { t } = useTranslations()
-
-  const items = [
-    {
-      key: 'profile',
-      label: <label className="cursor-pointer">{t('txt_Profile')}</label>,
-      icon: <UserOutlined />,
-      onClick: handleProfile,
-    },
-    {
-      key: 'logout',
-      label: <label className="cursor-pointer">{t('btn_Logout')}</label>,
-      icon: <PoweroffOutlined />,
-      onClick: handleLogout,
-    },
-  ]
+  const { notificationCount, onNotificationClick } = header()
 
   return (
-    <div className="d-flex space-between align-center">
-      <div className="notification-container mr-5">
-        <BellFilled onClick={onNotificationClick} />
-        <ANTDBadge count={notificationCount || 0}>
-          <span />
-        </ANTDBadge>
-      </div>
-      <ANTDDropdown
-        menu={{ items }}
-        placement="bottomRight"
-        trigger={['click']}
-        arrow
+    <div className="header-actions d-flex align-center">
+      <button
+        type="button"
+        className="header-icon-btn notification-btn"
+        onClick={onNotificationClick}
+        aria-label="Notifications"
       >
-        <div className="profile-btn cursor-pointer">
-          <img src={profileDetails?.profileUrl || noImage} alt="profile_img" />
-        </div>
-      </ANTDDropdown>
+        <ANTDBadge count={notificationCount || 0} size="small" offset={[2, -2]}>
+          <BellOutlined />
+        </ANTDBadge>
+      </button>
+
       <LanguageSelector />
     </div>
   )

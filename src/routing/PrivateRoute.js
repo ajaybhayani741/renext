@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
   const adminId = getItem('adminId')
   const { queryParams } = useRouter()
   const code = queryParams.get('code')
-  let navigatePath = pathName.LOGIN
+  let navigatePath = pathName.LANDING
   const userData = JSON.parse(getItem('userData'))
   const { dispatch } = useRedux()
 
