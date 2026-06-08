@@ -17,11 +17,16 @@ function Home() {
         {homeData?.map((group, index) =>
           values(group)?.[0]?.length ? (
             <ANTDColumn key={index} className="list-column-wrapper">
-              {entries(group)?.map(([title, list], i) => (
-                <ANTDRow key={i} style={{ flexDirection: 'column' }}>
-                  <ButtonLinkBox buttonGroup={list} title={title} key={i} />
-                </ANTDRow>
-              ))}
+              {entries(group)?.map(([title, list], i) => {
+                const themes = ['theme-purple', 'theme-green', 'theme-orange', 'theme-blue', 'theme-red', 'theme-yellow', 'theme-cyan', 'theme-teal']
+                const themeClass = themes[(index + i) % themes.length]
+                
+                return (
+                  <ANTDRow key={i} style={{ flexDirection: 'column' }}>
+                    <ButtonLinkBox buttonGroup={list} title={title} key={i} themeClass={themeClass} />
+                  </ANTDRow>
+                )
+              })}
             </ANTDColumn>
           ) : null,
         )}

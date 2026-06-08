@@ -1,18 +1,20 @@
-.name-wrapper {
-  margin-bottom: 20px;
-  padding: 6px 10px;
-  background-color: var(--color-primary-medium);
-  font-size: 16px;
-  border-radius: 10px 10px 0 0;
-  color: var(--color-black);
+/* =====================================================================
+   HOME LAUNCHER — refactored to the dashboard's card system.
+   Structure preserved (ButtonLinkBox columns + Ant primary buttons);
+   only the visual layer changes, so all navigation/dispatch stays intact.
+   ===================================================================== */
 
-  @media screen and (max-width: 576px) {
-    margin-bottom: 15px;
+.list-column-row {
+  flex-wrap: wrap;
+  gap: 4px;
+  @media screen and (max-width: 991px) {
+    flex-wrap: wrap;
   }
 }
+
 .list-column-wrapper {
   width: 100%;
-  max-width: 275px;
+  max-width: 300px;
   @media screen and (max-width: 991px) {
     max-width: 50%;
   }
@@ -20,73 +22,254 @@
     max-width: 100%;
   }
 }
-.list-column-row {
-  flex-wrap: nowrap;
-  @media screen and (max-width: 991px) {
-    flex-wrap: wrap;
-  }
-}
+
+// Each group becomes a soft white card
 .list-columns {
   width: calc(100% - 14px);
-  border: 1px solid var(--color-primary-dark);
-  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   margin: 7px;
+  padding: 18px 16px 8px;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
 
   @media screen and (max-width: 576px) {
     margin: 0px 0px 15px;
     width: 100%;
   }
 
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    z-index: 0;
+    opacity: 0.7;
+    background: var(--color-bg-soft); // default blob color
+    transition: background 0.35s ease;
+  }
+
+  .name-wrapper, .ant-badge {
+    position: relative;
+    z-index: 1;
+  }
+
+  // --- Pastel Themes ---
+  &.theme-purple {
+    background-color: var(--color-pastel-purple);
+    border-color: #e2d9f3;
+    &::before { background: rgba(255, 255, 255, 0.4); }
+    .name-wrapper::after { background: var(--fg-purple); }
+    .ant-btn {
+      &:hover { border-color: var(--fg-purple) !important; color: var(--fg-purple) !important; }
+      .inner-btn svg { color: var(--fg-purple); background: #fff; }
+      &:hover .inner-btn svg { background: var(--fg-purple); color: #fff; }
+    }
+  }
+  &.theme-green {
+    background-color: var(--color-pastel-green);
+    border-color: #d6eedd;
+    &::before { background: rgba(255, 255, 255, 0.4); }
+    .name-wrapper::after { background: var(--fg-green); }
+    .ant-btn {
+      &:hover { border-color: var(--fg-green) !important; color: var(--fg-green) !important; }
+      .inner-btn svg { color: var(--fg-green); background: #fff; }
+      &:hover .inner-btn svg { background: var(--fg-green); color: #fff; }
+    }
+  }
+  &.theme-orange {
+    background-color: var(--color-pastel-orange);
+    border-color: #fce1d2;
+    &::before { background: rgba(255, 255, 255, 0.4); }
+    .name-wrapper::after { background: var(--fg-orange); }
+    .ant-btn {
+      &:hover { border-color: var(--fg-orange) !important; color: var(--fg-orange) !important; }
+      .inner-btn svg { color: var(--fg-orange); background: #fff; }
+      &:hover .inner-btn svg { background: var(--fg-orange); color: #fff; }
+    }
+  }
+  &.theme-blue {
+    background-color: var(--color-pastel-blue);
+    border-color: #d6eaff;
+    &::before { background: rgba(255, 255, 255, 0.4); }
+    .name-wrapper::after { background: var(--fg-blue); }
+    .ant-btn {
+      &:hover { border-color: var(--fg-blue) !important; color: var(--fg-blue) !important; }
+      .inner-btn svg { color: var(--fg-blue); background: #fff; }
+      &:hover .inner-btn svg { background: var(--fg-blue); color: #fff; }
+    }
+  }
+  &.theme-red {
+    background-color: var(--color-pastel-red);
+    border-color: #fed7d7;
+    &::before { background: rgba(255, 255, 255, 0.4); }
+    .name-wrapper::after { background: var(--fg-red); }
+    .ant-btn {
+      &:hover { border-color: var(--fg-red) !important; color: var(--fg-red) !important; }
+      .inner-btn svg { color: var(--fg-red); background: #fff; }
+      &:hover .inner-btn svg { background: var(--fg-red); color: #fff; }
+    }
+  }
+  &.theme-yellow {
+    background-color: var(--color-pastel-yellow);
+    border-color: #fef0c7;
+    &::before { background: rgba(255, 255, 255, 0.4); }
+    .name-wrapper::after { background: var(--fg-yellow); }
+    .ant-btn {
+      &:hover { border-color: var(--fg-yellow) !important; color: var(--fg-yellow) !important; }
+      .inner-btn svg { color: var(--fg-yellow); background: #fff; }
+      &:hover .inner-btn svg { background: var(--fg-yellow); color: #fff; }
+    }
+  }
+  &.theme-cyan {
+    background-color: var(--color-pastel-cyan);
+    border-color: #cffafe;
+    &::before { background: rgba(255, 255, 255, 0.4); }
+    .name-wrapper::after { background: var(--fg-cyan); }
+    .ant-btn {
+      &:hover { border-color: var(--fg-cyan) !important; color: var(--fg-cyan) !important; }
+      .inner-btn svg { color: var(--fg-cyan); background: #fff; }
+      &:hover .inner-btn svg { background: var(--fg-cyan); color: #fff; }
+    }
+  }
+  &.theme-teal {
+    background-color: var(--color-pastel-teal);
+    border-color: #ccfbf1;
+    &::before { background: rgba(255, 255, 255, 0.4); }
+    .name-wrapper::after { background: var(--fg-teal); }
+    .ant-btn {
+      &:hover { border-color: var(--fg-teal) !important; color: var(--fg-teal) !important; }
+      .inner-btn svg { color: var(--fg-teal); background: #fff; }
+      &:hover .inner-btn svg { background: var(--fg-teal); color: #fff; }
+    }
+  }
+
   .ant-row {
-    padding: 0 10px 10px 10px;
+    padding: 0 4px 8px 4px;
     flex-direction: column;
   }
-  .ant-btn.ant-btn-lg {
+
+  // Action buttons → clean tinted rows with an icon tile
+  .ant-btn.ant-btn-lg,
+  .ant-btn {
     font-size: 15px;
-    padding: 6px 10px;
-    padding-inline-start: 10px;
-    padding-inline-end: 10px;
+    padding: 10px 14px;
     height: auto;
     justify-content: flex-start;
+    text-align: start;
+    border-radius: var(--radius-md) !important;
+    background: var(--surface-tint) !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: none !important;
+    color: var(--color-font) !important;
+    font-weight: 600;
+    transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out),
+      background 0.2s var(--ease), border-color 0.2s var(--ease);
+
     @media screen and (max-width: 576px) {
       font-size: 14px;
     }
 
     .inner-btn {
+      gap: 4px;
       svg {
-        height: 30px;
-        width: 28px;
-        margin-right: 6px;
-        margin-left: 4px;
+        height: 38px;
+        width: 38px;
+        padding: 7px;
+        margin-right: 10px;
+        margin-left: 0;
         flex: 0 0 auto;
-        // mix-blend-mode: multiply;
-        color: #fff;
+        color: var(--color-primary);
+        background: var(--color-primary-ylight);
+        border-radius: 11px;
+        transition: all 0.25s var(--ease-spring);
+
         @media screen and (max-width: 576px) {
-          height: 25px;
-          width: 23px;
+          height: 34px;
+          width: 34px;
         }
       }
     }
+
     &:hover {
-      background: var(--color-primary-dark);
+      background: #fff !important;
+      border-color: var(--color-primary-light) !important;
+      transform: translateX(4px);
+      box-shadow: var(--shadow-soft) !important;
+      color: var(--color-primary-dark) !important;
+      .inner-btn svg {
+        background: var(--color-primary);
+        color: #fff;
+        box-shadow: var(--shadow-primary);
+        transform: scale(1.05);
+      }
     }
   }
+
   .ant-badge {
     width: 100%;
-    padding: 0 10px;
-    margin-bottom: 15px;
+    padding: 0 4px;
+    margin-bottom: 10px;
     .ant-badge-count {
-      top: 10px;
-      right: 10px;
+      top: 6px;
+      right: 6px;
+      box-shadow: 0 0 0 2px #fff;
     }
   }
+
   .ant-btn-primary:disabled {
-    background-color: rgb(182, 181, 181);
-    border-color: #d9d9d9;
-    &:hover {
-      background-color: rgb(182, 181, 181);
-      color: var(--color-font);
+    background-color: #f1f3f8 !important;
+    border-color: var(--line) !important;
+    color: var(--color-disable) !important;
+    .inner-btn svg {
+      background: #eef0f4;
+      color: var(--color-disable);
     }
+    &:hover {
+      transform: none;
+      background-color: #f1f3f8 !important;
+      color: var(--color-disable) !important;
+    }
+  }
+}
+
+// Group header → clean title with a gradient accent underline
+.name-wrapper {
+  margin-bottom: 14px;
+  padding: 2px 4px 10px;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-black);
+  border-radius: 0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    bottom: 0;
+    width: 34px;
+    height: 3px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-periwinkle));
+  }
+
+  @media screen and (max-width: 576px) {
+    margin-bottom: 12px;
   }
 }
 

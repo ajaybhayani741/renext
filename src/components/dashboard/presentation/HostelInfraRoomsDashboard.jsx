@@ -1,8 +1,8 @@
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries, isEqual } from '../../../utils/javascript'
-import ColumnComparison from '../../charts/ColumnComparison'
-import HCBarChart from '../../charts/HCBarChart'
+import ModernCompareChart from '../shared/ModernCompareChart'
+import ModernFrequencyChart from '../shared/ModernFrequencyChart'
 import hostelInfraRooms from '../container/hostelInfraRooms.container'
 import { hostelInfraRoomsCharts } from '../dashboard.description'
 import DashboardWrapper from './DashboardWrapper'
@@ -32,7 +32,7 @@ const HostelInfraRoomsDashboard = () => {
         return (
           <ANTDColumn xs={24} md={24} key={key}>
             {isEqual(value?.chartType, 'column') ? (
-              <ColumnComparison
+              <ModernCompareChart
                 {...{
                   chartData: axisOptions?.[key],
                   handleChartClick,
@@ -42,7 +42,7 @@ const HostelInfraRoomsDashboard = () => {
                 }}
               />
             ) : (
-              <HCBarChart
+              <ModernFrequencyChart
                 {...{
                   name: key,
                   xAxisTitle: value?.xAxisText,

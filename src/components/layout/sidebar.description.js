@@ -38,8 +38,8 @@ const allUser = [
   admin,
   stateHostelDepartment,
   stateAdminOfficer,
-  // districtCollector,
-  // inspectionOfficer,
+  districtCollector,
+  inspectionOfficer,
   hostel,
 ]
 

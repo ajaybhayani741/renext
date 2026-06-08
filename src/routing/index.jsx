@@ -46,6 +46,8 @@ const UpdatedDashboard = lazy(
 // )
 // const Report = lazy(() => import('../components/report/presentation'))
 
+const Landing = lazy(() => import('../components/landing/presentation/Landing'))
+
 const Routing = () => {
   const routes = useRoutes([
     {
@@ -116,6 +118,7 @@ const Routing = () => {
         { path: '*', element: <PageNotFound /> },
       ],
     },
+    { path: pathName.LANDING, element: <Landing /> },
     { path: pathName.LOGIN, element: <Auth /> },
     { path: pathName.FORGOT_PASSWORD, element: <Auth /> },
   ])

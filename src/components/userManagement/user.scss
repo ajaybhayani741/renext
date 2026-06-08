@@ -23,122 +23,150 @@
 }
 
 .bg-view {
-  background-color: #93e1d8 !important;
-  border-color: #93e1d8 !important;
-  color: black !important;
+  background-color: #e0f2fe !important;
+  border: none !important;
+  color: #0369a1 !important;
   margin: auto 3px !important;
-  border-radius: 10px;
+  border-radius: 4px !important;
+  font-weight: 500;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
 }
 .bg-assign-hostel {
-  background-color: #8bdea2 !important;
-  border-color: #8bdea2 !important;
-  color: black !important;
+  background-color: #dcfce7 !important;
+  border: none !important;
+  color: #15803d !important;
   margin: auto 3px !important;
-  border-radius: 10px;
+  border-radius: 4px !important;
+  font-weight: 500;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
 }
 .bg-assign-hostel-random {
-  background-color: #f9a169 !important;
-  border-color: #f9a169 !important;
-  color: black !important;
+  background-color: #ffedd5 !important;
+  border: none !important;
+  color: #c2410c !important;
   margin: auto 3px !important;
-  border-radius: 10px;
+  border-radius: 4px !important;
+  font-weight: 500;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
 }
 .bg-old-update-inventory {
-  background-color: var(--color-primary) !important;
-  border-color: var(--color-primary) !important;
-  color: #fff !important;
+  background-color: #e0f2fe !important;
+  border: none !important;
+  color: #0369a1 !important;
   margin: auto 3px !important;
-  border-radius: 10px;
+  border-radius: 4px !important;
+  font-weight: 500;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
 }
 @keyframes bgColor {
   from {
     transform: scale(1);
-    background-color: var(--color-primary-light);
+    border-color: transparent;
   }
   to {
     transform: scale(0.9);
-    background-color: var(--color-primary);
+    border-color: transparent;
   }
 }
 .bg-update-inventory {
   animation: bgColor 0.7s infinite alternate;
-  border-color: #b2e2f8 !important;
+  background-color: #e0f2fe !important;
+  border: none !important;
+  color: #0369a1 !important;
   margin: auto 3px !important;
-  border-radius: 10px;
+  border-radius: 4px !important;
+  font-weight: 500;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
   &:hover {
-    background-color: var(--color-primary) !important;
-    color: #fff !important;
+    background-color: #bae6fd !important;
     animation: none;
   }
 }
 
 .bg-excel {
-  background-color: var(--color-primary) !important;
-  border-color: var(--color-primary) !important;
-  color: white !important;
+  background-color: #e0f2fe !important;
+  border: none !important;
+  color: #0369a1 !important;
   margin: auto 3px !important;
-  border-radius: 10px;
+  border-radius: 4px !important;
+  font-weight: 500;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
 }
 
 .bg-danger {
-  background-color: #ffa69e !important;
-  border-color: #ffa69e !important;
-  color: black !important;
+  background-color: #fee2e2 !important;
+  border: none !important;
+  color: #b91c1c !important;
   margin: auto 3px !important;
-  border-radius: 10px;
-  padding: 4px 12px !important;
+  border-radius: 4px !important;
+  padding: 4px 10px !important;
+  font-weight: 500;
+  font-size: 12px !important;
 
   @media screen and (max-width: 768px) {
-    padding: 3px 10px !important;
-    font-size: 13px;
+    padding: 2px 8px !important;
+    font-size: 11px !important;
     margin: auto 2px !important;
   }
 
   @media screen and (max-width: 480px) {
-    padding: 2px 8px !important;
-    font-size: 12px;
+    padding: 2px 6px !important;
+    font-size: 10px !important;
     margin: auto 1px !important;
   }
 }
 
 .bg-revert {
-  background-color: #ffa69e !important;
-  border-color: #ffa69e !important;
-  color: black !important;
-  border-radius: 10px;
-  padding: 4px 37px !important;
+  background-color: #fee2e2 !important;
+  border: none !important;
+  color: #b91c1c !important;
+  border-radius: 4px !important;
+  padding: 4px 10px !important;
+  font-weight: 500;
+  font-size: 12px !important;
 
   @media screen and (max-width: 768px) {
-    padding: 3px 10px !important;
+    padding: 2px 8px !important;
   }
 }
 
 .bg-edit {
-  background-color: #f4c095 !important;
-  border-color: #f4c095 !important;
-  color: black !important;
+  background-color: #fef9c3 !important;
+  border: none !important;
+  color: #a16207 !important;
   margin: auto 3px !important;
-  border-radius: 10px;
-  padding: 4px 12px !important;
+  border-radius: 4px !important;
+  padding: 4px 10px !important;
+  font-weight: 500;
+  font-size: 12px !important;
 
   @media screen and (max-width: 768px) {
-    padding: 3px 10px !important;
-    font-size: 13px;
+    padding: 2px 8px !important;
+    font-size: 11px !important;
     margin: auto 2px !important;
   }
 
   @media screen and (max-width: 480px) {
-    padding: 2px 8px !important;
-    font-size: 12px;
+    padding: 2px 6px !important;
+    font-size: 10px !important;
     margin: auto 1px !important;
   }
 }
 .bg-start {
-  background-color: #f4c095 !important;
-  border-color: #f4c095 !important;
-  color: black !important;
+  background-color: #fef9c3 !important;
+  border: none !important;
+  color: #a16207 !important;
   margin: auto 3px !important;
-  border-radius: 10px;
+  border-radius: 4px !important;
+  font-weight: 500;
+  padding: 4px 10px !important;
+  font-size: 12px !important;
 }
 
 .add-btn {
@@ -222,7 +250,7 @@
 }
 
 .content-title {
-  background: var(--color-primary-light);
+  background: transparent;
   padding: 5px 10px;
   align-items: center;
   &:not(.title-text) {
@@ -239,11 +267,24 @@
 }
 
 .user-table {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: none;
+  margin-top: 16px;
+
   th {
     white-space: nowrap;
+    background: transparent !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    color: #64748b !important;
+    font-weight: 600 !important;
   }
   tr {
     td {
+      white-space: nowrap;
+      border-bottom: 1px solid #f1f5f9 !important;
+      padding: 12px 16px !important;
       &:last-child {
         width: 11%;
       }
@@ -264,11 +305,15 @@
   .card-extra-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
 
     .ant-btn {
       margin: 0 !important;
+      padding: 4px 10px !important;
+      font-size: 13px !important;
+      height: auto !important;
+      line-height: 1.4 !important;
     }
   }
 }

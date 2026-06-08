@@ -1,8 +1,48 @@
 .layout {
   min-height: 100dvh;
-  background-color: #f6f6f6;
+  background-color: #f4f7fc; // Soft cool pastel off-white
+  // Professional subtle dotted grid pattern
+  background-image: radial-gradient(rgba(140, 150, 170, 0.15) 1.5px, transparent 1.5px);
+  background-size: 30px 30px;
+  background-position: 0 0;
   max-height: 100dvh;
   overflow-y: auto;
+  position: relative;
+  z-index: 1;
+
+  // Global pastel aurora background blobs
+  &::before,
+  &::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: 0; // Fix: Set to 0 so they sit on top of the layout background
+    pointer-events: none;
+    animation: drift 25s infinite alternate ease-in-out;
+  }
+
+  &::before {
+    top: -10%;
+    left: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(210, 225, 255, 0.8) 0%, transparent 70%);
+  }
+
+  &::after {
+    bottom: -10%;
+    right: -10%;
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, rgba(235, 215, 255, 0.7) 0%, transparent 70%);
+    animation-delay: -12.5s;
+  }
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(6%, 6%) scale(1.1); }
 }
 img {
   max-width: 100%;
@@ -10,10 +50,10 @@ img {
 }
 
 .footer {
-  background: var(--color-primary);
+  background: transparent; // Clean, invisible footer to match modern look
   z-index: 9;
   padding: 10px;
-  color: var(--color-white);
+  color: var(--color-disable);
   display: flex;
   align-items: flex-end;
   justify-content: end;
@@ -23,7 +63,6 @@ img {
   right: 0;
   transition: all 0.3s ease-in-out;
 
-  // Set footer height as CSS variable for use in other components
   min-height: 40px;
   --footer-height: 40px;
 
@@ -133,6 +172,81 @@ img {
   transition:
     all 0.3s ease-in-out,
     opacity 0.3s ease-in-out;
+  position: relative;
+  overflow-x: hidden;
+  z-index: 1;
+
+  // Set the abstract pastel background illustration
+  background-image: url('../../assets/main_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  // Global subtle glow for inner pages
+  &::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: 0;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    transform: translate(30%, -30%);
+    z-index: 0;
+    opacity: 0.25;
+    pointer-events: none;
+    transition: background 0.5s ease;
+  }
+
+  &.theme-purple {
+    &::before { background: radial-gradient(circle, var(--color-pastel-purple) 0%, transparent 70%); }
+    .ant-table { border-color: #e2d9f3 !important; }
+    .ant-table-thead > tr > th { background: var(--color-pastel-purple) !important; color: var(--fg-purple) !important; border-bottom-color: #e2d9f3 !important; }
+    .ant-table-tbody > tr > td { border-bottom-color: #e2d9f3 !important; }
+  }
+  &.theme-green {
+    &::before { background: radial-gradient(circle, var(--color-pastel-green) 0%, transparent 70%); }
+    .ant-table { border-color: #d6eedd !important; }
+    .ant-table-thead > tr > th { background: var(--color-pastel-green) !important; color: var(--fg-green) !important; border-bottom-color: #d6eedd !important; }
+    .ant-table-tbody > tr > td { border-bottom-color: #d6eedd !important; }
+  }
+  &.theme-orange {
+    &::before { background: radial-gradient(circle, var(--color-pastel-orange) 0%, transparent 70%); }
+    .ant-table { border-color: #fce1d2 !important; }
+    .ant-table-thead > tr > th { background: var(--color-pastel-orange) !important; color: var(--fg-orange) !important; border-bottom-color: #fce1d2 !important; }
+    .ant-table-tbody > tr > td { border-bottom-color: #fce1d2 !important; }
+  }
+  &.theme-blue {
+    &::before { background: radial-gradient(circle, var(--color-pastel-blue) 0%, transparent 70%); }
+    .ant-table { border-color: #d6eaff !important; }
+    .ant-table-thead > tr > th { background: var(--color-pastel-blue) !important; color: var(--fg-blue) !important; border-bottom-color: #d6eaff !important; }
+    .ant-table-tbody > tr > td { border-bottom-color: #d6eaff !important; }
+  }
+  &.theme-red {
+    &::before { background: radial-gradient(circle, var(--color-pastel-red) 0%, transparent 70%); }
+    .ant-table { border-color: #fed7d7 !important; }
+    .ant-table-thead > tr > th { background: var(--color-pastel-red) !important; color: var(--fg-red) !important; border-bottom-color: #fed7d7 !important; }
+    .ant-table-tbody > tr > td { border-bottom-color: #fed7d7 !important; }
+  }
+  &.theme-yellow {
+    &::before { background: radial-gradient(circle, var(--color-pastel-yellow) 0%, transparent 70%); }
+    .ant-table { border-color: #fef0c7 !important; }
+    .ant-table-thead > tr > th { background: var(--color-pastel-yellow) !important; color: var(--fg-yellow) !important; border-bottom-color: #fef0c7 !important; }
+    .ant-table-tbody > tr > td { border-bottom-color: #fef0c7 !important; }
+  }
+  &.theme-cyan {
+    &::before { background: radial-gradient(circle, var(--color-pastel-cyan) 0%, transparent 70%); }
+    .ant-table { border-color: #cffafe !important; }
+    .ant-table-thead > tr > th { background: var(--color-pastel-cyan) !important; color: var(--fg-cyan) !important; border-bottom-color: #cffafe !important; }
+    .ant-table-tbody > tr > td { border-bottom-color: #cffafe !important; }
+  }
+  &.theme-teal {
+    &::before { background: radial-gradient(circle, var(--color-pastel-teal) 0%, transparent 70%); }
+    .ant-table { border-color: #ccfbf1 !important; }
+    .ant-table-thead > tr > th { background: var(--color-pastel-teal) !important; color: var(--fg-teal) !important; border-bottom-color: #ccfbf1 !important; }
+    .ant-table-tbody > tr > td { border-bottom-color: #ccfbf1 !important; }
+  }
 
   @media screen and (min-width: 992px) {
     margin-left: 255px;
@@ -145,8 +259,8 @@ img {
   }
 
   .ant-layout-content {
-    margin-top: 70px;
-    padding: 0px 20px 80px;
+    margin-top: 20px;
+    padding: 20px 24px 80px;
     position: relative;
 
     @media screen and (max-width: 991px) {
@@ -164,23 +278,31 @@ img {
 
 .ant-layout {
   .ant-layout-header {
-    background-color: var(--color-primary);
-    padding-inline: 20px;
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    right: 0;
-
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 9999px;
+    box-shadow: var(--shadow-floating);
+    padding: 0 20px;
+    position: sticky;
+    top: 20px;
+    margin: 0 auto;
+    width: 96%;
+    max-width: 1400px;
+    height: 52px;
+    line-height: 52px;
+    z-index: 100;
+    
     @media screen and (min-width: 992px) {
-      left: auto;
-      right: 0;
-      width: calc(100% - 255px);
+      width: 96%;
       transition: all 0.3s ease-in-out;
     }
 
     @media screen and (max-width: 991px) {
       padding-right: 15px;
       padding-left: 15px;
+      top: 10px;
+      margin: 0 10px;
     }
 
     .right-content {
@@ -192,8 +314,10 @@ img {
     }
 
     .nav-toggle {
-      color: var(--color-white);
+      color: var(--color-font);
       margin-right: 10px;
+      display: flex;
+      align-items: center;
 
       @media only screen and (min-width: 992px) {
         display: none;
@@ -209,15 +333,15 @@ img {
     }
 
     .username {
-      color: var(--color-white);
-      font-size: 22px;
+      color: var(--color-primary-dark);
+      font-size: 20px;
       font-weight: 700;
       max-width: 85%;
       display: flex;
       line-height: normal;
       align-items: center;
-      flex-direction: column;
-      justify-content: center;
+      flex-direction: row;
+      justify-content: flex-start;
       height: auto;
       margin: 0;
 
@@ -351,14 +475,21 @@ img {
     }
 
     .notification-container {
-      font-size: 24px;
+      font-size: 22px;
       position: relative;
-      min-width: 50px;
+      min-width: 40px;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       .anticon-bell {
-        color: var(--color-white);
+        color: var(--color-font);
         cursor: pointer;
+        transition: color 0.2s ease;
+        &:hover {
+          color: var(--color-primary);
+        }
       }
 
       .ant-scroll-number,
@@ -426,8 +557,9 @@ img {
   min-width: 255px;
   transition: all 0.3s ease-in-out;
   overflow-y: auto;
-  z-index: 11;
-  border-right: 1px solid var(--color-primary-xlight);
+  z-index: 101; // Must be higher than the sticky header
+  border-right: none; // Removing hard borders for soft look
+  box-shadow: 2px 0 10px rgba(0,0,0,0.02);
   will-change: width;
 
   .ant-menu-title-content {
@@ -457,26 +589,82 @@ img {
     flex-direction: column;
     height: calc(100vh - 140px);
     overflow-y: auto;
+    padding: 4px 0 12px;
     ul.ant-menu {
       height: 100%;
+      border-inline-end: none;
       li {
+        margin-block: 2px;
+        transition: background 0.2s var(--ease), color 0.2s var(--ease);
+        border-radius: 12px;
+        // Icon becomes a soft rounded tile (dashboard DNA)
         svg {
-          background-color: var(--color-primary-dark);
+          background-color: var(--neutral-tile);
           padding: 5px;
-          color: #fff;
-          border-radius: 8px;
+          color: var(--muted);
+          border-radius: 11px;
+          transition: background 0.25s var(--ease-spring),
+            color 0.25s var(--ease-spring), box-shadow 0.25s var(--ease);
         }
+        
+        // HOST themed pastel hover effect
+        &.ant-menu-item:hover,
+        &.ant-menu-item-active,
+        &:hover {
+          background-color: var(--color-pastel-blue) !important;
+          color: var(--color-primary-dark) !important;
+          
+          svg {
+            background-color: var(--color-primary-ylight) !important;
+            color: var(--color-primary) !important;
+          }
+        }
+        
         &.ant-menu-item-disabled {
           svg {
-            color: grey;
-            background: gainsboro;
+            color: var(--color-disable);
+            background: #eef0f4;
           }
         }
         &.ant-menu-item-selected {
-          border-radius: 20px;
-          background-color: var(--color-primary-xlight);
-          color: #fff;
+          border-radius: 12px;
+          background: linear-gradient(
+            100deg,
+            var(--color-primary-ylight),
+            var(--color-primary-xlight)
+          );
+          color: var(--color-primary-dark);
+          font-weight: 650;
+          box-shadow: none;
+          svg {
+            background-color: var(--color-primary);
+            color: #fff;
+            box-shadow: var(--shadow-primary);
+          }
         }
+      }
+      // Submenu parent icons get the same tile treatment
+      .ant-menu-submenu-title {
+        transition: background 0.2s var(--ease), color 0.2s var(--ease);
+        border-radius: 12px;
+        
+        &:hover {
+          background-color: var(--color-pastel-blue) !important;
+          color: var(--color-primary-dark) !important;
+        }
+
+        svg {
+          background-color: var(--neutral-tile);
+          padding: 5px;
+          color: var(--muted);
+          border-radius: 11px;
+          transition: all 0.25s var(--ease);
+        }
+      }
+      .ant-menu-submenu-selected > .ant-menu-submenu-title svg,
+      .ant-menu-submenu-title:hover svg {
+        background-color: var(--color-primary-ylight) !important;
+        color: var(--color-primary) !important;
       }
     }
   }
@@ -535,18 +723,20 @@ img {
   }
 
   img {
-    max-width: 100%;
+    max-width: 65%; // Scaled down to prevent overlap
+    max-height: 80px; // Scaled down
     height: auto;
     transition: all 0.3s ease-in-out;
+    object-fit: contain;
 
     @media screen and (max-width: 991px) {
-      max-width: 70%;
-      max-height: 105px;
+      max-width: 60%;
+      max-height: 60px;
     }
 
     @media screen and (max-width: 576px) {
-      max-width: 60%;
-      max-height: 90px;
+      max-width: 55%;
+      max-height: 50px;
     }
   }
 }
@@ -637,52 +827,19 @@ img {
   width: auto !important;
 }
 
-.ant-menu-collapse {
-  padding: 4px !important;
-  z-index: 20;
-  background-color: var(--color-primary-dark);
-  border-radius: 50% !important;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--color-primary) !important;
-  }
-}
-
-.ant-menu-uncollapse-dimensions {
-  height: 25px !important;
-  width: 25px;
-  position: absolute;
-  left: 239px;
-  top: 126px;
-}
-
-.ant-menu-collapse-dimensions {
-  width: 25px !important;
-  height: 25px !important;
-  position: absolute;
-  left: 64px;
-  top: 126px;
-}
-
 @media (max-width: 991px) {
   .ant-menu-collapse-mobile {
     display: none;
   }
 }
 
-.fold_icon {
-  width: 80% !important;
-  height: 100% !important;
-  display: flex !important;
-  color: var(--color-white);
-}
-
 .logo_collapsed-menu {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 7px;
-  border-bottom: 2px solid gray;
+  margin: 0 16px;
+  border-bottom: 1px solid var(--light-gray);
+  padding-bottom: 8px;
 }
 
 .ant-menu-submenu-popup {
@@ -745,5 +902,427 @@ img {
     word-wrap: break-word;
     word-break: break-word;
     line-height: 1.5;
+  }
+}
+
+/* =====================================================================
+   UI REVAMP ADDITIONS — header, sidebar brand, popups, transitions
+   Purely visual; appended last so it wins cleanly.
+   ===================================================================== */
+
+// --- Floating header: refine welcome text + action buttons ---
+.ant-layout .ant-layout-header {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  gap: 6px;
+
+  .username {
+    color: var(--color-font);
+    font-weight: 600;
+
+    .welcome-label {
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .user_name,
+    .review-text {
+      color: var(--color-primary-dark);
+      font-weight: 700;
+    }
+  }
+
+  // Back / menu nav icons sit in subtle circular buttons
+  .nav-toggle {
+    .anticon {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--color-bg);
+      color: var(--color-font);
+      transition: all 0.2s var(--ease);
+      &:hover {
+        background: var(--color-primary-ylight);
+        color: var(--color-primary);
+      }
+    }
+  }
+
+  // Notification bell → circular icon button with hover
+  .notification-container {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    transition: all 0.2s var(--ease);
+    margin-right: 8px;
+    &:hover {
+      background: var(--color-primary-ylight);
+      transform: translateY(-1px);
+    }
+    .anticon-bell {
+      font-size: 19px;
+    }
+  }
+
+  // Profile avatar lifts on hover
+  .profile-btn {
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
+    }
+  }
+
+  // Language selector pill
+  .lang-selector .ant-select-selector {
+    border-radius: var(--radius-pill) !important;
+    background: var(--color-bg) !important;
+    border-color: transparent !important;
+  }
+}
+
+// --- Sidebar brand divider polish ---
+.logo_collapsed-menu {
+  border-bottom: 1px solid var(--line);
+}
+.brand-logo {
+  height: 110px;
+}
+
+// --- Collapse toggle button: softer floating disc ---
+.ant-menu-collapse {
+  background-color: var(--surface) !important;
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.2s var(--ease);
+  .fold_icon {
+    color: var(--color-primary) !important;
+  }
+  &:hover {
+    background-color: var(--color-primary-ylight) !important;
+    border-color: var(--color-primary-light);
+    transform: scale(1.08);
+  }
+}
+
+// --- Submenu popup: give icons the same tile treatment ---
+.ant-menu-submenu-popup {
+  .ant-menu {
+    border-radius: 16px;
+    box-shadow: var(--shadow-floating);
+    padding: 6px;
+  }
+  li {
+    border-radius: 12px !important;
+    svg {
+      background-color: var(--neutral-tile);
+      padding: 5px;
+      color: var(--muted);
+      border-radius: 11px;
+    }
+    &.ant-menu-item-selected svg,
+    &:hover svg {
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+  }
+}
+
+// --- Smooth content entrance on route change ---
+.main-layout .ant-layout-content {
+  animation: hostFadeUp 0.45s var(--ease-out) both;
+}
+@keyframes hostFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .main-layout .ant-layout-content {
+    animation: none;
+  }
+}
+
+/* =====================================================================
+   V2 — sidebar footer (profile + sign out), header actions,
+   content back button, beautiful language toggle
+   ===================================================================== */
+
+// Make the sidebar a flex column so the footer anchors to the bottom
+.ant-layout-sider .ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.menu-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto !important;
+}
+
+.sidebar-footer {
+  margin: 15px;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .sb-collapse-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-font);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+    .anticon {
+      font-size: 15px;
+      color: var(--muted);
+      transition: color 0.2s var(--ease);
+    }
+    &:hover {
+      background: var(--color-pastel-blue);
+      color: var(--color-primary-dark);
+      .anticon {
+        color: var(--color-primary);
+      }
+    }
+  }
+  background: var(--surface);
+
+  .sb-profile {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 9px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.2s var(--ease);
+    &:hover {
+      background: var(--color-bg);
+    }
+  }
+  .sb-avatar {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-periwinkle));
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .sb-profile-meta {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    line-height: 1.25;
+  }
+  .sb-name {
+    font-size: 13.5px;
+    font-weight: 650;
+    color: var(--color-black);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+  .sb-link {
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  .sb-logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: #e11d48;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+    .anticon {
+      font-size: 15px;
+      color: #e11d48;
+      transition: color 0.2s var(--ease);
+    }
+    &:hover {
+      border-color: #fecaca;
+      background: #fef2f2;
+      color: #dc2626;
+      .anticon {
+        color: #dc2626;
+      }
+    }
+  }
+}
+
+// Collapsed sidebar: center footer items, hide text
+.collapsed-sider .sidebar-footer {
+  padding: 12px 0;
+  align-items: center;
+  .sb-profile {
+    justify-content: center;
+    padding: 6px;
+  }
+  .sb-logout,
+  .sb-collapse-toggle {
+    justify-content: center;
+    width: 48px;
+    height: 44px;
+    padding: 0;
+  }
+}
+
+/* ---------- Header actions: bell + language ---------- */
+.header-actions {
+  gap: 6px;
+}
+.header-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-bg);
+  color: var(--color-font);
+  cursor: pointer;
+  font-size: 19px;
+  transition: all 0.2s var(--ease);
+  .anticon {
+    font-size: 19px;
+  }
+  &:hover {
+    background: var(--color-primary-ylight);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+  }
+}
+
+// Hamburger (mobile)
+.hamburger-btn {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-bg);
+  color: var(--color-font);
+  cursor: pointer;
+  font-size: 19px;
+  transition: all 0.2s var(--ease);
+  &:hover {
+    background: var(--color-primary-ylight);
+    color: var(--color-primary);
+  }
+}
+
+/* ---------- Beautiful language toggle ---------- */
+.ant-layout-header .lang-selector {
+  margin-left: 6px;
+  .ant-select-selector {
+    height: 44px !important;
+    border-radius: var(--radius-pill) !important;
+    background: var(--color-bg) !important;
+    border: 1px solid transparent !important;
+    padding: 0 16px !important;
+    display: flex;
+    align-items: center;
+    box-shadow: none !important;
+    transition: all 0.2s var(--ease);
+  }
+  &:hover .ant-select-selector {
+    background: var(--color-primary-ylight) !important;
+    border-color: var(--color-primary-light) !important;
+  }
+  .ant-select-selection-item {
+    font-weight: 650;
+    color: var(--color-font);
+    display: flex;
+    align-items: center;
+  }
+  .ant-select-arrow {
+    color: var(--color-primary) !important;
+  }
+}
+.language-dropdown-menu {
+  border-radius: 14px !important;
+  box-shadow: var(--shadow-floating) !important;
+  padding: 6px !important;
+  .ant-select-item {
+    border-radius: 9px;
+    font-weight: 550;
+    padding: 9px 12px;
+  }
+  .ant-select-item-option-selected {
+    background: var(--color-primary-ylight) !important;
+    color: var(--color-primary-dark) !important;
+    font-weight: 650;
+  }
+}
+
+/* ---------- Proper back button (in content, not header) ---------- */
+.content-back-row {
+  margin-bottom: 14px;
+}
+.content-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px 0 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--color-font);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: all 0.22s var(--ease);
+  .anticon {
+    font-size: 15px;
+    transition: transform 0.22s var(--ease);
+  }
+  &:hover {
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft);
+    .anticon {
+      transform: translateX(-3px);
+    }
   }
 }

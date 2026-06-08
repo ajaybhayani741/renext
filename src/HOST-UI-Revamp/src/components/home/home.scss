@@ -1,0 +1,171 @@
+/* =====================================================================
+   HOME LAUNCHER — refactored to the dashboard's card system.
+   Structure preserved (ButtonLinkBox columns + Ant primary buttons);
+   only the visual layer changes, so all navigation/dispatch stays intact.
+   ===================================================================== */
+
+.list-column-row {
+  flex-wrap: wrap;
+  gap: 4px;
+  @media screen and (max-width: 991px) {
+    flex-wrap: wrap;
+  }
+}
+
+.list-column-wrapper {
+  width: 100%;
+  max-width: 300px;
+  @media screen and (max-width: 991px) {
+    max-width: 50%;
+  }
+  @media screen and (max-width: 576px) {
+    max-width: 100%;
+  }
+}
+
+// Each group becomes a soft white card
+.list-columns {
+  width: calc(100% - 14px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  margin: 7px;
+  padding: 18px 16px 8px;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  @media screen and (max-width: 576px) {
+    margin: 0px 0px 15px;
+    width: 100%;
+  }
+
+  .ant-row {
+    padding: 0 4px 8px 4px;
+    flex-direction: column;
+  }
+
+  // Action buttons → clean tinted rows with an icon tile
+  .ant-btn.ant-btn-lg,
+  .ant-btn {
+    font-size: 15px;
+    padding: 10px 14px;
+    height: auto;
+    justify-content: flex-start;
+    text-align: start;
+    border-radius: var(--radius-md) !important;
+    background: var(--surface-tint) !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: none !important;
+    color: var(--color-font) !important;
+    font-weight: 600;
+    transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out),
+      background 0.2s var(--ease), border-color 0.2s var(--ease);
+
+    @media screen and (max-width: 576px) {
+      font-size: 14px;
+    }
+
+    .inner-btn {
+      gap: 4px;
+      svg {
+        height: 38px;
+        width: 38px;
+        padding: 7px;
+        margin-right: 10px;
+        margin-left: 0;
+        flex: 0 0 auto;
+        color: var(--color-primary);
+        background: var(--color-primary-ylight);
+        border-radius: 11px;
+        transition: all 0.25s var(--ease-spring);
+
+        @media screen and (max-width: 576px) {
+          height: 34px;
+          width: 34px;
+        }
+      }
+    }
+
+    &:hover {
+      background: #fff !important;
+      border-color: var(--color-primary-light) !important;
+      transform: translateX(4px);
+      box-shadow: var(--shadow-soft) !important;
+      color: var(--color-primary-dark) !important;
+      .inner-btn svg {
+        background: var(--color-primary);
+        color: #fff;
+        box-shadow: var(--shadow-primary);
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .ant-badge {
+    width: 100%;
+    padding: 0 4px;
+    margin-bottom: 10px;
+    .ant-badge-count {
+      top: 6px;
+      right: 6px;
+      box-shadow: 0 0 0 2px #fff;
+    }
+  }
+
+  .ant-btn-primary:disabled {
+    background-color: #f1f3f8 !important;
+    border-color: var(--line) !important;
+    color: var(--color-disable) !important;
+    .inner-btn svg {
+      background: #eef0f4;
+      color: var(--color-disable);
+    }
+    &:hover {
+      transform: none;
+      background-color: #f1f3f8 !important;
+      color: var(--color-disable) !important;
+    }
+  }
+}
+
+// Group header → clean title with a gradient accent underline
+.name-wrapper {
+  margin-bottom: 14px;
+  padding: 2px 4px 10px;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-black);
+  border-radius: 0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    bottom: 0;
+    width: 34px;
+    height: 3px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-periwinkle));
+  }
+
+  @media screen and (max-width: 576px) {
+    margin-bottom: 12px;
+  }
+}
+
+.wrap-text-3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+}

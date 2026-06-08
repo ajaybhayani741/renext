@@ -2,7 +2,7 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries } from '../../../utils/javascript'
-import ColumnComparison from '../../charts/ColumnComparison'
+import ModernCompareChart from '../shared/ModernCompareChart'
 import hostelAuthority from '../container/hostelAuthority.container'
 import { hostelAuthorityCharts } from '../dashboard.description'
 
@@ -25,7 +25,7 @@ const HostelAuthorityDashboard = () => {
       {entries(hostelAuthorityCharts)?.map(([key]) => {
         return (
           <ANTDColumn xs={24} md={12} key={key}>
-            <ColumnComparison
+            <ModernCompareChart
               {...{
                 name: key,
                 chartData,

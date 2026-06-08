@@ -2,7 +2,7 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries } from '../../../utils/javascript'
-import ColumnComparison from '../../charts/ColumnComparison'
+import ModernCompareChart from '../shared/ModernCompareChart'
 import recordMaintenance from '../container/recordMaintenance.container'
 import { recordMaintenanceCharts } from '../dashboard.description'
 
@@ -31,7 +31,7 @@ const RecordMaintenanceDashboard = () => {
       {entries(recordMaintenanceCharts)?.map(([key]) => {
         return (
           <ANTDColumn xs={24} md={24} key={key}>
-            <ColumnComparison
+            <ModernCompareChart
               {...{
                 name: key,
                 chartData,
