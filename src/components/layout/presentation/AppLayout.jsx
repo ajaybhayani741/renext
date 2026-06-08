@@ -16,7 +16,6 @@ import ANTDLayout, {
 } from '../../../shared/antd/ANTDLayout'
 import ANTDMenu from '../../../shared/antd/ANTDMenu'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
-import ANTDToolTip from '../../../shared/antd/ANTDTooltip'
 import pathName from '../../../routing/pathName.constant'
 import configData from '../../../utils/config'
 import { userWiseRole } from '../../../utils/constant'
@@ -104,17 +103,15 @@ function AppLayout() {
 
         {/* Profile + Sign out + Collapse anchored to the bottom of the sidebar */}
         <div className="sidebar-footer">
-          <ANTDToolTip title={collapsed ? t('btn_Collapse', 'Expand Sidebar') : ''}>
-            <button
-              type="button"
-              className="sb-collapse-toggle"
-              onClick={toggleCollapsed}
-              aria-label="Toggle Sidebar"
-            >
-              {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              {!collapsed && <span>{t('btn_Collapse', 'Collapse Sidebar')}</span>}
-            </button>
-          </ANTDToolTip>
+          <button
+            type="button"
+            className="sb-collapse-toggle"
+            onClick={toggleCollapsed}
+            aria-label="Toggle Sidebar"
+          >
+            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            {!collapsed && <span>{t('btn_Collapse', 'Collapse Sidebar')}</span>}
+          </button>
           <div
             className="sb-profile"
             role="button"
@@ -131,24 +128,20 @@ function AppLayout() {
             </span>
             {!collapsed && (
               <span className="sb-profile-meta">
-                <ANTDToolTip>
-                  <span className="sb-name">{displayName}</span>
-                </ANTDToolTip>
+                <span className="sb-name">{displayName}</span>
                 <span className="sb-link">{t('txt_Profile')}</span>
               </span>
             )}
           </div>
-          <ANTDToolTip title={collapsed ? t('btn_Logout') : ''}>
-            <button
-              type="button"
-              className="sb-logout"
-              onClick={handleLogout}
-              aria-label={t('btn_Logout')}
-            >
-              <PoweroffOutlined />
-              {!collapsed && <span>{t('btn_Logout')}</span>}
-            </button>
-          </ANTDToolTip>
+          <button
+            type="button"
+            className="sb-logout"
+            onClick={handleLogout}
+            aria-label={t('btn_Logout')}
+          >
+            <PoweroffOutlined />
+            {!collapsed && <span>{t('btn_Logout')}</span>}
+          </button>
         </div>
       </ANTDSider>
 

@@ -46,16 +46,16 @@ function UserList({
   return (
     <div className={className}>
       <div
-        className={`d-flex align-items-center mb-10 ${
-          showAdd && subTitle ? 'justify-content-between' : showAdd ? 'justify-content-end' : ''
+        className={`d-flex align-items-center mb-5 ${
+          showAdd && subTitle
+            ? 'justify-content-between'
+            : showAdd
+              ? 'justify-content-end'
+              : ''
         }`}
         style={{ flexWrap: 'wrap', gap: '10px' }}
       >
-        {subTitle && (
-          <h3 style={{ margin: 0, padding: 0 }}>
-            {t(subTitle)}
-          </h3>
-        )}
+        {subTitle && <h3 style={{ margin: 0, padding: 0 }}>{t(subTitle)}</h3>}
         {showAdd &&
           (isEqual(loginUserRoleId?.roleId, admin)
             ? !isEqual(payload?.roleId, hostel)

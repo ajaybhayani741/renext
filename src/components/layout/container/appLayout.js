@@ -6,7 +6,6 @@ import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import { setDeviceStatus, setMobileStatus } from '../../../redux/app/reducer'
 import pathName, { USER_TXT } from '../../../routing/pathName.constant'
-import ANTDTooltip from '../../../shared/antd/ANTDTooltip'
 import { userWiseRole } from '../../../utils/constant'
 import {
   entries,
@@ -82,7 +81,8 @@ const appLayout = () => {
           const { key, label, Icon, disabled } = menu
           const filteredMenu = {
             key,
-            label: <ANTDTooltip>{t(label)}</ANTDTooltip>,
+            label: t(label),
+            title: false,
             className: newClass,
             Icon,
             disabled,
@@ -103,7 +103,8 @@ const appLayout = () => {
             const { key, label, Icon, disabled } = menu
             const filteredMenu = {
               key,
-              label: <ANTDTooltip>{t(label)}</ANTDTooltip>,
+              label: t(label),
+              title: false,
               children: filteredChildren,
               className: newClass,
               Icon,

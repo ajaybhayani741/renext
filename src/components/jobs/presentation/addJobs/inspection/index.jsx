@@ -92,8 +92,8 @@ const InspectionJob = ({ editData, setEditData }) => {
   const displayForm = {
     0: (
       <>
-        <ANTDRow className="date-management-number" gutter={10}>
-          <ANTDColumn md={12} lg={12} sm={24} xs={24}>
+        <ANTDRow className="date-management-number" gutter={[10, 10]}>
+          <ANTDColumn md={24} lg={12} sm={24} xs={24}>
             <ANTDFormItem
               label={t('job_DateOfInspectionAndTime')}
               name={'inspectionDate'}
@@ -116,11 +116,11 @@ const InspectionJob = ({ editData, setEditData }) => {
             </ANTDFormItem>
           </ANTDColumn>
           <ANTDColumn
-            md={12}
+            md={24}
             lg={12}
             sm={24}
             xs={24}
-            className="d-flex space-between"
+            className="d-flex space-between inspection-location-capture-column"
             style={{ alignItems: 'baseline' }}
           >
             <ANTDFormItem
@@ -136,7 +136,11 @@ const InspectionJob = ({ editData, setEditData }) => {
             >
               <ANTDInput disabled />
             </ANTDFormItem>
-            <ANTDFormItem label=" " layout="vertical" className="ml-5">
+            <ANTDFormItem
+              label=" "
+              layout="vertical"
+              className="ml-5 capture-location-action"
+            >
               <ANTDButton type="primary" onClick={getCurrentLocation}>
                 {t('job_CaptureLocation')}
               </ANTDButton>

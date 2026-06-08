@@ -29,9 +29,17 @@ const UserManagement = () => {
 
   return (
     <div>
-      <div className="d-flex align-items-center justify-content-between mb-10" style={{ flexWrap: 'wrap', gap: '10px' }}>
-        <h2 className="page-title" style={{ margin: 0 }}>{t(userTitle)}</h2>
-        <div className="text-end d-flex justify-content-end" style={{ gap: '10px' }}>
+      <div
+        className="d-flex align-items-center space-between"
+        style={{ flexWrap: 'wrap', gap: '10px' }}
+      >
+        <h2 className="page-title" style={{ margin: 0 }}>
+          {t(userTitle)}
+        </h2>
+        <div
+          className="text-end d-flex justify-content-end"
+          style={{ gap: '10px' }}
+        >
           {isEqual(defaultPayload?.roleId, hostel) ? (
             <>
               {/* <FiscalYearSelect className="ml-auto mb-10" setDefault={false} /> */}

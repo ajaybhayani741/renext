@@ -151,7 +151,7 @@ function UserTable({
           null,
         )}
       </>
-      <div className="mt-10 user-table-card">
+      <div className="mt-5 user-table-card">
         {ternary(
           !isCardView && isDesktop,
           <ANTDTable

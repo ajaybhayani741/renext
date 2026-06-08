@@ -79,7 +79,7 @@ const JobTable = ({
             x: '100%',
           }}
         />,
-        <div className="mt-20">
+        <div className="mt-5">
           {loader && (
             <div className="job-apiLoader fixed-loader">
               <ANTDSpin size="large" />
@@ -91,7 +91,7 @@ const JobTable = ({
                 key={item.id}
                 className={`list-card-view`}
                 style={{
-                  marginBottom: index === list?.length - 1 ? '0' : '',
+                  marginBottom: index === list?.length - 1 ? '90px' : '',
                 }}
                 title={null}
                 extra={
