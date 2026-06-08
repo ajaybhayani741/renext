@@ -46,18 +46,13 @@ function UserList({
   return (
     <div className={className}>
       <div
-        className={`d-flex ${
-          showAdd && subTitle ? 'space-between' : showAdd ? 'flex-end' : ''
+        className={`d-flex align-items-center mb-10 ${
+          showAdd && subTitle ? 'justify-content-between' : showAdd ? 'justify-content-end' : ''
         }`}
+        style={{ flexWrap: 'wrap', gap: '10px' }}
       >
         {subTitle && (
-          <h3
-            style={{
-              marginTop: '10px',
-              marginBottom: '5px',
-              padding: '5px',
-            }}
-          >
+          <h3 style={{ margin: 0, padding: 0 }}>
             {t(subTitle)}
           </h3>
         )}
@@ -65,7 +60,7 @@ function UserList({
           (isEqual(loginUserRoleId?.roleId, admin)
             ? !isEqual(payload?.roleId, hostel)
             : !include([inspectionOfficer], payload?.roleId)) && (
-            <div className="d-flex flex-end mt-10">
+            <div className="d-flex justify-content-end">
               <ANTDButton
                 type="primary"
                 className="btn text-end"

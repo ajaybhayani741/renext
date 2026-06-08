@@ -29,35 +29,37 @@ const UserManagement = () => {
 
   return (
     <div>
-      <h2 className="page-title">{t(userTitle)}</h2>
-      <div className="text-end mt-10  d-flex justify-content-end">
-        {isEqual(defaultPayload?.roleId, hostel) ? (
-          <>
-            {/* <FiscalYearSelect className="ml-auto mb-10" setDefault={false} /> */}
-            <div className="d-flex justify-content-end mb-10">
-              <ANTDButton
-                type="primary"
-                className="btn"
-                onClick={onExportToExcel}
-                loading={excelLoader}
-              >
-                {t('dash_ExportToExcel')}
-              </ANTDButton>
-              <ANTDButton
-                type="primary"
-                className="btn mx-3"
-                onClick={onViewPreviousRequests}
-              >
-                {t('job_ViewPreviousRequests')}
-              </ANTDButton>
-            </div>
-          </>
-        ) : null}
-        {permission && (
-          <ANTDButton type="primary" className="btn mb-10" onClick={handleAdd}>
-            {`${t('btn_Add')}${include([hostel, inspectionOfficer], pathRoleId) ? ` ${t(userTitle)}` : ''} `}
-          </ANTDButton>
-        )}
+      <div className="d-flex align-items-center justify-content-between mb-10" style={{ flexWrap: 'wrap', gap: '10px' }}>
+        <h2 className="page-title" style={{ margin: 0 }}>{t(userTitle)}</h2>
+        <div className="text-end d-flex justify-content-end" style={{ gap: '10px' }}>
+          {isEqual(defaultPayload?.roleId, hostel) ? (
+            <>
+              {/* <FiscalYearSelect className="ml-auto mb-10" setDefault={false} /> */}
+              <div className="d-flex justify-content-end">
+                <ANTDButton
+                  type="primary"
+                  className="btn"
+                  onClick={onExportToExcel}
+                  loading={excelLoader}
+                >
+                  {t('dash_ExportToExcel')}
+                </ANTDButton>
+                <ANTDButton
+                  type="primary"
+                  className="btn mx-3"
+                  onClick={onViewPreviousRequests}
+                >
+                  {t('job_ViewPreviousRequests')}
+                </ANTDButton>
+              </div>
+            </>
+          ) : null}
+          {permission && (
+            <ANTDButton type="primary" className="btn" onClick={handleAdd}>
+              {`${t('btn_Add')}${include([hostel, inspectionOfficer], pathRoleId) ? ` ${t(userTitle)}` : ''} `}
+            </ANTDButton>
+          )}
+        </div>
       </div>
       {length(currentUserView) ? (
         currentUserView?.map((item, index) => {

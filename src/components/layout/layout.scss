@@ -50,21 +50,22 @@ img {
 }
 
 .footer {
-  background: transparent; // Clean, invisible footer to match modern look
+  background: var(--color-primary); /* Host blue theme */
   z-index: 9;
-  padding: 10px;
-  color: var(--color-disable);
+  padding: 4px 10px;
+  color: #fff;
   display: flex;
-  align-items: flex-end;
-  justify-content: end;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   transition: all 0.3s ease-in-out;
+  font-size: 12px;
 
-  min-height: 40px;
-  --footer-height: 40px;
+  min-height: 24px;
+  --footer-height: 24px;
 
   @media screen and (min-width: 992px) {
     left: auto;
@@ -1110,10 +1111,13 @@ img {
     gap: 11px;
     padding: 9px 10px;
     border-radius: var(--radius-sm);
+    border: 1px solid var(--line); /* Add border like logout */
+    background: var(--surface);
     cursor: pointer;
-    transition: background 0.2s var(--ease);
+    transition: all 0.2s var(--ease);
     &:hover {
       background: var(--color-bg);
+      border-color: var(--color-primary); /* Highlight on hover */
     }
   }
   .sb-avatar {

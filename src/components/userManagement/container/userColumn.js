@@ -108,12 +108,10 @@ const userColumns = ({
       className: 'img-td',
       key: 'user_Image',
       render: rowData => {
-        return rowData?.fileUrl ? (
+        return (
           <div className="small-img-wrap">
-            <img src={rowData?.fileUrl} alt="profile" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} />
+            <img src={rowData?.fileUrl || noImage} alt="profile" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} />
           </div>
-        ) : (
-          <div style={{ color: '#aaa' }}>-</div>
         )
       },
       hidden: isBuilding,
