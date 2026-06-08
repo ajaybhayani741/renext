@@ -56,7 +56,6 @@ function AppLayout() {
     profileDetails?.firstName ||
     'User'
   const avatarText = (displayName || 'U').trim().charAt(0).toUpperCase()
-  const showBack = !isEqual(activeItem, pathName.HOME)
 
   return (
     <div ref={ref}>
@@ -186,18 +185,7 @@ function AppLayout() {
             onClick={() => setToggleMenu(false)}
           />
           <ANTDContent>
-            {showBack && (
-              <div className="content-back-row px-4 md:px-8 py-2 bg-white border-b border-gray-100 flex items-center">
-                <ANTDButton 
-                  type="text" 
-                  icon={<LeftOutlined />} 
-                  onClick={() => navigate(-1)}
-                  className="font-medium text-slate-500 hover:!text-slate-800 flex items-center"
-                >
-                  {t('btn_Back', 'Back')}
-                </ANTDButton>
-              </div>
-            )}
+
             <Suspense
               fallback={
                 <div className="lazy-loader">

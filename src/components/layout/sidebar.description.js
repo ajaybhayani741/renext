@@ -208,22 +208,26 @@ const userChildrenList = [
   },
 ]
 
+const allUserExceptIO = allUser.filter(role => role !== inspectionOfficer)
+
 const sidebarMenus = [
   {
     key: HOME,
     Icon: HomeIcon,
     label: 'menu_Home',
-    sidebar: allUser,
+    sidebar: allUserExceptIO, // Removed IO from Home
   },
   {
     key: USER_TXT,
     Icon: UserIcon,
     label: 'menu_User',
-    sidebar: allUser,
-    children: userChildrenList.map(prop => ({
-      ...prop,
-      key: `${USER_TXT}/${prop.key}`,
-    })),
+    sidebar: allUserExceptIO, // Removed IO from User
+    children: userChildrenList
+      .filter(prop => prop.key !== ADMIN) // Hide Admin from User Management
+      .map(prop => ({
+        ...prop,
+        key: `${USER_TXT}/${prop.key}`,
+      })),
   },
   {
     key: `/${HOSTEL}`,
