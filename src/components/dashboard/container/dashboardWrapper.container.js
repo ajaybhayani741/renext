@@ -4,7 +4,7 @@ import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import { downloadReport } from '../../../utils/customFunctions'
-import { include, isEqual, notEqual } from '../../../utils/javascript'
+import { include, isEqual } from '../../../utils/javascript'
 import { getJobDetailApi } from '../../jobs/jobs.api'
 import { payloadType } from '../../jobs/jobs.description'
 import { getChartReportApi } from '../dashboard.api'
@@ -39,6 +39,8 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
   //   ],
   //   title,
   // )
+
+  const showVariationValueColumn = isEqual(title, 'job_Variation')
 
   const columns = [
     {
@@ -80,11 +82,12 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
       render: rowData => {
         return rowData || '-'
       },
-      hidden: notEqual(title, 'job_Variation'),
+      hidden: !showVariationValueColumn,
     },
     {
       title: t('txt_Action'),
       key: 'viewJob',
+      width: 120,
       render: rowData => {
         return (
           <ANTDButton
