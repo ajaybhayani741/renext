@@ -2,9 +2,9 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries } from '../../../utils/javascript'
-import ModernCompareChart from '../shared/ModernCompareChart'
 import hostelAuthority from '../container/hostelAuthority.container'
 import { hostelAuthorityCharts } from '../dashboard.description'
+import ModernCompareChart from '../shared/ModernCompareChart'
 
 const HostelAuthorityDashboard = () => {
   const { t } = useTranslations()

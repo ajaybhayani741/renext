@@ -1,5 +1,5 @@
-import { Modal, Table, Button, Space } from "antd";
 import { DownloadOutlined, FilePdfOutlined, FileExcelOutlined } from "@ant-design/icons";
+import { Modal, Table, Button, Space } from "antd";
 
 interface DataModalProps {
   open: boolean;
@@ -7,9 +7,19 @@ interface DataModalProps {
   title: string;
   columns: any[];
   data: any[];
+  onDownloadExcel?: () => void;
+  excelLoading?: boolean;
 }
 
-const DataModal = ({ open, onClose, title, columns, data }: DataModalProps) => {
+const DataModal = ({
+  open,
+  onClose,
+  title,
+  columns,
+  data,
+  onDownloadExcel,
+  excelLoading = false,
+}: DataModalProps) => {
   return (
     <Modal
       title={<span className="text-lg font-semibold">{title}</span>}
@@ -19,7 +29,12 @@ const DataModal = ({ open, onClose, title, columns, data }: DataModalProps) => {
       footer={
         <Space>
           <Button icon={<FilePdfOutlined />} type="primary" style={{ background: "#1D5BE0" }}>Download PDF</Button>
-          <Button icon={<FileExcelOutlined />} style={{ color: "#1D5BE0", borderColor: "#1D5BE0" }}>
+          <Button
+            icon={<FileExcelOutlined />}
+            loading={excelLoading}
+            onClick={onDownloadExcel}
+            style={{ color: "#1D5BE0", borderColor: "#1D5BE0" }}
+          >
             <span className="flex items-center gap-1"><DownloadOutlined /> Download Excel</span>
           </Button>
         </Space>

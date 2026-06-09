@@ -307,7 +307,7 @@ const foodProvisions = () => {
     const data = e.point
     setHostelsData(prev => ({ ...prev, loader: true }))
     const category = data?.category || data?.name
-    const type = data?.series?.name
+    const type = data?.series?.name || data?.type
     const response = await getHandleClickDataApi({
       name,
       category,

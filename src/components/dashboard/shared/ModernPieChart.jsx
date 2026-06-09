@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+
 import ChartCard from './ChartCard';
 import StyledTooltip from './StyledTooltip';
 import useTranslations from '../../../hooks/useTranslations';
@@ -39,7 +40,8 @@ const ModernPieChart = ({
       return {
         name: t(nameStr) || nameStr,
         value: item.y || item.value || 0,
-        originalName: item.name || item.label
+        originalName: item.name || item.label,
+        valueId: item.valueId,
       };
     }).filter(item => item.value > 0);
   }, [seriesData, t]);
@@ -65,7 +67,7 @@ const ModernPieChart = ({
               onClick={dataPoint => {
                 if (handleChartClick) {
                   handleChartClick({ 
-                    e: { point: { name: dataPoint.originalName, y: dataPoint.value } }, 
+                    e: { point: { name: dataPoint.originalName, valueId: dataPoint.valueId, y: dataPoint.value } }, 
                     name 
                   });
                 }

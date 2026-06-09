@@ -110,9 +110,11 @@ const staffDetails = () => {
   } = {}) => {
     const isRangeFrequency = staffDetailsCharts?.[name]?.chartType === 'rangeFrequency'
     const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
-      fromDate: newDateRange?.from,
-      toDate: newDateRange?.to,
+      fromDate: selectedDateRange?.from,
+      toDate: selectedDateRange?.to,
       ...(rangeValue && { range: rangeValue }),
       ...(!rangeValue && (start || end) && { start, end }),
     }
@@ -167,13 +169,15 @@ const staffDetails = () => {
     xAxisTitle,
   }) => {
     const data = e.point
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
       range: data?.category,
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: { ...newDateRange },
+      newDateRange: selectedDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -188,7 +192,7 @@ const staffDetails = () => {
         range: data?.category,
         start: startEnd?.start,
         end: startEnd?.end,
-        newDateRange: { ...newDateRange },
+        newDateRange: selectedDateRange,
         chartType: staffDetailsCharts?.[name]?.chartType,
         xAxisTitle: xAxisTitle,
       },

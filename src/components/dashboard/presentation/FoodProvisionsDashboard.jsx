@@ -1,12 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import ChartCard from '../shared/ChartCard';
-import StyledTooltip from '../shared/StyledTooltip';
-import DataModal from '../shared/DataModal';
-import CustomLegend from '../shared/CustomLegend';
-import foodProvisions from '../container/foodProvisions.container';
+
 import useTranslations from '../../../hooks/useTranslations';
-import { foodPrevisionsCharts } from '../dashboard.description';
+import foodProvisions from '../container/foodProvisions.container';
+import ChartCard from '../shared/ChartCard';
+import CustomLegend from '../shared/CustomLegend';
+import DataModal from '../shared/DataModal';
+import StyledTooltip from '../shared/StyledTooltip';
 
 const BLACK_AXIS = { stroke: "#000", strokeWidth: 1 };
 const BLACK_TICK = { stroke: "#000" };
@@ -19,7 +19,6 @@ const FoodProvisionsDashboard = () => {
     handleChartClick,
     handleCloseModal,
     hostelsData,
-    handleTableChange,
   } = foodProvisions();
 
   // "job_FoodProvisions"
@@ -83,8 +82,14 @@ const FoodProvisionsDashboard = () => {
   }, [fuelSeries]);
 
   const columns = [
-    { title: "Hostel Name", dataIndex: "hostelName", key: "hostelName" },
-    { title: "District", dataIndex: "district", key: "district" },
+    {
+      title: "",
+      key: "index",
+      width: 48,
+      render: (_, __, index) => index + 1,
+    },
+    { title: "Hostel", dataIndex: "lastName", key: "lastName" },
+    { title: "Value", dataIndex: "value", key: "value", render: value => value ?? "-" },
   ];
 
   return (
@@ -120,8 +125,8 @@ const FoodProvisionsDashboard = () => {
               <YAxis tick={{ fontSize: 11, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} label={{ value: "Number of Hostels", angle: -90, position: "insideLeft", offset: -5, fontSize: 10, fill: "#333" }} />
               <Tooltip content={<StyledTooltip />} formatter={(v, n, props) => [v, props.payload.categoryName]} />
               <Legend verticalAlign="top" />
-              <Bar dataKey="yes" name="Yes" fill="url(#fpYes)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.yes } }, name: foodKey })} />
-              <Bar dataKey="no" name="No" fill="url(#fpNo)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.no } }, name: foodKey })} />
+              <Bar dataKey="yes" name="Yes" fill="url(#fpYes)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.yes, type: t('btn_Yes') } }, name: foodKey })} />
+              <Bar dataKey="no" name="No" fill="url(#fpNo)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.no, type: t('btn_No') } }, name: foodKey })} />
             </BarChart>
           </ResponsiveContainer>
           <CustomLegend mapping={foodLegendMapping} />
@@ -146,8 +151,8 @@ const FoodProvisionsDashboard = () => {
             <YAxis tick={{ fontSize: 11, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} label={{ value: "Number of Hostels", angle: -90, position: "insideLeft", offset: -5, fontSize: 10, fill: "#333" }} />
             <Tooltip content={<StyledTooltip />} formatter={(v, n, props) => [v, props.payload.categoryName]} />
             <Legend verticalAlign="top" />
-            <Bar dataKey="yesCount" name="Yes" fill="url(#pvYes)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.yesCount } }, name: varKey })} />
-            <Bar dataKey="noCount" name="No" fill="url(#pvNo)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.noCount } }, name: varKey })} />
+            <Bar dataKey="yesCount" name="Yes" fill="url(#pvYes)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.yesCount, type: t('btn_Yes') } }, name: varKey })} />
+            <Bar dataKey="noCount" name="No" fill="url(#pvNo)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.noCount, type: t('btn_No') } }, name: varKey })} />
           </BarChart>
         </ResponsiveContainer>
         <CustomLegend mapping={varLegendMapping} />
@@ -158,11 +163,10 @@ const FoodProvisionsDashboard = () => {
         onClose={handleCloseModal} 
         title={`${selectedColumn?.title || 'Details'}`} 
         columns={columns} 
-        data={hostelsData?.list || []} 
+        data={hostelsData?.hostels || hostelsData?.list || []} 
       />
     </div>
   );
 };
 
 export default FoodProvisionsDashboard;
-

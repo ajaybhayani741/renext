@@ -239,9 +239,11 @@ const hostelInfraSanitation = () => {
     const isRangeFrequency =
       hostelInfraSanitationCharts?.[name]?.type === 'rangeFrequency'
     const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
-      fromDate: newDateRange?.from,
-      toDate: newDateRange?.to,
+      fromDate: selectedDateRange?.from,
+      toDate: selectedDateRange?.to,
       ...(rangeValue && { range: rangeValue }),
       ...(!rangeValue && (start || end) && { start, end }),
     }
@@ -306,6 +308,8 @@ const hostelInfraSanitation = () => {
     xAxisTitle,
   }) => {
     const data = e.point
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     setHostelsData(prev => ({ ...prev, loader: true }))
     const type = data?.series?.name
     let categoryValue = data?.valueId
@@ -321,7 +325,7 @@ const hostelInfraSanitation = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: { ...newDateRange },
+      newDateRange: selectedDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -340,7 +344,7 @@ const hostelInfraSanitation = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         range: data?.category,
-        newDateRange: { ...newDateRange },
+        newDateRange: selectedDateRange,
         chartType: hostelInfraSanitationCharts?.[name]?.type,
         xAxisTitle: xAxisTitle,
       },

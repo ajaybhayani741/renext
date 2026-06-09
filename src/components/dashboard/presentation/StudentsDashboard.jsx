@@ -1,12 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { Select } from "antd";
-import ChartCard from '../shared/ChartCard';
-import StyledTooltip from '../shared/StyledTooltip';
-import DataModal from '../shared/DataModal';
-import students from '../container/students.container';
+
 import useTranslations from '../../../hooks/useTranslations';
+import ANTDButton from '../../../shared/antd/ANTDButton';
+import ANTDModal from '../../../shared/antd/ANTDModal';
+import ViewJob from '../../jobs/presentation/viewJobs';
+import students from '../container/students.container';
 import { studentCharts } from '../dashboard.description';
+import ChartCard from '../shared/ChartCard';
+import DataModal from '../shared/DataModal';
+import StyledTooltip from '../shared/StyledTooltip';
 
 const BLACK_AXIS = { stroke: "#000", strokeWidth: 1 };
 const BLACK_TICK = { stroke: "#000" };
@@ -19,6 +22,12 @@ const StudentsDashboard = () => {
     handleChartClick,
     handleCloseModal,
     hostelsData,
+    jobModel,
+    handleCloseJobModel,
+    handleHostelClick,
+    handleDownloadExcel,
+    reportLoader,
+    jobType,
   } = students();
 
   const key = 'dash_TotalNumberOfStudents';
@@ -70,11 +79,31 @@ const StudentsDashboard = () => {
   const totalEnrolled = currentSeries?.total || 0;
 
   const columns = [
-    { title: "Hostel Name", dataIndex: "hostelName", key: "hostelName", width: 250 },
-    { title: "District", dataIndex: "district", key: "district" },
-    { title: "Students", dataIndex: "students", key: "students" },
-    { title: "Boys", dataIndex: "boys", key: "boys" },
-    { title: "Girls", dataIndex: "girls", key: "girls" },
+    {
+      title: "",
+      key: "index",
+      width: 48,
+      render: (_, __, index) => index + 1,
+    },
+    {
+      title: "Hostel",
+      dataIndex: "lastName",
+      key: "lastName",
+    },
+    {
+      title: "Number of Students",
+      dataIndex: "value",
+      key: "value",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, rowData) => (
+        <ANTDButton type="primary" size="small" onClick={() => handleHostelClick(rowData)}>
+          View Job
+        </ANTDButton>
+      ),
+    },
   ];
 
   return (
@@ -152,8 +181,26 @@ const StudentsDashboard = () => {
         onClose={handleCloseModal} 
         title={`${t(key)} - Details`}
         columns={columns} 
-        data={hostelsData?.list || []} 
+        data={hostelsData?.hostels || []} 
+        onDownloadExcel={handleDownloadExcel}
+        excelLoading={reportLoader}
       />
+      {jobModel?.open && (
+        <ANTDModal
+          title={t('txt_Details')}
+          centered
+          open={jobModel?.open}
+          onCancel={handleCloseJobModel}
+          footer={false}
+          width={1100}
+        >
+          <ViewJob
+            data={jobModel?.data}
+            jobType={jobType}
+            loader={jobModel?.loader}
+          />
+        </ANTDModal>
+      )}
     </div>
   );
 };

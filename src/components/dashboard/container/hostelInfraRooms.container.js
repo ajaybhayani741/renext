@@ -174,9 +174,11 @@ const hostelInfraRooms = () => {
   } = {}) => {
     const isRangeFrequency = hostelInfraRoomsCharts?.[name]?.chartType === 'rangeFrequency'
     const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
-      fromDate: newDateRange?.from,
-      toDate: newDateRange?.to,
+      fromDate: selectedDateRange?.from,
+      toDate: selectedDateRange?.to,
       ...(rangeValue && { range: rangeValue }),
       ...(!rangeValue && (start || end) && { start, end }),
     }
@@ -222,6 +224,8 @@ const hostelInfraRooms = () => {
     xAxisTitle,
   }) => {
     const data = e.point
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
       category: locationBedsMattressesCategoryMapping?.[data?.category],
@@ -230,7 +234,7 @@ const hostelInfraRooms = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: { ...newDateRange },
+      newDateRange: selectedDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -246,7 +250,7 @@ const hostelInfraRooms = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         range: data?.category,
-        newDateRange: { ...newDateRange },
+        newDateRange: selectedDateRange,
         chartType: hostelInfraRoomsCharts?.[name]?.chartType,
         xAxisTitle: xAxisTitle,
       },
