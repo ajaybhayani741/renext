@@ -172,9 +172,11 @@ const safetySecurity = () => {
   } = {}) => {
     const isRangeFrequency = safetySecurityCharts?.[name]?.type === 'rangeFrequency'
     const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
-      fromDate: newDateRange?.from,
-      toDate: newDateRange?.to,
+      fromDate: selectedDateRange?.from,
+      toDate: selectedDateRange?.to,
       ...(rangeValue && { range: rangeValue }),
       ...(!rangeValue && (start || end) && { start, end }),
     }
@@ -225,6 +227,8 @@ const safetySecurity = () => {
     xAxisTitle,
   }) => {
     const data = e.point
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
       category: isEqual(name, 'dash_PrecautionaryMeasures')
@@ -239,7 +243,7 @@ const safetySecurity = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: { ...newDateRange },
+      newDateRange: selectedDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -258,7 +262,7 @@ const safetySecurity = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         range: data?.category,
-        newDateRange: { ...newDateRange },
+        newDateRange: selectedDateRange,
         chartType: safetySecurityCharts?.[name]?.type,
         xAxisTitle: xAxisTitle,
       },
