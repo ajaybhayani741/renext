@@ -1,5 +1,7 @@
 import '../dashboard.scss'
 
+import { motion } from 'framer-motion'
+
 import ConductionMeetingsDashboard from './ConductionMeetingsDashboard'
 import EducationFacilitiesDashboard from './EducationFacilitiesDashboard'
 import FeedbackDashboard from './FeedbackDashboard'
@@ -9,21 +11,23 @@ import HostelInfraRoomsDashboard from './HostelInfraRoomsDashboard'
 import HostelInfraSanitationDashboard from './HostelInfraSanitationDashboard'
 import MedicalCareDashboard from './MedicalCareDashboard'
 import PhotosDashboard from './PhotosDashboard'
-import useRouter from '../../../hooks/useRouter'
-import useTranslations from '../../../hooks/useTranslations'
-import PageNotFound from '../../PageNotFound'
-import { cardKeys, cardList } from '../dashboard.description'
 import RecordMaintenanceDashboard from './RecordMaintenanceDashboard'
 import SafetySecurityDashboard from './SafetySecurityDashboard'
 import StaffDetailsDashboard from './StaffDetailsDashboard'
 import StudentsDashboard from './StudentsDashboard'
+import useRouter from '../../../hooks/useRouter'
+import useTranslations from '../../../hooks/useTranslations'
 import { DASHBOARD_TXT } from '../../../routing/pathName.constant'
 import { isEqual } from '../../../utils/javascript'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
+import PageNotFound from '../../PageNotFound'
+import { cardKeys, cardList } from '../dashboard.description'
+import BackButton from '../shared/BackButton'
+import DashboardHeader from '../shared/DashboardHeader'
 
 const DashboardView = () => {
   const { t } = useTranslations()
-  const { params, navigate } = useRouter()
+  const { navigate, params } = useRouter()
 
   const getDashboardComponent = type => {
     switch (type) {
@@ -59,23 +63,28 @@ const DashboardView = () => {
     }
   }
 
-  const handleOnClick = path => (path ? navigate(path) : null)
-
   const currentData = cardList.find(card => isEqual(card.key, params?.type))
 
   return (
-    <div className="dashboard-view bg-background min-h-screen">
-      <div className="flex flex-wrap items-center justify-between px-4 md:px-8 py-4 border-b border-gray-100 bg-white gap-4 shadow-sm sticky top-0 z-10">
-        <div className="flex items-center gap-4">
-          <h1 className="text-xl font-bold text-slate-800 m-0">
-            {currentData ? t(currentData.subLabel || currentData.label) : t('job_Dashboard')}
-          </h1>
-        </div>
-        <FiscalYearSelect setDefault={false} className="ml-auto" />
-      </div>
-      <div className="flex-1">
+    <div className="dashboard-view dashboard-container">
+      <DashboardHeader
+        title={currentData ? t(currentData.subLabel || currentData.label) : t('job_Dashboard')}
+        subtitle={currentData?.label ? t(currentData.label) : ''}
+        action={<FiscalYearSelect setDefault={false} className="ml-auto" />}
+      />
+      <motion.div
+        className="dashboard-view-content"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+      >
+        <BackButton
+          label="Back to Dashboard Grid"
+          onClick={() => navigate(DASHBOARD_TXT)}
+          className="dashboard-back-button"
+        />
         {getDashboardComponent(params?.type)}
-      </div>
+      </motion.div>
     </div>
   )
 }

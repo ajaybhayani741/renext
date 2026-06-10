@@ -10,6 +10,7 @@ const ModernPieChart = ({
   seriesData,
   title,
   name,
+  colors,
 }) => {
   const { t } = useTranslations();
   
@@ -48,7 +49,7 @@ const ModernPieChart = ({
 
   if (!data || data.length === 0) return null;
 
-  const COLORS = ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#06B6D4'];
+  const COLORS = colors || ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#06B6D4'];
 
   return (
     <ChartCard title={title}>

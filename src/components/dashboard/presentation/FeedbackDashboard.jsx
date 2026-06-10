@@ -1,7 +1,6 @@
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDSelect from '../../../shared/antd/ANTDSelect'
 import ANTDTable from '../../../shared/antd/ANTDTable'
-import Label from '../../../shared/Label'
 import { length } from '../../../utils/javascript'
 import feedback from '../container/feedback.container'
 
@@ -16,30 +15,46 @@ const FeedbackDashboard = () => {
     feedbackData,
   } = feedback()
 
+  const feedbackTableColumns = feedbackColumns?.map((column, index) => ({
+    ...column,
+    title: index === 0 ? 'Feedback Type' : 'Remarks',
+  }))
+
   return (
-    <div>
-      <Label text={t('job_SelectHostel')} />
-      <ANTDSelect
-        options={
-          length(hostelsList?.list)
-            ? hostelsList?.list?.map(item => ({
-                label: item?.hostel?.lastName,
-                value: item?.jobId,
-              }))
-            : []
-        }
-        name="hostelId"
-        value={selectedHostel?.jobId}
-        onChange={handleHostelSelect}
-        onPopupScroll={handlePopupScroll}
-        className="w-100 mb-15"
-      />
-      <ANTDTable
-        columns={feedbackColumns}
-        dataSource={feedbackData || []}
-        showHeader={false}
-        pagination={false}
-      />
+    <div className="dashboard-module-surface dashboard-feedback-surface">
+      <div className="host-chart-container dashboard-feedback-card">
+        <h3>Feedback - Select Hostel with Completed Jobs</h3>
+        <div className="dashboard-feedback-select">
+          <ANTDSelect
+            options={
+              length(hostelsList?.list)
+                ? hostelsList?.list?.map(item => ({
+                    label: item?.hostel?.lastName,
+                    value: item?.jobId,
+                  }))
+                : []
+            }
+            name="hostelId"
+            value={selectedHostel?.jobId}
+            onChange={handleHostelSelect}
+            onPopupScroll={handlePopupScroll}
+            className="w-100"
+            placeholder={t('job_SelectHostel')}
+          />
+        </div>
+        {selectedHostel?.hostel?.lastName ? (
+          <h4 className="dashboard-feedback-hostel">
+            {selectedHostel?.hostel?.lastName}
+          </h4>
+        ) : null}
+        <ANTDTable
+          className="dashboard-feedback-table"
+          columns={feedbackTableColumns}
+          dataSource={feedbackData || []}
+          rowKey="label"
+          pagination={false}
+        />
+      </div>
     </div>
   )
 }

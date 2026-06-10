@@ -5,7 +5,11 @@ import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import { setDeviceStatus, setMobileStatus } from '../../../redux/app/reducer'
-import pathName, { USER_TXT } from '../../../routing/pathName.constant'
+import pathName, {
+  DASHBOARD_TXT,
+  NEW_DASHBOARD_TXT,
+  USER_TXT,
+} from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
 import {
   entries,
@@ -35,6 +39,18 @@ const appLayout = () => {
     let url = ''
     const pathSegments = activeItem1.split('/')
     const lastSegmentIndex = length(pathSegments) - 1
+
+    if (
+      activeItem1 === DASHBOARD_TXT ||
+      activeItem1.startsWith(`${DASHBOARD_TXT}/`)
+    ) {
+      return DASHBOARD_TXT
+    }
+
+    if (activeItem1 === NEW_DASHBOARD_TXT) {
+      return NEW_DASHBOARD_TXT
+    }
+
     if (
       lastSegmentIndex >= 0 &&
       isEqual(pathSegments[lastSegmentIndex], 'add')

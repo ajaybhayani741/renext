@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 import DashboardWrapper from './DashboardWrapper';
@@ -6,6 +6,7 @@ import useTranslations from '../../../hooks/useTranslations';
 import foodProvisions from '../container/foodProvisions.container';
 import ChartCard from '../shared/ChartCard';
 import CustomLegend from '../shared/CustomLegend';
+import ModuleFilters from '../shared/ModuleFilters';
 import StyledTooltip from '../shared/StyledTooltip';
 
 const BLACK_AXIS = { stroke: "#000", strokeWidth: 1 };
@@ -36,6 +37,8 @@ const renderDonutLabel = ({ cx, cy, midAngle, outerRadius, name, value }) => {
 
 const FoodProvisionsDashboard = () => {
   const { t } = useTranslations();
+  const [districtFilter, setDistrictFilter] = useState('All');
+  const [hostelFilter, setHostelFilter] = useState('All');
   const {
     seriesData,
     selectedColumn,
@@ -115,8 +118,14 @@ const FoodProvisionsDashboard = () => {
     <DashboardWrapper
       {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
     >
-      <div className="w-full p-4 md:p-8 bg-slate-50 min-h-screen space-y-6">
-        <div className="space-y-6">
+      <div className="dashboard-module-surface dashboard-food-surface">
+        <ModuleFilters
+          districtFilter={districtFilter}
+          setDistrictFilter={setDistrictFilter}
+          hostelFilter={hostelFilter}
+          setHostelFilter={setHostelFilter}
+        />
+        <div className="dashboard-single-chart-grid">
           <ChartCard title={t(fuelKey)}>
             <ResponsiveContainer width="100%" height={360}>
               <PieChart>
@@ -196,38 +205,38 @@ const FoodProvisionsDashboard = () => {
                 <YAxis tick={{ fontSize: 11, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} label={{ value: "Number of Hostels", angle: -90, position: "insideLeft", offset: -5, fontSize: 10, fill: "#333" }} />
                 <Tooltip content={<StyledTooltip />} formatter={(v, n, props) => [v, props.payload.categoryName]} />
                 <Legend verticalAlign="top" />
-                <Bar dataKey="yes" name="Yes" fill="url(#fpYes)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.yes, type: t('btn_Yes') } }, name: foodKey })} />
-                <Bar dataKey="no" name="No" fill="url(#fpNo)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.no, type: t('btn_No') } }, name: foodKey })} />
+                <Bar dataKey="yes" name="Yes" fill="url(#fpYes)" radius={[4, 4, 0, 0]} cursor="pointer" barSize={40} maxBarSize={40} onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.yes, type: t('btn_Yes') } }, name: foodKey })} />
+                <Bar dataKey="no" name="No" fill="url(#fpNo)" radius={[4, 4, 0, 0]} cursor="pointer" barSize={40} maxBarSize={40} onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.no, type: t('btn_No') } }, name: foodKey })} />
               </BarChart>
             </ResponsiveContainer>
             <CustomLegend mapping={foodLegendMapping} />
           </ChartCard>
-        </div>
 
-        <ChartCard title={t(varKey)}>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={varData} margin={{ top: 10, right: 30, left: 10, bottom: 20 }}>
-              <defs>
-                <linearGradient id="pvYes" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#22C55E" stopOpacity={0.9} />
-                  <stop offset="100%" stopColor="#16A34A" stopOpacity={0.7} />
-                </linearGradient>
-                <linearGradient id="pvNo" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#EF4444" stopOpacity={0.9} />
-                  <stop offset="100%" stopColor="#F87171" stopOpacity={0.7} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis dataKey="shortLabel" tick={{ fontSize: 13, fill: "#000", fontWeight: 'bold' }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} />
-              <YAxis tick={{ fontSize: 11, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} label={{ value: "Number of Hostels", angle: -90, position: "insideLeft", offset: -5, fontSize: 10, fill: "#333" }} />
-              <Tooltip content={<StyledTooltip />} formatter={(v, n, props) => [v, props.payload.categoryName]} />
-              <Legend verticalAlign="top" />
-              <Bar dataKey="yesCount" name="Yes" fill="url(#pvYes)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.yesCount, type: t('btn_Yes') } }, name: varKey })} />
-              <Bar dataKey="noCount" name="No" fill="url(#pvNo)" radius={[4, 4, 0, 0]} cursor="pointer" onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.noCount, type: t('btn_No') } }, name: varKey })} />
-            </BarChart>
-          </ResponsiveContainer>
-          <CustomLegend mapping={varLegendMapping} />
-        </ChartCard>
+          <ChartCard title={t(varKey)}>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={varData} margin={{ top: 10, right: 30, left: 10, bottom: 20 }}>
+                <defs>
+                  <linearGradient id="pvYes" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#22C55E" stopOpacity={0.9} />
+                    <stop offset="100%" stopColor="#16A34A" stopOpacity={0.7} />
+                  </linearGradient>
+                  <linearGradient id="pvNo" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#EF4444" stopOpacity={0.9} />
+                    <stop offset="100%" stopColor="#F87171" stopOpacity={0.7} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                <XAxis dataKey="shortLabel" tick={{ fontSize: 13, fill: "#000", fontWeight: 'bold' }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} />
+                <YAxis tick={{ fontSize: 11, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} label={{ value: "Number of Hostels", angle: -90, position: "insideLeft", offset: -5, fontSize: 10, fill: "#333" }} />
+                <Tooltip content={<StyledTooltip />} formatter={(v, n, props) => [v, props.payload.categoryName]} />
+                <Legend verticalAlign="top" />
+                <Bar dataKey="yesCount" name="Yes" fill="url(#pvYes)" radius={[4, 4, 0, 0]} cursor="pointer" barSize={40} maxBarSize={40} onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.yesCount, type: t('btn_Yes') } }, name: varKey })} />
+                <Bar dataKey="noCount" name="No" fill="url(#pvNo)" radius={[4, 4, 0, 0]} cursor="pointer" barSize={40} maxBarSize={40} onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.noCount, type: t('btn_No') } }, name: varKey })} />
+              </BarChart>
+            </ResponsiveContainer>
+            <CustomLegend mapping={varLegendMapping} />
+          </ChartCard>
+        </div>
       </div>
     </DashboardWrapper>
   );
