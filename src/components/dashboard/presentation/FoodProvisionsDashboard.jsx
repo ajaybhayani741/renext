@@ -12,11 +12,29 @@ import StyledTooltip from '../shared/StyledTooltip';
 const BLACK_AXIS = { stroke: "#000", strokeWidth: 1 };
 const BLACK_TICK = { stroke: "#000" };
 
-const renderDonutLabel = ({ cx, cy, midAngle, outerRadius, name, value }) => {
+const getFuelSliceLabel = name => {
+  const normalizedName = String(name || '').toLowerCase();
+
+  if (normalizedName.includes('non')) return 'Non-sufficient';
+  if (normalizedName.includes('sufficient')) return 'Sufficient';
+  if (normalizedName.includes('no') && normalizedName.includes('lpg')) return 'No LPG';
+
+  return name;
+};
+
+const renderFuelLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  name,
+  value,
+}) => {
   if (!value) return null;
 
   const RADIAN = Math.PI / 180;
-  const radius = outerRadius + 24;
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
@@ -25,12 +43,13 @@ const renderDonutLabel = ({ cx, cy, midAngle, outerRadius, name, value }) => {
       x={x}
       y={y}
       fill="#0f172a"
-      textAnchor={x > cx ? 'start' : 'end'}
+      textAnchor="middle"
       dominantBaseline="central"
-      fontSize={12}
-      fontWeight={600}
+      fontSize={11}
+      fontWeight={700}
+      pointerEvents="none"
     >
-      {name}
+      {getFuelSliceLabel(name)}
     </text>
   );
 };
@@ -127,38 +146,18 @@ const FoodProvisionsDashboard = () => {
         />
         <div className="dashboard-single-chart-grid">
           <ChartCard title={t(fuelKey)}>
-            <ResponsiveContainer width="100%" height={360}>
+            <ResponsiveContainer width="100%" height={400}>
               <PieChart>
                 <Pie
                   data={fuelLevel2Data}
                   cx="50%"
-                  cy="48%"
+                  cy="46%"
                   innerRadius={58}
                   outerRadius={104}
                   dataKey="value"
                   nameKey="name"
                   labelLine={false}
-                  label={({ cx, cy, midAngle, innerRadius, outerRadius, name, value }) => {
-                    if (!value) return null;
-                    const RADIAN = Math.PI / 180;
-                    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                    return (
-                      <text
-                        x={x}
-                        y={y}
-                        fill="#0f172a"
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        fontSize={12}
-                        fontWeight={700}
-                      >
-                        {name}
-                      </text>
-                    );
-                  }}
+                  label={renderFuelLabel}
                   onClick={data => handleChartClick({ e: { point: { name: data.name, y: data.value, type: 'Level 2' } }, name: fuelKey })}
                 >
                   {fuelLevel2Data.map((entry, index) => (
@@ -168,13 +167,13 @@ const FoodProvisionsDashboard = () => {
                 <Pie
                   data={fuelLevel3Data}
                   cx="50%"
-                  cy="48%"
+                  cy="46%"
                   innerRadius={106}
                   outerRadius={142}
                   dataKey="value"
                   nameKey="name"
-                  label={renderDonutLabel}
-                  labelLine
+                  label={renderFuelLabel}
+                  labelLine={false}
                   onClick={data => handleChartClick({ e: { point: { name: data.name, y: data.value, type: 'Level 3' } }, name: fuelKey })}
                 >
                   {fuelLevel3Data.map((entry, index) => (
@@ -182,7 +181,7 @@ const FoodProvisionsDashboard = () => {
                   ))}
                 </Pie>
                 <Tooltip content={<StyledTooltip />} formatter={(v, n) => [`${v} Hostels`, n]} />
-                <Legend verticalAlign="bottom" wrapperStyle={{ paddingTop: 8 }} />
+                <Legend verticalAlign="bottom" wrapperStyle={{ paddingTop: 18 }} />
               </PieChart>
             </ResponsiveContainer>
           </ChartCard>
