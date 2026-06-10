@@ -43,7 +43,6 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <DashboardHeader
         title={t('job_Dashboard')}
-        subtitle="Hostel oversight modules"
         action={<FiscalYearSelect setDefault={false} />}
       />
       <DashboardGrid>

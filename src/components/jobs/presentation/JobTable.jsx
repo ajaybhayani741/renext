@@ -202,7 +202,7 @@ const JobTable = ({
           width={300}
           footer={[]}
         >
-          <div className="d-flex space-around mt-30 mb-20">
+          <div className="d-flex space-around mt-5 mb-5">
             <img
               src={ExcelIcon}
               alt="excel"
