@@ -552,6 +552,11 @@
             white-space: normal;
             line-height: 1.2;
           }
+
+          &:only-child {
+            width: min(100%, 160px);
+            justify-self: end;
+          }
         }
       }
     }
@@ -596,6 +601,11 @@
           width: 100% !important;
           white-space: normal;
           margin: 0 !important;
+
+          &:only-child {
+            width: min(100%, 160px) !important;
+            justify-self: end;
+          }
         }
       }
     }
@@ -616,6 +626,11 @@
             min-height: 36px !important;
             padding: 4px 6px !important;
             font-size: 11px !important;
+
+            &:only-child {
+              grid-column: 2;
+              width: 100% !important;
+            }
           }
         }
       }
