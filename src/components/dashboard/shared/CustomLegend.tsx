@@ -1,20 +1,26 @@
-import React from 'react';
+import { motion } from 'framer-motion'
+import React from 'react'
 
 interface CustomLegendProps {
-  mapping: Record<string, string>; // Short label -> Long label
+  mapping: Record<string, string>
 }
 
 const CustomLegend: React.FC<CustomLegendProps> = ({ mapping }) => {
   return (
-    <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4 pt-2 border-t border-slate-100 justify-center">
+    <motion.div
+      className="dashboard-custom-legend"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       {Object.entries(mapping).map(([short, long]) => (
-        <div key={short} className="flex items-center text-xs text-slate-600">
-          <span className="font-bold mr-1 text-slate-800">{short}:</span>
+        <div key={short} className="dashboard-custom-legend-item">
+          <span>{short}:</span>
           <span>{long}</span>
         </div>
       ))}
-    </div>
-  );
-};
+    </motion.div>
+  )
+}
 
-export default CustomLegend;
+export default React.memo(CustomLegend)

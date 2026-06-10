@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { ArrowLeftOutlined, FolderOpenOutlined } from '@ant-design/icons'
+import { useEffect, useRef, useState } from 'react'
 
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
@@ -8,7 +9,7 @@ import { dayJs, DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 import { EyeOutlined } from '../../../utils/icons'
 import { entries, isEqual } from '../../../utils/javascript'
 import { getDashboardPhotosApi } from '../dashboard.api'
-import { cardList, photosDashboardData } from '../dashboard.description'
+import { photosDashboardData } from '../dashboard.description'
 
 const SelectedPhotoDashboard = () => {
   const { t } = useTranslations()
@@ -105,53 +106,64 @@ const SelectedPhotoDashboard = () => {
   }
 
   return (
-    <div className="p-4 md:p-8 min-h-screen bg-slate-50">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-slate-800 m-0">
-          {t(params?.photoType)} {t('txt_Gallery', 'Gallery')}
-        </h2>
+    <div className="dashboard-module-surface dashboard-photos-surface">
+      <button
+        className="dashboard-photo-folder-back"
+        onClick={() => navigate(`${DASHBOARD_TXT}/${PHOTOS}`)}
+        type="button"
+      >
+        <ArrowLeftOutlined />
+        Back to Photo Folders
+      </button>
+      <div className="dashboard-selected-photo-heading">
+        <FolderOpenOutlined />
+        <h2>{t(params?.photoType)}</h2>
       </div>
 
       <div ref={listRef}>
         {!photosList?.list && photosList?.loader ? (
-          <div className="flex justify-center py-20 text-slate-500 font-medium">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-3"></div>
+          <div className="dashboard-photo-loading">
+            <div className="dashboard-photo-spinner"></div>
             {t('txt_Loading', 'Loading photos...')}
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 auto-rows-[200px]">
+          <div className="dashboard-photo-grid">
             {photosList?.list?.map((photo, i) => (
-              <div 
+              <button
                 key={`${photo.id}-${i}`}
                 onClick={() => handlePreview(photo)}
-                className="group relative rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 bg-white border border-slate-200"
+                className="dashboard-photo-card"
+                type="button"
               >
                 <img 
                   src={photo.url} 
                   alt={photo.name} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   onError={e => {
                     e.target.onerror = null;
                     e.target.src = "https://via.placeholder.com/400x400?text=Image+Unavailable";
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                  <EyeOutlined className="text-white text-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-50 group-hover:scale-100 drop-shadow-md" />
-                  <p className="text-white text-sm font-medium m-0 truncate drop-shadow-md">
-                    {photo.hostelName || 'Unknown Location'}
-                  </p>
-                  <p className="text-white/80 text-xs m-0 truncate">
-                    {photo.inspectionDate ? dayJs(photo.inspectionDate).format(DISPLAY_DATE_FORMAT) : ''}
+                <span className="dashboard-photo-overlay">
+                  <EyeOutlined />
+                </span>
+                <div className="dashboard-photo-meta">
+                  <h3>{photo.name || t(params?.photoType)}</h3>
+                  <p>Hostel: {photo.hostelName || '-'}</p>
+                  <p>
+                    Date:{' '}
+                    {photo.inspectionDate
+                      ? dayJs(photo.inspectionDate).format(DISPLAY_DATE_FORMAT)
+                      : '-'}
                   </p>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         )}
         
         {photosList?.list?.length > 0 && photosList?.loader && (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className="dashboard-photo-loading dashboard-photo-loading-inline">
+            <div className="dashboard-photo-spinner"></div>
           </div>
         )}
       </div>

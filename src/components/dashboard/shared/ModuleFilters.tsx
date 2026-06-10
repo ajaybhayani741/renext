@@ -1,21 +1,37 @@
-import React from 'react';
-import { Select } from 'antd';
-import { districts, hostelNames } from '../../../data/dummyData';
+import { Select } from 'antd'
+import { motion } from 'framer-motion'
+import React from 'react'
 
-const { Option } = Select;
+import { districts, hostelNames } from '../../../data/dummyData'
+
+const { Option } = Select
 
 interface ModuleFiltersProps {
-  districtFilter: string;
-  setDistrictFilter: (val: string) => void;
-  hostelFilter: string;
-  setHostelFilter: (val: string) => void;
-  extraFilters?: React.ReactNode;
+  districtFilter: string
+  setDistrictFilter: (val: string) => void
+  hostelFilter: string
+  setHostelFilter: (val: string) => void
+  extraFilters?: React.ReactNode
+  leadingContent?: React.ReactNode
 }
 
-const ModuleFilters: React.FC<ModuleFiltersProps> = ({ districtFilter, setDistrictFilter, hostelFilter, setHostelFilter, extraFilters }) => {
+const ModuleFilters: React.FC<ModuleFiltersProps> = ({
+  districtFilter,
+  setDistrictFilter,
+  hostelFilter,
+  setHostelFilter,
+  extraFilters,
+  leadingContent,
+}) => {
   return (
-    <div className="flex flex-wrap gap-4 mb-6">
-      <div className="bg-white p-4 rounded-xl border border-gray-100 flex-1 min-w-[200px]">
+    <motion.div
+      className="dashboard-filter-bar"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: 'easeOut' }}
+    >
+      {leadingContent}
+      <div className="dashboard-filter-card">
         <div className="text-sm font-medium text-slate-500 mb-2">Filter by District</div>
         <Select 
           showSearch 
@@ -24,13 +40,13 @@ const ModuleFilters: React.FC<ModuleFiltersProps> = ({ districtFilter, setDistri
           style={{ width: "100%" }}
         >
           <Option value="All">All Districts</Option>
-          {Array.from(new Set(districts)).map((name) => (
+          {Array.from(new Set(districts)).map(name => (
             <Option key={name} value={name}>{name}</Option>
           ))}
         </Select>
       </div>
 
-      <div className="bg-white p-4 rounded-xl border border-gray-100 flex-1 min-w-[200px]">
+      <div className="dashboard-filter-card">
         <div className="text-sm font-medium text-slate-500 mb-2">Filter by Hostel</div>
         <Select
           showSearch
@@ -40,15 +56,15 @@ const ModuleFilters: React.FC<ModuleFiltersProps> = ({ districtFilter, setDistri
           optionFilterProp="children"
         >
           <Option value="All">All Hostels</Option>
-          {hostelNames.map((name) => (
+          {hostelNames.map(name => (
             <Option key={name} value={name}>{name}</Option>
           ))}
         </Select>
       </div>
 
       {extraFilters}
-    </div>
-  );
-};
+    </motion.div>
+  )
+}
 
-export default ModuleFilters;
+export default React.memo(ModuleFilters)

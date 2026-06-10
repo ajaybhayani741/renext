@@ -12,21 +12,27 @@ import {
 } from '@ant-design/icons'
 
 import useTranslations from '../../../hooks/useTranslations'
-import ANTDCard from '../../../shared/antd/ANTDCard'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 import dashboard from '../container/dashboard.container'
 import { cardList } from '../dashboard.description'
+import DashboardCard from '../shared/DashboardCard'
+import DashboardGrid from '../shared/DashboardGrid'
+import DashboardHeader from '../shared/DashboardHeader'
 
-// Utility to assign random pastel colors/icons to cards if not provided
 const cardAesthetics = [
-  { icon: <TeamOutlined />, color: 'var(--color-pastel-purple)', iconColor: '#9333EA' },
-  { icon: <UserOutlined />, color: 'var(--color-pastel-blue)', iconColor: '#2563EB' },
-  { icon: <BookOutlined />, color: 'var(--color-pastel-orange)', iconColor: '#EA580C' },
-  { icon: <BankOutlined />, color: 'var(--color-pastel-green)', iconColor: '#16A34A' },
-  { icon: <MedicineBoxOutlined />, color: 'var(--color-pastel-red)', iconColor: '#DC2626' },
-  { icon: <CoffeeOutlined />, color: 'var(--color-pastel-yellow)', iconColor: '#CA8A04' },
-  { icon: <ExperimentOutlined />, color: 'var(--color-pastel-blue)', iconColor: '#0284C7' },
-  { icon: <ProfileOutlined />, color: 'var(--color-pastel-purple)', iconColor: '#7C3AED' },
+  { icon: <TeamOutlined />, accent: '#7C3AED', accentLight: '#EDE9FE' },
+  { icon: <UserOutlined />, accent: '#059669', accentLight: '#D1FAE5' },
+  { icon: <BookOutlined />, accent: '#D97706', accentLight: '#FEF3C7' },
+  { icon: <BankOutlined />, accent: '#1D5BE0', accentLight: '#DBEAFE' },
+  { icon: <MedicineBoxOutlined />, accent: '#7C3AED', accentLight: '#F3E8FF' },
+  { icon: <ExperimentOutlined />, accent: '#0891B2', accentLight: '#CFFAFE' },
+  { icon: <MedicineBoxOutlined />, accent: '#16A34A', accentLight: '#DCFCE7' },
+  { icon: <BookOutlined />, accent: '#EA580C', accentLight: '#FFF7ED' },
+  { icon: <CoffeeOutlined />, accent: '#DC2626', accentLight: '#FEE2E2' },
+  { icon: <BankOutlined />, accent: '#1D5BE0', accentLight: '#DBEAFE' },
+  { icon: <ProfileOutlined />, accent: '#7C3AED', accentLight: '#EDE9FE' },
+  { icon: <ProfileOutlined />, accent: '#0891B2', accentLight: '#E0F2FE' },
+  { icon: <ProfileOutlined />, accent: '#059669', accentLight: '#ECFDF5' },
 ]
 
 const Dashboard = () => {
@@ -35,33 +41,31 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="flex flex-wrap items-center justify-between px-4 md:px-8 py-4 border-b border-gray-100 bg-white gap-4 shadow-sm mb-6 sticky top-0 z-10 -mx-4 md:-mx-8">
-        <h1 className="text-2xl font-bold text-slate-800 m-0">{t('job_Dashboard')}</h1>
-        <FiscalYearSelect setDefault={false} />
-      </div>
-      <div className="card-container">
+      <DashboardHeader
+        title={t('job_Dashboard')}
+        subtitle="Hostel oversight modules"
+        action={<FiscalYearSelect setDefault={false} />}
+      />
+      <DashboardGrid>
         {cardList.map((card, index) => {
           const aesthetic = cardAesthetics[index % cardAesthetics.length]
+          const title = t(card.subLabel || card.label)
+          const description = card.subLabel ? t(card.label) : ''
+
           return (
-            <ANTDCard
+            <DashboardCard
               key={card.key}
-              className="card"
+              title={title}
+              description={description}
+              icon={aesthetic.icon}
+              index={index}
               onClick={() => handleCardSelect(card.key)}
-              style={{
-                '--card-blob-color': aesthetic.color,
-                '--card-icon-color': aesthetic.iconColor,
-                borderColor: aesthetic.color
-              }}
-            >
-              <div className="card-icon" style={{ borderColor: aesthetic.color }}>
-                {aesthetic.icon}
-              </div>
-              <h3>{t(card.subLabel || card.label)}</h3>
-              {card.subLabel && <h4>{t(card.label)}</h4>}
-            </ANTDCard>
+              accentColor={aesthetic.accent}
+              accentLight={aesthetic.accentLight}
+            />
           )
         })}
-      </div>
+      </DashboardGrid>
       {/* </DashboardContext.Provider> */}
     </div>
   )

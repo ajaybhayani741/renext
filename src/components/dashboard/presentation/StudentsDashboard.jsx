@@ -1,3 +1,4 @@
+import { Select } from 'antd';
 import React, { useState, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -9,8 +10,11 @@ import students from '../container/students.container';
 import { studentCharts } from '../dashboard.description';
 import ChartCard from '../shared/ChartCard';
 import DataModal from '../shared/DataModal';
+import ModuleFilters from '../shared/ModuleFilters';
+import StatsCard from '../shared/StatsCard';
 import StyledTooltip from '../shared/StyledTooltip';
 
+const { Option } = Select;
 const BLACK_AXIS = { stroke: "#000", strokeWidth: 1 };
 const BLACK_TICK = { stroke: "#000" };
 
@@ -34,9 +38,12 @@ const StudentsDashboard = () => {
   const currentSeries = seriesData?.[key];
   const chartConfig = studentCharts?.[key];
 
-  const [binSize, setBinSize] = useState(3);
+  const [binSize, setBinSize] = useState(5);
   const [customMin, setCustomMin] = useState("");
   const [customMax, setCustomMax] = useState("");
+  const [districtFilter, setDistrictFilter] = useState('All');
+  const [hostelFilter, setHostelFilter] = useState('All');
+  const [genderFilter, setGenderFilter] = useState('All');
 
   const distributionData = useMemo(() => {
     if (!currentSeries || !currentSeries.series || currentSeries.series.length === 0 || !binSize) return [];
@@ -107,18 +114,33 @@ const StudentsDashboard = () => {
   ];
 
   return (
-    <div className="p-4 md:p-8 bg-slate-50 min-h-screen">
-      <div className="flex flex-wrap gap-4 mb-6">
-        <div className="bg-white p-4 rounded-xl border border-gray-100 flex-1 min-w-[200px] shadow-sm">
-          <div className="text-sm font-medium text-slate-500 mb-1">Total Students Enrolled</div>
-          <div className="text-3xl font-bold text-slate-800">{totalEnrolled}</div>
-        </div>
-      </div>
+    <div className="dashboard-module-surface dashboard-students-surface">
+      <ModuleFilters
+        districtFilter={districtFilter}
+        setDistrictFilter={setDistrictFilter}
+        hostelFilter={hostelFilter}
+        setHostelFilter={setHostelFilter}
+        leadingContent={<StatsCard label="Total Students Enrolled" value={totalEnrolled} />}
+        extraFilters={(
+          <div className="dashboard-filter-card">
+            <div className="text-sm font-medium text-slate-500 mb-2">Filter by Gender</div>
+            <Select
+              value={genderFilter}
+              onChange={setGenderFilter}
+              style={{ width: "100%" }}
+            >
+              <Option value="All">All Students</Option>
+              <Option value="Boys">Boys</Option>
+              <Option value="Girls">Girls</Option>
+            </Select>
+          </div>
+        )}
+      />
 
-      <ChartCard title={t(key) || "Student Enrollment Distribution"}>
-        <div className="flex items-center justify-end px-2 mb-2 text-xs text-muted-foreground font-medium">
-          <div className="flex items-center gap-3 bg-slate-50 px-3 py-1 rounded border border-slate-200">
-            <div className="flex items-center gap-1">
+      <ChartCard title="Student Enrollment Distribution">
+        <div className="dashboard-chart-controls">
+          <div className="dashboard-range-control">
+            <div className="dashboard-range-field">
               <span>Min:</span>
               <input 
                 type="number" 
@@ -128,7 +150,7 @@ const StudentsDashboard = () => {
                 placeholder="Auto"
               />
             </div>
-            <div className="flex items-center gap-1">
+            <div className="dashboard-range-field">
               <span>Max:</span>
               <input 
                 type="number" 
@@ -138,7 +160,7 @@ const StudentsDashboard = () => {
                 placeholder="Auto"
               />
             </div>
-            <div className="flex items-center gap-1 border-l border-slate-300 pl-3">
+            <div className="dashboard-range-field dashboard-range-field-bordered">
               <span>Bin Size:</span>
               <input 
                 type="number" min={1} max={50} 
@@ -163,6 +185,7 @@ const StudentsDashboard = () => {
             <YAxis tick={{ fontSize: 12, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} label={{ value: t(chartConfig?.yAxisText) || "Number of Hostels", angle: -90, position: "insideLeft", offset: -5, fontSize: 12, fill: "#333" }} />
             <Tooltip content={<StyledTooltip />} />
             <Bar dataKey="hostels" name="Hostels" fill="url(#studGrad)" radius={[4, 4, 0, 0]} cursor="pointer"
+              maxBarSize={98}
               activeBar={{ stroke: "#8B5CF6", strokeWidth: 2, fillOpacity: 1 }}
               onClick={data => {
                 handleChartClick({ 
@@ -174,6 +197,9 @@ const StudentsDashboard = () => {
               }} />
           </BarChart>
         </ResponsiveContainer>
+        <h3 className="dashboard-chart-footer-title">
+          Total number of students: {totalEnrolled}
+        </h3>
       </ChartCard>
 
       <DataModal 

@@ -1,5 +1,11 @@
 .layout {
+  --app-footer-height: 28px;
+  --app-footer-safe-space: calc(var(--app-footer-height) + env(safe-area-inset-bottom, 0px));
+}
+
+.layout {
   min-height: 100dvh;
+  padding-bottom: var(--app-footer-safe-space);
   background-color: #f4f7fc; // Soft cool pastel off-white
   // Professional subtle dotted grid pattern
   background-image: radial-gradient(
@@ -78,9 +84,9 @@ img {
   right: 0;
   transition: all 0.3s ease-in-out;
   font-size: 12px;
-
-  min-height: 24px;
-  --footer-height: 24px;
+  min-height: var(--app-footer-height);
+  height: var(--app-footer-height);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 
   @media screen and (min-width: 992px) {
     left: auto;
@@ -388,11 +394,12 @@ img {
 
   .ant-layout-content {
     margin-top: 20px;
-    padding: 20px 24px 80px;
+    padding: 20px 24px calc(var(--app-footer-safe-space) + 56px);
     position: relative;
+    min-height: calc(100dvh - var(--app-footer-safe-space));
 
     @media screen and (max-width: 991px) {
-      padding: 0px 15px 80px;
+      padding: 0 15px calc(var(--app-footer-safe-space) + 56px);
     }
   }
 }
