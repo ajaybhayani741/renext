@@ -874,7 +874,7 @@ const inspection = ({
 
           await handleFileUpload({
             file,
-            fileList,
+            fileList: fileList && length(fileList) ? fileList : [],
             filePath: ['inspectionList', changeIndex, changedKey, nestedKey],
           })
 

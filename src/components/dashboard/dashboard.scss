@@ -981,6 +981,20 @@
 
   .recharts-legend-wrapper {
     color: #0f172a;
+    line-height: 1.35;
+
+    .recharts-default-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 12px;
+      padding: 0 16px !important;
+    }
+
+    .recharts-legend-item {
+      margin-right: 0 !important;
+      white-space: nowrap;
+    }
   }
 }
 
