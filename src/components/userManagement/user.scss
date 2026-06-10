@@ -524,24 +524,34 @@
 
       .card-extra-buttons {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
         justify-content: flex-end;
         align-items: center;
         gap: 6px;
-        width: min(100%, 320px);
+        width: min(100%, 640px);
         max-width: 100%;
         min-width: 0;
         flex: 0 1 auto;
 
         .ant-btn {
-          width: 50%;
+          width: 100%;
           min-width: 0;
-          height: 30px !important;
+          min-height: 34px !important;
+          height: auto !important;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           padding: 4px 10px !important;
           line-height: 1.2 !important;
           white-space: normal;
           margin: 0 !important;
-          justify-self: end;
+          justify-self: stretch;
+          text-align: center;
+
+          > span {
+            white-space: normal;
+            line-height: 1.2;
+          }
         }
       }
     }
@@ -569,20 +579,21 @@
     .ant-card-extra {
       .card-extra-buttons {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
-        justify-content: flex-end;
+        grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+        justify-content: stretch;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
         width: 100%;
         max-width: 100%;
         flex: 0 1 auto;
 
         .ant-btn {
-          padding: 3px 8px;
-          font-size: 12px;
+          min-height: 34px !important;
+          height: auto !important;
+          padding: 4px 8px !important;
+          font-size: 12px !important;
           line-height: 1.2;
-          width: 100%;
-          height: 30px !important;
+          width: 100% !important;
           white-space: normal;
           margin: 0 !important;
         }
@@ -596,6 +607,17 @@
       .ant-card-extra {
         width: 100%;
         margin-top: 8px;
+
+        .card-extra-buttons {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 5px;
+
+          .ant-btn {
+            min-height: 36px !important;
+            padding: 4px 6px !important;
+            font-size: 11px !important;
+          }
+        }
       }
     }
   }

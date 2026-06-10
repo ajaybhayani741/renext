@@ -1,6 +1,8 @@
 .layout {
   --app-footer-height: 28px;
-  --app-footer-safe-space: calc(var(--app-footer-height) + env(safe-area-inset-bottom, 0px));
+  --app-footer-safe-space: calc(
+    var(--app-footer-height) + env(safe-area-inset-bottom, 0px)
+  );
 }
 
 .layout {
@@ -710,7 +712,7 @@ img {
   background-color: #fff;
   min-width: 255px;
   transition: all 0.3s ease-in-out;
-  overflow-y: auto;
+  overflow: visible;
   z-index: 101; // Must be higher than the sticky header
   border-right: none; // Removing hard borders for soft look
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02);
@@ -743,7 +745,9 @@ img {
     flex-direction: column;
     height: calc(100vh - 140px);
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 4px 0 12px;
+    scrollbar-gutter: stable;
     ul.ant-menu {
       height: 100%;
       border-inline-end: none;
@@ -832,6 +836,10 @@ img {
   &.collapsed-sider {
     min-width: 81px !important;
     transition: all 0.15s ease-in-out;
+
+    .menu-list {
+      scrollbar-gutter: auto;
+    }
   }
 
   &.expanded-sider {
@@ -900,6 +908,14 @@ img {
       max-height: 50px;
     }
   }
+
+  .brand-logo-mark {
+    width: 36px;
+    height: 45px;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+  }
 }
 
 .close-sidebar {
@@ -941,6 +957,22 @@ img {
     flex: 0 0 auto;
   }
 
+  .logo_collapsed-menu {
+    margin: 0 14px;
+    padding-bottom: 10px;
+  }
+
+  .brand-logo {
+    height: 112px;
+
+    img:not(.brand-logo-mark) {
+      width: 142px;
+      max-width: 142px;
+      max-height: 78px;
+      object-fit: contain;
+    }
+  }
+
   .menu-list {
     flex: 1 1 auto;
     min-height: 0;
@@ -959,6 +991,18 @@ img {
 
   .mob-menu-back {
     margin: 20px;
+  }
+
+  @media only screen and (max-width: 576px) {
+    .brand-logo {
+      height: 96px;
+
+      img:not(.brand-logo-mark) {
+        width: 126px;
+        max-width: 126px;
+        max-height: 68px;
+      }
+    }
   }
 
   @media only screen and (max-height: 620px) {
@@ -1261,11 +1305,14 @@ img {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
 }
 .menu-list {
   flex: 1 1 auto;
   min-height: 0;
   height: auto !important;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar-footer {
@@ -1276,34 +1323,6 @@ img {
   flex-direction: column;
   gap: 12px;
 
-  .sb-collapse-toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 9px 12px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    background: transparent;
-    color: var(--color-font);
-    font-size: 13px;
-    font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.2s var(--ease);
-    .anticon {
-      font-size: 15px;
-      color: var(--muted);
-      transition: color 0.2s var(--ease);
-    }
-    &:hover {
-      background: var(--color-pastel-blue);
-      color: var(--color-primary-dark);
-      .anticon {
-        color: var(--color-primary);
-      }
-    }
-  }
   background: var(--surface);
 
   .sb-profile {
@@ -1403,12 +1422,47 @@ img {
     justify-content: center;
     padding: 6px;
   }
-  .sb-logout,
-  .sb-collapse-toggle {
+  .sb-logout {
     justify-content: center;
     width: 48px;
     height: 44px;
     padding: 0;
+  }
+}
+
+.sidebar-edge-toggle {
+  position: absolute;
+  top: 106px;
+  right: -13px;
+  z-index: 3;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  background: var(--color-primary);
+  box-shadow: 0 6px 16px rgba(67, 56, 202, 0.28);
+  color: #fff;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+
+  .anticon {
+    font-size: 12px;
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  &:hover {
+    background: var(--color-primary-dark);
+    box-shadow: 0 8px 20px rgba(67, 56, 202, 0.34);
+    transform: scale(1.05);
   }
 }
 
