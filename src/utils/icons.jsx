@@ -17,7 +17,7 @@ import {
   LeftOutlined,
 } from '@ant-design/icons'
 
-import hostIcon from '../assets/appLogo/H-host-blue.png'
+import hostIcon from '../assets/appLogo/H-host-blue.svg'
 import BucketInventory from '../assets/BucketInventory.xlsx'
 import buildingIcon from '../assets/buildingIcon.png'
 import clipboardsImage from '../assets/clipboards.png'

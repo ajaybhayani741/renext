@@ -1,14 +1,12 @@
 import '../layout.scss'
 
-import { LeftOutlined, RightOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import { Suspense, memo } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
 import FloatButtonUI from './FloatButtonUI'
 import Header from './Header'
-import header from '../container/header.container'
-import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDLayout, {
   ANTDContent,
   ANTDFooter,
@@ -16,7 +14,6 @@ import ANTDLayout, {
 } from '../../../shared/antd/ANTDLayout'
 import ANTDMenu from '../../../shared/antd/ANTDMenu'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
-import pathName from '../../../routing/pathName.constant'
 import configData from '../../../utils/config'
 import { userWiseRole } from '../../../utils/constant'
 import {
@@ -27,9 +24,9 @@ import {
 } from '../../../utils/icons'
 import { isEqual } from '../../../utils/javascript'
 import appLayout from '../container/appLayout'
+import header from '../container/header.container'
 
 function AppLayout() {
-  const navigate = useNavigate()
   const {
     t,
     defaultOpenKeys,
@@ -76,17 +73,34 @@ function AppLayout() {
         >
           <div className="brand-logo">
             <img
-              className={
-                isEqual(roleId, userWiseRole.districtCollector)
-                  ? 'cursor-pointer'
-                  : ''
-              }
+              className={classNames({
+                'cursor-pointer': isEqual(
+                  roleId,
+                  userWiseRole.districtCollector,
+                ),
+                'brand-logo-mark': isDesktop && collapsed,
+              })}
               src={isDesktop && collapsed ? hostIcon : logo}
               alt="Mat Next"
               onClick={handleLogoClick}
             />
           </div>
         </div>
+
+        {isDesktop ? (
+          <button
+            type="button"
+            className="sidebar-edge-toggle"
+            onClick={toggleCollapsed}
+            aria-label={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          >
+            {collapsed ? (
+              <RightOutlined height={10} width={10} />
+            ) : (
+              <LeftOutlined height={10} width={10} />
+            )}
+          </button>
+        ) : null}
 
         <div className="menu-list">
           <ANTDMenu
@@ -101,17 +115,8 @@ function AppLayout() {
           />
         </div>
 
-        {/* Profile + Sign out + Collapse anchored to the bottom of the sidebar */}
+        {/* Profile + Sign out anchored to the bottom of the sidebar */}
         <div className="sidebar-footer">
-          <button
-            type="button"
-            className="sb-collapse-toggle"
-            onClick={toggleCollapsed}
-            aria-label="Toggle Sidebar"
-          >
-            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            {!collapsed && <span>{t('btn_Collapse', 'Collapse Sidebar')}</span>}
-          </button>
           <div
             className="sb-profile"
             role="button"
@@ -121,7 +126,10 @@ function AppLayout() {
           >
             <span className="sb-avatar">
               {profileDetails?.profileUrl ? (
-                <img src={profileDetails?.profileUrl || noImage} alt="profile" />
+                <img
+                  src={profileDetails?.profileUrl || noImage}
+                  alt="profile"
+                />
               ) : (
                 avatarText
               )}
@@ -159,18 +167,22 @@ function AppLayout() {
             />
           </div>
         )}
-        <ANTDLayout 
-          className={classNames('main-layout', { collapsed }, (() => {
-            if (activeItem?.includes('/user')) return 'theme-purple'
-            if (activeItem?.includes('/jobs')) return 'theme-green'
-            if (activeItem?.includes('/inventory')) return 'theme-orange'
-            if (activeItem?.includes('/book-keeping')) return 'theme-blue'
-            if (activeItem?.includes('/reporting')) return 'theme-red'
-            if (activeItem?.includes('/hostel')) return 'theme-yellow'
-            if (activeItem?.includes('/notifications')) return 'theme-cyan'
-            if (activeItem?.includes('/settings')) return 'theme-teal'
-            return ''
-          })())}
+        <ANTDLayout
+          className={classNames(
+            'main-layout',
+            { collapsed },
+            (() => {
+              if (activeItem?.includes('/user')) return 'theme-purple'
+              if (activeItem?.includes('/jobs')) return 'theme-green'
+              if (activeItem?.includes('/inventory')) return 'theme-orange'
+              if (activeItem?.includes('/book-keeping')) return 'theme-blue'
+              if (activeItem?.includes('/reporting')) return 'theme-red'
+              if (activeItem?.includes('/hostel')) return 'theme-yellow'
+              if (activeItem?.includes('/notifications')) return 'theme-cyan'
+              if (activeItem?.includes('/settings')) return 'theme-teal'
+              return ''
+            })(),
+          )}
         >
           <Header setToggleMenu={setToggleMenu} collapsed={collapsed} />
           <div
@@ -178,7 +190,6 @@ function AppLayout() {
             onClick={() => setToggleMenu(false)}
           />
           <ANTDContent>
-
             <Suspense
               fallback={
                 <div className="lazy-loader">
