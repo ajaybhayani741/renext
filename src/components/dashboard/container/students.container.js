@@ -104,6 +104,7 @@ const students = ({ hostelFilter, genderFilter = 'ALL' } = {}) => {
       ...(rangeValue && { range: rangeValue }),
       ...(!rangeValue && (start || end) && { start, end }),
       gender: genderFilter,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalNumberOfStudents':

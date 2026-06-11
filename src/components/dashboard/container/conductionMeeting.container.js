@@ -82,6 +82,7 @@ const conductionMeeting = ({ hostelFilter } = {}) => {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
       pageNo,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_PrincipalHWOSpecialOfficer':

@@ -252,6 +252,7 @@ const hostelInfraSanitation = ({ hostelFilter } = {}) => {
       toDate: selectedDateRange?.to,
       ...(rangeValue && { range: rangeValue }),
       ...(!rangeValue && (start || end) && { start, end }),
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'job_DrinkingWater':
@@ -261,6 +262,7 @@ const hostelInfraSanitation = ({ hostelFilter } = {}) => {
             fromDate: dateRange?.from,
             toDate: dateRange?.to,
             filterValue: category,
+            ...getHostelChartParams(hostelFilter),
           },
         })
         return resp?.data
@@ -285,6 +287,7 @@ const hostelInfraSanitation = ({ hostelFilter } = {}) => {
             toDate: dateRange?.to,
             category: category,
             filterValue,
+            ...getHostelChartParams(hostelFilter),
           },
         })
         return wasteManagementResp?.data
@@ -296,6 +299,7 @@ const hostelInfraSanitation = ({ hostelFilter } = {}) => {
             fromDate: dateRange?.from,
             toDate: dateRange?.to,
             filterValue,
+            ...getHostelChartParams(hostelFilter),
           },
         })
         return toiletsSufficiencyResp?.data

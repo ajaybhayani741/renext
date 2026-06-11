@@ -186,12 +186,14 @@ const hostelInfraRooms = ({ hostelFilter } = {}) => {
       toDate: selectedDateRange?.to,
       ...(rangeValue && { range: rangeValue }),
       ...(!rangeValue && (start || end) && { start, end }),
+      ...getHostelChartParams(hostelFilter),
     }
     const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
       category: category,
       filterValue: filterValue,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalNumberOfLivingRooms':
