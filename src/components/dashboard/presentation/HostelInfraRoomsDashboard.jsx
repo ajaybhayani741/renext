@@ -43,7 +43,7 @@ const HostelInfraRoomsDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = hostelInfraRooms()
+  } = hostelInfraRooms({ hostelFilter })
   return (
     <DashboardWrapper
       {...{

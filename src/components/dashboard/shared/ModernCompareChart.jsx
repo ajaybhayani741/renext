@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 import ChartCard from './ChartCard';
 import CustomLegend from './CustomLegend';
+import NoDataChartMessage from './NoDataChartMessage';
 import StyledTooltip from './StyledTooltip';
 import useTranslations from '../../../hooks/useTranslations';
 
@@ -80,8 +81,6 @@ const ModernCompareChart = ({
     });
   }, [seriesData, chartData, categoryLabels, forceYesNoKeys, t]);
 
-  if (!seriesData || seriesData.length === 0) return null;
-
   const colors = ["#8B5CF6", "#10B981", "#3B82F6", "#F59E0B", "#EF4444", "#EC4899", "#06B6D4"];
   const gradientIdBase = `compare-${String(name || title || 'chart').replace(/[^a-zA-Z0-9]/g, '-')}`;
 
@@ -103,10 +102,13 @@ const ModernCompareChart = ({
   const dataKeys = transformedData.length > 0 
     ? Array.from(new Set(transformedData.flatMap(item => Object.keys(item)))).filter(k => k !== 'category' && k !== 'originalCategory' && !k.startsWith('_raw_'))
     : [];
+  const hasChartData = dataKeys.some(dataKey =>
+    transformedData.some(item => Number(item[dataKey] || 0) > 0),
+  );
 
   return (
     <ChartCard title={titlePosition === 'header' ? title : ''}>
-      <div style={{ width: '100%', height: 380 }}>
+      <div style={{ width: '100%', height: 380, position: 'relative' }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={transformedData} margin={{ top: 20, right: 30, left: 20, bottom: 40 }}>
             <defs>
@@ -153,8 +155,9 @@ const ModernCompareChart = ({
             })}
           </BarChart>
         </ResponsiveContainer>
+        {!hasChartData ? <NoDataChartMessage /> : null}
       </div>
-      {legendMapping ? <CustomLegend mapping={legendMapping} /> : null}
+      {hasChartData && legendMapping ? <CustomLegend mapping={legendMapping} /> : null}
       {showFooterTitle && titlePosition === 'footer' && title ? <h3 className="dashboard-chart-footer-title">{title}</h3> : null}
     </ChartCard>
   );

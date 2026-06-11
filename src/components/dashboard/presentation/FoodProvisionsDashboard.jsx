@@ -7,6 +7,7 @@ import foodProvisions from '../container/foodProvisions.container';
 import ChartCard from '../shared/ChartCard';
 import CustomLegend from '../shared/CustomLegend';
 import ModuleFilters from '../shared/ModuleFilters';
+import NoDataChartMessage from '../shared/NoDataChartMessage';
 import StyledTooltip from '../shared/StyledTooltip';
 
 const BLACK_AXIS = { stroke: "#000", strokeWidth: 1 };
@@ -65,7 +66,7 @@ const FoodProvisionsDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = foodProvisions();
+  } = foodProvisions({ hostelFilter });
 
   // "job_FoodProvisions"
   const foodKey = 'job_FoodProvisions';
@@ -132,6 +133,9 @@ const FoodProvisionsDashboard = () => {
       color: item.color,
     }));
   }, [level3]);
+  const hasFuelData = [...fuelLevel2Data, ...fuelLevel3Data].some(item => Number(item.value || 0) > 0);
+  const hasFoodData = barData.some(item => Number(item.yes || 0) > 0 || Number(item.no || 0) > 0);
+  const hasVariationData = varData.some(item => Number(item.yesCount || 0) > 0 || Number(item.noCount || 0) > 0);
 
   return (
     <DashboardWrapper
@@ -146,48 +150,56 @@ const FoodProvisionsDashboard = () => {
         />
         <div className="dashboard-single-chart-grid">
           <ChartCard title={t(fuelKey)}>
-            <ResponsiveContainer width="100%" height={400}>
-              <PieChart>
-                <Pie
-                  data={fuelLevel2Data}
-                  cx="50%"
-                  cy="46%"
-                  innerRadius={58}
-                  outerRadius={104}
-                  dataKey="value"
-                  nameKey="name"
-                  labelLine={false}
-                  label={renderFuelLabel}
-                  onClick={data => handleChartClick({ e: { point: { name: data.name, y: data.value, type: 'Level 2' } }, name: fuelKey })}
-                >
-                  {fuelLevel2Data.map((entry, index) => (
-                    <Cell key={`fuel-level-2-${index}`} fill={entry.color} stroke="#ffffff" strokeWidth={2} />
-                  ))}
-                </Pie>
-                <Pie
-                  data={fuelLevel3Data}
-                  cx="50%"
-                  cy="46%"
-                  innerRadius={106}
-                  outerRadius={142}
-                  dataKey="value"
-                  nameKey="name"
-                  label={renderFuelLabel}
-                  labelLine={false}
-                  onClick={data => handleChartClick({ e: { point: { name: data.name, y: data.value, type: 'Level 3' } }, name: fuelKey })}
-                >
-                  {fuelLevel3Data.map((entry, index) => (
-                    <Cell key={`fuel-level-3-${index}`} fill={entry.color} stroke="#ffffff" strokeWidth={2} />
-                  ))}
-                </Pie>
-                <Tooltip content={<StyledTooltip />} formatter={(v, n) => [`${v} Hostels`, n]} />
-                <Legend verticalAlign="bottom" wrapperStyle={{ paddingTop: 18 }} />
-              </PieChart>
-            </ResponsiveContainer>
+            <div style={{ width: '100%', height: 400, position: 'relative' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  {hasFuelData ? (
+                    <>
+                      <Pie
+                        data={fuelLevel2Data}
+                        cx="50%"
+                        cy="46%"
+                        innerRadius={58}
+                        outerRadius={104}
+                        dataKey="value"
+                        nameKey="name"
+                        labelLine={false}
+                        label={renderFuelLabel}
+                        onClick={data => handleChartClick({ e: { point: { name: data.name, y: data.value, type: 'Level 2' } }, name: fuelKey })}
+                      >
+                        {fuelLevel2Data.map((entry, index) => (
+                          <Cell key={`fuel-level-2-${index}`} fill={entry.color} stroke="#ffffff" strokeWidth={2} />
+                        ))}
+                      </Pie>
+                      <Pie
+                        data={fuelLevel3Data}
+                        cx="50%"
+                        cy="46%"
+                        innerRadius={106}
+                        outerRadius={142}
+                        dataKey="value"
+                        nameKey="name"
+                        label={renderFuelLabel}
+                        labelLine={false}
+                        onClick={data => handleChartClick({ e: { point: { name: data.name, y: data.value, type: 'Level 3' } }, name: fuelKey })}
+                      >
+                        {fuelLevel3Data.map((entry, index) => (
+                          <Cell key={`fuel-level-3-${index}`} fill={entry.color} stroke="#ffffff" strokeWidth={2} />
+                        ))}
+                      </Pie>
+                    </>
+                  ) : null}
+                  <Tooltip content={<StyledTooltip />} formatter={(v, n) => [`${v} Hostels`, n]} />
+                  {hasFuelData ? <Legend verticalAlign="bottom" wrapperStyle={{ paddingTop: 18 }} /> : null}
+                </PieChart>
+              </ResponsiveContainer>
+              {!hasFuelData ? <NoDataChartMessage /> : null}
+            </div>
           </ChartCard>
 
           <ChartCard title={t(foodKey)}>
-            <ResponsiveContainer width="100%" height={300}>
+            <div style={{ width: '100%', height: 300, position: 'relative' }}>
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barData} margin={{ top: 10, right: 30, left: 10, bottom: 20 }}>
                 <defs>
                   <linearGradient id="fpYes" x1="0" y1="0" x2="0" y2="1">
@@ -208,11 +220,14 @@ const FoodProvisionsDashboard = () => {
                 <Bar dataKey="no" name="No" fill="url(#fpNo)" radius={[4, 4, 0, 0]} cursor="pointer" barSize={40} maxBarSize={40} onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.no, type: t('btn_No') } }, name: foodKey })} />
               </BarChart>
             </ResponsiveContainer>
-            <CustomLegend mapping={foodLegendMapping} />
+            {!hasFoodData ? <NoDataChartMessage /> : null}
+            </div>
+            {hasFoodData ? <CustomLegend mapping={foodLegendMapping} /> : null}
           </ChartCard>
 
           <ChartCard title={t(varKey)}>
-            <ResponsiveContainer width="100%" height={300}>
+            <div style={{ width: '100%', height: 300, position: 'relative' }}>
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart data={varData} margin={{ top: 10, right: 30, left: 10, bottom: 20 }}>
                 <defs>
                   <linearGradient id="pvYes" x1="0" y1="0" x2="0" y2="1">
@@ -233,7 +248,9 @@ const FoodProvisionsDashboard = () => {
                 <Bar dataKey="noCount" name="No" fill="url(#pvNo)" radius={[4, 4, 0, 0]} cursor="pointer" barSize={40} maxBarSize={40} onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.noCount, type: t('btn_No') } }, name: varKey })} />
               </BarChart>
             </ResponsiveContainer>
-            <CustomLegend mapping={varLegendMapping} />
+            {!hasVariationData ? <NoDataChartMessage /> : null}
+            </div>
+            {hasVariationData ? <CustomLegend mapping={varLegendMapping} /> : null}
           </ChartCard>
         </div>
       </div>

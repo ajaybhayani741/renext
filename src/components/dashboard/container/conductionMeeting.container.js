@@ -11,8 +11,9 @@ import {
   axisOptionsList,
   conductionMeetingCharts,
 } from '../dashboard.description'
+import { getHostelChartParams } from '../dashboardFunctions'
 
-const conductionMeeting = () => {
+const conductionMeeting = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -30,12 +31,13 @@ const conductionMeeting = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = name => {
     const params = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_PrincipalHWOSpecialOfficer':

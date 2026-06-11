@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 import ChartCard from './ChartCard';
+import NoDataChartMessage from './NoDataChartMessage';
 import StyledTooltip from './StyledTooltip';
 import useTranslations from '../../../hooks/useTranslations';
 
@@ -91,6 +92,7 @@ const ModernFrequencyChart = ({
     }
     return result;
   }, [seriesData, binSize, customMin, customMax]);
+  const hasChartData = distributionData.some(item => Number(item.hostels || 0) > 0);
 
   return (
     <ChartCard title={title}>
@@ -120,7 +122,7 @@ const ModernFrequencyChart = ({
           </div>
         </div>
       </div>
-      <div style={{ width: '100%', height: 380 }}>
+      <div style={{ width: '100%', height: 380, position: 'relative' }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={distributionData} margin={{ top: 20, right: 30, left: 20, bottom: 40 }}>
             <defs>
@@ -147,6 +149,7 @@ const ModernFrequencyChart = ({
               }} />
           </BarChart>
         </ResponsiveContainer>
+        {!hasChartData ? <NoDataChartMessage /> : null}
       </div>
     </ChartCard>
   );

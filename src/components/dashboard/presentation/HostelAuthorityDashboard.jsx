@@ -20,7 +20,7 @@ const HostelAuthorityDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = hostelAuthority()
+  } = hostelAuthority({ hostelFilter })
 
   return (
     <DashboardWrapper

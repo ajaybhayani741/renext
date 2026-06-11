@@ -37,7 +37,7 @@ const HostelInfraSanitationDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = hostelInfraSanitation()
+  } = hostelInfraSanitation({ hostelFilter })
 
   return (
     <DashboardWrapper

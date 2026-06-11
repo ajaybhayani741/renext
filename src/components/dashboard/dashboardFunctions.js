@@ -15,3 +15,15 @@ export const setLineChartSeriesData = ({ respData, tempSeriesData, key }) => {
     }
   }
 }
+
+export const getHostelChartParams = hostelFilter => {
+  if (hostelFilter === 'All') {
+    return { allHostels: true }
+  }
+
+  if (hostelFilter) {
+    return { hostelId: hostelFilter }
+  }
+
+  return {}
+}

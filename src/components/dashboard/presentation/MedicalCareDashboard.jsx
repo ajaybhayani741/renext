@@ -30,7 +30,7 @@ const MedicalCareDashboard = () => {
     handleTableChange,
     hostelsData,
     onRangeChange,
-  } = medicalCare()
+  } = medicalCare({ hostelFilter })
   const { t } = useTranslations()
   return (
     <DashboardWrapper

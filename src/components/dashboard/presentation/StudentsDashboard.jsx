@@ -11,6 +11,7 @@ import { studentCharts } from '../dashboard.description';
 import ChartCard from '../shared/ChartCard';
 import DataModal from '../shared/DataModal';
 import ModuleFilters from '../shared/ModuleFilters';
+import NoDataChartMessage from '../shared/NoDataChartMessage';
 import StatsCard from '../shared/StatsCard';
 import StyledTooltip from '../shared/StyledTooltip';
 
@@ -20,6 +21,12 @@ const BLACK_TICK = { stroke: "#000" };
 
 const StudentsDashboard = () => {
   const { t } = useTranslations();
+  const [binSize, setBinSize] = useState(5);
+  const [customMin, setCustomMin] = useState("");
+  const [customMax, setCustomMax] = useState("");
+  const [districtFilter, setDistrictFilter] = useState('All');
+  const [hostelFilter, setHostelFilter] = useState('All');
+  const [genderFilter, setGenderFilter] = useState('ALL');
   const {
     seriesData,
     selectedColumn,
@@ -32,18 +39,11 @@ const StudentsDashboard = () => {
     handleDownloadExcel,
     reportLoader,
     jobType,
-  } = students();
+  } = students({ hostelFilter, genderFilter });
 
   const key = 'dash_TotalNumberOfStudents';
   const currentSeries = seriesData?.[key];
   const chartConfig = studentCharts?.[key];
-
-  const [binSize, setBinSize] = useState(5);
-  const [customMin, setCustomMin] = useState("");
-  const [customMax, setCustomMax] = useState("");
-  const [districtFilter, setDistrictFilter] = useState('All');
-  const [hostelFilter, setHostelFilter] = useState('All');
-  const [genderFilter, setGenderFilter] = useState('All');
 
   const distributionData = useMemo(() => {
     if (!currentSeries || !currentSeries.series || currentSeries.series.length === 0 || !binSize) return [];
@@ -84,6 +84,7 @@ const StudentsDashboard = () => {
   }, [currentSeries, binSize, customMin, customMax]);
 
   const totalEnrolled = currentSeries?.total || 0;
+  const hasChartData = distributionData.some(item => Number(item.hostels || 0) > 0);
 
   const columns = [
     {
@@ -129,9 +130,9 @@ const StudentsDashboard = () => {
               onChange={setGenderFilter}
               style={{ width: "100%" }}
             >
-              <Option value="All">All Students</Option>
-              <Option value="Boys">Boys</Option>
-              <Option value="Girls">Girls</Option>
+              <Option value="ALL">All Students</Option>
+              <Option value="BOYS">Boys</Option>
+              <Option value="GIRLS">Girls</Option>
             </Select>
           </div>
         )}
@@ -172,31 +173,34 @@ const StudentsDashboard = () => {
           </div>
         </div>
         
-        <ResponsiveContainer width="100%" height={380}>
-          <BarChart data={distributionData} margin={{ top: 20, right: 30, left: 20, bottom: 40 }}>
-            <defs>
-              <linearGradient id="studGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.9} />
-                <stop offset="100%" stopColor="#A78BFA" stopOpacity={0.65} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-            <XAxis dataKey="range" tick={{ fontSize: 11, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} angle={-45} textAnchor="end" height={60} label={{ value: t(chartConfig?.xAxisText) || "Range", position: "insideBottom", offset: -25, fontSize: 13, fill: "#333", fontWeight: 600 }} />
-            <YAxis tick={{ fontSize: 12, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} label={{ value: t(chartConfig?.yAxisText) || "Number of Hostels", angle: -90, position: "insideLeft", offset: -5, fontSize: 12, fill: "#333" }} />
-            <Tooltip content={<StyledTooltip />} />
-            <Bar dataKey="hostels" name="Hostels" fill="url(#studGrad)" radius={[4, 4, 0, 0]} cursor="pointer"
-              maxBarSize={98}
-              activeBar={{ stroke: "#8B5CF6", strokeWidth: 2, fillOpacity: 1 }}
-              onClick={data => {
-                handleChartClick({ 
-                  e: { point: { category: data.range, y: data.hostels } }, 
-                  name: key, 
-                  xAxisTitle: chartConfig?.xAxisText,
-                  startEnd: { start: data.startVal, end: data.endVal }
-                });
-              }} />
-          </BarChart>
-        </ResponsiveContainer>
+        <div style={{ width: '100%', height: 380, position: 'relative' }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={distributionData} margin={{ top: 20, right: 30, left: 20, bottom: 40 }}>
+              <defs>
+                <linearGradient id="studGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.9} />
+                  <stop offset="100%" stopColor="#A78BFA" stopOpacity={0.65} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+              <XAxis dataKey="range" tick={{ fontSize: 11, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} angle={-45} textAnchor="end" height={60} label={{ value: t(chartConfig?.xAxisText) || "Range", position: "insideBottom", offset: -25, fontSize: 13, fill: "#333", fontWeight: 600 }} />
+              <YAxis tick={{ fontSize: 12, fill: "#000" }} axisLine={BLACK_AXIS} tickLine={BLACK_TICK} label={{ value: t(chartConfig?.yAxisText) || "Number of Hostels", angle: -90, position: "insideLeft", offset: -5, fontSize: 12, fill: "#333" }} />
+              <Tooltip content={<StyledTooltip />} />
+              <Bar dataKey="hostels" name="Hostels" fill="url(#studGrad)" radius={[4, 4, 0, 0]} cursor="pointer"
+                maxBarSize={98}
+                activeBar={{ stroke: "#8B5CF6", strokeWidth: 2, fillOpacity: 1 }}
+                onClick={data => {
+                  handleChartClick({
+                    e: { point: { category: data.range, y: data.hostels } },
+                    name: key,
+                    xAxisTitle: chartConfig?.xAxisText,
+                    startEnd: { start: data.startVal, end: data.endVal }
+                  });
+                }} />
+            </BarChart>
+          </ResponsiveContainer>
+          {!hasChartData ? <NoDataChartMessage /> : null}
+        </div>
         <h3 className="dashboard-chart-footer-title">
           Total number of students: {totalEnrolled}
         </h3>
