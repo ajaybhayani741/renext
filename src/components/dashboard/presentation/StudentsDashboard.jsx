@@ -26,7 +26,7 @@ const StudentsDashboard = () => {
   const [customMax, setCustomMax] = useState("");
   const [districtFilter, setDistrictFilter] = useState('All');
   const [hostelFilter, setHostelFilter] = useState('All');
-  const [genderFilter, setGenderFilter] = useState('All');
+  const [genderFilter, setGenderFilter] = useState('ALL');
   const {
     seriesData,
     selectedColumn,
@@ -39,7 +39,7 @@ const StudentsDashboard = () => {
     handleDownloadExcel,
     reportLoader,
     jobType,
-  } = students({ hostelFilter });
+  } = students({ hostelFilter, genderFilter });
 
   const key = 'dash_TotalNumberOfStudents';
   const currentSeries = seriesData?.[key];
@@ -130,9 +130,9 @@ const StudentsDashboard = () => {
               onChange={setGenderFilter}
               style={{ width: "100%" }}
             >
-              <Option value="All">All Students</Option>
-              <Option value="Boys">Boys</Option>
-              <Option value="Girls">Girls</Option>
+              <Option value="ALL">All Students</Option>
+              <Option value="BOYS">Boys</Option>
+              <Option value="GIRLS">Girls</Option>
             </Select>
           </div>
         )}
