@@ -56,7 +56,7 @@ const DashboardWrapper = ({
             footer={false}
             width={850}
           >
-            <div className="text-end mb-10">
+            <div className="text-end mb-5">
               <ANTDButton
                 type="primary"
                 className="btn"
