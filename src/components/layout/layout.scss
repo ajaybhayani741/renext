@@ -396,9 +396,8 @@ img {
 
   .ant-layout-content {
     margin-top: 20px;
-    padding: 20px 24px calc(var(--app-footer-safe-space) + 56px);
+    padding: 20px 24px calc(var(--app-footer-safe-space));
     position: relative;
-    min-height: calc(100dvh - var(--app-footer-safe-space));
 
     @media screen and (max-width: 991px) {
       padding: 0 15px calc(var(--app-footer-safe-space) + 56px);
