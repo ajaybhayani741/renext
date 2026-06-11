@@ -19,7 +19,7 @@ const EducationFacilitiesDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = educationFacilities()
+  } = educationFacilities({ hostelFilter })
   const { t } = useTranslations()
 
   const educationChartData =

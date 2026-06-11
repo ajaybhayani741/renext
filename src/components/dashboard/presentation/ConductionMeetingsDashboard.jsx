@@ -19,7 +19,7 @@ const ConductionMeetingsDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = conductionMeeting()
+  } = conductionMeeting({ hostelFilter })
   const { t } = useTranslations()
   return (
     <DashboardWrapper

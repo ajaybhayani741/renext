@@ -8,8 +8,9 @@ import {
   getRecordMaintenanceHostelsApi,
 } from '../dashboard.api'
 import { recordMaintenanceCharts } from '../dashboard.description'
+import { getHostelChartParams } from '../dashboardFunctions'
 
-const recordMaintenance = () => {
+const recordMaintenance = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -46,12 +47,13 @@ const recordMaintenance = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = async ({ name }) => {
     const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'job_RecordMaintenance':

@@ -17,9 +17,12 @@ import {
   getWorkersHostelsApi,
 } from '../dashboard.api'
 import { lineChartRange, staffDetailsCharts } from '../dashboard.description'
-import { setLineChartSeriesData } from '../dashboardFunctions'
+import {
+  getHostelChartParams,
+  setLineChartSeriesData,
+} from '../dashboardFunctions'
 
-const staffDetails = () => {
+const staffDetails = ({ hostelFilter } = {}) => {
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
@@ -33,7 +36,7 @@ const staffDetails = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = async ({
     name,
@@ -45,6 +48,7 @@ const staffDetails = () => {
       toDate: dateRange?.to,
       start,
       end,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalNumberOfWorkersOnPayroll':

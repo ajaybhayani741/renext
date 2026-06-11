@@ -20,7 +20,7 @@ const RecordMaintenanceDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = recordMaintenance()
+  } = recordMaintenance({ hostelFilter })
 
   const categoryLabels = useMemo(
     () => chartData?.category?.map((_, index) => `${index + 1}`) || [],

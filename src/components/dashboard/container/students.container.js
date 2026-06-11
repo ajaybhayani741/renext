@@ -16,9 +16,12 @@ import {
   lineChartRange,
   studentCharts,
 } from '../dashboard.description'
-import { setLineChartSeriesData } from '../dashboardFunctions'
+import {
+  getHostelChartParams,
+  setLineChartSeriesData,
+} from '../dashboardFunctions'
 
-const students = () => {
+const students = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -39,7 +42,7 @@ const students = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = async ({
     name,
@@ -51,6 +54,7 @@ const students = () => {
       toDate: dateRange?.to,
       start,
       end,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalNumberOfStudents':

@@ -36,7 +36,7 @@ const SafetySecurityDashboard = () => {
     handleTableChange,
     hostelsData,
     onRangeChange,
-  } = safetySecurity()
+  } = safetySecurity({ hostelFilter })
   const { t } = useTranslations()
   return (
     <DashboardWrapper

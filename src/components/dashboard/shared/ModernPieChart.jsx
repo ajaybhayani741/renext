@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 import ChartCard from './ChartCard';
+import NoDataChartMessage from './NoDataChartMessage';
 import StyledTooltip from './StyledTooltip';
 import useTranslations from '../../../hooks/useTranslations';
 
@@ -47,41 +48,43 @@ const ModernPieChart = ({
     }).filter(item => item.value > 0);
   }, [seriesData, t]);
 
-  if (!data || data.length === 0) return null;
-
   const COLORS = colors || ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#06B6D4'];
+  const hasChartData = data.length > 0;
 
   return (
     <ChartCard title={title}>
-      <div style={{ width: '100%', height: 380 }}>
+      <div style={{ width: '100%', height: 380, position: 'relative' }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="45%"
-              innerRadius={70}
-              outerRadius={110}
-              paddingAngle={5}
-              dataKey="value"
-              cursor="pointer"
-              onClick={dataPoint => {
-                if (handleChartClick) {
-                  handleChartClick({ 
-                    e: { point: { name: dataPoint.originalName, valueId: dataPoint.valueId, y: dataPoint.value } }, 
-                    name 
-                  });
-                }
-              }}
-            >
-              {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
+            {hasChartData ? (
+              <Pie
+                data={data}
+                cx="50%"
+                cy="45%"
+                innerRadius={70}
+                outerRadius={110}
+                paddingAngle={5}
+                dataKey="value"
+                cursor="pointer"
+                onClick={dataPoint => {
+                  if (handleChartClick) {
+                    handleChartClick({
+                      e: { point: { name: dataPoint.originalName, valueId: dataPoint.valueId, y: dataPoint.value } },
+                      name
+                    });
+                  }
+                }}
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+            ) : null}
             <Tooltip content={<StyledTooltip />} />
-            <Legend verticalAlign="bottom" height={36} iconType="circle" />
+            {hasChartData ? <Legend verticalAlign="bottom" height={36} iconType="circle" /> : null}
           </PieChart>
         </ResponsiveContainer>
+        {!hasChartData ? <NoDataChartMessage /> : null}
       </div>
     </ChartCard>
   );

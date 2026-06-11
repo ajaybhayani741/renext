@@ -12,8 +12,9 @@ import {
   getVariationHostelsApi,
 } from '../dashboard.api'
 import { axisOptionsList, foodPrevisionsCharts } from '../dashboard.description'
+import { getHostelChartParams } from '../dashboardFunctions'
 
-const foodProvisions = () => {
+const foodProvisions = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -77,12 +78,13 @@ const foodProvisions = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = name => {
     const params = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'job_FoodProvisions':

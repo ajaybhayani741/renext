@@ -26,9 +26,12 @@ import {
   hostelInfraSanitationCharts,
   lineChartRange,
 } from '../dashboard.description'
-import { setLineChartSeriesData } from '../dashboardFunctions'
+import {
+  getHostelChartParams,
+  setLineChartSeriesData,
+} from '../dashboardFunctions'
 
-const hostelInfraSanitation = () => {
+const hostelInfraSanitation = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -77,7 +80,7 @@ const hostelInfraSanitation = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = async ({
     name,
@@ -89,14 +92,17 @@ const hostelInfraSanitation = () => {
       toDate: dateRange?.to,
       start,
       end,
+      ...getHostelChartParams(hostelFilter),
     }
     const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     const pieParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalToiletsAvailable':

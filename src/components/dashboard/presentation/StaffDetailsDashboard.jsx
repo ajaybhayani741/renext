@@ -59,7 +59,7 @@ const StaffDetailsDashboard = () => {
     handleCloseModal,
     hostelsData,
     handleTableChange,
-  } = staffDetails()
+  } = staffDetails({ hostelFilter })
 
   return (
     <DashboardWrapper

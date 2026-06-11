@@ -16,9 +16,12 @@ import {
   lineChartRange,
   medicalCareCharts,
 } from '../dashboard.description'
-import { setLineChartSeriesData } from '../dashboardFunctions'
+import {
+  getHostelChartParams,
+  setLineChartSeriesData,
+} from '../dashboardFunctions'
 
-const medicalCare = () => {
+const medicalCare = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -38,7 +41,7 @@ const medicalCare = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = ({
     name,
@@ -48,6 +51,7 @@ const medicalCare = () => {
     const params = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_IsTheStaffNurseAvailableInTheHostel':
