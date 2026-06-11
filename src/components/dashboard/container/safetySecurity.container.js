@@ -184,6 +184,7 @@ const safetySecurity = ({ hostelFilter } = {}) => {
       toDate: selectedDateRange?.to,
       ...(rangeValue && { range: rangeValue }),
       ...(!rangeValue && (start || end) && { start, end }),
+      ...getHostelChartParams(hostelFilter),
     }
     const columnParams = {
       fromDate: dateRange?.from,
@@ -192,6 +193,7 @@ const safetySecurity = ({ hostelFilter } = {}) => {
         category: category,
       }),
       filterValue: filterValue,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_PrecautionaryMeasures':

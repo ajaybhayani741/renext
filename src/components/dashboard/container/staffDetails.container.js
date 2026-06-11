@@ -121,6 +121,7 @@ const staffDetails = ({ hostelFilter } = {}) => {
       toDate: selectedDateRange?.to,
       ...(rangeValue && { range: rangeValue }),
       ...(!rangeValue && (start || end) && { start, end }),
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalNumberOfWorkersOnPayroll':

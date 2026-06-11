@@ -1,8 +1,8 @@
 import './App.scss'
 
 // import { getToken, onMessage } from 'firebase/messaging'
-import React, { Suspense } from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import React, { Suspense, useEffect } from 'react'
+import { BrowserRouter, useLocation } from 'react-router-dom'
 
 import useFiscalYearInitializer from './hooks/useFiscalYearInitializer'
 import useNotify from './hooks/useNotify'
@@ -15,6 +15,21 @@ import ANTDConfigProvider from './shared/antd/ANTDConfigProvider'
 import PopUpConfirm from './shared/PopUpConfirm'
 
 let notifyMethod
+
+function ScrollToTop() {
+  const { pathname, search } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    document
+      .querySelectorAll('.layout, .main-layout, .ant-layout-content')
+      .forEach(element => {
+        element.scrollTo?.({ top: 0, left: 0, behavior: 'auto' })
+      })
+  }, [pathname, search])
+
+  return null
+}
 
 function App() {
   const { t } = useTranslations()
@@ -134,6 +149,7 @@ function App() {
           }}
         >
           {contextHolder}
+          <ScrollToTop />
           <Routing />
           {open && (
             <PopUpConfirm

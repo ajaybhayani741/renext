@@ -95,6 +95,7 @@ const hostelAuthority = ({ hostelFilter } = {}) => {
       toDate: dateRange?.to,
       category,
       filterValue,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'job_HostelAuthority':

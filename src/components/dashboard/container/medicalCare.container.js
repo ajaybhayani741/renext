@@ -148,6 +148,7 @@ const medicalCare = ({ hostelFilter } = {}) => {
     const params = {
       fromDate: newDateRange?.from,
       toDate: newDateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_IsTheStaffNurseAvailableInTheHostel':
@@ -174,6 +175,7 @@ const medicalCare = ({ hostelFilter } = {}) => {
             toDate: newDateRange?.to,
             ...(rangeValue && { range: rangeValue }),
             ...(!rangeValue && (start || end) && { start, end }),
+            ...getHostelChartParams(hostelFilter),
             // ...params,
           },
         })
