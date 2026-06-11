@@ -446,7 +446,8 @@
 
 .dashboard-container,
 .dashboard-view {
-  min-height: 100vh;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: 'Inter', sans-serif;
@@ -655,7 +656,7 @@
 .dashboard-view-content,
 .dashboard-module-surface {
   width: 100%;
-  min-height: calc(100vh - 132px);
+  min-height: calc(100vh - 190px);
 }
 
 .dashboard-module-surface {
