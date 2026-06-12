@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 96%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 221 78% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 219 77% 75%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 220 14% 92%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 219 77% 75%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 78% 50%;
+    --radius: 0.75rem;
+
+    --host-primary: 221 78% 50%;
+    --host-secondary: 219 77% 75%;
+    --host-bg: 0 0% 96%;
+    --host-surface: 0 0% 100%;
+    --host-shadow: 0 8px 30px rgba(0,0,0,0.04);
+    --host-shadow-hover: 0 16px 40px rgba(0,0,0,0.08);
+    --host-glow: 0 0 20px rgba(29,91,224,0.15);
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 9% 46%;
+    --sidebar-primary: 221 78% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 219 77% 95%;
+    --sidebar-accent-foreground: 221 78% 50%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 221 78% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .host-card {
+    @apply bg-card rounded-2xl transition-all duration-300;
+    box-shadow: var(--host-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+  }
+  .host-card:hover {
+    box-shadow: var(--host-shadow-hover);
+  }
+  .host-topbar {
+    background: hsl(var(--host-primary));
+  }
+  .host-kpi {
+    @apply bg-card rounded-xl p-4;
+    box-shadow: var(--host-shadow);
+  }
+  .host-chart-container {
+    @apply bg-card rounded-2xl p-6;
+    box-shadow: var(--host-shadow);
+  }
+  .host-gradient-text {
+    background: linear-gradient(135deg, hsl(var(--host-primary)), hsl(var(--host-secondary)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Ant Design overrides */
+.ant-modal .ant-modal-content {
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+}
+.ant-modal .ant-modal-header {
+  border-radius: 16px 16px 0 0;
+}
+.ant-select-selector {
+  border-radius: 8px !important;
+}

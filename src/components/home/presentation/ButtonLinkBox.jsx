@@ -6,7 +6,7 @@ import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import ANTDToolTip from '../../../shared/antd/ANTDTooltip'
 
-function ButtonLinkBox({ buttonGroup, title }) {
+function ButtonLinkBox({ buttonGroup, title, themeClass = '' }) {
   const { t } = useTranslations()
   const { navigate } = useRouter()
   const { dispatch } = useRedux()
@@ -17,7 +17,7 @@ function ButtonLinkBox({ buttonGroup, title }) {
   }
 
   return (
-    <ANTDColumn className="list-columns">
+    <ANTDColumn className={`list-columns ${themeClass}`}>
       <h3 className="name-wrapper">{t(title)}</h3>
       {buttonGroup?.map(
         (

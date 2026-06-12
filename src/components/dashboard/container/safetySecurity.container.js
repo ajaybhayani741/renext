@@ -14,9 +14,12 @@ import {
   getPrecautionaryMeasuresHostelsApi,
 } from '../dashboard.api'
 import { lineChartRange, safetySecurityCharts } from '../dashboard.description'
-import { setLineChartSeriesData } from '../dashboardFunctions'
+import {
+  getHostelChartParams,
+  setLineChartSeriesData,
+} from '../dashboardFunctions'
 
-const safetySecurity = () => {
+const safetySecurity = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -53,7 +56,7 @@ const safetySecurity = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = async ({
     name,
@@ -65,10 +68,12 @@ const safetySecurity = () => {
       toDate: dateRange?.to,
       start,
       end,
+      ...getHostelChartParams(hostelFilter),
     }
     const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_PrecautionaryMeasures':
@@ -161,7 +166,6 @@ const safetySecurity = () => {
   }
 
   const getHandleClickDataApi = async ({
-    range,
     category,
     filterValue,
     pageNo = 1,
@@ -170,13 +174,13 @@ const safetySecurity = () => {
     end,
     newDateRange = dateRange,
   } = {}) => {
-    const isRangeFrequency = safetySecurityCharts?.[name]?.type === 'rangeFrequency'
-    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
-      fromDate: newDateRange?.from,
-      toDate: newDateRange?.to,
-      ...(rangeValue && { range: rangeValue }),
-      ...(!rangeValue && (start || end) && { start, end }),
+      fromDate: selectedDateRange?.from,
+      toDate: selectedDateRange?.to,
+      ...((start || end) && { start, end }),
+      ...getHostelChartParams(hostelFilter),
     }
     const columnParams = {
       fromDate: dateRange?.from,
@@ -185,6 +189,7 @@ const safetySecurity = () => {
         category: category,
       }),
       filterValue: filterValue,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_PrecautionaryMeasures':
@@ -225,6 +230,8 @@ const safetySecurity = () => {
     xAxisTitle,
   }) => {
     const data = e.point
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
       category: isEqual(name, 'dash_PrecautionaryMeasures')
@@ -239,7 +246,7 @@ const safetySecurity = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: { ...newDateRange },
+      newDateRange: selectedDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -258,7 +265,7 @@ const safetySecurity = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         range: data?.category,
-        newDateRange: { ...newDateRange },
+        newDateRange: selectedDateRange,
         chartType: safetySecurityCharts?.[name]?.type,
         xAxisTitle: xAxisTitle,
       },

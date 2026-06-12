@@ -5,8 +5,11 @@ import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import { setDeviceStatus, setMobileStatus } from '../../../redux/app/reducer'
-import pathName, { USER_TXT } from '../../../routing/pathName.constant'
-import ANTDTooltip from '../../../shared/antd/ANTDTooltip'
+import pathName, {
+  DASHBOARD_TXT,
+  NEW_DASHBOARD_TXT,
+  USER_TXT,
+} from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
 import {
   entries,
@@ -30,12 +33,24 @@ const appLayout = () => {
   const activeItem1 = location.pathname
   const defaultOpenKeys = [`/${activeItem1.split('/')?.[1]}`]
   const [collapsed, setCollapsed] = useState(false)
-  const { inspectionOfficer, districtCollector } = userWiseRole
+  const { districtCollector } = userWiseRole
 
   const removeAddFromLastPath = () => {
     let url = ''
     const pathSegments = activeItem1.split('/')
     const lastSegmentIndex = length(pathSegments) - 1
+
+    if (
+      activeItem1 === DASHBOARD_TXT ||
+      activeItem1.startsWith(`${DASHBOARD_TXT}/`)
+    ) {
+      return DASHBOARD_TXT
+    }
+
+    if (activeItem1 === NEW_DASHBOARD_TXT) {
+      return NEW_DASHBOARD_TXT
+    }
+
     if (
       lastSegmentIndex >= 0 &&
       isEqual(pathSegments[lastSegmentIndex], 'add')
@@ -80,13 +95,10 @@ const appLayout = () => {
           menu.sidebar.includes(roleIdToFilter)
         ) {
           const { key, label, Icon, disabled } = menu
-          const updatedLabel =
-            isEqual(roleId, inspectionOfficer) && isEqual(label, 'menu_Jobs')
-              ? 'job_InspectionJob'
-              : label
           const filteredMenu = {
             key,
-            label: <ANTDTooltip>{t(updatedLabel)}</ANTDTooltip>,
+            label: t(label),
+            title: false,
             className: newClass,
             Icon,
             disabled,
@@ -107,7 +119,8 @@ const appLayout = () => {
             const { key, label, Icon, disabled } = menu
             const filteredMenu = {
               key,
-              label: <ANTDTooltip>{t(label)}</ANTDTooltip>,
+              label: t(label),
+              title: false,
               children: filteredChildren,
               className: newClass,
               Icon,

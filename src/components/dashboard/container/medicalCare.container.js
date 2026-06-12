@@ -16,9 +16,12 @@ import {
   lineChartRange,
   medicalCareCharts,
 } from '../dashboard.description'
-import { setLineChartSeriesData } from '../dashboardFunctions'
+import {
+  getHostelChartParams,
+  setLineChartSeriesData,
+} from '../dashboardFunctions'
 
-const medicalCare = () => {
+const medicalCare = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -38,7 +41,7 @@ const medicalCare = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = ({
     name,
@@ -48,6 +51,7 @@ const medicalCare = () => {
     const params = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_IsTheStaffNurseAvailableInTheHostel':
@@ -136,7 +140,6 @@ const medicalCare = () => {
     category,
     pageNo,
     type,
-    range,
     start,
     end,
     newDateRange = dateRange,
@@ -144,6 +147,7 @@ const medicalCare = () => {
     const params = {
       fromDate: newDateRange?.from,
       toDate: newDateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_IsTheStaffNurseAvailableInTheHostel':
@@ -159,17 +163,13 @@ const medicalCare = () => {
           params: { ...params, category: apiCategory, filterValue },
         })
       case 'job_DistanceToNearestPHC':
-        const isRangeFrequency =
-          medicalCareCharts?.[name]?.type === 'rangeFrequency'
-        const rangeValue =
-          isRangeFrequency && range && typeof range === 'number' ? range : null
         return getPHCDistanceHostelsApi({
           pageNo,
           params: {
             fromDate: newDateRange?.from,
             toDate: newDateRange?.to,
-            ...(rangeValue && { range: rangeValue }),
-            ...(!rangeValue && (start || end) && { start, end }),
+            ...((start || end) && { start, end }),
+            ...getHostelChartParams(hostelFilter),
             // ...params,
           },
         })

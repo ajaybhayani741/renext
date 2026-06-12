@@ -260,7 +260,11 @@ const jobTable = ({
             />
           ) : (
             <ANTDTag
-              className="pl-15 pr-15 fs-14 py-5 br-10 color-black"
+              className={`pl-15 pr-15 fs-14 py-5 br-10 ${
+                include(rowData?.status, 'COMPLETED')
+                  ? 'color-white'
+                  : 'color-black'
+              }`}
               color={
                 include(rowData?.status, 'INPROGRESS')
                   ? '#FA8128'
@@ -279,6 +283,8 @@ const jobTable = ({
       {
         title: t('txt_Action'),
         key: columnKeys.action,
+        width: 150,
+        className: 'job-action-column',
         fixed: 'right',
         render: actionButtons,
       },

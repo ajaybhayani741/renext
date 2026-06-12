@@ -280,7 +280,7 @@ const RecoveryDealerSelect = ({
 
     return (
       <>
-        <div className="mt-10 user-table-card">
+        <div className="mt-5 user-table-card">
           <ANTDTable
             className="user-table"
             loading={loader || searchResult.loader}

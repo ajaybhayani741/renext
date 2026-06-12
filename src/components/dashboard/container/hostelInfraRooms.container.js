@@ -17,9 +17,12 @@ import {
   hostelInfraRoomsCharts,
   lineChartRange,
 } from '../dashboard.description'
-import { setLineChartSeriesData } from '../dashboardFunctions'
+import {
+  getHostelChartParams,
+  setLineChartSeriesData,
+} from '../dashboardFunctions'
 
-const hostelInfraRooms = () => {
+const hostelInfraRooms = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -53,7 +56,7 @@ const hostelInfraRooms = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = async ({
     name,
@@ -65,10 +68,12 @@ const hostelInfraRooms = () => {
       toDate: dateRange?.to,
       start,
       end,
+      ...getHostelChartParams(hostelFilter),
     }
     const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalNumberOfLivingRooms':
@@ -163,7 +168,6 @@ const hostelInfraRooms = () => {
   }
 
   const getHandleClickDataApi = async ({
-    range,
     category,
     filterValue,
     pageNo = 1,
@@ -172,19 +176,20 @@ const hostelInfraRooms = () => {
     end,
     newDateRange = dateRange,
   } = {}) => {
-    const isRangeFrequency = hostelInfraRoomsCharts?.[name]?.chartType === 'rangeFrequency'
-    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
-      fromDate: newDateRange?.from,
-      toDate: newDateRange?.to,
-      ...(rangeValue && { range: rangeValue }),
-      ...(!rangeValue && (start || end) && { start, end }),
+      fromDate: selectedDateRange?.from,
+      toDate: selectedDateRange?.to,
+      ...((start || end) && { start, end }),
+      ...getHostelChartParams(hostelFilter),
     }
     const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
       category: category,
       filterValue: filterValue,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalNumberOfLivingRooms':
@@ -222,6 +227,8 @@ const hostelInfraRooms = () => {
     xAxisTitle,
   }) => {
     const data = e.point
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
       category: locationBedsMattressesCategoryMapping?.[data?.category],
@@ -230,7 +237,7 @@ const hostelInfraRooms = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: { ...newDateRange },
+      newDateRange: selectedDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -246,7 +253,7 @@ const hostelInfraRooms = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         range: data?.category,
-        newDateRange: { ...newDateRange },
+        newDateRange: selectedDateRange,
         chartType: hostelInfraRoomsCharts?.[name]?.chartType,
         xAxisTitle: xAxisTitle,
       },

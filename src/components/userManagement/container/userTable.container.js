@@ -12,8 +12,8 @@ const userTable = ({
   payload,
   multiSelect,
   searchByEmail,
-  searchPayload,
   getUsersData = null,
+  searchPayload,
 }) => {
   const [viewModel, setViewModel] = useState({ open: false, userDetails: null })
   const searchValue = useRef(null)

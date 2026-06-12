@@ -49,8 +49,8 @@ const JobUserSelect = ({
 
   return (
     <>
-      <div className="mb-10 select-user-card">
-        <div className="mb-10 d-flex space-between title">
+      <div className="">
+        <div className="d-flex space-between title content-title">
           <h3>{t(selectTitle)}</h3>
           {!readOnly && (
             <ANTDButton

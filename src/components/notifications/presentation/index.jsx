@@ -20,7 +20,7 @@ const Notifications = () => {
   return (
     <>
       <h2>{t('txt_Notifications')}</h2>
-      <div className="notification-container mt-15" ref={infiniteRef}>
+      <div className="notifications-container mt-15" ref={infiniteRef}>
         <List>
           {notificationsList && length(notificationsList)
             ? notificationsList?.map(notification => {

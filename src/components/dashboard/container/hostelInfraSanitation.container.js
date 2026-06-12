@@ -26,9 +26,12 @@ import {
   hostelInfraSanitationCharts,
   lineChartRange,
 } from '../dashboard.description'
-import { setLineChartSeriesData } from '../dashboardFunctions'
+import {
+  getHostelChartParams,
+  setLineChartSeriesData,
+} from '../dashboardFunctions'
 
-const hostelInfraSanitation = () => {
+const hostelInfraSanitation = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -77,7 +80,7 @@ const hostelInfraSanitation = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = async ({
     name,
@@ -89,14 +92,17 @@ const hostelInfraSanitation = () => {
       toDate: dateRange?.to,
       start,
       end,
+      ...getHostelChartParams(hostelFilter),
     }
     const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     const pieParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalToiletsAvailable':
@@ -230,20 +236,18 @@ const hostelInfraSanitation = () => {
     category,
     filterValue,
     name,
-    range,
     pageNo = 1,
     start,
     end,
     newDateRange = dateRange,
   }) => {
-    const isRangeFrequency =
-      hostelInfraSanitationCharts?.[name]?.type === 'rangeFrequency'
-    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
-      fromDate: newDateRange?.from,
-      toDate: newDateRange?.to,
-      ...(rangeValue && { range: rangeValue }),
-      ...(!rangeValue && (start || end) && { start, end }),
+      fromDate: selectedDateRange?.from,
+      toDate: selectedDateRange?.to,
+      ...((start || end) && { start, end }),
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'job_DrinkingWater':
@@ -253,6 +257,7 @@ const hostelInfraSanitation = () => {
             fromDate: dateRange?.from,
             toDate: dateRange?.to,
             filterValue: category,
+            ...getHostelChartParams(hostelFilter),
           },
         })
         return resp?.data
@@ -277,6 +282,7 @@ const hostelInfraSanitation = () => {
             toDate: dateRange?.to,
             category: category,
             filterValue,
+            ...getHostelChartParams(hostelFilter),
           },
         })
         return wasteManagementResp?.data
@@ -288,6 +294,7 @@ const hostelInfraSanitation = () => {
             fromDate: dateRange?.from,
             toDate: dateRange?.to,
             filterValue,
+            ...getHostelChartParams(hostelFilter),
           },
         })
         return toiletsSufficiencyResp?.data
@@ -306,6 +313,8 @@ const hostelInfraSanitation = () => {
     xAxisTitle,
   }) => {
     const data = e.point
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     setHostelsData(prev => ({ ...prev, loader: true }))
     const type = data?.series?.name
     let categoryValue = data?.valueId
@@ -321,7 +330,7 @@ const hostelInfraSanitation = () => {
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: { ...newDateRange },
+      newDateRange: selectedDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -340,7 +349,7 @@ const hostelInfraSanitation = () => {
         start: startEnd?.start,
         end: startEnd?.end,
         range: data?.category,
-        newDateRange: { ...newDateRange },
+        newDateRange: selectedDateRange,
         chartType: hostelInfraSanitationCharts?.[name]?.type,
         xAxisTitle: xAxisTitle,
       },

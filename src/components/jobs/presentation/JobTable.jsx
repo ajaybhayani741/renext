@@ -79,7 +79,7 @@ const JobTable = ({
             x: '100%',
           }}
         />,
-        <div className="mt-20">
+        <div className="mt-5">
           {loader && (
             <div className="job-apiLoader fixed-loader">
               <ANTDSpin size="large" />
@@ -91,7 +91,7 @@ const JobTable = ({
                 key={item.id}
                 className={`list-card-view`}
                 style={{
-                  marginBottom: index === list?.length - 1 ? '0' : '',
+                  marginBottom: index === list?.length - 1 ? '90px' : '',
                 }}
                 title={null}
                 extra={
@@ -202,7 +202,7 @@ const JobTable = ({
           width={300}
           footer={[]}
         >
-          <div className="d-flex space-around mt-30 mb-20">
+          <div className="d-flex space-around mt-5 mb-5">
             <img
               src={ExcelIcon}
               alt="excel"

@@ -17,9 +17,12 @@ import {
   getWorkersHostelsApi,
 } from '../dashboard.api'
 import { lineChartRange, staffDetailsCharts } from '../dashboard.description'
-import { setLineChartSeriesData } from '../dashboardFunctions'
+import {
+  getHostelChartParams,
+  setLineChartSeriesData,
+} from '../dashboardFunctions'
 
-const staffDetails = () => {
+const staffDetails = ({ hostelFilter } = {}) => {
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
@@ -33,7 +36,7 @@ const staffDetails = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = async ({
     name,
@@ -45,6 +48,7 @@ const staffDetails = () => {
       toDate: dateRange?.to,
       start,
       end,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalNumberOfWorkersOnPayroll':
@@ -101,20 +105,19 @@ const staffDetails = () => {
   }
 
   const getHandleClickDataApi = async ({
-    range,
     pageNo = 1,
     name,
     start,
     end,
     newDateRange = dateRange,
   } = {}) => {
-    const isRangeFrequency = staffDetailsCharts?.[name]?.chartType === 'rangeFrequency'
-    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
-      fromDate: newDateRange?.from,
-      toDate: newDateRange?.to,
-      ...(rangeValue && { range: rangeValue }),
-      ...(!rangeValue && (start || end) && { start, end }),
+      fromDate: selectedDateRange?.from,
+      toDate: selectedDateRange?.to,
+      ...((start || end) && { start, end }),
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_TotalNumberOfWorkersOnPayroll':
@@ -167,13 +170,15 @@ const staffDetails = () => {
     xAxisTitle,
   }) => {
     const data = e.point
+    const selectedDateRange =
+      newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
       range: data?.category,
       name,
       start: startEnd?.start,
       end: startEnd?.end,
-      newDateRange: { ...newDateRange },
+      newDateRange: selectedDateRange,
     })
     if (respData) {
       setHostelsData({ ...respData, loader: false })
@@ -188,7 +193,7 @@ const staffDetails = () => {
         range: data?.category,
         start: startEnd?.start,
         end: startEnd?.end,
-        newDateRange: { ...newDateRange },
+        newDateRange: selectedDateRange,
         chartType: staffDetailsCharts?.[name]?.chartType,
         xAxisTitle: xAxisTitle,
       },

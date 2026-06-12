@@ -1,9 +1,6 @@
-import React from 'react'
+import { FolderOpenOutlined } from '@ant-design/icons'
 
 import useTranslations from '../../../hooks/useTranslations'
-import ANTDCard from '../../../shared/antd/ANTDCard'
-import ANTDColumn from '../../../shared/antd/ANTDColumn'
-import ANTDRow from '../../../shared/antd/ANTDRow'
 import { keys } from '../../../utils/javascript'
 import photos from '../container/photos.container'
 import { photosDashboardData } from '../dashboard.description'
@@ -13,20 +10,27 @@ const PhotosDashboard = () => {
   const { handlePhotosCardClick } = photos()
 
   return (
-    <ANTDRow className="">
-      {keys(photosDashboardData)?.map((item, index) => {
-        return (
-          <ANTDColumn key={index + 1} md={12} xs={24}>
-            <ANTDCard
-              className="photo-card"
+    <div className="dashboard-module-surface dashboard-photos-surface">
+      <h2 className="dashboard-photo-heading">Photo Folders</h2>
+      <div className="dashboard-photo-folder-grid">
+        {keys(photosDashboardData)?.map((item, index) => {
+          return (
+            <button
+              key={index}
               onClick={() => handlePhotosCardClick(item)}
+              className="dashboard-photo-folder-card"
+              type="button"
             >
-              {t(item)}
-            </ANTDCard>
-          </ANTDColumn>
-        )
-      })}
-    </ANTDRow>
+              <span className="dashboard-photo-folder-icon">
+                <FolderOpenOutlined />
+              </span>
+              <span className="dashboard-photo-folder-title">{t(item)}</span>
+              <span className="dashboard-photo-folder-count">Photos</span>
+            </button>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 

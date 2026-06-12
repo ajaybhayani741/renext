@@ -5,8 +5,8 @@ import classNames from 'classnames'
 import { Suspense, memo } from 'react'
 import { Outlet } from 'react-router-dom'
 
+import FloatButtonUI from './FloatButtonUI'
 import Header from './Header'
-import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDLayout, {
   ANTDContent,
   ANTDFooter,
@@ -16,9 +16,15 @@ import ANTDMenu from '../../../shared/antd/ANTDMenu'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
 import configData from '../../../utils/config'
 import { userWiseRole } from '../../../utils/constant'
-import { CloseCircleOutlined, hostIcon } from '../../../utils/icons'
+import {
+  CloseCircleOutlined,
+  hostIcon,
+  PoweroffOutlined,
+  noImage,
+} from '../../../utils/icons'
 import { isEqual } from '../../../utils/javascript'
 import appLayout from '../container/appLayout'
+import header from '../container/header.container'
 
 function AppLayout() {
   const {
@@ -37,7 +43,16 @@ function AppLayout() {
     handleLogoClick,
     roleId,
   } = appLayout()
+  const { profileDetails, handleProfile, handleLogout } = header()
   const { logo } = configData
+
+  const displayName =
+    profileDetails?.businessName ||
+    profileDetails?.lastName ||
+    profileDetails?.firstName ||
+    'User'
+  const avatarText = (displayName || 'U').trim().charAt(0).toUpperCase()
+
   return (
     <div ref={ref}>
       <ANTDSider
@@ -58,17 +73,34 @@ function AppLayout() {
         >
           <div className="brand-logo">
             <img
-              className={
-                isEqual(roleId, userWiseRole.districtCollector)
-                  ? 'cursor-pointer'
-                  : ''
-              }
+              className={classNames({
+                'cursor-pointer': isEqual(
+                  roleId,
+                  userWiseRole.districtCollector,
+                ),
+                'brand-logo-mark': isDesktop && collapsed,
+              })}
               src={isDesktop && collapsed ? hostIcon : logo}
               alt="Mat Next"
               onClick={handleLogoClick}
             />
           </div>
         </div>
+
+        {isDesktop ? (
+          <button
+            type="button"
+            className="sidebar-edge-toggle"
+            onClick={toggleCollapsed}
+            aria-label={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          >
+            {collapsed ? (
+              <RightOutlined height={10} width={10} />
+            ) : (
+              <LeftOutlined height={10} width={10} />
+            )}
+          </button>
+        ) : null}
 
         <div className="menu-list">
           <ANTDMenu
@@ -82,29 +114,45 @@ function AppLayout() {
             inlineCollapsed={collapsed}
           />
         </div>
+
+        {/* Profile + Sign out anchored to the bottom of the sidebar */}
+        <div className="sidebar-footer">
+          <div
+            className="sb-profile"
+            role="button"
+            tabIndex={0}
+            onClick={handleProfile}
+            onKeyDown={e => e.key === 'Enter' && handleProfile()}
+          >
+            <span className="sb-avatar">
+              {profileDetails?.profileUrl ? (
+                <img
+                  src={profileDetails?.profileUrl || noImage}
+                  alt="profile"
+                />
+              ) : (
+                avatarText
+              )}
+            </span>
+            {!collapsed && (
+              <span className="sb-profile-meta">
+                <span className="sb-name">{displayName}</span>
+                <span className="sb-link">{t('txt_Profile')}</span>
+              </span>
+            )}
+          </div>
+          <button
+            type="button"
+            className="sb-logout"
+            onClick={handleLogout}
+            aria-label={t('btn_Logout')}
+          >
+            <PoweroffOutlined />
+            {!collapsed && <span>{t('btn_Logout')}</span>}
+          </button>
+        </div>
       </ANTDSider>
-      <ANTDButton
-        onClick={toggleCollapsed}
-        className={classNames(
-          'ant-menu-collapse',
-          'd-flex',
-          'justify-center',
-          'align-center',
-          {
-            'ant-menu-collapse-dimensions': collapsed,
-            'ant-menu-uncollapse-dimensions': !collapsed,
-            'ant-menu-collapse-mobile': true,
-          },
-        )}
-      >
-        {collapsed ? (
-          <RightOutlined
-            className={classNames('fold_icon', 'justify-center')}
-          />
-        ) : (
-          <LeftOutlined className={classNames('fold_icon', 'justify-center')} />
-        )}
-      </ANTDButton>
+
       <ANTDLayout className={classNames('layout', { collapsed })}>
         {(!isDesktop || toggleMenu) && (
           <div
@@ -119,8 +167,24 @@ function AppLayout() {
             />
           </div>
         )}
-        <Header setToggleMenu={setToggleMenu} collapsed={collapsed} />
-        <ANTDLayout className={classNames('main-layout', { collapsed })}>
+        <ANTDLayout
+          className={classNames(
+            'main-layout',
+            { collapsed },
+            (() => {
+              if (activeItem?.includes('/user')) return 'theme-purple'
+              if (activeItem?.includes('/jobs')) return 'theme-green'
+              if (activeItem?.includes('/inventory')) return 'theme-orange'
+              if (activeItem?.includes('/book-keeping')) return 'theme-blue'
+              if (activeItem?.includes('/reporting')) return 'theme-red'
+              if (activeItem?.includes('/hostel')) return 'theme-yellow'
+              if (activeItem?.includes('/notifications')) return 'theme-cyan'
+              if (activeItem?.includes('/settings')) return 'theme-teal'
+              return ''
+            })(),
+          )}
+        >
+          <Header setToggleMenu={setToggleMenu} collapsed={collapsed} />
           <div
             className={classNames({ 'bg-opaque': toggleMenu })}
             onClick={() => setToggleMenu(false)}
@@ -142,11 +206,11 @@ function AppLayout() {
           className={classNames('footer', { 'footer-collapsed': collapsed })}
         >
           <div className="text-end w-100">
-            {/* <div className="">Host</div> */}
             <span>©{new Date().getFullYear()} GenbaNEXT Limited</span>
           </div>
         </ANTDFooter>
       </ANTDLayout>
+      <FloatButtonUI />
     </div>
   )
 }

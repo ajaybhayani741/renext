@@ -1,6 +1,5 @@
 import '../jobs.scss'
 
-import technicalIcon from '../../../assets/icons/technical-icon.png'
 import withRouteAuth from '../../../hoc/withRouteAuth'
 import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
@@ -10,7 +9,6 @@ import ANTDCheckbox, {
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { ANTDDateRange } from '../../../shared/antd/ANTDDatePicker'
 import ANTDDivider from '../../../shared/antd/ANTDDivider'
-import ANTDFloatButton from '../../../shared/antd/ANTDFloatButton'
 import { ANTDSearch } from '../../../shared/antd/ANTDInput'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import ANTDRow from '../../../shared/antd/ANTDRow'
@@ -19,13 +17,11 @@ import ANTDTab from '../../../shared/antd/ANTDTab'
 import Label from '../../../shared/Label'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../utils/constant'
-import { QuestionCircleOutlined } from '../../../utils/icons'
+import { DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 import { entries, include, isEqual, notEqual } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
-import EmbedPDFViewer from '../../common/presentation/EmbedPDFViewer'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 import StoreSelect from '../../common/presentation/StoreSelect'
-import HOSTManual from '../../home/HOSTManual.pdf'
 import { sidebarMenus } from '../../layout/sidebar.description'
 import jobs from '../container/jobs.container'
 import {
@@ -38,7 +34,6 @@ import JobTable from './JobTable'
 import ViewJob from './viewJobs'
 import UnassignedHostels from './viewJobs/UnassignedHostels'
 import ViewPreviousRequest from './viewJobs/ViewPreviousRequest'
-import { DISPLAY_DATE_FORMAT } from '../../../utils/dayjs'
 
 const JobManagement = ({ userView = false, userId, userJobType }) => {
   const {
@@ -46,7 +41,6 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     data,
     tabList,
     jobModel,
-    isDesktop,
     activeTab,
     columnFilters,
     searchByProps,
@@ -73,20 +67,16 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
     revertJobModal,
     handleRevertJobModal,
     handleConfirmRevertJob,
-    handleFloatModal,
-    helpModal,
     generateMasterSheet,
     handleViewRequestModal,
     viewRequestsModal,
     masterSheetLoader,
-    technicalModal,
-    handleTechnicalModal,
   } = jobs({ userView, userId, userJobType })
   const { type: jobType, status } = { ...activeTab }
   const isUnassignHostelTab = isEqual(status, tabKeys.unassignHostel)
   const userData = JSON.parse(getItem('userData') || '{}')
   const { roleId } = userData || {}
-  const { inspectionOfficer, districtCollector } = userWiseRole
+  const { inspectionOfficer } = userWiseRole
 
   return (
     <>
@@ -105,7 +95,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
       ) : (
         <>
           <div className="d-flex flex-wrap space-between">
-            <h2 className="page-title">{t('menu_Jobs')}</h2>
+            {/* <h2 className="page-title">{t('menu_Jobs')}</h2> */}
             <StoreSelect />
           </div>
           {entries(tabList)?.map(([key, value]) =>
@@ -314,66 +304,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
           description={t('msg_AreYouSureWantToRevertJob')}
         />
       )}
-      {isEqual(roleId, inspectionOfficer) && (
-        <div className="help-float-button-container">
-          <ANTDFloatButton
-            icon={<QuestionCircleOutlined />}
-            type="primary"
-            style={{
-              right: 20,
-              bottom: 30,
-            }}
-            onClick={handleFloatModal}
-          />
-          {handleFloatModal && (
-            <ANTDModal
-              open={helpModal}
-              onCancel={handleFloatModal}
-              footer={[]}
-              width={950}
-              closable={false}
-            >
-              <EmbedPDFViewer src={`${HOSTManual}`} isDesktop={isDesktop} />
-            </ANTDModal>
-          )}
-        </div>
-      )}
-      {include([inspectionOfficer, districtCollector], roleId) && (
-        <div className="technical-float-button-container">
-          <ANTDFloatButton
-            icon={<img src={technicalIcon} alt="technical" />}
-            type="primary"
-            style={{
-              right: 20,
-              bottom: 30,
-            }}
-            onClick={handleTechnicalModal}
-          />
-          {technicalModal && (
-            <ANTDModal
-              open={technicalModal}
-              onCancel={handleTechnicalModal}
-              footer={[]}
-              title={t('txt_technicalSupport')}
-            >
-              <div className="technical-modal-content">
-                <p>{t('txt_ForTechnicalIssuesPleaseContact')}</p>
-                <ul type="circle" className="ml-15">
-                  {/* <li>
-                    <b>Vishal</b>: +91 9769474676
-                  </li> */}
-                  <li>
-                    <b>Shashank</b>: +91 8985878263
-                  </li>
-                  <li>
-                    <b>Mahit</b>: +91 9642245339
-                  </li>
-                </ul>
-              </div>
-            </ANTDModal>
-          )}
-        </div>
-      )}
+
       {viewRequestsModal?.open && (
         <ANTDModal
           title={t('job_ViewPreviousRequests')}

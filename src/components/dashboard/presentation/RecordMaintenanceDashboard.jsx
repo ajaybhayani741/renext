@@ -1,13 +1,17 @@
+import { useMemo, useState } from 'react'
+
 import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
-import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries } from '../../../utils/javascript'
-import ColumnComparison from '../../charts/ColumnComparison'
 import recordMaintenance from '../container/recordMaintenance.container'
 import { recordMaintenanceCharts } from '../dashboard.description'
+import ModernCompareChart from '../shared/ModernCompareChart'
+import ModuleFilters from '../shared/ModuleFilters'
 
 const RecordMaintenanceDashboard = () => {
   const { t } = useTranslations()
+  const [districtFilter, setDistrictFilter] = useState('All')
+  const [hostelFilter, setHostelFilter] = useState('All')
   const {
     chartData,
     handleChartClick,
@@ -16,7 +20,24 @@ const RecordMaintenanceDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = recordMaintenance()
+  } = recordMaintenance({ hostelFilter })
+
+  const categoryLabels = useMemo(
+    () => chartData?.category?.map((_, index) => `${index + 1}`) || [],
+    [chartData],
+  )
+
+  const legendMapping = useMemo(
+    () =>
+      chartData?.category?.reduce(
+        (acc, category, index) => ({
+          ...acc,
+          [`${index + 1}`]: t(category) || category,
+        }),
+        {},
+      ) || {},
+    [chartData, t],
+  )
 
   return (
     <DashboardWrapper
@@ -28,21 +49,34 @@ const RecordMaintenanceDashboard = () => {
         hostelsData,
       }}
     >
-      {entries(recordMaintenanceCharts)?.map(([key]) => {
-        return (
-          <ANTDColumn xs={24} md={24} key={key}>
-            <ColumnComparison
-              {...{
-                name: key,
-                chartData,
-                handleChartClick,
-                seriesData: seriesData?.[key]?.series,
-                title: `${t(key)}`,
-              }}
-            />
-          </ANTDColumn>
-        )
-      })}
+      <div className="dashboard-module-surface dashboard-record-surface">
+        <ModuleFilters
+          districtFilter={districtFilter}
+          setDistrictFilter={setDistrictFilter}
+          hostelFilter={hostelFilter}
+          setHostelFilter={setHostelFilter}
+        />
+        <div className="dashboard-single-chart-grid">
+          {entries(recordMaintenanceCharts)?.map(([key]) => {
+            return (
+              <div className="dashboard-full-chart" key={key}>
+                <ModernCompareChart
+                  {...{
+                    name: key,
+                    chartData,
+                    handleChartClick,
+                    seriesData: seriesData?.[key]?.series,
+                    title: `${t(key)}`,
+                    categoryLabels,
+                    legendMapping,
+                    showFooterTitle: false,
+                  }}
+                />
+              </div>
+            )
+          })}
+        </div>
+      </div>
     </DashboardWrapper>
   )
 }

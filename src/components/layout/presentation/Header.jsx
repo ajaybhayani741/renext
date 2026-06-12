@@ -14,7 +14,14 @@ function Header({ setToggleMenu, collapsed }) {
     >
       <div className="d-flex">
         <div className="nav-toggle">
-          <MenuOutlined onClick={() => setToggleMenu(true)} />
+          <button
+            type="button"
+            className="hamburger-btn"
+            onClick={() => setToggleMenu(true)}
+            aria-label="Menu"
+          >
+            <MenuOutlined />
+          </button>
         </div>
         <div className="right-content d-flex space-between align-center">
           <WelcomeUser />

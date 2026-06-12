@@ -110,7 +110,16 @@ const userColumns = ({
       render: rowData => {
         return (
           <div className="small-img-wrap">
-            <img src={rowData?.fileUrl || noImage} alt={'pic'} />
+            <img
+              src={rowData?.fileUrl || noImage}
+              alt="profile"
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: '50%',
+                objectFit: 'cover',
+              }}
+            />
           </div>
         )
       },
@@ -184,6 +193,8 @@ const userColumns = ({
     {
       title: t('txt_Action'),
       key: 'txt_Action',
+      width: 170,
+      className: 'action-column',
       fixed: 'right',
       render: rowData => {
         return <>{actionButtons(rowData)}</>

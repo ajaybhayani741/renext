@@ -11,8 +11,9 @@ import {
   axisOptionsList,
   educationFacilitiesCharts,
 } from '../dashboard.description'
+import { getHostelChartParams } from '../dashboardFunctions'
 
-const educationFacilities = () => {
+const educationFacilities = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -42,12 +43,13 @@ const educationFacilities = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = name => {
     const params = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_EducationRequirements':
@@ -122,6 +124,7 @@ const educationFacilities = () => {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
       pageNo,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'dash_EducationRequirements':

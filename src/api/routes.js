@@ -180,8 +180,8 @@ const API_ROUTES = {
   DASHBOARD_VARIATION_BAR_CHART: `/dashboard-management/v1/food-provisions-variation/bar-chart`,
   DASHBOARD_VARIATION_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/food-provisions-variation/hostels/${pageNo}`,
-  GET_LOCATION_ADDRESS: `/job-management/v1/lat-long-address`,
   DASHBOARD_PHOTOS: ({ pageNo }) => `/dashboard-management/v1/photos/${pageNo}`,
+  GET_LOCATION_ADDRESS: `/job-management/v1/lat-long-address`,
   GENERATE_MASTER_SHEET: `/job-management/v1/userreports`,
 }
 export default API_ROUTES

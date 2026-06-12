@@ -1,13 +1,17 @@
+import { useState } from 'react'
+
 import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
-import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { entries } from '../../../utils/javascript'
-import ColumnComparison from '../../charts/ColumnComparison'
 import hostelAuthority from '../container/hostelAuthority.container'
 import { hostelAuthorityCharts } from '../dashboard.description'
+import ModernCompareChart from '../shared/ModernCompareChart'
+import ModuleFilters from '../shared/ModuleFilters'
 
 const HostelAuthorityDashboard = () => {
   const { t } = useTranslations()
+  const [districtFilter, setDistrictFilter] = useState('All')
+  const [hostelFilter, setHostelFilter] = useState('All')
   const {
     chartData,
     handleChartClick,
@@ -16,27 +20,37 @@ const HostelAuthorityDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = hostelAuthority()
+  } = hostelAuthority({ hostelFilter })
 
   return (
     <DashboardWrapper
       {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
     >
-      {entries(hostelAuthorityCharts)?.map(([key]) => {
-        return (
-          <ANTDColumn xs={24} md={12} key={key}>
-            <ColumnComparison
-              {...{
-                name: key,
-                chartData,
-                handleChartClick,
-                seriesData: seriesData?.[key]?.series,
-                title: `${t(key)}`,
-              }}
-            />
-          </ANTDColumn>
-        )
-      })}
+      <div className="dashboard-module-surface dashboard-authority-surface">
+        <ModuleFilters
+          districtFilter={districtFilter}
+          setDistrictFilter={setDistrictFilter}
+          hostelFilter={hostelFilter}
+          setHostelFilter={setHostelFilter}
+        />
+        <div className="dashboard-single-chart-grid">
+          {entries(hostelAuthorityCharts)?.map(([key]) => {
+            return (
+              <div className="dashboard-full-chart" key={key}>
+                <ModernCompareChart
+                  {...{
+                    name: key,
+                    chartData,
+                    handleChartClick,
+                    seriesData: seriesData?.[key]?.series,
+                    title: `${t(key)}`,
+                  }}
+                />
+              </div>
+            )
+          })}
+        </div>
+      </div>
     </DashboardWrapper>
   )
 }

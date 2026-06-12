@@ -8,8 +8,9 @@ import {
   getPrincipalAuthorityHostelsApi,
 } from '../dashboard.api'
 import { hostelAuthorityCharts } from '../dashboard.description'
+import { getHostelChartParams } from '../dashboardFunctions'
 
-const hostelAuthority = () => {
+const hostelAuthority = ({ hostelFilter } = {}) => {
   const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
@@ -33,12 +34,13 @@ const hostelAuthority = () => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange])
+  }, [dateRange, hostelFilter])
 
   const getDataApi = async ({ name }) => {
     const columnParams = {
       fromDate: dateRange?.from,
       toDate: dateRange?.to,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'job_HostelAuthority':
@@ -93,6 +95,7 @@ const hostelAuthority = () => {
       toDate: dateRange?.to,
       category,
       filterValue,
+      ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
       case 'job_HostelAuthority':

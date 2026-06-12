@@ -14,9 +14,10 @@ import {
   DownloadOutlined,
   QuestionCircleOutlined,
   EyeOutlined,
+  LeftOutlined,
 } from '@ant-design/icons'
 
-import hostIcon from '../assets/appLogo/H-host-blue.png'
+import hostIcon from '../assets/appLogo/H-host-blue.svg'
 import BucketInventory from '../assets/BucketInventory.xlsx'
 import buildingIcon from '../assets/buildingIcon.png'
 import clipboardsImage from '../assets/clipboards.png'
@@ -47,6 +48,7 @@ import { ReactComponent as TrainingIcon } from '../assets/home/training.svg'
 import { ReactComponent as AdminIcon } from '../assets/icons/admin.svg'
 import { ReactComponent as CatalogueMenuIcon } from '../assets/icons/catalogue.svg'
 import { ReactComponent as ClipboardIcon } from '../assets/icons/clipboard.svg'
+import closeIcon from '../assets/icons/close.png'
 import { ReactComponent as ContractorIcon } from '../assets/icons/contractor.svg'
 import { ReactComponent as CustomerIcon } from '../assets/icons/customer.svg'
 import { ReactComponent as DashboardIcon } from '../assets/icons/dashboard.svg'
@@ -57,10 +59,13 @@ import { ReactComponent as FieldEngineerIcon } from '../assets/icons/fieldEngine
 import { ReactComponent as HomeIcon } from '../assets/icons/home.svg'
 import { ReactComponent as LinkJumpIcon } from '../assets/icons/linkJump.svg'
 import location from '../assets/icons/location.png'
+import manualIcon from '../assets/icons/manual-icon.png'
 import noImage from '../assets/icons/no-image.jpg'
 import { ReactComponent as ProductManufactureIcon } from '../assets/icons/product-manufacture.svg'
+import questionIcon from '../assets/icons/question.png'
 import { ReactComponent as ReportIcon } from '../assets/icons/report.svg'
 import successSvg from '../assets/icons/success.svg'
+import technicalIcon from '../assets/icons/technical-icon.png'
 import { ReactComponent as TransportContractorIcon } from '../assets/icons/transportContractor.svg'
 import { ReactComponent as UserIcon } from '../assets/icons/user.svg'
 import warningImage from '../assets/icons/warning.png'
@@ -92,6 +97,7 @@ export {
   GlobalOutlined,
   HomeIcon,
   MenuOutlined,
+  LeftOutlined,
   PoweroffOutlined,
   ReportIcon,
   TransportContractorIcon,
@@ -157,4 +163,8 @@ export {
   hostIcon,
   QuestionCircleOutlined,
   EyeOutlined,
+  technicalIcon,
+  questionIcon,
+  closeIcon,
+  manualIcon,
 }
