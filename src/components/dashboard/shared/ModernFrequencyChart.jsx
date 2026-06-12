@@ -1,13 +1,18 @@
-import React, { useState, useMemo } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { message } from 'antd';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Brush } from "recharts";
 
 import ChartCard from './ChartCard';
-import NoDataChartMessage from './NoDataChartMessage';
 import StyledTooltip from './StyledTooltip';
 import useTranslations from '../../../hooks/useTranslations';
 
 const BLACK_AXIS = { stroke: "#000", strokeWidth: 1 };
 const BLACK_TICK = { stroke: "#000" };
+const MIN_RANGE_SELECTION = 1;
+const MAX_RANGE_SELECTION = 100;
+
+const isInvalidRangeSelection = (start, end) =>
+  start < MIN_RANGE_SELECTION || end > start + MAX_RANGE_SELECTION - 1;
 
 const ModernFrequencyChart = ({
   title,
@@ -22,11 +27,19 @@ const ModernFrequencyChart = ({
   colorEnd = "#A78BFA",
   activeColor,
   barSize = 80,
+  onRangeChange,
+  rangeResetKey,
 }) => {
   const { t } = useTranslations();
   const [binSize, setBinSize] = useState(defaultBinSize);
   const [customMin, setCustomMin] = useState("");
   const [customMax, setCustomMax] = useState("");
+  const [brushRange, setBrushRange] = useState({ startIndex: 0, endIndex: 0 });
+  const brushInitKeyRef = useRef("");
+  const lastApiRangeRef = useRef("");
+  const rangeChangeTimerRef = useRef(null);
+  const warningShownRef = useRef(false);
+  const lastValidBrushRangeRef = useRef({ startIndex: 0, endIndex: 0 });
 
   const distributionData = useMemo(() => {
     // Attempt to extract series either from seriesData.series or seriesData[0].data or raw array
@@ -41,13 +54,13 @@ const ModernFrequencyChart = ({
       }
     }
 
-    if (!seriesArray || seriesArray.length === 0 || !binSize) return [];
+    if (!binSize) return [];
     
     // Some backend returns object with y value or just [x, y] arrays
-    const isObject = seriesArray[0] && typeof seriesArray[0] === 'object' && !Array.isArray(seriesArray[0]);
+    const isObject = seriesArray?.[0] && typeof seriesArray[0] === 'object' && !Array.isArray(seriesArray[0]);
 
     const valueMap = new Map();
-    seriesArray.forEach(item => {
+    ;(seriesArray || []).forEach(item => {
       let x = 0;
       let y = 0;
       if (isObject) {
@@ -63,20 +76,28 @@ const ModernFrequencyChart = ({
       }
     });
 
-    if (valueMap.size === 0) return [];
-    
     const xValues = Array.from(valueMap.keys());
-    const dataMin = Math.min(...xValues);
-    const dataMax = Math.max(...xValues);
+    const dataMax = xValues.length ? Math.max(...xValues) : MAX_RANGE_SELECTION;
+    const highestCount = Number(seriesData?.highestCount);
+    const normalizedHighestCount =
+      !isNaN(highestCount) && highestCount > MAX_RANGE_SELECTION
+        ? highestCount
+        : MAX_RANGE_SELECTION;
     
-    const min = customMin !== "" ? Number(customMin) : dataMin;
-    const max = customMax !== "" ? Number(customMax) : dataMax;
+    const min = customMin !== "" ? Number(customMin) : MIN_RANGE_SELECTION;
+    const max =
+      customMax !== ""
+        ? Number(customMax)
+        : Math.max(normalizedHighestCount, dataMax);
     
     if (min > max) return [];
     
     const result = [];
-    for (let start = min; start <= max; start += binSize) {
-      const end = Math.min(start + binSize - 1, max);
+    for (let start = min; start <= max;) {
+      const rangeEnd = start <= MAX_RANGE_SELECTION && start + binSize - 1 > MAX_RANGE_SELECTION
+        ? MAX_RANGE_SELECTION
+        : start + binSize - 1;
+      const end = Math.min(rangeEnd, max);
       let sum = 0;
       for (let v = start; v <= end; v++) {
         if (valueMap.has(v)) sum += valueMap.get(v);
@@ -89,10 +110,103 @@ const ModernFrequencyChart = ({
           endVal: end
         });
       }
+      start = end + 1;
     }
     return result;
   }, [seriesData, binSize, customMin, customMax]);
-  const hasChartData = distributionData.some(item => Number(item.hostels || 0) > 0);
+  const defaultBrushEndIndex = Math.max(
+    distributionData.findIndex(item => item.endVal > 100) - 1,
+    -1,
+  );
+  const brushEndIndex =
+    defaultBrushEndIndex >= 0
+      ? defaultBrushEndIndex
+      : Math.max(distributionData.length - 1, 0);
+  const highestCountLabel = Number(seriesData?.highestCount);
+  const rangeLabelStart = MIN_RANGE_SELECTION;
+  const selectedBrushEnd =
+    !isNaN(highestCountLabel) && highestCountLabel > MAX_RANGE_SELECTION
+      ? highestCountLabel
+      : MAX_RANGE_SELECTION;
+
+  useEffect(() => {
+    const brushInitKey = `${name}:${binSize}:${customMin}:${customMax}:${rangeResetKey}`;
+
+    if (!distributionData.length || brushInitKeyRef.current === brushInitKey) {
+      return;
+    }
+
+    brushInitKeyRef.current = brushInitKey;
+    const initialRange = { startIndex: 0, endIndex: brushEndIndex };
+    lastValidBrushRangeRef.current = initialRange;
+    lastApiRangeRef.current = "";
+    warningShownRef.current = false;
+    setBrushRange(initialRange);
+  }, [
+    binSize,
+    brushEndIndex,
+    customMax,
+    customMin,
+    distributionData.length,
+    name,
+    rangeResetKey,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      if (rangeChangeTimerRef.current) {
+        clearTimeout(rangeChangeTimerRef.current);
+      }
+    };
+  }, []);
+
+  const handleBrushChange = range => {
+    if (range?.startIndex < 0 || range?.endIndex < 0) return;
+
+    const selectedStart = distributionData?.[range.startIndex]?.startVal;
+    const selectedEnd = distributionData?.[range.endIndex]?.endVal;
+
+    if (
+      typeof selectedStart !== 'undefined' &&
+      typeof selectedEnd !== 'undefined' &&
+      isInvalidRangeSelection(selectedStart, selectedEnd)
+    ) {
+      if (!warningShownRef.current) {
+        message.warning(`Please select a range of ${MAX_RANGE_SELECTION} or less.`);
+        warningShownRef.current = true;
+      }
+      setBrushRange({ ...lastValidBrushRangeRef.current });
+      return;
+    }
+
+    warningShownRef.current = false;
+    lastValidBrushRangeRef.current = range;
+    setBrushRange(range);
+
+    if (
+      onRangeChange &&
+      typeof selectedStart !== 'undefined' &&
+      typeof selectedEnd !== 'undefined'
+    ) {
+      const apiRangeKey = `${name}:${selectedStart}-${selectedEnd}`;
+
+      if (lastApiRangeRef.current === apiRangeKey) return;
+
+      lastApiRangeRef.current = apiRangeKey;
+
+      if (rangeChangeTimerRef.current) {
+        clearTimeout(rangeChangeTimerRef.current);
+      }
+
+      rangeChangeTimerRef.current = setTimeout(() => {
+        onRangeChange({
+          start: selectedStart,
+          end: selectedEnd,
+          chartType: [name],
+        });
+      }, 350);
+    }
+  };
 
   return (
     <ChartCard title={title}>
@@ -122,9 +236,9 @@ const ModernFrequencyChart = ({
           </div>
         </div>
       </div>
-      <div style={{ width: '100%', height: 380, position: 'relative' }}>
+      <div style={{ width: '100%', height: 430, position: 'relative' }}>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={distributionData} margin={{ top: 20, right: 30, left: 20, bottom: 40 }}>
+          <BarChart data={distributionData} margin={{ top: 20, right: 78, left: 20, bottom: 88 }}>
             <defs>
               <linearGradient id={`grad-${name}`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={color} stopOpacity={0.9} />
@@ -147,9 +261,24 @@ const ModernFrequencyChart = ({
                   });
                 }
               }} />
+            <Brush
+              dataKey="range"
+              height={30}
+              y={382}
+              stroke={activeColor || color}
+              fill="#eef2ff"
+              travellerWidth={10}
+              startIndex={brushRange.startIndex}
+              endIndex={brushRange.endIndex}
+              alwaysShowText
+              onChange={handleBrushChange}
+            />
           </BarChart>
         </ResponsiveContainer>
-        {!hasChartData ? <NoDataChartMessage /> : null}
+        <div className="dashboard-brush-range-labels">
+          <span>{rangeLabelStart}</span>
+          <span>{selectedBrushEnd}</span>
+        </div>
       </div>
     </ChartCard>
   );

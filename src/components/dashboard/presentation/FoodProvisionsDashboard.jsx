@@ -7,7 +7,6 @@ import foodProvisions from '../container/foodProvisions.container';
 import ChartCard from '../shared/ChartCard';
 import CustomLegend from '../shared/CustomLegend';
 import ModuleFilters from '../shared/ModuleFilters';
-import NoDataChartMessage from '../shared/NoDataChartMessage';
 import StyledTooltip from '../shared/StyledTooltip';
 
 const BLACK_AXIS = { stroke: "#000", strokeWidth: 1 };
@@ -193,7 +192,6 @@ const FoodProvisionsDashboard = () => {
                   {hasFuelData ? <Legend verticalAlign="bottom" wrapperStyle={{ paddingTop: 18 }} /> : null}
                 </PieChart>
               </ResponsiveContainer>
-              {!hasFuelData ? <NoDataChartMessage /> : null}
             </div>
           </ChartCard>
 
@@ -220,7 +218,6 @@ const FoodProvisionsDashboard = () => {
                 <Bar dataKey="no" name="No" fill="url(#fpNo)" radius={[4, 4, 0, 0]} cursor="pointer" barSize={40} maxBarSize={40} onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.no, type: t('btn_No') } }, name: foodKey })} />
               </BarChart>
             </ResponsiveContainer>
-            {!hasFoodData ? <NoDataChartMessage /> : null}
             </div>
             {hasFoodData ? <CustomLegend mapping={foodLegendMapping} /> : null}
           </ChartCard>
@@ -248,7 +245,6 @@ const FoodProvisionsDashboard = () => {
                 <Bar dataKey="noCount" name="No" fill="url(#pvNo)" radius={[4, 4, 0, 0]} cursor="pointer" barSize={40} maxBarSize={40} onClick={d => handleChartClick({ e: { point: { category: d.categoryName, y: d.noCount, type: t('btn_No') } }, name: varKey })} />
               </BarChart>
             </ResponsiveContainer>
-            {!hasVariationData ? <NoDataChartMessage /> : null}
             </div>
             {hasVariationData ? <CustomLegend mapping={varLegendMapping} /> : null}
           </ChartCard>

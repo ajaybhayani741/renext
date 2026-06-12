@@ -66,6 +66,7 @@ const SafetySecurityDashboard = () => {
                       title: t(key),
                       total: seriesData?.[key]?.total || 0,
                       onRangeChange,
+                      rangeResetKey: `${districtFilter}:${hostelFilter}`,
                       ...chartAesthetics[key],
                     }}
                   />
