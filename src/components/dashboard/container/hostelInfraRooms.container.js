@@ -168,7 +168,6 @@ const hostelInfraRooms = ({ hostelFilter } = {}) => {
   }
 
   const getHandleClickDataApi = async ({
-    range,
     category,
     filterValue,
     pageNo = 1,
@@ -177,15 +176,12 @@ const hostelInfraRooms = ({ hostelFilter } = {}) => {
     end,
     newDateRange = dateRange,
   } = {}) => {
-    const isRangeFrequency = hostelInfraRoomsCharts?.[name]?.chartType === 'rangeFrequency'
-    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
     const selectedDateRange =
       newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
       fromDate: selectedDateRange?.from,
       toDate: selectedDateRange?.to,
-      ...(rangeValue && { range: rangeValue }),
-      ...(!rangeValue && (start || end) && { start, end }),
+      ...((start || end) && { start, end }),
       ...getHostelChartParams(hostelFilter),
     }
     const columnParams = {

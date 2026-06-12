@@ -140,7 +140,6 @@ const medicalCare = ({ hostelFilter } = {}) => {
     category,
     pageNo,
     type,
-    range,
     start,
     end,
     newDateRange = dateRange,
@@ -164,17 +163,12 @@ const medicalCare = ({ hostelFilter } = {}) => {
           params: { ...params, category: apiCategory, filterValue },
         })
       case 'job_DistanceToNearestPHC':
-        const isRangeFrequency =
-          medicalCareCharts?.[name]?.type === 'rangeFrequency'
-        const rangeValue =
-          isRangeFrequency && range && typeof range === 'number' ? range : null
         return getPHCDistanceHostelsApi({
           pageNo,
           params: {
             fromDate: newDateRange?.from,
             toDate: newDateRange?.to,
-            ...(rangeValue && { range: rangeValue }),
-            ...(!rangeValue && (start || end) && { start, end }),
+            ...((start || end) && { start, end }),
             ...getHostelChartParams(hostelFilter),
             // ...params,
           },

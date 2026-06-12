@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 import ChartCard from './ChartCard';
-import NoDataChartMessage from './NoDataChartMessage';
 import StyledTooltip from './StyledTooltip';
 import useTranslations from '../../../hooks/useTranslations';
 
@@ -84,7 +83,6 @@ const ModernPieChart = ({
             {hasChartData ? <Legend verticalAlign="bottom" height={36} iconType="circle" /> : null}
           </PieChart>
         </ResponsiveContainer>
-        {!hasChartData ? <NoDataChartMessage /> : null}
       </div>
     </ChartCard>
   );

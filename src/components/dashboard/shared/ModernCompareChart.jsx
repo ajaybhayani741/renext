@@ -3,7 +3,6 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 import ChartCard from './ChartCard';
 import CustomLegend from './CustomLegend';
-import NoDataChartMessage from './NoDataChartMessage';
 import StyledTooltip from './StyledTooltip';
 import useTranslations from '../../../hooks/useTranslations';
 
@@ -155,7 +154,6 @@ const ModernCompareChart = ({
             })}
           </BarChart>
         </ResponsiveContainer>
-        {!hasChartData ? <NoDataChartMessage /> : null}
       </div>
       {hasChartData && legendMapping ? <CustomLegend mapping={legendMapping} /> : null}
       {showFooterTitle && titlePosition === 'footer' && title ? <h3 className="dashboard-chart-footer-title">{title}</h3> : null}

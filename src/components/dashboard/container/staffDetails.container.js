@@ -105,22 +105,18 @@ const staffDetails = ({ hostelFilter } = {}) => {
   }
 
   const getHandleClickDataApi = async ({
-    range,
     pageNo = 1,
     name,
     start,
     end,
     newDateRange = dateRange,
   } = {}) => {
-    const isRangeFrequency = staffDetailsCharts?.[name]?.chartType === 'rangeFrequency'
-    const rangeValue = isRangeFrequency && range && typeof range === 'number' ? range : null
     const selectedDateRange =
       newDateRange?.from && newDateRange?.to ? newDateRange : dateRange
     const lineParams = {
       fromDate: selectedDateRange?.from,
       toDate: selectedDateRange?.to,
-      ...(rangeValue && { range: rangeValue }),
-      ...(!rangeValue && (start || end) && { start, end }),
+      ...((start || end) && { start, end }),
       ...getHostelChartParams(hostelFilter),
     }
     switch (name) {
