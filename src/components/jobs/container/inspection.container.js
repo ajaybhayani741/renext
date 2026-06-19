@@ -1376,11 +1376,11 @@ const inspection = ({
     }
     if (!isValid) return
 
-    return setCurrent(current + 1)
+    return setCurrent(isEqual(current, 1) ? current + 2 : current + 1)
   }
 
   const handlePrevious = () => {
-    setCurrent(current - 1)
+    setCurrent(isEqual(current, 3) ? current - 2 : current - 1)
   }
 
   const onCompleteConfirmationClose = () => {

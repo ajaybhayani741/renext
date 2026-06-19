@@ -16,7 +16,7 @@ import {
 import UserTable from '../../../userManagement/presentation/UserTable'
 import inspectionFieldAttr from '../../container/inspectionFieldAttr.container'
 import InspectionDetailsView from '../addJobs/inspection/InspectionDetailsView'
-import InspectionFormField from '../addJobs/inspection/InspectionFormField'
+// import InspectionFormField from '../addJobs/inspection/InspectionFormField'
 import DetailListView from '../common/DetailListView'
 
 const InspectionJobView = ({ data }) => {
@@ -300,13 +300,13 @@ const InspectionJobView = ({ data }) => {
         form={form}
         layout="vertical"
       >
-        <InspectionFormField
+        {/* <InspectionFormField
           {...{
             attrList: findingsAttrFn(),
             name: 'findingsRequestDto',
             disabledAll: true,
           }}
-        />
+        /> */}
       </ANTDForm>
     </>
   )

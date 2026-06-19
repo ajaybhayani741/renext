@@ -1,5 +1,5 @@
 import InspectionDetailsView from './InspectionDetailsView'
-import InspectionFormField from './InspectionFormField'
+// import InspectionFormField from './InspectionFormField'
 import useTranslations from '../../../../../hooks/useTranslations'
 import ANTDButton from '../../../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../../../shared/antd/ANTDColumn'
@@ -246,13 +246,13 @@ const ConfirmView = ({
         inspectionData={inspectionData}
         currentForm={form}
       />
-      <InspectionFormField
+      {/* <InspectionFormField
         {...{
           attrList: findingsAttrFn(),
           name: 'findingsRequestDto',
           disabledAll: true,
         }}
-      />
+      /> */}
     </ANTDConfigProvider>
   )
 }
