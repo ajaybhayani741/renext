@@ -94,17 +94,27 @@ const inspection = ({
   const fromNotification = location?.state?.fromNotification || false
 
   const {
-    hostelAdministrationAttrFn,
-    hostelInfraRoomsAttrFn,
-    hostelInfraSanitationAttrFn,
-    medicalCareAttrFn,
-    educationFacilitiesAttrFn,
-    foodProvisionAttrFn,
-    safetyAndSecurityAttrFn,
-    conductionMeetingsAttrFn,
-    feedbackAttrFn,
+    administrationAttrFn,
+    foodNutritionAttrFn,
+    accommodationAttrFn,
+    sanitationDrainageAttrFn,
+    electricityLightingAttrFn,
+    healthMedicalCareAttrFn,
+    educationAcademicEnvironmentAttrFn,
+    safetySecurityAttrFn,
+    studentFeedbackAttrFn,
+    overallAssessmentAttrFn,
+    inspectingOfficerFeedbackAttrFn,
+    // hostelInfraRoomsAttrFn,
+    // hostelInfraSanitationAttrFn,
+    // medicalCareAttrFn,
+    // educationFacilitiesAttrFn,
+    // foodProvisionAttrFn,
+    // safetyAndSecurityAttrFn,
+    // conductionMeetingsAttrFn,
+    // feedbackAttrFn,
     findingsAttrFn,
-    curricularActivitiesAttrFn,
+    // curricularActivitiesAttrFn,
   } = inspectionFieldAttr()
 
   useEffect(() => {
@@ -198,6 +208,16 @@ const inspection = ({
 
     const dateToDayJs = date => (date ? dayJs(date, 'DD/MM/YYYY') : null)
 
+    const getUploadDetails = (details, key) => {
+      const fallbackKey = key?.replace(/DmsIds$/, '')
+      return (
+        details?.[`${key}Details`] ||
+        details?.[`${fallbackKey}DmsDetails`] ||
+        details?.[`${fallbackKey}Details`] ||
+        []
+      )
+    }
+
     const formValueFromResponse = (details, formAttr) => {
       const data = {}
       entries(details)?.forEach(([key, value]) => {
@@ -207,9 +227,10 @@ const inspection = ({
         if (isEqual(fieldType, 'dateTimePicker')) {
           data[key] = dateToDayJs(value)
         } else if (isEqual(fieldType, 'formUpload')) {
-          data[key] = length(details?.[`${key}Details`])
+          const uploadDetails = getUploadDetails(details, key)
+          data[key] = length(uploadDetails)
             ? {
-                fileList: modifyFileListKeys(details?.[`${key}Details`]),
+                fileList: modifyFileListKeys(uploadDetails),
               }
             : null
         } else {
@@ -221,35 +242,71 @@ const inspection = ({
 
     const inspectionDetails = {
       hostelAdministrationRequestDto: {
-        ...formValueFromResponse(editData, hostelAdministrationAttrFn()),
+        ...formValueFromResponse(editData, administrationAttrFn()),
       },
-      hostelInfraRoomsRequestDto: {
-        ...formValueFromResponse(editData, hostelInfraRoomsAttrFn()),
+      foodNutritionRequestDto: {
+        ...formValueFromResponse(editData, foodNutritionAttrFn()),
       },
-      hostelInfraSanitationRequestDto: {
-        ...formValueFromResponse(editData, hostelInfraSanitationAttrFn()),
+      accommodationRequestDto: {
+        ...formValueFromResponse(editData, accommodationAttrFn()),
       },
-      medicalCareRequestDto: {
-        ...formValueFromResponse(editData, medicalCareAttrFn()),
+      sanitationDrainageRequestDto: {
+        ...formValueFromResponse(editData, sanitationDrainageAttrFn()),
       },
-      educationFacilitiesRequestDto: {
-        ...formValueFromResponse(editData, educationFacilitiesAttrFn()),
+      electricityLightingRequestDto: {
+        ...formValueFromResponse(editData, electricityLightingAttrFn()),
       },
-      foodProvisionRequestDto: {
-        ...formValueFromResponse(editData, foodProvisionAttrFn()),
+      healthMedicalCareRequestDto: {
+        ...formValueFromResponse(editData, healthMedicalCareAttrFn()),
       },
-      safetyAndSecurityRequestDto: {
-        ...formValueFromResponse(editData, safetyAndSecurityAttrFn()),
+      educationAcademicEnvironmentRequestDto: {
+        ...formValueFromResponse(
+          editData,
+          educationAcademicEnvironmentAttrFn(),
+        ),
       },
-      conductionMeetingsRequestDto: {
-        ...formValueFromResponse(editData, conductionMeetingsAttrFn()),
+      safetySecurityRequestDto: {
+        ...formValueFromResponse(editData, safetySecurityAttrFn()),
       },
-      feedbackRequestDto: {
-        ...formValueFromResponse(editData, feedbackAttrFn()),
+      studentFeedbackRequestDto: {
+        ...formValueFromResponse(editData, studentFeedbackAttrFn()),
       },
-      activitiesRequestDto: {
-        ...formValueFromResponse(editData, curricularActivitiesAttrFn()),
+      overallAssessmentRequestDto: {
+        ...formValueFromResponse(editData, overallAssessmentAttrFn()),
       },
+      inspectingOfficerFeedbackRequestDto: {
+        ...formValueFromResponse(editData, inspectingOfficerFeedbackAttrFn()),
+      },
+      // hostelAdministrationRequestDto: {
+      //   ...formValueFromResponse(editData, administrationAttrFn()),
+      // },
+      // hostelInfraRoomsRequestDto: {
+      //   ...formValueFromResponse(editData, hostelInfraRoomsAttrFn()),
+      // },
+      // hostelInfraSanitationRequestDto: {
+      //   ...formValueFromResponse(editData, hostelInfraSanitationAttrFn()),
+      // },
+      // medicalCareRequestDto: {
+      //   ...formValueFromResponse(editData, medicalCareAttrFn()),
+      // },
+      // educationFacilitiesRequestDto: {
+      //   ...formValueFromResponse(editData, educationFacilitiesAttrFn()),
+      // },
+      // foodProvisionRequestDto: {
+      //   ...formValueFromResponse(editData, foodProvisionAttrFn()),
+      // },
+      // safetyAndSecurityRequestDto: {
+      //   ...formValueFromResponse(editData, safetyAndSecurityAttrFn()),
+      // },
+      // conductionMeetingsRequestDto: {
+      //   ...formValueFromResponse(editData, conductionMeetingsAttrFn()),
+      // },
+      // feedbackRequestDto: {
+      //   ...formValueFromResponse(editData, feedbackAttrFn()),
+      // },
+      // activitiesRequestDto: {
+      //   ...formValueFromResponse(editData, curricularActivitiesAttrFn()),
+      // },
     }
 
     calDifferenceInValue({
@@ -335,59 +392,92 @@ const inspection = ({
   }
 
   const setFieldsPercentageFn = (editData, onEdit = false) => {
-    const calculatePercentage = formAttr => {
-      const formFields = Object.fromEntries(
-        entries(formAttr)?.filter(
-          ([_, value]) => value?.label && !value?.disabled,
-        ),
+    const getVisibleFormFields = (formAttr, sectionData = {}) => {
+      return Object.fromEntries(
+        entries(formAttr)?.filter(([_, value]) => {
+          if (!value?.label || value?.disabled) return false
+          const isHidden = isEqual(typeof value?.hidden, 'function')
+            ? value.hidden(sectionData)
+            : value?.hidden
+          return !isHidden
+        }),
       )
+    }
+
+    const isFieldFilled = ({ fieldType, fieldValue }) => {
+      if (isEqual(fieldType, 'formUpload')) {
+        return onEdit
+          ? fieldValue && length(fieldValue) > 0
+          : fieldValue?.fileList && length(fieldValue?.fileList) > 0
+      }
+
+      if (isArray(fieldValue)) {
+        return length(fieldValue) > 0
+      }
+
+      return (
+        fieldValue !== null && fieldValue !== undefined && fieldValue !== ''
+      )
+    }
+
+    const calculatePercentage = formAttr => {
+      const formFields = getVisibleFormFields(formAttr, editData)
       const totalField = keys(formFields)?.length
       const filledField =
         keys(formFields)?.filter(v => {
           const fieldType = formFields?.[v]?.inputType
           const fieldValue = editData?.[v]
-
-          // Handle formUpload fields - check fileList
-          if (isEqual(fieldType, 'formUpload')) {
-            return onEdit
-              ? fieldValue && length(fieldValue) > 0
-              : fieldValue?.fileList && length(fieldValue?.fileList) > 0
-          }
-
-          // Handle array fields
-          if (isArray(fieldValue)) {
-            return length(fieldValue) > 0
-          }
-
-          // Handle other fields (string, number, etc.)
-          return (
-            fieldValue !== null && fieldValue !== undefined && fieldValue !== ''
-          )
+          return isFieldFilled({ fieldType, fieldValue })
         }).length || 0
       return Math.round((filledField / totalField) * 100) || 0
     }
 
     const inspectionPercentage = {
       hostelAdministrationRequestDto: calculatePercentage(
-        hostelAdministrationAttrFn(),
+        administrationAttrFn(),
       ),
-      hostelInfraRoomsRequestDto: calculatePercentage(hostelInfraRoomsAttrFn()),
-      hostelInfraSanitationRequestDto: calculatePercentage(
-        hostelInfraSanitationAttrFn(),
+      foodNutritionRequestDto: calculatePercentage(foodNutritionAttrFn()),
+      accommodationRequestDto: calculatePercentage(accommodationAttrFn()),
+      sanitationDrainageRequestDto: calculatePercentage(
+        sanitationDrainageAttrFn(),
       ),
-      medicalCareRequestDto: calculatePercentage(medicalCareAttrFn()),
-      educationFacilitiesRequestDto: calculatePercentage(
-        educationFacilitiesAttrFn(),
+      electricityLightingRequestDto: calculatePercentage(
+        electricityLightingAttrFn(),
       ),
-      foodProvisionRequestDto: calculatePercentage(foodProvisionAttrFn()),
-      safetyAndSecurityRequestDto: calculatePercentage(
-        safetyAndSecurityAttrFn(),
+      healthMedicalCareRequestDto: calculatePercentage(
+        healthMedicalCareAttrFn(),
       ),
-      conductionMeetingsRequestDto: calculatePercentage(
-        conductionMeetingsAttrFn(),
+      educationAcademicEnvironmentRequestDto: calculatePercentage(
+        educationAcademicEnvironmentAttrFn(),
       ),
-      feedbackRequestDto: calculatePercentage(feedbackAttrFn()),
-      activitiesRequestDto: calculatePercentage(curricularActivitiesAttrFn()),
+      safetySecurityRequestDto: calculatePercentage(safetySecurityAttrFn()),
+      studentFeedbackRequestDto: calculatePercentage(studentFeedbackAttrFn()),
+      overallAssessmentRequestDto: calculatePercentage(
+        overallAssessmentAttrFn(),
+      ),
+      inspectingOfficerFeedbackRequestDto: calculatePercentage(
+        inspectingOfficerFeedbackAttrFn(),
+      ),
+      // hostelAdministrationRequestDto: calculatePercentage(
+      //   administrationAttrFn(),
+      // ),
+      // hostelInfraRoomsRequestDto: calculatePercentage(hostelInfraRoomsAttrFn()),
+      // hostelInfraSanitationRequestDto: calculatePercentage(
+      //   hostelInfraSanitationAttrFn(),
+      // ),
+      // medicalCareRequestDto: calculatePercentage(medicalCareAttrFn()),
+      // educationFacilitiesRequestDto: calculatePercentage(
+      //   educationFacilitiesAttrFn(),
+      // ),
+      // foodProvisionRequestDto: calculatePercentage(foodProvisionAttrFn()),
+      // safetyAndSecurityRequestDto: calculatePercentage(
+      //   safetyAndSecurityAttrFn(),
+      // ),
+      // conductionMeetingsRequestDto: calculatePercentage(
+      //   conductionMeetingsAttrFn(),
+      // ),
+      // feedbackRequestDto: calculatePercentage(feedbackAttrFn()),
+      // activitiesRequestDto: calculatePercentage(curricularActivitiesAttrFn()),
     }
     setFormFieldPercentage(inspectionPercentage)
   }
@@ -417,51 +507,164 @@ const inspection = ({
     if (location?.state?.restart) {
       return { percentage: 0 }
     }
+
+    const sectionDetails = formData?.inspectionList?.[0] || {}
+    const getVisibleFieldKeys = (formAttr, sectionData = {}) => {
+      return (
+        entries(formAttr)
+          ?.filter(([_, value]) => {
+            if (!value?.label || !value?.inputType) return false
+            const isHidden = isEqual(typeof value?.hidden, 'function')
+              ? value.hidden(sectionData)
+              : value?.hidden
+            return !isHidden
+          })
+          ?.map(([key]) => key) || []
+      )
+    }
+
+    const inspectionJobData = [
+      ...getVisibleFieldKeys(
+        administrationAttrFn(),
+        sectionDetails?.hostelAdministrationRequestDto,
+      ),
+      ...getVisibleFieldKeys(
+        foodNutritionAttrFn(),
+        sectionDetails?.foodNutritionRequestDto,
+      ),
+      ...getVisibleFieldKeys(
+        accommodationAttrFn(),
+        sectionDetails?.accommodationRequestDto,
+      ),
+      ...getVisibleFieldKeys(
+        sanitationDrainageAttrFn(),
+        sectionDetails?.sanitationDrainageRequestDto,
+      ),
+      ...getVisibleFieldKeys(
+        electricityLightingAttrFn(),
+        sectionDetails?.electricityLightingRequestDto,
+      ),
+      ...getVisibleFieldKeys(
+        healthMedicalCareAttrFn(),
+        sectionDetails?.healthMedicalCareRequestDto,
+      ),
+      ...getVisibleFieldKeys(
+        educationAcademicEnvironmentAttrFn(),
+        sectionDetails?.educationAcademicEnvironmentRequestDto,
+      ),
+      ...getVisibleFieldKeys(
+        safetySecurityAttrFn(),
+        sectionDetails?.safetySecurityRequestDto,
+      ),
+      ...getVisibleFieldKeys(
+        studentFeedbackAttrFn(),
+        sectionDetails?.studentFeedbackRequestDto,
+      ),
+      ...getVisibleFieldKeys(
+        overallAssessmentAttrFn(),
+        sectionDetails?.overallAssessmentAttrFn,
+      ),
+      ...getVisibleFieldKeys(
+        inspectingOfficerFeedbackAttrFn(),
+        sectionDetails?.inspectingOfficerFeedbackAttrFn,
+      ),
+      // ...getVisibleFieldKeys(
+      //   hostelInfraRoomsAttrFn(),
+      //   sectionDetails?.hostelInfraRoomsRequestDto,
+      // ),
+      // ...getVisibleFieldKeys(
+      //   hostelInfraSanitationAttrFn(),
+      //   sectionDetails?.hostelInfraSanitationRequestDto,
+      // ),
+      // ...getVisibleFieldKeys(
+      //   medicalCareAttrFn(),
+      //   sectionDetails?.medicalCareRequestDto,
+      // ),
+      // ...getVisibleFieldKeys(
+      //   educationFacilitiesAttrFn(),
+      //   sectionDetails?.educationFacilitiesRequestDto,
+      // ),
+      // ...getVisibleFieldKeys(
+      //   foodProvisionAttrFn(),
+      //   sectionDetails?.foodProvisionRequestDto,
+      // ),
+      // ...getVisibleFieldKeys(
+      //   safetyAndSecurityAttrFn(),
+      //   sectionDetails?.safetyAndSecurityRequestDto,
+      // ),
+      // ...getVisibleFieldKeys(
+      //   conductionMeetingsAttrFn(),
+      //   sectionDetails?.conductionMeetingsRequestDto,
+      // ),
+      // ...getVisibleFieldKeys(
+      //   feedbackAttrFn(),
+      //   sectionDetails?.feedbackRequestDto,
+      // ),
+      ...getVisibleFieldKeys(findingsAttrFn(), formData?.findingsRequestDto),
+      // ...getVisibleFieldKeys(
+      //   curricularActivitiesAttrFn(),
+      //   sectionDetails?.activitiesRequestDto,
+      // ),
+    ]
+
     const jobData = {
       locationInspection: formData?.locationInspection,
       endLocationInspection: formData?.endLocationInspection,
       inspectionDate: formData?.inspectionDate,
-      ...(formData?.findingsRequestDto || {}),
-      ...values(formData?.inspectionList?.[0] || {})?.reduce(
-        (acc, curr) => ({ ...acc, ...curr }),
-        {},
-      ),
-    }
-
-    const getKeys = obj => {
-      return (
-        entries(obj)
-          ?.filter(([_, value]) => value?.label && value?.inputType)
-          ?.map(([key]) => key) || []
-      )
-    }
-    const inspectionJobData = [
-      ...getKeys(hostelAdministrationAttrFn()),
-      ...getKeys(hostelInfraRoomsAttrFn()),
-      ...getKeys(hostelInfraSanitationAttrFn()),
-      ...getKeys(medicalCareAttrFn()),
-      ...getKeys(educationFacilitiesAttrFn()),
-      ...getKeys(foodProvisionAttrFn()),
-      ...getKeys(safetyAndSecurityAttrFn()),
-      ...getKeys(conductionMeetingsAttrFn()),
-      ...getKeys(feedbackAttrFn()),
-      ...getKeys(findingsAttrFn()),
-      ...getKeys(curricularActivitiesAttrFn()),
-    ]
-    const totalFields = {
-      locationInspection: formData?.locationInspection,
-      endLocationInspection: formData?.endLocationInspection,
-      inspectionDate: formData?.inspectionDate,
       ...inspectionJobData?.reduce((acc, key) => {
-        acc[key] = jobData?.[key]
+        acc[key] =
+          formData?.findingsRequestDto?.[key] ??
+          values(sectionDetails)?.reduce(
+            (nestedAcc, curr) => ({ ...nestedAcc, ...curr }),
+            {},
+          )?.[key]
         return acc
       }, {}),
     }
 
-    const totalFieldCount = keys(totalFields)?.length
-    const filledFieldCount = values(totalFields)?.filter(
-      value => value !== null && value !== undefined && value !== '',
-    )?.length
+    const totalFieldCount = keys(jobData)?.length
+    const filledFieldCount =
+      keys(jobData)?.filter(key => {
+        const fieldValue = jobData?.[key]
+        const sectionAttr =
+          administrationAttrFn()?.[key] ||
+          foodNutritionAttrFn()?.[key] ||
+          accommodationAttrFn()?.[key] ||
+          sanitationDrainageAttrFn()?.[key] ||
+          electricityLightingAttrFn()?.[key] ||
+          healthMedicalCareAttrFn()?.[key] ||
+          educationAcademicEnvironmentAttrFn()?.[key] ||
+          safetySecurityAttrFn()?.[key] ||
+          studentFeedbackAttrFn()?.[key] ||
+          overallAssessmentAttrFn()?.[key] ||
+          inspectingOfficerFeedbackAttrFn()?.[key] ||
+          // hostelInfraRoomsAttrFn()?.[key] ||
+          // hostelInfraSanitationAttrFn()?.[key] ||
+          // medicalCareAttrFn()?.[key] ||
+          // educationFacilitiesAttrFn()?.[key] ||
+          // foodProvisionAttrFn()?.[key] ||
+          // safetyAndSecurityAttrFn()?.[key] ||
+          // conductionMeetingsAttrFn()?.[key] ||
+          // feedbackAttrFn()?.[key] ||
+          findingsAttrFn()?.[key] ||
+          // curricularActivitiesAttrFn()?.[key] ||
+          {}
+        const fieldType = sectionAttr?.inputType
+
+        if (isEqual(fieldType, 'formUpload')) {
+          return fieldValue?.fileList
+            ? length(fieldValue.fileList) > 0
+            : length(fieldValue) > 0
+        }
+
+        if (isArray(fieldValue)) {
+          return length(fieldValue) > 0
+        }
+
+        return (
+          fieldValue !== null && fieldValue !== undefined && fieldValue !== ''
+        )
+      })?.length || 0
 
     const percentage = Math.round((filledFieldCount / totalFieldCount) * 100)
     return { percentage }
@@ -509,44 +712,88 @@ const inspection = ({
     Object.assign(payload, {
       ...payloadConverter(
         inspectionDetails?.hostelAdministrationRequestDto,
-        hostelAdministrationAttrFn(),
+        administrationAttrFn(),
       ),
       ...payloadConverter(
-        inspectionDetails?.hostelInfraRoomsRequestDto,
-        hostelInfraRoomsAttrFn(),
+        inspectionDetails?.foodNutritionRequestDto,
+        foodNutritionAttrFn(),
       ),
       ...payloadConverter(
-        inspectionDetails?.hostelInfraSanitationRequestDto,
-        hostelInfraSanitationAttrFn(),
+        inspectionDetails?.accommodationRequestDto,
+        accommodationAttrFn(),
       ),
       ...payloadConverter(
-        inspectionDetails?.medicalCareRequestDto,
-        medicalCareAttrFn(),
+        inspectionDetails?.sanitationDrainageRequestDto,
+        sanitationDrainageAttrFn(),
       ),
       ...payloadConverter(
-        inspectionDetails?.educationFacilitiesRequestDto,
-        educationFacilitiesAttrFn(),
+        inspectionDetails?.electricityLightingRequestDto,
+        electricityLightingAttrFn(),
       ),
       ...payloadConverter(
-        inspectionDetails?.foodProvisionRequestDto,
-        foodProvisionAttrFn(),
+        inspectionDetails?.healthMedicalCareRequestDto,
+        healthMedicalCareAttrFn(),
       ),
       ...payloadConverter(
-        inspectionDetails?.safetyAndSecurityRequestDto,
-        safetyAndSecurityAttrFn(),
+        inspectionDetails?.educationAcademicEnvironmentRequestDto,
+        educationAcademicEnvironmentAttrFn(),
       ),
       ...payloadConverter(
-        inspectionDetails?.conductionMeetingsRequestDto,
-        conductionMeetingsAttrFn(),
+        inspectionDetails?.safetySecurityRequestDto,
+        safetySecurityAttrFn(),
       ),
       ...payloadConverter(
-        inspectionDetails?.feedbackRequestDto,
-        feedbackAttrFn(),
+        inspectionDetails?.studentFeedbackRequestDto,
+        studentFeedbackAttrFn(),
       ),
       ...payloadConverter(
-        inspectionDetails?.activitiesRequestDto,
-        curricularActivitiesAttrFn(),
+        inspectionDetails?.overallAssessmentRequestDto,
+        overallAssessmentAttrFn(),
       ),
+      ...payloadConverter(
+        inspectionDetails?.inspectingOfficerFeedbackRequestDto,
+        inspectingOfficerFeedbackAttrFn(),
+      ),
+      // ...payloadConverter(
+      //   inspectionDetails?.hostelAdministrationRequestDto,
+      //   administrationAttrFn(),
+      // ),
+      // ...payloadConverter(
+      //   inspectionDetails?.hostelInfraRoomsRequestDto,
+      //   hostelInfraRoomsAttrFn(),
+      // ),
+      // ...payloadConverter(
+      //   inspectionDetails?.hostelInfraSanitationRequestDto,
+      //   hostelInfraSanitationAttrFn(),
+      // ),
+      // ...payloadConverter(
+      //   inspectionDetails?.medicalCareRequestDto,
+      //   medicalCareAttrFn(),
+      // ),
+      // ...payloadConverter(
+      //   inspectionDetails?.educationFacilitiesRequestDto,
+      //   educationFacilitiesAttrFn(),
+      // ),
+      // ...payloadConverter(
+      //   inspectionDetails?.foodProvisionRequestDto,
+      //   foodProvisionAttrFn(),
+      // ),
+      // ...payloadConverter(
+      //   inspectionDetails?.safetyAndSecurityRequestDto,
+      //   safetyAndSecurityAttrFn(),
+      // ),
+      // ...payloadConverter(
+      //   inspectionDetails?.conductionMeetingsRequestDto,
+      //   conductionMeetingsAttrFn(),
+      // ),
+      // ...payloadConverter(
+      //   inspectionDetails?.feedbackRequestDto,
+      //   feedbackAttrFn(),
+      // ),
+      // ...payloadConverter(
+      //   inspectionDetails?.activitiesRequestDto,
+      //   curricularActivitiesAttrFn(),
+      // ),
       ...payloadConverter(formData?.findingsRequestDto, findingsAttrFn()),
     })
 
@@ -1209,16 +1456,27 @@ const inspection = ({
   }
 
   const inspectionFormFieldsAttr = {
-    hostelAdministrationAttrFn,
-    hostelInfraRoomsAttrFn,
-    hostelInfraSanitationAttrFn,
-    medicalCareAttrFn,
-    educationFacilitiesAttrFn,
-    foodProvisionAttrFn,
-    safetyAndSecurityAttrFn,
-    conductionMeetingsAttrFn,
-    feedbackAttrFn,
-    curricularActivitiesAttrFn,
+    administrationAttrFn,
+    foodNutritionAttrFn,
+    accommodationAttrFn,
+    sanitationDrainageAttrFn,
+    electricityLightingAttrFn,
+    healthMedicalCareAttrFn,
+    educationAcademicEnvironmentAttrFn,
+    safetySecurityAttrFn,
+    studentFeedbackAttrFn,
+    overallAssessmentAttrFn,
+    inspectingOfficerFeedbackAttrFn,
+    // administrationAttrFn,
+    // hostelInfraRoomsAttrFn,
+    // hostelInfraSanitationAttrFn,
+    // medicalCareAttrFn,
+    // educationFacilitiesAttrFn,
+    // foodProvisionAttrFn,
+    // safetyAndSecurityAttrFn,
+    // conductionMeetingsAttrFn,
+    // feedbackAttrFn,
+    // curricularActivitiesAttrFn,
   }
 
   const downloadInspectionData = () => {

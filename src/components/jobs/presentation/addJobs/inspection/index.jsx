@@ -77,7 +77,6 @@ const InspectionJob = ({ editData, setEditData }) => {
     setEditData,
   })
   const lang = getItem('lang')
-
   const { inspectionOfficer } = userWiseRole
 
   const userSelectionList = [

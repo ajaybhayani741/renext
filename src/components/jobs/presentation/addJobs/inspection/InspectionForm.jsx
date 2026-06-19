@@ -44,48 +44,92 @@ const InspectionForm = ({
   const allPermissionRoles = [districtHostelDepartment, inspectionOfficer]
 
   const {
-    hostelAdministrationAttrFn,
-    hostelInfraRoomsAttrFn,
-    hostelInfraSanitationAttrFn,
-    medicalCareAttrFn,
-    educationFacilitiesAttrFn,
-    foodProvisionAttrFn,
-    safetyAndSecurityAttrFn,
-    conductionMeetingsAttrFn,
-    feedbackAttrFn,
-    curricularActivitiesAttrFn,
+    administrationAttrFn,
+    foodNutritionAttrFn,
+    accommodationAttrFn,
+    sanitationDrainageAttrFn,
+    electricityLightingAttrFn,
+    healthMedicalCareAttrFn,
+    educationAcademicEnvironmentAttrFn,
+    safetySecurityAttrFn,
+    studentFeedbackAttrFn,
+    overallAssessmentAttrFn,
+    inspectingOfficerFeedbackAttrFn,
+    // administrationAttrFn,
+    // hostelInfraRoomsAttrFn,
+    // hostelInfraSanitationAttrFn,
+    // medicalCareAttrFn,
+    // educationFacilitiesAttrFn,
+    // foodProvisionAttrFn,
+    // safetyAndSecurityAttrFn,
+    // conductionMeetingsAttrFn,
+    // feedbackAttrFn,
+    // curricularActivitiesAttrFn,
   } = inspectionFormFieldsAttr
 
   const hostelAdministrationAttr = useMemo(() => {
-    return hostelAdministrationAttrFn()
+    return administrationAttrFn()
   }, [index])
-  const hostelInfraRoomsAttr = useMemo(() => {
-    return hostelInfraRoomsAttrFn()
+  const foodNutritionAttr = useMemo(() => {
+    return foodNutritionAttrFn()
   }, [index])
-  const hostelInfraSanitationAttr = useMemo(() => {
-    return hostelInfraSanitationAttrFn()
+  const accommodationAttr = useMemo(() => {
+    return accommodationAttrFn()
   }, [index])
-  const medicalCareAttr = useMemo(() => {
-    return medicalCareAttrFn()
+  const sanitationDrainageAttr = useMemo(() => {
+    return sanitationDrainageAttrFn()
   }, [index])
-  const educationFacilitiesAttr = useMemo(() => {
-    return educationFacilitiesAttrFn()
+  const electricityLightingAttr = useMemo(() => {
+    return electricityLightingAttrFn()
   }, [index])
-  const foodProvisionAttr = useMemo(() => {
-    return foodProvisionAttrFn()
+  const healthMedicalCareAttr = useMemo(() => {
+    return healthMedicalCareAttrFn()
   }, [index])
-  const safetyAndSecurityAttr = useMemo(() => {
-    return safetyAndSecurityAttrFn()
+  const educationAcademicEnvironmentAttr = useMemo(() => {
+    return educationAcademicEnvironmentAttrFn()
   }, [index])
-  const conductionMeetingsAttr = useMemo(() => {
-    return conductionMeetingsAttrFn()
+  const safetySecurityAttr = useMemo(() => {
+    return safetySecurityAttrFn()
   }, [index])
-  const feedbackAttr = useMemo(() => {
-    return feedbackAttrFn()
+  const studentFeedbackAttr = useMemo(() => {
+    return studentFeedbackAttrFn()
   }, [index])
-  const curricularActivitiesAttr = useMemo(() => {
-    return curricularActivitiesAttrFn()
+  const overallAssessmentAttr = useMemo(() => {
+    return overallAssessmentAttrFn()
   }, [index])
+  const inspectingOfficerFeedbackAttr = useMemo(() => {
+    return inspectingOfficerFeedbackAttrFn()
+  }, [index])
+  // const hostelAdministrationAttr = useMemo(() => {
+  //   return administrationAttrFn()
+  // }, [index])
+  // const hostelInfraRoomsAttr = useMemo(() => {
+  //   return hostelInfraRoomsAttrFn()
+  // }, [index])
+  // const hostelInfraSanitationAttr = useMemo(() => {
+  //   return hostelInfraSanitationAttrFn()
+  // }, [index])
+  // const medicalCareAttr = useMemo(() => {
+  //   return medicalCareAttrFn()
+  // }, [index])
+  // const educationFacilitiesAttr = useMemo(() => {
+  //   return educationFacilitiesAttrFn()
+  // }, [index])
+  // const foodProvisionAttr = useMemo(() => {
+  //   return foodProvisionAttrFn()
+  // }, [index])
+  // const safetyAndSecurityAttr = useMemo(() => {
+  //   return safetyAndSecurityAttrFn()
+  // }, [index])
+  // const conductionMeetingsAttr = useMemo(() => {
+  //   return conductionMeetingsAttrFn()
+  // }, [index])
+  // const feedbackAttr = useMemo(() => {
+  //   return feedbackAttrFn()
+  // }, [index])
+  // const curricularActivitiesAttr = useMemo(() => {
+  //   return curricularActivitiesAttrFn()
+  // }, [index])
 
   const commonCollapseProps = {
     className: 'coll collapse-header',
@@ -128,10 +172,10 @@ const InspectionForm = ({
   const collapseItems = [
     {
       label: collapseItemHeader({
-        label: 'job_HostelAdministration',
+        label: 'job_AdministrationGovernance',
         key: 'hostelAdministrationRequestDto',
       }),
-      header: t('job_HostelAdministration'),
+      header: t('job_AdministrationGovernance'),
       key: 'hostelAdministrationRequestDto',
       ...commonCollapseProps,
       children: (
@@ -151,19 +195,19 @@ const InspectionForm = ({
     },
     {
       label: collapseItemHeader({
-        label: 'job_HostelInfraRooms',
-        key: 'hostelInfraRoomsRequestDto',
+        label: 'job_FoodNutritionSection',
+        key: 'foodNutritionRequestDto',
       }),
-      header: t('job_HostelInfraRooms'),
-      key: 'hostelInfraRoomsRequestDto',
+      header: t('job_FoodNutritionSection'),
+      key: 'foodNutritionRequestDto',
       ...commonCollapseProps,
       children: (
         <InspectionFormField
           {...{
-            attrList: hostelInfraRoomsAttr,
+            attrList: foodNutritionAttr,
             index,
             name,
-            nestedKey: 'hostelInfraRoomsRequestDto',
+            nestedKey: 'foodNutritionRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
@@ -174,44 +218,19 @@ const InspectionForm = ({
     },
     {
       label: collapseItemHeader({
-        label: 'job_HostelInfraSanitation',
-        key: 'hostelInfraSanitationRequestDto',
+        label: 'job_AccommodationSection',
+        key: 'accommodationRequestDto',
       }),
-      header: t('job_HostelInfraSanitation'),
-      key: 'hostelInfraSanitationRequestDto',
-      ...commonCollapseProps,
-      children: (
-        <>
-          <InspectionFormField
-            {...{
-              attrList: hostelInfraSanitationAttr,
-              index,
-              name,
-              nestedKey: 'hostelInfraSanitationRequestDto',
-              showSaveBtn: include([...allPermissionRoles], roleId),
-              disabledAll: !include([...allPermissionRoles], roleId),
-              onSaveClick,
-              apiCall,
-            }}
-          />
-        </>
-      ),
-    },
-    {
-      label: collapseItemHeader({
-        label: 'job_MedicalCare',
-        key: 'medicalCareRequestDto',
-      }),
-      header: t('job_MedicalCare'),
-      key: 'medicalCareRequestDto',
+      header: t('job_AccommodationSection'),
+      key: 'accommodationRequestDto',
       ...commonCollapseProps,
       children: (
         <InspectionFormField
           {...{
-            attrList: medicalCareAttr,
+            attrList: accommodationAttr,
             index,
             name,
-            nestedKey: 'medicalCareRequestDto',
+            nestedKey: 'accommodationRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
@@ -222,19 +241,19 @@ const InspectionForm = ({
     },
     {
       label: collapseItemHeader({
-        label: 'job_EducationFacilities',
-        key: 'educationFacilitiesRequestDto',
+        label: 'job_SanitationDrainageSection',
+        key: 'sanitationDrainageRequestDto',
       }),
-      header: t('job_EducationFacilities'),
-      key: 'educationFacilitiesRequestDto',
+      header: t('job_SanitationDrainageSection'),
+      key: 'sanitationDrainageRequestDto',
       ...commonCollapseProps,
       children: (
         <InspectionFormField
           {...{
-            attrList: educationFacilitiesAttr,
+            attrList: sanitationDrainageAttr,
             index,
             name,
-            nestedKey: 'educationFacilitiesRequestDto',
+            nestedKey: 'sanitationDrainageRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
@@ -245,19 +264,19 @@ const InspectionForm = ({
     },
     {
       label: collapseItemHeader({
-        label: 'job_ExtraCurricularActivities',
-        key: 'activitiesRequestDto',
+        label: 'job_ElectricityLightingSection',
+        key: 'electricityLightingRequestDto',
       }),
-      header: t('job_ExtraCurricularActivities'),
-      key: 'activitiesRequestDto',
+      header: t('job_ElectricityLightingSection'),
+      key: 'electricityLightingRequestDto',
       ...commonCollapseProps,
       children: (
         <InspectionFormField
           {...{
-            attrList: curricularActivitiesAttr,
+            attrList: electricityLightingAttr,
             index,
             name,
-            nestedKey: 'activitiesRequestDto',
+            nestedKey: 'electricityLightingRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
@@ -268,19 +287,19 @@ const InspectionForm = ({
     },
     {
       label: collapseItemHeader({
-        label: 'job_FoodProvisions',
-        key: 'foodProvisionRequestDto',
+        label: 'job_HealthMedicalCareSection',
+        key: 'healthMedicalCareRequestDto',
       }),
-      header: t('job_FoodProvisions'),
-      key: 'foodProvisionRequestDto',
+      header: t('job_HealthMedicalCareSection'),
+      key: 'healthMedicalCareRequestDto',
       ...commonCollapseProps,
       children: (
         <InspectionFormField
           {...{
-            attrList: foodProvisionAttr,
+            attrList: healthMedicalCareAttr,
             index,
             name,
-            nestedKey: 'foodProvisionRequestDto',
+            nestedKey: 'healthMedicalCareRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
@@ -291,19 +310,19 @@ const InspectionForm = ({
     },
     {
       label: collapseItemHeader({
-        label: 'job_SafetyAndSecurity',
-        key: 'safetyAndSecurityRequestDto',
+        label: 'job_EducationAcademicEnvironmentSection',
+        key: 'educationAcademicEnvironmentRequestDto',
       }),
-      header: t('job_SafetyAndSecurity'),
-      key: 'safetyAndSecurityRequestDto',
+      header: t('job_EducationAcademicEnvironmentSection'),
+      key: 'educationAcademicEnvironmentRequestDto',
       ...commonCollapseProps,
       children: (
         <InspectionFormField
           {...{
-            attrList: safetyAndSecurityAttr,
+            attrList: educationAcademicEnvironmentAttr,
             index,
             name,
-            nestedKey: 'safetyAndSecurityRequestDto',
+            nestedKey: 'educationAcademicEnvironmentRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
@@ -314,19 +333,65 @@ const InspectionForm = ({
     },
     {
       label: collapseItemHeader({
-        label: 'job_ConductionMeetings',
-        key: 'conductionMeetingsRequestDto',
+        label: 'job_SafetySecuritySection',
+        key: 'safetySecurityRequestDto',
       }),
-      header: t('job_ConductionMeetings'),
-      key: 'conductionMeetingsRequestDto',
+      header: t('job_SafetySecuritySection'),
+      key: 'safetySecurityRequestDto',
       ...commonCollapseProps,
       children: (
         <InspectionFormField
           {...{
-            attrList: conductionMeetingsAttr,
+            attrList: safetySecurityAttr,
             index,
             name,
-            nestedKey: 'conductionMeetingsRequestDto',
+            nestedKey: 'safetySecurityRequestDto',
+            showSaveBtn: include([...allPermissionRoles], roleId),
+            disabledAll: !include([...allPermissionRoles], roleId),
+            onSaveClick,
+            apiCall,
+          }}
+        />
+      ),
+    },
+    {
+      label: collapseItemHeader({
+        label: 'job_StudentFeedbackSection',
+        key: 'studentFeedbackRequestDto',
+      }),
+      header: t('job_StudentFeedbackSection'),
+      key: 'studentFeedbackRequestDto',
+      ...commonCollapseProps,
+      children: (
+        <InspectionFormField
+          {...{
+            attrList: studentFeedbackAttr,
+            index,
+            name,
+            nestedKey: 'studentFeedbackRequestDto',
+            showSaveBtn: include([...allPermissionRoles], roleId),
+            disabledAll: !include([...allPermissionRoles], roleId),
+            onSaveClick,
+            apiCall,
+          }}
+        />
+      ),
+    },
+    {
+      label: collapseItemHeader({
+        label: 'job_OverallAssessmentSection',
+        key: 'overallAssessmentRequestDto',
+      }),
+      header: t('job_OverallAssessmentSection'),
+      key: 'overallAssessmentRequestDto',
+      ...commonCollapseProps,
+      children: (
+        <InspectionFormField
+          {...{
+            attrList: overallAssessmentAttr,
+            index,
+            name,
+            nestedKey: 'overallAssessmentRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
@@ -338,18 +403,18 @@ const InspectionForm = ({
     {
       label: collapseItemHeader({
         label: 'job_Feedback',
-        key: 'feedbackRequestDto',
+        key: 'inspectingOfficerFeedbackRequestDto',
       }),
       header: t('job_Feedback'),
-      key: 'feedbackRequestDto',
+      key: 'inspectingOfficerFeedbackRequestDto',
       ...commonCollapseProps,
       children: (
         <InspectionFormField
           {...{
-            attrList: feedbackAttr,
+            attrList: inspectingOfficerFeedbackAttr,
             index,
             name,
-            nestedKey: 'feedbackRequestDto',
+            nestedKey: 'inspectingOfficerFeedbackRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,
@@ -359,6 +424,241 @@ const InspectionForm = ({
       ),
     },
   ].filter(({ hidden }) => !hidden)
+
+  //  const collapseItems = [
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_AdministrationGovernance',
+  //        key: 'hostelAdministrationRequestDto',
+  //      }),
+  //      header: t('job_AdministrationGovernance'),
+  //      key: 'hostelAdministrationRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <InspectionFormField
+  //          {...{
+  //            attrList: hostelAdministrationAttr,
+  //            index,
+  //            name,
+  //            nestedKey: 'hostelAdministrationRequestDto',
+  //            showSaveBtn: include([...allPermissionRoles], roleId),
+  //            disabledAll: !include([...allPermissionRoles], roleId),
+  //            onSaveClick,
+  //            apiCall,
+  //          }}
+  //        />
+  //      ),
+  //    },
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_HostelInfraRooms',
+  //        key: 'hostelInfraRoomsRequestDto',
+  //      }),
+  //      header: t('job_HostelInfraRooms'),
+  //      key: 'hostelInfraRoomsRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <InspectionFormField
+  //          {...{
+  //            attrList: hostelInfraRoomsAttr,
+  //            index,
+  //            name,
+  //            nestedKey: 'hostelInfraRoomsRequestDto',
+  //            showSaveBtn: include([...allPermissionRoles], roleId),
+  //            disabledAll: !include([...allPermissionRoles], roleId),
+  //            onSaveClick,
+  //            apiCall,
+  //          }}
+  //        />
+  //      ),
+  //    },
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_HostelInfraSanitation',
+  //        key: 'hostelInfraSanitationRequestDto',
+  //      }),
+  //      header: t('job_HostelInfraSanitation'),
+  //      key: 'hostelInfraSanitationRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <>
+  //          <InspectionFormField
+  //            {...{
+  //              attrList: hostelInfraSanitationAttr,
+  //              index,
+  //              name,
+  //              nestedKey: 'hostelInfraSanitationRequestDto',
+  //              showSaveBtn: include([...allPermissionRoles], roleId),
+  //              disabledAll: !include([...allPermissionRoles], roleId),
+  //              onSaveClick,
+  //              apiCall,
+  //            }}
+  //          />
+  //        </>
+  //      ),
+  //    },
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_MedicalCare',
+  //        key: 'medicalCareRequestDto',
+  //      }),
+  //      header: t('job_MedicalCare'),
+  //      key: 'medicalCareRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <InspectionFormField
+  //          {...{
+  //            attrList: medicalCareAttr,
+  //            index,
+  //            name,
+  //            nestedKey: 'medicalCareRequestDto',
+  //            showSaveBtn: include([...allPermissionRoles], roleId),
+  //            disabledAll: !include([...allPermissionRoles], roleId),
+  //            onSaveClick,
+  //            apiCall,
+  //          }}
+  //        />
+  //      ),
+  //    },
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_EducationFacilities',
+  //        key: 'educationFacilitiesRequestDto',
+  //      }),
+  //      header: t('job_EducationFacilities'),
+  //      key: 'educationFacilitiesRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <InspectionFormField
+  //          {...{
+  //            attrList: educationFacilitiesAttr,
+  //            index,
+  //            name,
+  //            nestedKey: 'educationFacilitiesRequestDto',
+  //            showSaveBtn: include([...allPermissionRoles], roleId),
+  //            disabledAll: !include([...allPermissionRoles], roleId),
+  //            onSaveClick,
+  //            apiCall,
+  //          }}
+  //        />
+  //      ),
+  //    },
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_ExtraCurricularActivities',
+  //        key: 'activitiesRequestDto',
+  //      }),
+  //      header: t('job_ExtraCurricularActivities'),
+  //      key: 'activitiesRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <InspectionFormField
+  //          {...{
+  //            attrList: curricularActivitiesAttr,
+  //            index,
+  //            name,
+  //            nestedKey: 'activitiesRequestDto',
+  //            showSaveBtn: include([...allPermissionRoles], roleId),
+  //            disabledAll: !include([...allPermissionRoles], roleId),
+  //            onSaveClick,
+  //            apiCall,
+  //          }}
+  //        />
+  //      ),
+  //    },
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_FoodProvisions',
+  //        key: 'foodProvisionRequestDto',
+  //      }),
+  //      header: t('job_FoodProvisions'),
+  //      key: 'foodProvisionRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <InspectionFormField
+  //          {...{
+  //            attrList: foodProvisionAttr,
+  //            index,
+  //            name,
+  //            nestedKey: 'foodProvisionRequestDto',
+  //            showSaveBtn: include([...allPermissionRoles], roleId),
+  //            disabledAll: !include([...allPermissionRoles], roleId),
+  //            onSaveClick,
+  //            apiCall,
+  //          }}
+  //        />
+  //      ),
+  //    },
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_SafetyAndSecurity',
+  //        key: 'safetyAndSecurityRequestDto',
+  //      }),
+  //      header: t('job_SafetyAndSecurity'),
+  //      key: 'safetyAndSecurityRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <InspectionFormField
+  //          {...{
+  //            attrList: safetyAndSecurityAttr,
+  //            index,
+  //            name,
+  //            nestedKey: 'safetyAndSecurityRequestDto',
+  //            showSaveBtn: include([...allPermissionRoles], roleId),
+  //            disabledAll: !include([...allPermissionRoles], roleId),
+  //            onSaveClick,
+  //            apiCall,
+  //          }}
+  //        />
+  //      ),
+  //    },
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_ConductionMeetings',
+  //        key: 'conductionMeetingsRequestDto',
+  //      }),
+  //      header: t('job_ConductionMeetings'),
+  //      key: 'conductionMeetingsRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <InspectionFormField
+  //          {...{
+  //            attrList: conductionMeetingsAttr,
+  //            index,
+  //            name,
+  //            nestedKey: 'conductionMeetingsRequestDto',
+  //            showSaveBtn: include([...allPermissionRoles], roleId),
+  //            disabledAll: !include([...allPermissionRoles], roleId),
+  //            onSaveClick,
+  //            apiCall,
+  //          }}
+  //        />
+  //      ),
+  //    },
+  //    {
+  //      label: collapseItemHeader({
+  //        label: 'job_Feedback',
+  //        key: 'feedbackRequestDto',
+  //      }),
+  //      header: t('job_Feedback'),
+  //      key: 'feedbackRequestDto',
+  //      ...commonCollapseProps,
+  //      children: (
+  //        <InspectionFormField
+  //          {...{
+  //            attrList: feedbackAttr,
+  //            index,
+  //            name,
+  //            nestedKey: 'feedbackRequestDto',
+  //            showSaveBtn: include([...allPermissionRoles], roleId),
+  //            disabledAll: !include([...allPermissionRoles], roleId),
+  //            onSaveClick,
+  //            apiCall,
+  //          }}
+  //        />
+  //      ),
+  //    },
+  //  ].filter(({ hidden }) => !hidden)
 
   const currentActive = collapseItems?.find(v =>
     isEqual(v?.key, activeFormField?.key),
