@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import AdministrationGovernanceDashboard from './AdministrationGovernanceDashboard'
 import ConductionMeetingsDashboard from './ConductionMeetingsDashboard'
 import EducationFacilitiesDashboard from './EducationFacilitiesDashboard'
-import FeedbackDashboard from './FeedbackDashboard'
+// import FeedbackDashboard from './FeedbackDashboard'
 import FoodProvisionsDashboard from './FoodProvisionsDashboard'
 import HostelAuthorityDashboard from './HostelAuthorityDashboard'
 import HostelInfraRoomsDashboard from './HostelInfraRoomsDashboard'
@@ -15,6 +15,7 @@ import PhotosDashboard from './PhotosDashboard'
 import RecordMaintenanceDashboard from './RecordMaintenanceDashboard'
 import SafetySecurityDashboard from './SafetySecurityDashboard'
 import StaffDetailsDashboard from './StaffDetailsDashboard'
+import StudentFeedbackDashboard from './StudentFeedbackDashboard'
 import StudentsDashboard from './StudentsDashboard'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
@@ -49,7 +50,7 @@ const DashboardView = () => {
       case cardKeys.safetySecurity:
         return <SafetySecurityDashboard />
       case cardKeys.studentFeedback:
-        return <StudentsDashboard />
+        return <StudentFeedbackDashboard />
       case cardKeys.overallAssessment:
         return <RecordMaintenanceDashboard />
       case cardKeys.hostelAuthority:
@@ -75,7 +76,7 @@ const DashboardView = () => {
       case cardKeys.conductionMeetings:
         return <ConductionMeetingsDashboard />
       case cardKeys.feedback:
-        return <FeedbackDashboard />
+        return <StudentFeedbackDashboard />
       case cardKeys.photos:
         return <PhotosDashboard />
 

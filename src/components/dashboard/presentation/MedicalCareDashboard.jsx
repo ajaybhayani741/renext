@@ -4,7 +4,8 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
 import administrationGovernance from '../container/administrationGovernance.container'
-import medicalCare from '../container/medicalCare.container'
+// Legacy chart API disabled while its charts are hidden.
+// import medicalCare from '../container/medicalCare.container'
 import { medicalCareCharts } from '../dashboard.description'
 import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
@@ -28,14 +29,18 @@ const MedicalCareDashboard = () => {
     handleChartClick,
     seriesData,
     onRangeChange,
-  } = medicalCare({ hostelFilter })
+  } = {} // medicalCare({ hostelFilter })
   const {
+    pieData,
     handleChartClick: handleAssessmentChartClick,
     selectedColumn: assessmentSelectedColumn,
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
-  } = administrationGovernance({ hostelFilter })
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'HEALTH_MEDICAL_CARE',
+  })
   const { t } = useTranslations()
   return (
     <DashboardWrapper
@@ -53,6 +58,7 @@ const MedicalCareDashboard = () => {
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart
+            data={pieData}
             handleChartClick={handleAssessmentChartClick}
             name="dash_AdministrationGovernance"
           />

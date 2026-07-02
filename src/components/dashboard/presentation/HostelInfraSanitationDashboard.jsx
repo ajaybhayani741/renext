@@ -4,7 +4,8 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
 import administrationGovernance from '../container/administrationGovernance.container'
-import hostelInfraSanitation from '../container/hostelInfraSanitation.container'
+// Legacy chart API disabled while its charts are hidden.
+// import hostelInfraSanitation from '../container/hostelInfraSanitation.container'
 import { hostelInfraSanitationCharts } from '../dashboard.description'
 import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
@@ -35,14 +36,18 @@ const HostelInfraSanitationDashboard = () => {
     onRangeChange,
     handleChartClick,
     seriesData,
-  } = hostelInfraSanitation({ hostelFilter })
+  } = {} // hostelInfraSanitation({ hostelFilter })
   const {
+    pieData,
     handleChartClick: handleAssessmentChartClick,
     selectedColumn: assessmentSelectedColumn,
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
-  } = administrationGovernance({ hostelFilter })
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'SANITATION_DRAINAGE',
+  })
 
   return (
     <DashboardWrapper
@@ -60,6 +65,7 @@ const HostelInfraSanitationDashboard = () => {
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart
+            data={pieData}
             handleChartClick={handleAssessmentChartClick}
             name="dash_AdministrationGovernance"
           />

@@ -4,7 +4,8 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries } from '../../../utils/javascript'
 import administrationGovernance from '../container/administrationGovernance.container'
-import staffDetails from '../container/staffDetails.container'
+// Legacy chart API disabled while its charts are hidden.
+// import staffDetails from '../container/staffDetails.container'
 import { staffDetailsCharts } from '../dashboard.description'
 import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernFrequencyChart from '../shared/ModernFrequencyChart'
@@ -57,14 +58,18 @@ const StaffDetailsDashboard = () => {
     onRangeChange,
     seriesData,
     handleChartClick,
-  } = staffDetails({ hostelFilter })
+  } = {} // staffDetails({ hostelFilter })
   const {
+    pieData,
     handleChartClick: handleAssessmentChartClick,
     selectedColumn: assessmentSelectedColumn,
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
-  } = administrationGovernance({ hostelFilter })
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'ELECTRICITY_LIGHTING',
+  })
 
   return (
     <DashboardWrapper
@@ -82,6 +87,7 @@ const StaffDetailsDashboard = () => {
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart
+            data={pieData}
             handleChartClick={handleAssessmentChartClick}
             name="dash_AdministrationGovernance"
           />

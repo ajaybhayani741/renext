@@ -4,7 +4,8 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
 import administrationGovernance from '../container/administrationGovernance.container'
-import hostelInfraRooms from '../container/hostelInfraRooms.container'
+// Legacy chart API disabled while its charts are hidden.
+// import hostelInfraRooms from '../container/hostelInfraRooms.container'
 import { hostelInfraRoomsCharts } from '../dashboard.description'
 import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
@@ -41,14 +42,18 @@ const HostelInfraRoomsDashboard = () => {
     onRangeChange,
     seriesData,
     handleChartClick,
-  } = hostelInfraRooms({ hostelFilter })
+  } = {} // hostelInfraRooms({ hostelFilter })
   const {
+    pieData,
     handleChartClick: handleAssessmentChartClick,
     selectedColumn: assessmentSelectedColumn,
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
-  } = administrationGovernance({ hostelFilter })
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'ACCOMMODATION',
+  })
   return (
     <DashboardWrapper
       handleCloseModal={handleAssessmentCloseModal}
@@ -65,6 +70,7 @@ const HostelInfraRoomsDashboard = () => {
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart
+            data={pieData}
             handleChartClick={handleAssessmentChartClick}
             name="dash_AdministrationGovernance"
           />

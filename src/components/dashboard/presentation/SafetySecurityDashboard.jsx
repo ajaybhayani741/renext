@@ -4,7 +4,8 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
 import administrationGovernance from '../container/administrationGovernance.container'
-import safetySecurity from '../container/safetySecurity.container'
+// Legacy chart API disabled while its charts are hidden.
+// import safetySecurity from '../container/safetySecurity.container'
 import { safetySecurityCharts } from '../dashboard.description'
 import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
@@ -34,14 +35,18 @@ const SafetySecurityDashboard = () => {
     handleChartClick,
     seriesData,
     onRangeChange,
-  } = safetySecurity({ hostelFilter })
+  } = {} // safetySecurity({ hostelFilter })
   const {
+    pieData,
     handleChartClick: handleAssessmentChartClick,
     selectedColumn: assessmentSelectedColumn,
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
-  } = administrationGovernance({ hostelFilter })
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'SAFETY_SECURITY',
+  })
   const { t } = useTranslations()
   return (
     <DashboardWrapper
@@ -59,6 +64,7 @@ const SafetySecurityDashboard = () => {
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart
+            data={pieData}
             handleChartClick={handleAssessmentChartClick}
             name="dash_AdministrationGovernance"
           />

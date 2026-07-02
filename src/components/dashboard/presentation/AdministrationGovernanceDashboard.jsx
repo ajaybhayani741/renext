@@ -4,12 +4,13 @@ import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart
 
 const AdministrationGovernanceDashboard = () => {
   const {
+    pieData,
     handleChartClick,
     selectedColumn,
     handleCloseModal,
     handleTableChange,
     hostelsData,
-  } = administrationGovernance()
+  } = administrationGovernance({ moduleName: 'ADMINISTRATION_GOVERNANCE' })
 
   return (
     <DashboardWrapper
@@ -18,6 +19,7 @@ const AdministrationGovernanceDashboard = () => {
       <div className="dashboard-module-surface dashboard-authority-surface">
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart
+            data={pieData}
             handleChartClick={handleChartClick}
             name="dash_AdministrationGovernance"
           />

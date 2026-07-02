@@ -4,7 +4,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import DashboardWrapper from './DashboardWrapper';
 import useTranslations from '../../../hooks/useTranslations';
 import administrationGovernance from '../container/administrationGovernance.container'
-import foodProvisions from '../container/foodProvisions.container';
+// Legacy chart API disabled while its charts are hidden.
+// import foodProvisions from '../container/foodProvisions.container'
 import ChartCard from '../shared/ChartCard';
 import CustomLegend from '../shared/CustomLegend';
 import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart';
@@ -63,14 +64,18 @@ const FoodProvisionsDashboard = () => {
   const {
     seriesData,
     handleChartClick,
-  } = foodProvisions({ hostelFilter });
+  } = {} // foodProvisions({ hostelFilter })
   const {
+    pieData,
     handleChartClick: handleAssessmentChartClick,
     selectedColumn: assessmentSelectedColumn,
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
-  } = administrationGovernance({ hostelFilter })
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'FOOD_NUTRITION',
+  })
 
   // "job_FoodProvisions"
   const foodKey = 'job_FoodProvisions';
@@ -157,6 +162,7 @@ const FoodProvisionsDashboard = () => {
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart
+            data={pieData}
             handleChartClick={handleAssessmentChartClick}
             name="dash_AdministrationGovernance"
           />

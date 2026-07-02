@@ -19,14 +19,6 @@ import ChartCard from '../shared/ChartCard'
 import ModernCompareChart from '../shared/ModernCompareChart'
 import ModuleFilters from '../shared/ModuleFilters'
 
-const overallAssessmentData = [
-  { assessment: '1 - Excellent', hostels: 10, color: '#168451' },
-  { assessment: '2 - Good', hostels: 22, color: '#58b766' },
-  { assessment: '3 - Average', hostels: 15, color: '#f4d36f' },
-  { assessment: '4 - Poor', hostels: 8, color: '#ef7d32' },
-  { assessment: '5 - Critical', hostels: 5, color: '#d33f62' },
-]
-
 const RecordMaintenanceDashboard = () => {
   const { t } = useTranslations()
   const [districtFilter, setDistrictFilter] = useState('All')
@@ -39,7 +31,44 @@ const RecordMaintenanceDashboard = () => {
     handleCloseModal,
     handleTableChange,
     hostelsData,
+    overallAssessment,
   } = recordMaintenance({ hostelFilter })
+
+  const overallAssessmentData = useMemo(
+    () => [
+      {
+        assessment: 'Excellent',
+        filterValue: 'EXCELLENT',
+        hostels: overallAssessment?.excellent || 0,
+        color: '#168451',
+      },
+      {
+        assessment: 'Good',
+        filterValue: 'GOOD',
+        hostels: overallAssessment?.good || 0,
+        color: '#58b766',
+      },
+      {
+        assessment: 'Average',
+        filterValue: 'AVERAGE',
+        hostels: overallAssessment?.average || 0,
+        color: '#f4d36f',
+      },
+      {
+        assessment: 'Poor',
+        filterValue: 'POOR',
+        hostels: overallAssessment?.poor || 0,
+        color: '#ef7d32',
+      },
+      {
+        assessment: 'Critical',
+        filterValue: 'CRITICAL',
+        hostels: overallAssessment?.critical || 0,
+        color: '#d33f62',
+      },
+    ],
+    [overallAssessment],
+  )
 
   const categoryLabels = useMemo(
     () => chartData?.category?.map((_, index) => `${index + 1}`) || [],
@@ -96,23 +125,27 @@ const RecordMaintenanceDashboard = () => {
                         position: 'insideLeft',
                       }}
                     />
-                    <Tooltip formatter={value => [value, 'Number of Hostels']} />
+                    <Tooltip
+                      formatter={value => [value, 'Number of Hostels']}
+                    />
                     <Bar
                       dataKey="hostels"
                       radius={[6, 6, 0, 0]}
                       maxBarSize={72}
                       cursor="pointer"
-                      onClick={data =>
+                      onClick={data => {
+                        const chartItem = data?.payload || data
                         handleChartClick({
                           e: {
                             point: {
-                              category: data.assessment,
-                              series: { name: data.assessment },
+                              category: chartItem?.assessment,
+                              filterValue: chartItem?.filterValue,
+                              series: { name: chartItem?.assessment },
                             },
                           },
-                          name: 'job_RecordMaintenance',
+                          name: 'overallHostelCondition',
                         })
-                      }
+                      }}
                     >
                       {overallAssessmentData.map(item => (
                         <Cell key={item.assessment} fill={item.color} />

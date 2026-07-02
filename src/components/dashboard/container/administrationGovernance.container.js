@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
-import useTranslations from '../../../hooks/useTranslations'
 import {
-  getPrincipalAuthorityBarChartApi,
-  getPrincipalAuthorityHostelsApi,
+  getInspectionAssessmentHostelsApi,
+  getInspectionAssessmentPieChartApi,
 } from '../dashboard.api'
 import { getHostelChartParams } from '../dashboardFunctions'
 
-const administrationGovernance = ({ hostelFilter } = {}) => {
-  const { t } = useTranslations()
+const administrationGovernance = ({
+  hostelFilter = 'All',
+  moduleName = 'ADMINISTRATION_GOVERNANCE',
+} = {}) => {
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [selectedColumn, setSelectedColumn] = useState({
@@ -19,19 +20,47 @@ const administrationGovernance = ({ hostelFilter } = {}) => {
   const [hostelsData, setHostelsData] = useState({})
   const [summaryData, setSummaryData] = useState({})
 
-  const chartDefinitions = useMemo(() => [], [summaryData, t])
+  const pieData = useMemo(
+    () => [
+      {
+        name: 'Satisfactory',
+        value: summaryData?.satisfactoryCount || 0,
+        color: '#58b766',
+        category: 'Satisfactory',
+        filterValue: 'SATISFACTORY',
+      },
+      {
+        name: 'Needs Attention',
+        value: summaryData?.needsAttentionCount || 0,
+        color: '#f8c21c',
+        category: 'Needs Attention',
+        filterValue: 'NEEDS_ATTENTION',
+      },
+      {
+        name: 'Critical',
+        value: summaryData?.criticalCount || 0,
+        color: '#ef4444',
+        category: 'Critical',
+        filterValue: 'CRITICAL',
+      },
+    ],
+    [summaryData],
+  )
+
+  const chartDefinitions = useMemo(() => [{ data: pieData }], [pieData])
 
   useEffect(() => {
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange, hostelFilter])
+  }, [dateRange, hostelFilter, moduleName])
 
   const getData = async () => {
-    const resp = await getPrincipalAuthorityBarChartApi({
+    const resp = await getInspectionAssessmentPieChartApi({
       params: {
         fromDate: dateRange?.from,
         toDate: dateRange?.to,
+        moduleName,
         ...getHostelChartParams(hostelFilter),
       },
     })
@@ -40,16 +69,15 @@ const administrationGovernance = ({ hostelFilter } = {}) => {
   }
 
   const getHandleClickDataApi = async ({
-    category,
     filterValue,
     pageNo = 1,
   } = {}) => {
-    const resp = await getPrincipalAuthorityHostelsApi({
+    const resp = await getInspectionAssessmentHostelsApi({
       pageNo,
       params: {
         fromDate: dateRange?.from,
         toDate: dateRange?.to,
-        category,
+        moduleName,
         filterValue,
         ...getHostelChartParams(hostelFilter),
       },
@@ -64,7 +92,6 @@ const administrationGovernance = ({ hostelFilter } = {}) => {
 
     setHostelsData(prev => ({ ...prev, loader: true }))
     const respData = await getHandleClickDataApi({
-      category: point?.categoryValue,
       filterValue,
     })
 
@@ -79,6 +106,8 @@ const administrationGovernance = ({ hostelFilter } = {}) => {
         chartType: 'pie',
       },
       categoryValue: filterValue,
+      moduleName,
+      reportChartType: 'INSPECTION_ASSESSMENT',
       title: name,
       modalTitle: true,
     })
@@ -95,14 +124,7 @@ const administrationGovernance = ({ hostelFilter } = {}) => {
   const handleTableChange = async ({ current }) => {
     setHostelsData(prev => ({ ...prev, loader: true }))
 
-    const selectedCategoryValue = chartDefinitions
-      .flatMap(chart => chart.data)
-      .find(
-        item => item.category === selectedColumn?.chartData?.category,
-      )?.categoryValue
-
     const respData = await getHandleClickDataApi({
-      category: selectedCategoryValue,
       filterValue: selectedColumn?.categoryValue,
       pageNo: current,
     })
@@ -114,6 +136,7 @@ const administrationGovernance = ({ hostelFilter } = {}) => {
 
   return {
     chartDefinitions,
+    pieData,
     handleChartClick,
     selectedColumn,
     handleCloseModal,

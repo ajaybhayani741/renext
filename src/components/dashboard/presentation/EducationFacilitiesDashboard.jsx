@@ -4,7 +4,8 @@ import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
 import administrationGovernance from '../container/administrationGovernance.container'
-import educationFacilities from '../container/educationFacilities.container'
+// Legacy chart API disabled while its charts are hidden.
+// import educationFacilities from '../container/educationFacilities.container'
 import { educationFacilitiesCharts } from '../dashboard.description'
 import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
@@ -17,14 +18,18 @@ const EducationFacilitiesDashboard = () => {
     axisOptions,
     handleChartClick,
     seriesData,
-  } = educationFacilities({ hostelFilter })
+  } = {} // educationFacilities({ hostelFilter })
   const {
+    pieData,
     handleChartClick: handleAssessmentChartClick,
     selectedColumn: assessmentSelectedColumn,
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
-  } = administrationGovernance({ hostelFilter })
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'EDUCATION_ACADEMIC_ENVIRONMENT',
+  })
   const { t } = useTranslations()
 
   const educationChartData =
@@ -63,6 +68,7 @@ const EducationFacilitiesDashboard = () => {
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart
+            data={pieData}
             handleChartClick={handleAssessmentChartClick}
             name="dash_AdministrationGovernance"
           />
