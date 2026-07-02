@@ -62,12 +62,8 @@ const feedback = () => {
     selectedHostel && keys(selectedHostel).length
       ? [
           {
-            label: 'job_StudentFeedback',
-            description: selectedHostel?.feedbackRequestFromStudents,
-          },
-          {
-            label: 'job_OfficerFeedback',
-            description: selectedHostel?.feedbackRequestFromPrincipal,
+            label: 'job_InspectingOfficerFeedback',
+            description: selectedHostel?.inspectingOfficerFeedback || '-',
           },
         ]
       : []

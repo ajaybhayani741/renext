@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import AdministrationGovernanceDashboard from './AdministrationGovernanceDashboard'
 import ConductionMeetingsDashboard from './ConductionMeetingsDashboard'
 import EducationFacilitiesDashboard from './EducationFacilitiesDashboard'
-// import FeedbackDashboard from './FeedbackDashboard'
+import FeedbackDashboard from './FeedbackDashboard'
 import FoodProvisionsDashboard from './FoodProvisionsDashboard'
 import HostelAuthorityDashboard from './HostelAuthorityDashboard'
 import HostelInfraRoomsDashboard from './HostelInfraRoomsDashboard'
@@ -76,7 +76,7 @@ const DashboardView = () => {
       case cardKeys.conductionMeetings:
         return <ConductionMeetingsDashboard />
       case cardKeys.feedback:
-        return <StudentFeedbackDashboard />
+        return <FeedbackDashboard />
       case cardKeys.photos:
         return <PhotosDashboard />
 

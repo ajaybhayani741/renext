@@ -8,18 +8,13 @@ const StudentFeedbackDashboard = () => {
     selectedFeedback,
     handleHostelSelect,
     handlePopupScroll,
+    feedbackColumns,
+    feedbackData,
   } = studentFeedback()
-
-  const columns = [
-    { title: 'Feedback Type', dataIndex: 'hostel?.lastName', key: 'type', width: '50%' },
-    { title: 'Remarks', dataIndex: 'studentTopThreeConcerns', key: 'remarks', width: '50%' },
-  ]
   const options = (feedback?.list || []).map(item => ({
     label: item?.hostel?.lastName,
     value: item?.jobId,
   }))
-
-  const data = feedback?.list || []
   const renderSelect = () => (
     <div className={'dashboard-feedback-select'}>
       <ANTDSelect
@@ -38,7 +33,18 @@ const StudentFeedbackDashboard = () => {
       <div className={'host-chart-container dashboard-feedback-card'}>
         <h3>Feedback - Select Hostel with Completed Jobs</h3>
         {renderSelect()}
-        <ANTDTable columns={columns} dataSource={data} rowKey={'type'} pagination={false} />
+        {selectedFeedback?.hostel?.lastName ? (
+          <h4 className="dashboard-feedback-hostel">
+            {selectedFeedback?.hostel?.lastName}
+          </h4>
+        ) : null}
+        <ANTDTable
+          className="dashboard-feedback-table"
+          columns={feedbackColumns}
+          dataSource={feedbackData}
+          rowKey="label"
+          pagination={false}
+        />
       </div>
     </div>
   )

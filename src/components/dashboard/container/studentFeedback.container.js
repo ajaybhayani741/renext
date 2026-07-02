@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
+import useTranslations from '../../../hooks/useTranslations'
 import { isEqual } from '../../../utils/javascript'
 import { getStudentTopThreeConcernsApi } from '../dashboard.api'
 
 const studentFeedback = () => {
+  const { t } = useTranslations()
   const { selector } = useRedux()
   const { dateRange } = selector(state => state?.app?.fiscalYear)
   const [feedback, setFeedback] = useState({ list: [], loader: false, pageNo: 1 })
@@ -43,11 +45,38 @@ const studentFeedback = () => {
     }
   }
 
+  const feedbackColumns = [
+    {
+      title: 'Feedback Type',
+      dataIndex: 'label',
+      key: 'label',
+      width: '50%',
+      render: value => t(value),
+    },
+    {
+      title: 'Remarks',
+      dataIndex: 'description',
+      key: 'description',
+      width: '50%',
+    },
+  ]
+
+  const feedbackData = selectedFeedback
+    ? [
+        {
+          label: 'job_StudentTopThreeConcerns',
+          description: selectedFeedback?.studentTopThreeConcerns || '-',
+        },
+      ]
+    : []
+
   return {
     feedback,
     selectedFeedback,
     handleHostelSelect,
     handlePopupScroll,
+    feedbackColumns,
+    feedbackData,
   }
 }
 

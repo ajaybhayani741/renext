@@ -518,6 +518,9 @@ const getFunctioningCCTVHostelsApi = async ({ pageNo, params }) => {
   return response?.data
 }
 const getFeedbackHostelsApi = async ({ pageNo, params }) => {
+  // const response = await getMethod(GET_FEEDBACK_HOSTELS({ pageNo }), {
+  //   params,
+  // })
   const response = await getMethod(GET_FEEDBACK_HOSTELS({ pageNo }), {
     params,
   })

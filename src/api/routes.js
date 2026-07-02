@@ -177,8 +177,10 @@ const API_ROUTES = {
   GET_PHC_DISTANCE_CHART: `/dashboard-management/v1/distance-to-nearest-phc-chart`,
   GET_PHC_DISTANCE_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/distance-to-nearest-phc-chart/hostels/${pageNo}`,
+  // GET_FEEDBACK_HOSTELS: ({ pageNo }) =>
+  //   `/dashboard-management/v1/feedback/hostels/${pageNo}`,
   GET_FEEDBACK_HOSTELS: ({ pageNo }) =>
-    `/dashboard-management/v1/feedback/hostels/${pageNo}`,
+    `/dashboard-management/v1/inspecting-officer-feedback/hostels/${pageNo}`,
   GET_STUDENT_TOP_THREE_CONCERNS: ({ pageNo }) =>
     `/dashboard-management/v1/student-top-three-concerns/hostels/${pageNo}`,
   CHART_REPORT: `/dashboard-management/v1/trigger-report`,

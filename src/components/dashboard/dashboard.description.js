@@ -20,7 +20,7 @@ const cardKeys = {
   // safetyAndSecurity: 'safety-and-security',
   // conductionMeetings: 'conduction-meetings',
   feedback: 'feedback',
-  // photos: 'photos',
+  photos: 'photos',
   administrationGovernance: 'administration-governance',
   foodNutrition: 'food-nutrition',
   accommodation: 'accommodation',
@@ -365,11 +365,19 @@ const cardList = [
   },
   {
     label: 'Student Feedback',
-    key: cardKeys.feedback,
+    key: cardKeys.studentFeedback,
   },
   {
     label: 'Overall Assessment',
     key: cardKeys.overallAssessment,
+  },
+  {
+    label: 'Feedback',
+    key: cardKeys.feedback,
+  },
+  {
+    label: 'Photo Documentation',
+    key: cardKeys.photos,
   },
 ]
 
@@ -847,6 +855,7 @@ export const reportCategoryKeys = t => ({
   [t('job_VariationInRagiMalt')]: 'VARIATION_IN_RAGI_MALT',
 })
 
+/*
 export const photosDashboardData = {
   dash_PhotosOfToilets: { key: 'toilets', type: 'TOILET_PHOTO' },
   dash_PhotoOfBathrooms: { key: 'bathrooms', type: 'BATHROOM_PHOTO' },
@@ -871,6 +880,42 @@ export const photosDashboardData = {
   job_ExtraCurricularActivities: {
     key: 'extra-curricular-activities',
     type: 'PHOTOS_OF_EXTRA_CURRICULAR_ACTIVITIES',
+  },
+}
+*/
+
+export const photosDashboardData = {
+  'Administration & Governance': {
+    key: 'administration-governance',
+    type: 'ADMINISTRATION_GOVERNANCE',
+  },
+  'Food & Nutrition': {
+    key: 'food-nutrition',
+    type: 'FOOD_NUTRITION',
+  },
+  Accommodation: {
+    key: 'accommodation',
+    type: 'ACCOMMODATION',
+  },
+  'Sanitation & Drainage': {
+    key: 'sanitation-drainage',
+    type: 'SANITATION_DRAINAGE',
+  },
+  'Electricity & Lighting': {
+    key: 'electricity-lighting',
+    type: 'ELECTRICITY_LIGHTING',
+  },
+  'Health & Medical Care': {
+    key: 'health-medical-care',
+    type: 'HEALTH_MEDICAL_CARE',
+  },
+  'Education & Academic Environment': {
+    key: 'education-academic-environment',
+    type: 'EDUCATION_ACADEMIC_ENVIRONMENT',
+  },
+  'Safety & Security': {
+    key: 'safety-security',
+    type: 'SAFETY_SECURITY',
   },
 }
 
