@@ -2,6 +2,7 @@ import '../dashboard.scss'
 
 import { motion } from 'framer-motion'
 
+import AdministrationGovernanceDashboard from './AdministrationGovernanceDashboard'
 import ConductionMeetingsDashboard from './ConductionMeetingsDashboard'
 import EducationFacilitiesDashboard from './EducationFacilitiesDashboard'
 import FeedbackDashboard from './FeedbackDashboard'
@@ -31,6 +32,26 @@ const DashboardView = () => {
 
   const getDashboardComponent = type => {
     switch (type) {
+      case cardKeys.administrationGovernance:
+        return <AdministrationGovernanceDashboard />
+      case cardKeys.foodNutrition:
+        return <FoodProvisionsDashboard />
+      case cardKeys.accommodation:
+        return <HostelInfraRoomsDashboard />
+      case cardKeys.sanitationDrainage:
+        return <HostelInfraSanitationDashboard />
+      case cardKeys.electricityLighting:
+        return <StaffDetailsDashboard />
+      case cardKeys.healthMedicalCare:
+        return <MedicalCareDashboard />
+      case cardKeys.educationAcademicEnvironment:
+        return <EducationFacilitiesDashboard />
+      case cardKeys.safetySecurity:
+        return <SafetySecurityDashboard />
+      case cardKeys.studentFeedback:
+        return <StudentsDashboard />
+      case cardKeys.overallAssessment:
+        return <RecordMaintenanceDashboard />
       case cardKeys.hostelAuthority:
         return <HostelAuthorityDashboard />
       case cardKeys.students:
@@ -68,7 +89,11 @@ const DashboardView = () => {
   return (
     <div className="dashboard-view dashboard-container">
       <DashboardHeader
-        title={currentData ? t(currentData.subLabel || currentData.label) : t('job_Dashboard')}
+        title={
+          currentData
+            ? t(currentData.subLabel || currentData.label)
+            : t('job_Dashboard')
+        }
         subtitle={currentData?.label ? t(currentData.label) : ''}
         action={<FiscalYearSelect setDefault={false} className="ml-auto" />}
       />

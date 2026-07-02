@@ -8,19 +8,29 @@ import {
 } from '../../utils/icons'
 
 const cardKeys = {
-  hostelAuthority: 'hostel-authority',
-  students: 'students',
-  recordMaintenance: 'record-maintenance',
-  staffDetails: 'staff-details',
-  hostelInfraRooms: 'hostel-infra-rooms',
-  hostelInfraSanitation: 'hostel-infra-sanitation',
-  medicalCare: 'medical-care',
-  educationFacilities: 'education-facilities',
-  foodProvisions: 'food-provisions',
-  safetyAndSecurity: 'safety-and-security',
-  conductionMeetings: 'conduction-meetings',
+  // hostelAuthority: 'hostel-authority',
+  // students: 'students',
+  // recordMaintenance: 'record-maintenance',
+  // staffDetails: 'staff-details',
+  // hostelInfraRooms: 'hostel-infra-rooms',
+  // hostelInfraSanitation: 'hostel-infra-sanitation',
+  // medicalCare: 'medical-care',
+  // educationFacilities: 'education-facilities',
+  // foodProvisions: 'food-provisions',
+  // safetyAndSecurity: 'safety-and-security',
+  // conductionMeetings: 'conduction-meetings',
   feedback: 'feedback',
-  photos: 'photos',
+  // photos: 'photos',
+  administrationGovernance: 'administration-governance',
+  foodNutrition: 'food-nutrition',
+  accommodation: 'accommodation',
+  sanitationDrainage: 'sanitation-drainage',
+  electricityLighting: 'electricity-lighting',
+  healthMedicalCare: 'health-medical-care',
+  educationAcademicEnvironment: 'education-academic-environment',
+  safetySecurity: 'safety-security',
+  studentFeedback: 'student-feedback',
+  overallAssessment: 'overall-assessment',
 }
 
 const {
@@ -250,6 +260,7 @@ const dealerPaymentData = [
   },
 ]
 
+/*
 const cardList = [
   {
     label: 'Authority & governance data',
@@ -315,6 +326,54 @@ const cardList = [
     label: 'Photo Documentation',
     subLabel: 'job_Photos',
     key: cardKeys.photos,
+  },
+]
+*/
+
+const cardList = [
+  {
+    label: 'Administration & Governance',
+    key: cardKeys.administrationGovernance,
+  },
+  {
+    label: 'Food & Nutrition',
+    key: cardKeys.foodNutrition,
+  },
+  {
+    label: 'Accommodation',
+    key: cardKeys.accommodation,
+  },
+  {
+    label: 'Sanitation & Drainage',
+    key: cardKeys.sanitationDrainage,
+  },
+  {
+    label: 'Electricity & Lighting',
+    key: cardKeys.electricityLighting,
+  },
+  {
+    label: 'Health & Medical Care',
+    key: cardKeys.healthMedicalCare,
+  },
+  {
+    label: 'Education & Academic Environment',
+    key: cardKeys.educationAcademicEnvironment,
+  },
+  {
+    label: 'Safety & Security',
+    key: cardKeys.safetySecurity,
+  },
+  {
+    label: 'Student Feedback',
+    key: cardKeys.studentFeedback,
+  },
+  {
+    label: 'Overall Assessment',
+    key: cardKeys.overallAssessment,
+  },
+  {
+    label: 'Feedback',
+    key: cardKeys.feedback,
   },
 ]
 
