@@ -3,8 +3,10 @@ import { useMemo, useState } from 'react'
 import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
+import administrationGovernance from '../container/administrationGovernance.container'
 import educationFacilities from '../container/educationFacilities.container'
 import { educationFacilitiesCharts } from '../dashboard.description'
+import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
 import ModuleFilters from '../shared/ModuleFilters'
 
@@ -15,11 +17,14 @@ const EducationFacilitiesDashboard = () => {
     axisOptions,
     handleChartClick,
     seriesData,
-    selectedColumn,
-    handleCloseModal,
-    handleTableChange,
-    hostelsData,
   } = educationFacilities({ hostelFilter })
+  const {
+    handleChartClick: handleAssessmentChartClick,
+    selectedColumn: assessmentSelectedColumn,
+    handleCloseModal: handleAssessmentCloseModal,
+    handleTableChange: handleAssessmentTableChange,
+    hostelsData: assessmentHostelsData,
+  } = administrationGovernance({ hostelFilter })
   const { t } = useTranslations()
 
   const educationChartData =
@@ -44,7 +49,10 @@ const EducationFacilitiesDashboard = () => {
 
   return (
     <DashboardWrapper
-      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+      handleCloseModal={handleAssessmentCloseModal}
+      selectedColumn={assessmentSelectedColumn}
+      handleTableChange={handleAssessmentTableChange}
+      hostelsData={assessmentHostelsData}
     >
       <div className="dashboard-module-surface dashboard-education-surface">
         <ModuleFilters
@@ -54,6 +62,13 @@ const EducationFacilitiesDashboard = () => {
           setHostelFilter={setHostelFilter}
         />
         <div className="dashboard-single-chart-grid">
+          <InspectionAssessmentPieChart
+            handleChartClick={handleAssessmentChartClick}
+            name="dash_AdministrationGovernance"
+          />
+          {/* Existing category charts are intentionally hidden for now. */}
+          {false && (
+            <>
           {axisOptions &&
             entries(educationFacilitiesCharts)?.map(([key, value]) => {
               return (
@@ -77,6 +92,8 @@ const EducationFacilitiesDashboard = () => {
                 </div>
               )
             })}
+            </>
+          )}
         </div>
       </div>
     </DashboardWrapper>

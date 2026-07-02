@@ -365,15 +365,11 @@ const cardList = [
   },
   {
     label: 'Student Feedback',
-    key: cardKeys.studentFeedback,
+    key: cardKeys.feedback,
   },
   {
     label: 'Overall Assessment',
     key: cardKeys.overallAssessment,
-  },
-  {
-    label: 'Feedback',
-    key: cardKeys.feedback,
   },
 ]
 

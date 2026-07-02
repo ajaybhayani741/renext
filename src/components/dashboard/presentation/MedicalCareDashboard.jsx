@@ -3,8 +3,10 @@ import { useState } from 'react'
 import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
+import administrationGovernance from '../container/administrationGovernance.container'
 import medicalCare from '../container/medicalCare.container'
 import { medicalCareCharts } from '../dashboard.description'
+import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
 import ModernFrequencyChart from '../shared/ModernFrequencyChart'
 import ModernPieChart from '../shared/ModernPieChart'
@@ -25,16 +27,22 @@ const MedicalCareDashboard = () => {
   const {
     handleChartClick,
     seriesData,
-    selectedColumn,
-    handleCloseModal,
-    handleTableChange,
-    hostelsData,
     onRangeChange,
   } = medicalCare({ hostelFilter })
+  const {
+    handleChartClick: handleAssessmentChartClick,
+    selectedColumn: assessmentSelectedColumn,
+    handleCloseModal: handleAssessmentCloseModal,
+    handleTableChange: handleAssessmentTableChange,
+    hostelsData: assessmentHostelsData,
+  } = administrationGovernance({ hostelFilter })
   const { t } = useTranslations()
   return (
     <DashboardWrapper
-      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+      handleCloseModal={handleAssessmentCloseModal}
+      selectedColumn={assessmentSelectedColumn}
+      handleTableChange={handleAssessmentTableChange}
+      hostelsData={assessmentHostelsData}
     >
       <div className="dashboard-module-surface dashboard-medical-surface">
         <ModuleFilters
@@ -44,6 +52,13 @@ const MedicalCareDashboard = () => {
           setHostelFilter={setHostelFilter}
         />
         <div className="dashboard-single-chart-grid">
+          <InspectionAssessmentPieChart
+            handleChartClick={handleAssessmentChartClick}
+            name="dash_AdministrationGovernance"
+          />
+          {/* Existing category charts are intentionally hidden for now. */}
+          {false && (
+            <>
           {entries(medicalCareCharts)?.map(([key, value]) => {
             return (
               <div className="dashboard-full-chart" key={key}>
@@ -89,6 +104,8 @@ const MedicalCareDashboard = () => {
               </div>
             )
           })}
+            </>
+          )}
         </div>
       </div>
     </DashboardWrapper>

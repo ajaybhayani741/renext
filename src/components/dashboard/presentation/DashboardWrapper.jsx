@@ -47,7 +47,7 @@ const DashboardWrapper = ({
           <ANTDModal
             title={
               selectedColumn?.modalTitle
-                ? `${t(selectedColumn?.chartData?.category)} ${selectedColumn?.chartData?.type ? `(${selectedColumn?.chartData?.type})` : ''}`
+                ? t(selectedColumn?.chartData?.category)
                 : t('txt_Details')
             }
             centered

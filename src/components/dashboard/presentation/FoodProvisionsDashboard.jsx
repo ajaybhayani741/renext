@@ -3,10 +3,12 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 
 import DashboardWrapper from './DashboardWrapper';
 import useTranslations from '../../../hooks/useTranslations';
+import administrationGovernance from '../container/administrationGovernance.container'
 import foodProvisions from '../container/foodProvisions.container';
 import ChartCard from '../shared/ChartCard';
 import CustomLegend from '../shared/CustomLegend';
-import ModuleFilters from '../shared/ModuleFilters';
+import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart';
+import ModuleFilters from '../shared/ModuleFilters'
 import StyledTooltip from '../shared/StyledTooltip';
 
 const BLACK_AXIS = { stroke: "#000", strokeWidth: 1 };
@@ -60,12 +62,15 @@ const FoodProvisionsDashboard = () => {
   const [hostelFilter, setHostelFilter] = useState('All');
   const {
     seriesData,
-    selectedColumn,
     handleChartClick,
-    handleCloseModal,
-    handleTableChange,
-    hostelsData,
   } = foodProvisions({ hostelFilter });
+  const {
+    handleChartClick: handleAssessmentChartClick,
+    selectedColumn: assessmentSelectedColumn,
+    handleCloseModal: handleAssessmentCloseModal,
+    handleTableChange: handleAssessmentTableChange,
+    hostelsData: assessmentHostelsData,
+  } = administrationGovernance({ hostelFilter })
 
   // "job_FoodProvisions"
   const foodKey = 'job_FoodProvisions';
@@ -138,7 +143,10 @@ const FoodProvisionsDashboard = () => {
 
   return (
     <DashboardWrapper
-      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+      handleCloseModal={handleAssessmentCloseModal}
+      selectedColumn={assessmentSelectedColumn}
+      handleTableChange={handleAssessmentTableChange}
+      hostelsData={assessmentHostelsData}
     >
       <div className="dashboard-module-surface dashboard-food-surface">
         <ModuleFilters
@@ -148,6 +156,13 @@ const FoodProvisionsDashboard = () => {
           setHostelFilter={setHostelFilter}
         />
         <div className="dashboard-single-chart-grid">
+          <InspectionAssessmentPieChart
+            handleChartClick={handleAssessmentChartClick}
+            name="dash_AdministrationGovernance"
+          />
+          {/* Existing category charts are intentionally hidden for now. */}
+          {false && (
+            <>
           <ChartCard title={t(fuelKey)}>
             <div style={{ width: '100%', height: 400, position: 'relative' }}>
               <ResponsiveContainer width="100%" height="100%">
@@ -248,6 +263,8 @@ const FoodProvisionsDashboard = () => {
             </div>
             {hasVariationData ? <CustomLegend mapping={varLegendMapping} /> : null}
           </ChartCard>
+            </>
+          )}
         </div>
       </div>
     </DashboardWrapper>

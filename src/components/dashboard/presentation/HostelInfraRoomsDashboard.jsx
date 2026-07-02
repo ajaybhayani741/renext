@@ -3,8 +3,10 @@ import { useState } from 'react'
 import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
+import administrationGovernance from '../container/administrationGovernance.container'
 import hostelInfraRooms from '../container/hostelInfraRooms.container'
 import { hostelInfraRoomsCharts } from '../dashboard.description'
+import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
 import ModernFrequencyChart from '../shared/ModernFrequencyChart'
 import ModuleFilters from '../shared/ModuleFilters'
@@ -38,20 +40,21 @@ const HostelInfraRoomsDashboard = () => {
     axisOptions,
     onRangeChange,
     seriesData,
-    selectedColumn,
     handleChartClick,
-    handleCloseModal,
-    handleTableChange,
-    hostelsData,
   } = hostelInfraRooms({ hostelFilter })
+  const {
+    handleChartClick: handleAssessmentChartClick,
+    selectedColumn: assessmentSelectedColumn,
+    handleCloseModal: handleAssessmentCloseModal,
+    handleTableChange: handleAssessmentTableChange,
+    hostelsData: assessmentHostelsData,
+  } = administrationGovernance({ hostelFilter })
   return (
     <DashboardWrapper
-      {...{
-        selectedColumn,
-        handleCloseModal,
-        handleTableChange,
-        hostelsData,
-      }}
+      handleCloseModal={handleAssessmentCloseModal}
+      selectedColumn={assessmentSelectedColumn}
+      handleTableChange={handleAssessmentTableChange}
+      hostelsData={assessmentHostelsData}
     >
       <div className="dashboard-module-surface dashboard-rooms-surface">
         <ModuleFilters
@@ -61,6 +64,13 @@ const HostelInfraRoomsDashboard = () => {
           setHostelFilter={setHostelFilter}
         />
         <div className="dashboard-single-chart-grid">
+          <InspectionAssessmentPieChart
+            handleChartClick={handleAssessmentChartClick}
+            name="dash_AdministrationGovernance"
+          />
+          {/* Existing category charts are intentionally hidden for now. */}
+          {false && (
+            <>
           {entries(hostelInfraRoomsCharts)?.map(([key, value]) => {
             const aesthetic = chartAesthetics[key] || chartAesthetics.dash_TotalNumberOfLivingRooms
 
@@ -99,6 +109,8 @@ const HostelInfraRoomsDashboard = () => {
               </div>
             )
           })}
+            </>
+          )}
         </div>
       </div>
     </DashboardWrapper>
