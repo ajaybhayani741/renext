@@ -3,11 +3,13 @@ import ANTDSpin from '../../../../shared/antd/ANTDSpin'
 import PageNotFound from '../../../PageNotFound'
 import { tabKeys as jobTypes } from '../../jobs.description'
 
-const ViewJob = ({ jobType, data, loader }) => {
+const ViewJob = ({ jobType, data, loader, highlightSection }) => {
   const getViewComponent = type => {
     switch (type) {
       case jobTypes.inspection:
-        return <InspectionJobView data={data} />
+        return (
+          <InspectionJobView data={data} highlightSection={highlightSection} />
+        )
 
       default:
         return <PageNotFound />
@@ -28,3 +30,4 @@ const ViewJob = ({ jobType, data, loader }) => {
 }
 
 export default ViewJob
+

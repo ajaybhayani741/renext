@@ -106,6 +106,24 @@ const DashboardWrapper = ({
             data={jobModel?.data}
             jobType={jobType}
             loader={jobModel?.loader}
+            highlightSection={
+              {
+                ADMINISTRATION_GOVERNANCE:
+                  'hostelAdministrationRequestDto',
+                FOOD_NUTRITION: 'foodNutritionRequestDto',
+                ACCOMMODATION: 'accommodationRequestDto',
+                SANITATION_DRAINAGE: 'sanitationDrainageRequestDto',
+                ELECTRICITY_LIGHTING: 'electricityLightingRequestDto',
+                HEALTH_MEDICAL_CARE: 'healthMedicalCareRequestDto',
+                EDUCATION_ACADEMIC_ENVIRONMENT:
+                  'educationAcademicEnvironmentRequestDto',
+                SAFETY_SECURITY: 'safetySecurityRequestDto',
+                STUDENT_FEEDBACK: 'studentFeedbackRequestDto',
+              }[selectedColumn?.moduleName] ||
+              (selectedColumn?.reportChartType === 'OVERALL_HOSTEL_CONDITION'
+                ? 'overallAssessmentRequestDto'
+                : null)
+            }
           />
         </ANTDModal>
       )}
@@ -114,3 +132,5 @@ const DashboardWrapper = ({
 }
 
 export default DashboardWrapper
+
+

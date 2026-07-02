@@ -19,7 +19,7 @@ import InspectionDetailsView from '../addJobs/inspection/InspectionDetailsView'
 // import InspectionFormField from '../addJobs/inspection/InspectionFormField'
 import DetailListView from '../common/DetailListView'
 
-const InspectionJobView = ({ data }) => {
+const InspectionJobView = ({ data, highlightSection }) => {
   const { t } = useTranslations()
   const form = useFormFn()
   const [inspectionData, setInspectionData] = useState([])
@@ -292,7 +292,10 @@ const InspectionJobView = ({ data }) => {
         pagination={false}
       />
 
-      <InspectionDetailsView inspectionData={inspectionData} />
+      <InspectionDetailsView
+        inspectionData={inspectionData}
+        highlightSection={highlightSection}
+      />
 
       <ANTDForm
         name="inspection"
@@ -313,3 +316,4 @@ const InspectionJobView = ({ data }) => {
 }
 
 export default InspectionJobView
+

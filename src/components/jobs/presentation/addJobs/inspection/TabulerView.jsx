@@ -188,7 +188,12 @@ const CellRender = ({
   )
 }
 
-const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
+const TabulerView = ({
+  inspectionDetails,
+  userSelectionList,
+  currentForm,
+  highlightSection,
+}) => {
   const { t } = useTranslations()
   const form = useFormFn()
   const { /* createPromise, */ resolvePromise } = usePromise()
@@ -601,9 +606,26 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
     // })
   }
 
+  const collapseClassName = sectionKey =>
+    classNames('coll collapse-header', {
+      'collapse-highlight-blink': highlightSection === sectionKey,
+    })
+
   const onFileUploadCollapse = value => {
     if (include(value, 'job_FilesUploads')) geoTaggingAPI()
   }
+
+  useEffect(() => {
+    if (!highlightSection) return undefined
+
+    const scrollTimer = window.setTimeout(() => {
+      document
+        .querySelector('.collapse-highlight-blink')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 300)
+
+    return () => window.clearTimeout(scrollTimer)
+  }, [highlightSection])
 
   const onValuesChange = async (value, formValues) => {
     const changedKey = keys(value)?.[0]
@@ -759,6 +781,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
     <ANTDForm initialValues={{}} form={form} onValuesChange={onValuesChange}>
       <ANTDCollapse
         bordered={false}
+        defaultActiveKey={highlightSection ? [highlightSection] : undefined}
         onChange={onFileUploadCollapse}
         items={[
           // {
@@ -1010,7 +1033,8 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_AdministrationGovernance'),
             key: 'hostelAdministrationRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('hostelAdministrationRequestDto'),
+
             children: (
               <>
                 {selectedUserTable('hostelAdministrationRequestDto')}
@@ -1027,7 +1051,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_FoodNutritionSection'),
             key: 'foodNutritionRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('foodNutritionRequestDto'),
             children: (
               <>
                 {selectedUserTable('foodNutritionRequestDto')}
@@ -1044,7 +1068,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_AccommodationSection'),
             key: 'accommodationRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('accommodationRequestDto'),
             children: (
               <>
                 {selectedUserTable('accommodationRequestDto')}
@@ -1061,7 +1085,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_SanitationDrainageSection'),
             key: 'sanitationDrainageRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('sanitationDrainageRequestDto'),
             children: (
               <>
                 {selectedUserTable('sanitationDrainageRequestDto')}
@@ -1080,7 +1104,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_ElectricityLightingSection'),
             key: 'electricityLightingRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('electricityLightingRequestDto'),
             children: (
               <>
                 {selectedUserTable('electricityLightingRequestDto')}
@@ -1099,7 +1123,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_HealthMedicalCareSection'),
             key: 'healthMedicalCareRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('healthMedicalCareRequestDto'),
             children: (
               <>
                 {selectedUserTable('healthMedicalCareRequestDto')}
@@ -1116,7 +1140,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_EducationAcademicEnvironmentSection'),
             key: 'educationAcademicEnvironmentRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('educationAcademicEnvironmentRequestDto'),
             children: (
               <>
                 {selectedUserTable('educationAcademicEnvironmentRequestDto')}
@@ -1135,7 +1159,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_SafetySecuritySection'),
             key: 'safetySecurityRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('safetySecurityRequestDto'),
             children: (
               <>
                 {selectedUserTable('safetySecurityRequestDto')}
@@ -1152,7 +1176,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_StudentFeedbackSection'),
             key: 'studentFeedbackRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('studentFeedbackRequestDto'),
             children: (
               <>
                 {selectedUserTable('studentFeedbackRequestDto')}
@@ -1167,7 +1191,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
           {
             label: t('job_OverallAssessmentSection'),
             key: 'overallAssessmentRequestDto',
-            className: 'coll collapse-header',
+            className: collapseClassName('overallAssessmentRequestDto'),
             children: (
               <>
                 {selectedUserTable('overallAssessmentRequestDto')}
@@ -1217,3 +1241,7 @@ const TabulerView = ({ inspectionDetails, userSelectionList, currentForm }) => {
 }
 
 export default TabulerView
+
+
+
+

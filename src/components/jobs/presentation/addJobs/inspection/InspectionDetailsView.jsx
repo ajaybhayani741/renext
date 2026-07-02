@@ -5,7 +5,11 @@ import { userWiseRole } from '../../../../../utils/constant'
 import { length, keys } from '../../../../../utils/javascript'
 import JobUserSelect from '../../common/JobUserSelect'
 
-const InspectionDetailsView = ({ inspectionData, currentForm }) => {
+const InspectionDetailsView = ({
+  inspectionData,
+  currentForm,
+  highlightSection,
+}) => {
   const { t } = useTranslations()
   const { hostel } = userWiseRole
 
@@ -27,6 +31,7 @@ const InspectionDetailsView = ({ inspectionData, currentForm }) => {
             inspectionDetails={details}
             // userSelectionList={userSelectionList}
             currentForm={currentForm}
+            highlightSection={highlightSection}
           />
         </ANTDCard>
       ))}
@@ -35,3 +40,4 @@ const InspectionDetailsView = ({ inspectionData, currentForm }) => {
 }
 
 export default InspectionDetailsView
+
