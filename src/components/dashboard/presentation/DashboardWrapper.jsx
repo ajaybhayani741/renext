@@ -8,6 +8,12 @@ import { tabKeys } from '../../jobs/jobs.description'
 import ViewJob from '../../jobs/presentation/viewJobs'
 import dashboardWrapper from '../container/dashboardWrapper.container'
 
+const assessmentHighlightColors = {
+  SATISFACTORY: '#58b766',
+  NEEDS_ATTENTION: '#f8c21c',
+  CRITICAL: '#ef4444',
+}
+
 const DashboardWrapper = ({
   children,
   selectedColumn,
@@ -102,14 +108,20 @@ const DashboardWrapper = ({
           footer={false}
           width={1100}
         >
+          {console.log(
+            'selectedColumn?.categoryValue',
+            selectedColumn?.categoryValue,
+          )}
           <ViewJob
             data={jobModel?.data}
             jobType={jobType}
             loader={jobModel?.loader}
+            highlightCategoryColor={
+              assessmentHighlightColors?.[selectedColumn?.categoryValue] || null
+            }
             highlightSection={
               {
-                ADMINISTRATION_GOVERNANCE:
-                  'hostelAdministrationRequestDto',
+                ADMINISTRATION_GOVERNANCE: 'hostelAdministrationRequestDto',
                 FOOD_NUTRITION: 'foodNutritionRequestDto',
                 ACCOMMODATION: 'accommodationRequestDto',
                 SANITATION_DRAINAGE: 'sanitationDrainageRequestDto',
@@ -132,5 +144,3 @@ const DashboardWrapper = ({
 }
 
 export default DashboardWrapper
-
-

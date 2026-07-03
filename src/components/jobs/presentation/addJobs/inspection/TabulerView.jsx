@@ -193,6 +193,7 @@ const TabulerView = ({
   userSelectionList,
   currentForm,
   highlightSection,
+  highlightCategoryColor,
 }) => {
   const { t } = useTranslations()
   const form = useFormFn()
@@ -610,6 +611,11 @@ const TabulerView = ({
     classNames('coll collapse-header', {
       'collapse-highlight-blink': highlightSection === sectionKey,
     })
+
+  const collapseStyle = sectionKey =>
+    highlightSection === sectionKey && highlightCategoryColor
+      ? { '--collapse-highlight-color': highlightCategoryColor }
+      : undefined
 
   const onFileUploadCollapse = value => {
     if (include(value, 'job_FilesUploads')) geoTaggingAPI()
@@ -1034,7 +1040,7 @@ const TabulerView = ({
             label: t('job_AdministrationGovernance'),
             key: 'hostelAdministrationRequestDto',
             className: collapseClassName('hostelAdministrationRequestDto'),
-
+            style: collapseStyle('hostelAdministrationRequestDto'),
             children: (
               <>
                 {selectedUserTable('hostelAdministrationRequestDto')}
@@ -1052,6 +1058,7 @@ const TabulerView = ({
             label: t('job_FoodNutritionSection'),
             key: 'foodNutritionRequestDto',
             className: collapseClassName('foodNutritionRequestDto'),
+            style: collapseStyle('foodNutritionRequestDto'),
             children: (
               <>
                 {selectedUserTable('foodNutritionRequestDto')}
@@ -1069,6 +1076,7 @@ const TabulerView = ({
             label: t('job_AccommodationSection'),
             key: 'accommodationRequestDto',
             className: collapseClassName('accommodationRequestDto'),
+            style: collapseStyle('accommodationRequestDto'),
             children: (
               <>
                 {selectedUserTable('accommodationRequestDto')}
@@ -1086,6 +1094,7 @@ const TabulerView = ({
             label: t('job_SanitationDrainageSection'),
             key: 'sanitationDrainageRequestDto',
             className: collapseClassName('sanitationDrainageRequestDto'),
+            style: collapseStyle('sanitationDrainageRequestDto'),
             children: (
               <>
                 {selectedUserTable('sanitationDrainageRequestDto')}
@@ -1105,6 +1114,7 @@ const TabulerView = ({
             label: t('job_ElectricityLightingSection'),
             key: 'electricityLightingRequestDto',
             className: collapseClassName('electricityLightingRequestDto'),
+            style: collapseStyle('electricityLightingRequestDto'),
             children: (
               <>
                 {selectedUserTable('electricityLightingRequestDto')}
@@ -1124,6 +1134,7 @@ const TabulerView = ({
             label: t('job_HealthMedicalCareSection'),
             key: 'healthMedicalCareRequestDto',
             className: collapseClassName('healthMedicalCareRequestDto'),
+            style: collapseStyle('healthMedicalCareRequestDto'),
             children: (
               <>
                 {selectedUserTable('healthMedicalCareRequestDto')}
@@ -1141,6 +1152,7 @@ const TabulerView = ({
             label: t('job_EducationAcademicEnvironmentSection'),
             key: 'educationAcademicEnvironmentRequestDto',
             className: collapseClassName('educationAcademicEnvironmentRequestDto'),
+            style: collapseStyle('educationAcademicEnvironmentRequestDto'),
             children: (
               <>
                 {selectedUserTable('educationAcademicEnvironmentRequestDto')}
@@ -1160,6 +1172,7 @@ const TabulerView = ({
             label: t('job_SafetySecuritySection'),
             key: 'safetySecurityRequestDto',
             className: collapseClassName('safetySecurityRequestDto'),
+            style: collapseStyle('safetySecurityRequestDto'),
             children: (
               <>
                 {selectedUserTable('safetySecurityRequestDto')}
@@ -1177,6 +1190,7 @@ const TabulerView = ({
             label: t('job_StudentFeedbackSection'),
             key: 'studentFeedbackRequestDto',
             className: collapseClassName('studentFeedbackRequestDto'),
+            style: collapseStyle('studentFeedbackRequestDto'),
             children: (
               <>
                 {selectedUserTable('studentFeedbackRequestDto')}
@@ -1192,6 +1206,7 @@ const TabulerView = ({
             label: t('job_OverallAssessmentSection'),
             key: 'overallAssessmentRequestDto',
             className: collapseClassName('overallAssessmentRequestDto'),
+            style: collapseStyle('overallAssessmentRequestDto'),
             children: (
               <>
                 {selectedUserTable('overallAssessmentRequestDto')}
@@ -1241,7 +1256,6 @@ const TabulerView = ({
 }
 
 export default TabulerView
-
 
 
 
