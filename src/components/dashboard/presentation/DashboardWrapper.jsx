@@ -53,7 +53,7 @@ const DashboardWrapper = ({
           <ANTDModal
             title={
               selectedColumn?.modalTitle
-                ? t(selectedColumn?.chartData?.category)
+                ? `${selectedColumn?.chartData?.question || t(selectedColumn?.chartData?.category)} (${selectedColumn?.chartData?.type})`
                 : t('txt_Details')
             }
             centered
@@ -108,10 +108,6 @@ const DashboardWrapper = ({
           footer={false}
           width={1100}
         >
-          {console.log(
-            'selectedColumn?.categoryValue',
-            selectedColumn?.categoryValue,
-          )}
           <ViewJob
             data={jobModel?.data}
             jobType={jobType}

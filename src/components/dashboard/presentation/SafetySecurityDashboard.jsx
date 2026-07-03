@@ -43,6 +43,9 @@ const SafetySecurityDashboard = () => {
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
+    questionOptions: assessmentQuestionOptions,
+    questionName: assessmentQuestionName,
+    setQuestionName: setAssessmentQuestionName,
   } = administrationGovernance({
     hostelFilter,
     moduleName: 'SAFETY_SECURITY',
@@ -61,6 +64,9 @@ const SafetySecurityDashboard = () => {
           setDistrictFilter={setDistrictFilter}
           hostelFilter={hostelFilter}
           setHostelFilter={setHostelFilter}
+          questionOptions={assessmentQuestionOptions}
+          questionName={assessmentQuestionName}
+          onQuestionChange={setAssessmentQuestionName}
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart

@@ -6,6 +6,7 @@ import {
   getInspectionAssessmentPieChartApi,
 } from '../dashboard.api'
 import { getHostelChartParams } from '../dashboardFunctions'
+import { getInspectionQuestions } from '../inspectionQuestions'
 
 const administrationGovernance = ({
   hostelFilter = 'All',
@@ -19,6 +20,17 @@ const administrationGovernance = ({
   })
   const [hostelsData, setHostelsData] = useState({})
   const [summaryData, setSummaryData] = useState({})
+  const questionOptions = useMemo(
+    () => getInspectionQuestions(moduleName),
+    [moduleName],
+  )
+  const [questionName, setQuestionName] = useState(
+    () => questionOptions?.[0]?.value,
+  )
+
+  useEffect(() => {
+    setQuestionName(questionOptions?.[0]?.value)
+  }, [questionOptions])
 
   const pieData = useMemo(
     () => [
@@ -53,7 +65,7 @@ const administrationGovernance = ({
     if (dateRange?.from && dateRange?.to) {
       getData()
     }
-  }, [dateRange, hostelFilter, moduleName])
+  }, [dateRange, hostelFilter, moduleName, questionName])
 
   const getData = async () => {
     const resp = await getInspectionAssessmentPieChartApi({
@@ -61,6 +73,7 @@ const administrationGovernance = ({
         fromDate: dateRange?.from,
         toDate: dateRange?.to,
         moduleName,
+        questionName,
         ...getHostelChartParams(hostelFilter),
       },
     })
@@ -78,6 +91,7 @@ const administrationGovernance = ({
         fromDate: dateRange?.from,
         toDate: dateRange?.to,
         moduleName,
+        questionName,
         filterValue,
         ...getHostelChartParams(hostelFilter),
       },
@@ -104,9 +118,12 @@ const administrationGovernance = ({
         category: point?.category,
         type: point?.name,
         chartType: 'pie',
+        question: questionOptions?.find(item => item.value === questionName)
+          ?.label,
       },
       categoryValue: filterValue,
       moduleName,
+      questionName,
       reportChartType: 'INSPECTION_ASSESSMENT',
       title: name,
       modalTitle: true,
@@ -142,6 +159,9 @@ const administrationGovernance = ({
     handleCloseModal,
     handleTableChange,
     hostelsData,
+    questionOptions,
+    questionName,
+    setQuestionName,
   }
 }
 
