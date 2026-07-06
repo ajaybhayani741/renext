@@ -73,7 +73,7 @@ const administrationGovernance = ({
         fromDate: dateRange?.from,
         toDate: dateRange?.to,
         moduleName,
-        questionName,
+        question: questionName,
         ...getHostelChartParams(hostelFilter),
       },
     })
@@ -81,17 +81,14 @@ const administrationGovernance = ({
     setSummaryData(resp?.data || {})
   }
 
-  const getHandleClickDataApi = async ({
-    filterValue,
-    pageNo = 1,
-  } = {}) => {
+  const getHandleClickDataApi = async ({ filterValue, pageNo = 1 } = {}) => {
     const resp = await getInspectionAssessmentHostelsApi({
       pageNo,
       params: {
         fromDate: dateRange?.from,
         toDate: dateRange?.to,
         moduleName,
-        questionName,
+        question: questionName,
         filterValue,
         ...getHostelChartParams(hostelFilter),
       },
