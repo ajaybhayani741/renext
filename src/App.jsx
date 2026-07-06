@@ -2,7 +2,11 @@ import './App.scss'
 
 // import { getToken, onMessage } from 'firebase/messaging'
 import React, { Suspense, useEffect } from 'react'
-import { BrowserRouter, useLocation } from 'react-router-dom'
+import {
+  BrowserRouter,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 
 import useFiscalYearInitializer from './hooks/useFiscalYearInitializer'
 import useNotify from './hooks/useNotify'
@@ -10,9 +14,11 @@ import useRedux from './hooks/useRedux'
 import useTranslations from './hooks/useTranslations'
 import { setPopupMessageModel } from './redux/app/reducer'
 import Routing from './routing'
+import pathName from './routing/pathName.constant'
 // import { messaging } from './services/firebase'
 import ANTDConfigProvider from './shared/antd/ANTDConfigProvider'
 import PopUpConfirm from './shared/PopUpConfirm'
+import { setItem } from './utils/localstorage'
 
 let notifyMethod
 
@@ -31,6 +37,36 @@ function ScrollToTop() {
   return null
 }
 
+function AuthQueryRedirect({ children }) {
+  const { search } = useLocation()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(search)
+    const userId = queryParams.get('userId')
+    const authToken = queryParams.get('authToken')
+    const refreshToken = queryParams.get('refreshToken')
+
+    if (!userId || !authToken || !refreshToken) return
+
+    setItem('userId', userId)
+    setItem('token', authToken)
+    setItem('refreshToken', refreshToken)
+    navigate(pathName.HOME, { replace: true })
+  }, [navigate, search])
+
+  const queryParams = new URLSearchParams(search)
+  const isRedirecting =
+    queryParams.has('userId') &&
+    queryParams.has('authToken') &&
+    queryParams.has('refreshToken')
+
+  if (isRedirecting) {
+    return <div className="main-loader">Redirecting...</div>
+  }
+
+  return children
+}
 function App() {
   const { t } = useTranslations()
   const { notify, contextHolder } = useNotify()
@@ -150,7 +186,9 @@ function App() {
         >
           {contextHolder}
           <ScrollToTop />
-          <Routing />
+          <AuthQueryRedirect>
+            <Routing />
+          </AuthQueryRedirect>
           {open && (
             <PopUpConfirm
               isOpen={open}

@@ -19,6 +19,7 @@ import { getItem, setItem } from '../utils/localstorage'
 const ProtectedRoute = ({ children }) => {
   const isAuth = getItem('token')
   const adminId = getItem('adminId')
+  const userId = getItem('userId')
   const { queryParams } = useRouter()
   const code = queryParams.get('code')
   let navigatePath = pathName.LANDING
@@ -30,7 +31,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const getProfile = async () => {
       const response = await getUserProfileApi({
-        id: userData?.id,
+        id: userData?.id || userId,
       })
       if (response?.data?.data) {
         setItem('userData', JSON.stringify(response?.data?.data))
@@ -42,7 +43,7 @@ const ProtectedRoute = ({ children }) => {
             setItem('adminId', resp?.data?.list?.[0]?.id)
           }
         }
-        if (include([storeEmployee, storeManager], userData?.roleId)) {
+        if (include([storeEmployee, storeManager], response?.data?.data?.roleId)) {
           const storeId = response?.data?.data?.parent?.id
           dispatch(
             setStoreDetails({
