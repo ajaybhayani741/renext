@@ -6,6 +6,7 @@ import pathName, {
   HOSTEL,
   NEW_DASHBOARD_TXT,
 } from './pathName.constant'
+import PrivacyPolicy from './PrivacyPolicy'
 import ProtectedRoute from './PrivateRoute'
 import DashboardView from '../components/dashboard/presentation/DashboardView'
 import IccPortal from '../components/icc/presentation/IccPortal'
@@ -123,6 +124,7 @@ const Routing = () => {
     { path: pathName.LOGIN, element: <Auth /> },
     { path: pathName.FORGOT_PASSWORD, element: <Auth /> },
     { path: pathName.ICC, element: <IccPortal /> },
+    { path: pathName.PRIVACY_POLICY, element: <PrivacyPolicy /> },
   ])
 
   return routes

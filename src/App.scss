@@ -1093,3 +1093,79 @@ h6 {
     animation: none !important;
   }
 }
+
+.privacy-policy {
+  max-width: 1360px;
+  margin: 60px auto 0;
+  padding: 0 15px;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 20px;
+    max-width: 100%;
+  }
+
+  .page-title {
+    text-align: center;
+
+    @media screen and (max-width: 767px) {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .order-parent {
+    padding-left: 40px;
+    margin-top: 40px;
+
+    @media screen and (max-width: 767px) {
+      padding-left: 0px;
+      margin-top: 20px;
+    }
+
+    ol {
+      list-style-type: none;
+      counter-reset: item;
+      margin: 0;
+      padding: 0;
+
+      >li {
+        margin-bottom: 35px;
+      }
+
+      li {
+        display: table;
+        counter-increment: item;
+        margin-bottom: 20px;
+
+        &:before {
+          content: counters(item, ".") ".";
+          display: table-cell;
+          padding-right: 25px;
+
+          @media screen and (max-width: 767px) {
+            padding-right: 15px;
+          }
+        }
+
+        ol {
+          margin-top: 10px;
+          padding-left: 20px;
+
+          @media screen and (max-width: 767px) {
+            padding-left: 0;
+          }
+
+          li {
+            margin-bottom: 15px;
+
+            &::before {
+              padding-right: 5px;
+              content: counters(item, ".") ".";
+            }
+
+          }
+        }
+      }
+    }
+  }
+}

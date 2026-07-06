@@ -54,6 +54,7 @@ const pathName = {
   SETTINGS: `/settings`,
   NOTIFICATIONS: `/notifications`,
   ICC: '/icc',
+  PRIVACY_POLICY: '/privacy-policy',
 }
 export default pathName
 
