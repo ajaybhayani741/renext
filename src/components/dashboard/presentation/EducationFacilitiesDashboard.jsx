@@ -14,11 +14,7 @@ import ModuleFilters from '../shared/ModuleFilters'
 const EducationFacilitiesDashboard = () => {
   const [districtFilter, setDistrictFilter] = useState('All')
   const [hostelFilter, setHostelFilter] = useState('All')
-  const {
-    axisOptions,
-    handleChartClick,
-    seriesData,
-  } = {} // educationFacilities({ hostelFilter })
+  const { axisOptions, handleChartClick, seriesData } = {} // educationFacilities({ hostelFilter })
   const {
     pieData,
     handleChartClick: handleAssessmentChartClick,
@@ -26,6 +22,9 @@ const EducationFacilitiesDashboard = () => {
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
+    questionOptions: assessmentQuestionOptions,
+    questionName: assessmentQuestionName,
+    setQuestionName: setAssessmentQuestionName,
   } = administrationGovernance({
     hostelFilter,
     moduleName: 'EDUCATION_ACADEMIC_ENVIRONMENT',
@@ -65,6 +64,9 @@ const EducationFacilitiesDashboard = () => {
           setDistrictFilter={setDistrictFilter}
           hostelFilter={hostelFilter}
           setHostelFilter={setHostelFilter}
+          questionOptions={assessmentQuestionOptions}
+          questionName={assessmentQuestionName}
+          onQuestionChange={setAssessmentQuestionName}
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart
@@ -75,29 +77,29 @@ const EducationFacilitiesDashboard = () => {
           {/* Existing category charts are intentionally hidden for now. */}
           {false && (
             <>
-          {axisOptions &&
-            entries(educationFacilitiesCharts)?.map(([key, value]) => {
-              return (
-                <div className="dashboard-full-chart" key={key}>
-                  {isEqual(value?.type, 'columnCompare') ? (
-                    <ModernCompareChart
-                      {...{
-                        name: key,
-                        chartData: seriesData?.[key]?.chartData,
-                        handleChartClick,
-                        seriesData: seriesData?.[key]?.seriesData,
-                        title: t(key),
-                        categoryLabels,
-                        legendMapping,
-                        showFooterTitle: false,
-                        titlePosition: 'header',
-                        barSize: 34,
-                      }}
-                    />
-                  ) : null}
-                </div>
-              )
-            })}
+              {axisOptions &&
+                entries(educationFacilitiesCharts)?.map(([key, value]) => {
+                  return (
+                    <div className="dashboard-full-chart" key={key}>
+                      {isEqual(value?.type, 'columnCompare') ? (
+                        <ModernCompareChart
+                          {...{
+                            name: key,
+                            chartData: seriesData?.[key]?.chartData,
+                            handleChartClick,
+                            seriesData: seriesData?.[key]?.seriesData,
+                            title: t(key),
+                            categoryLabels,
+                            legendMapping,
+                            showFooterTitle: false,
+                            titlePosition: 'header',
+                            barSize: 34,
+                          }}
+                        />
+                      ) : null}
+                    </div>
+                  )
+                })}
             </>
           )}
         </div>

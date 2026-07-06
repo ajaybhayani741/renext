@@ -14,6 +14,9 @@ interface ModuleFiltersProps {
   setHostelFilter: (val: string | number) => void
   extraFilters?: React.ReactNode
   leadingContent?: React.ReactNode
+  questionOptions?: Array<{ label: string; value: string }>
+  questionName?: string
+  onQuestionChange?: (val: string) => void
 }
 
 interface HostelOption {
@@ -36,6 +39,9 @@ const ModuleFilters: React.FC<ModuleFiltersProps> = ({
   setHostelFilter,
   extraFilters,
   leadingContent,
+  questionOptions = [],
+  questionName,
+  onQuestionChange,
 }) => {
   const [hostelsData, setHostelsData] = useState<HostelListState>({
     list: [],
@@ -223,6 +229,21 @@ const ModuleFilters: React.FC<ModuleFiltersProps> = ({
             </Option>
           ))}
         </Select>
+        {questionOptions.length ? (
+          <>
+            <div className="text-sm font-medium text-slate-500 mb-2 mt-4">
+              Filter by Question
+            </div>
+            <Select
+              showSearch
+              options={questionOptions}
+              value={questionName}
+              onChange={onQuestionChange}
+              optionFilterProp="label"
+              style={{ width: '100%' }}
+            />
+          </>
+        ) : null}
       </div>
 
       {extraFilters}

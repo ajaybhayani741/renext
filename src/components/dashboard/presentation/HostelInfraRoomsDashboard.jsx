@@ -50,6 +50,9 @@ const HostelInfraRoomsDashboard = () => {
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
+    questionOptions: assessmentQuestionOptions,
+    questionName: assessmentQuestionName,
+    setQuestionName: setAssessmentQuestionName,
   } = administrationGovernance({
     hostelFilter,
     moduleName: 'ACCOMMODATION',
@@ -67,6 +70,9 @@ const HostelInfraRoomsDashboard = () => {
           setDistrictFilter={setDistrictFilter}
           hostelFilter={hostelFilter}
           setHostelFilter={setHostelFilter}
+          questionOptions={assessmentQuestionOptions}
+          questionName={assessmentQuestionName}
+          onQuestionChange={setAssessmentQuestionName}
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart

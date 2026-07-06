@@ -151,6 +151,7 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
             title: `INSPECTION_ASSESSMENT_${selectedColumn?.moduleName}`,
             category: selectedColumn?.moduleName,
             filterValue: selectedColumn?.categoryValue,
+            question: selectedColumn?.questionName,
           }
         : {
             fromDate: dateRange?.from,

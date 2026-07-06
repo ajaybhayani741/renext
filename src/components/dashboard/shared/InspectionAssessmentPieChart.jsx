@@ -1,6 +1,10 @@
 import CommonPieChart from './CommonPieChart'
 
-const InspectionAssessmentPieChart = ({ data, handleChartClick, name }) => (
+const InspectionAssessmentPieChart = ({
+  data,
+  handleChartClick,
+  name,
+}) => (
   <div className="dashboard-full-chart">
     <CommonPieChart
       data={data}

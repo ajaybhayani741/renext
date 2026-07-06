@@ -72,6 +72,9 @@ const FoodProvisionsDashboard = () => {
     handleCloseModal: handleAssessmentCloseModal,
     handleTableChange: handleAssessmentTableChange,
     hostelsData: assessmentHostelsData,
+    questionOptions: assessmentQuestionOptions,
+    questionName: assessmentQuestionName,
+    setQuestionName: setAssessmentQuestionName,
   } = administrationGovernance({
     hostelFilter,
     moduleName: 'FOOD_NUTRITION',
@@ -159,6 +162,9 @@ const FoodProvisionsDashboard = () => {
           setDistrictFilter={setDistrictFilter}
           hostelFilter={hostelFilter}
           setHostelFilter={setHostelFilter}
+          questionOptions={assessmentQuestionOptions}
+          questionName={assessmentQuestionName}
+          onQuestionChange={setAssessmentQuestionName}
         />
         <div className="dashboard-single-chart-grid">
           <InspectionAssessmentPieChart

@@ -9,6 +9,7 @@ const InspectionDetailsView = ({
   inspectionData,
   currentForm,
   highlightSection,
+  highlightCategoryColor,
 }) => {
   const { t } = useTranslations()
   const { hostel } = userWiseRole
@@ -32,6 +33,7 @@ const InspectionDetailsView = ({
             // userSelectionList={userSelectionList}
             currentForm={currentForm}
             highlightSection={highlightSection}
+            highlightCategoryColor={highlightCategoryColor}
           />
         </ANTDCard>
       ))}
@@ -40,4 +42,3 @@ const InspectionDetailsView = ({
 }
 
 export default InspectionDetailsView
-
