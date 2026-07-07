@@ -1,21 +1,28 @@
-const initialValues = { username: '', password: '' }
+const initialValues = { phoneNumber: '', otp: '' }
 
-const formData = t => ({
-  username: {
-    label: t('auth_UserName'),
+const formData = () => ({
+  phoneNumber: {
+    label: 'Phone number',
     validateTrigger: 'onChange',
     rules: [
-      { required: true },
-      { pattern: /^\S*$/, message: t('error_OnlySpaceNotAllowed') },
+      { required: true, message: 'Please enter your phone number' },
+      {
+        pattern: /^[0-9]{10}$/,
+        message: 'Please enter a valid 10 digit phone number',
+      },
     ],
     inputType: 'input',
     md: 24,
   },
-  password: {
-    label: t('auth_Password'),
+  otp: {
+    label: 'OTP',
     validateTrigger: 'onChange',
-    rules: [{ required: true }],
-    inputType: 'password',
+    rules: [
+      { required: true, message: 'Please enter the OTP' },
+      { pattern: /^[0-9]+$/, message: 'OTP can contain numbers only' },
+      { len: 6, message: 'Please enter the 6 digit OTP' },
+    ],
+    inputType: 'input',
   },
 })
 

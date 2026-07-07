@@ -13,12 +13,18 @@ import {
   ternary,
 } from '../../../utils/javascript'
 import { getItem, setItem } from '../../../utils/localstorage'
-import { loginApi, loginWithDaikinApi } from '../authentication.api'
+import {
+  generateLoginOtpApi,
+  loginWithDaikinApi,
+  verifyLoginOtpApi,
+} from '../authentication.api'
 import { infoBean } from '../login.description'
 
 const login = () => {
   const { navigate, queryParams, location } = useRouter()
   const [loading, setLoading] = useState(false)
+  const [otpSent, setOtpSent] = useState(false)
+  const [verifiedPhoneNumber, setVerifiedPhoneNumber] = useState('')
   const [pageLoader, setPageLoader] = useState(false)
   const { dispatch } = useRedux()
   const FCMToken = getItem('FCMToken')
@@ -50,57 +56,100 @@ const login = () => {
     navigate(pathName.HOME)
   }
 
-  const onFinish = async value => {
+  const redirectAfterLogin = userProfile => {
+    if (isEqual(userProfile?.roleId, inspectionOfficer)) {
+      navigate(pathName.JOBS)
+      return
+    }
+    if (location?.state?.params?.jobId) {
+      const paramObj = removeFalsyValues(location.state.params)
+      let params = ''
+      entries(paramObj).forEach(([key, value], i) => {
+        params += `${ternary(isEqual(i, 0), '?', '&')}${key}=${value}`
+      })
+      navigate(`${pathName.JOBS}${params}`)
+      return
+    }
+    navigate(pathName.HOME)
+  }
+
+  const getResponseData = response => response?.data?.data || response?.data
+
+  const getResponseMessage = response =>
+    response?.data?.errorMsg ||
+    response?.error?.errorMsg ||
+    response?.error?.error?.errorMsg ||
+    response?.message
+
+  const generateOtp = async ({ phoneNumber }) => {
     setLoading(true)
-    const payload = { ...value, infoBean: { ...infoBean, fcmId: FCMToken } }
-    const response = await loginApi({
-      payload,
+    const response = await generateLoginOtpApi({
+      payload: { phoneNumber },
     })
     setLoading(false)
+    const responseData = getResponseData(response)
 
-    if (response?.data?.data?.userExists) {
-      setItem('token', response?.data?.data?.authToken)
-      setItem('refreshToken', response?.data?.data?.refreshToken)
-      setItem('userExists', response?.data?.data?.userExists)
-      setItem('userData', JSON.stringify(response?.data?.data?.userProfile))
-      dispatch(profileDetails(response?.data?.data?.userProfile))
-      if (
-        isEqual(response?.data?.data?.userProfile?.roleId, inspectionOfficer)
-      ) {
-        navigate(pathName.JOBS)
-        return
-      }
-      if (location?.state?.params?.jobId) {
-        const paramObj = removeFalsyValues(location.state.params)
-        let params = ''
-        entries(paramObj).forEach(([key, value], i) => {
-          params += `${ternary(isEqual(i, 0), '?', '&')}${key}=${value}`
-        })
-        navigate(`${pathName.JOBS}${params}`)
-      } else {
-        navigate(pathName.HOME)
-      }
-    } else {
-      notifyMethod.error({ message: 'msg_UserNotExist' })
+    if (responseData?.success) {
+      setOtpSent(true)
+      setVerifiedPhoneNumber(phoneNumber)
+      notifyMethod.success({ message: 'OTP sent successfully' })
+      return
     }
-  }
-
-  const handleForgotPassword = () => {
-    // navigate(pathName.FORGOT_PASSWORD)
-    notifyMethod.warning({
-      message: 'msg_ForgetPasswordContactDistrictCollector',
+    notifyMethod.error({
+      message: getResponseMessage(response) || 'Unable to generate OTP',
     })
   }
+
+  const verifyOtp = async value => {
+    if (value?.phoneNumber !== verifiedPhoneNumber) {
+      await generateOtp({ phoneNumber: value?.phoneNumber })
+      return
+    }
+
+    setLoading(true)
+    const response = await verifyLoginOtpApi({
+      payload: {
+        phoneNumber: value?.phoneNumber,
+        otp: value?.otp,
+        infoBean: { ...infoBean, fcmId: FCMToken },
+      },
+    })
+    setLoading(false)
+    const responseData = getResponseData(response)
+
+    if (responseData?.success) {
+      setItem('token', responseData?.authToken)
+      setItem('refreshToken', responseData?.refreshToken)
+      setItem('userExists', true)
+      setItem('userData', JSON.stringify(responseData?.userProfile))
+      dispatch(profileDetails(responseData?.userProfile))
+      redirectAfterLogin(responseData?.userProfile)
+      return
+    }
+    notifyMethod.error({ message: 'Invalid OTP' })
+  }
+
+  const onFinish = async value => {
+    if (otpSent) {
+      await verifyOtp(value)
+      return
+    }
+    await generateOtp(value)
+  }
+
 
   const onFinishFailed = () => {}
 
   return {
     loading,
+    otpSent,
     pageLoader,
     onFinish,
     onFinishFailed,
-    handleForgotPassword,
+    verifiedPhoneNumber,
   }
 }
 
 export default login
+
+

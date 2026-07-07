@@ -14,9 +14,10 @@ const useFiscalYearInitializer = () => {
     state => state?.app?.fiscalYear,
   )
   const userExists = getItem('userExists')
+  const authToken = getItem('token')
 
   useEffect(() => {
-    if (!userExists) return
+    if (!userExists || !authToken) return
     // Only initialize once and only if data is not already available
     if (
       options &&
@@ -55,7 +56,7 @@ const useFiscalYearInitializer = () => {
     }
 
     initializeFiscalYear()
-  }, [dispatch, options, value, dateRange, userExists])
+  }, [dispatch, options, value, dateRange, userExists, authToken])
 
   return {
     isInitialized: !!(
@@ -69,3 +70,4 @@ const useFiscalYearInitializer = () => {
 }
 
 export default useFiscalYearInitializer
+

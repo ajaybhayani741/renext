@@ -4,6 +4,8 @@ import API_ROUTES from '../../api/routes'
 const {
   REFRESH_TOKEN,
   LOGIN,
+  GENERATE_LOGIN_OTP,
+  VERIFY_LOGIN_OTP,
   NON_LOGIN,
   FORGOT_PASSWORD,
   RESET_PASSWORD,
@@ -24,6 +26,14 @@ const loginApi = async ({ payload, nonLoginAuthToken }) => {
   const response = await postMethod(LOGIN, payload, {
     nonLoginAuthToken: nonLoginAuthToken,
   })
+  return response
+}
+const generateLoginOtpApi = async ({ payload }) => {
+  const response = await postMethod(GENERATE_LOGIN_OTP, payload)
+  return response
+}
+const verifyLoginOtpApi = async ({ payload }) => {
+  const response = await postMethod(VERIFY_LOGIN_OTP, payload)
   return response
 }
 const forgotPasswordApi = async ({ userName }) => {
@@ -52,6 +62,7 @@ const loginWithDaikinApi = async ({ payload }) => {
 
 export {
   forgotPasswordApi,
+  generateLoginOtpApi,
   loginApi,
   logoutApi,
   nonLoginApi,
@@ -59,4 +70,6 @@ export {
   resetPasswordApi,
   changePasswordApi,
   loginWithDaikinApi,
+  verifyLoginOtpApi,
 }
+

@@ -1,6 +1,8 @@
 const API_ROUTES = {
   REFRESH_TOKEN: `/user-management/v1/refresh/authtoken`,
   LOGIN: `/user-management/v1/login/password`,
+  GENERATE_LOGIN_OTP: `/user-management/v1/login/otp/generate`,
+  VERIFY_LOGIN_OTP: `/user-management/v1/login/otp/verify`,
   NON_LOGIN: `/user-management/v1/generate/nonLogin`,
   DIAIKIN_LOGIN: `/user-management/v1/login/daikincity`,
   LOGOUT: `/user-management/v1/logout`,
@@ -196,3 +198,4 @@ const API_ROUTES = {
   GENERATE_MASTER_SHEET: `/job-management/v1/userreports`,
 }
 export default API_ROUTES
+

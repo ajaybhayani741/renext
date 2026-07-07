@@ -3,11 +3,12 @@ import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDForm, {
   ANTDFormItem,
   useFormFn,
+  useWatchFn,
 } from '../../../shared/antd/ANTDForm'
+import { ANTDInputOTP } from '../../../shared/antd/ANTDInput'
 import ANTDSpin from '../../../shared/antd/ANTDSpin'
 import getFormInput from '../../../shared/form.description'
 import { validationTag } from '../../../utils/customFunctions'
-import { entries } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import login from '../container/login'
 import { formData, initialValues } from '../login.description'
@@ -17,12 +18,25 @@ function Login() {
   const { t } = useTranslations()
   const {
     loading,
+    otpSent,
     pageLoader,
     onFinish,
     onFinishFailed,
-    handleForgotPassword,
+    verifiedPhoneNumber,
   } = login()
   const lang = getItem('lang')
+  const loginFormData = formData(t)
+  const phoneNumber = useWatchFn('phoneNumber', form)
+  const phoneNumberChanged = otpSent && phoneNumber !== verifiedPhoneNumber
+  const PhoneInput = getFormInput({
+    inputType: loginFormData.phoneNumber.inputType,
+  })
+
+  const handlePhoneNumberChange = e => {
+    const numbersOnly = e.target.value.replace(/\D/g, '').slice(0, 10)
+    form.setFieldValue('phoneNumber', numbersOnly)
+    form.setFieldValue('otp', '')
+  }
 
   if (pageLoader)
     return (
@@ -35,7 +49,9 @@ function Login() {
     <div className="login-panel">
       <div className="login-head">
         <h2 className="login-title">{t('txt_Welcome')}</h2>
-        <p className="login-subtitle">Sign in to your account to continue.</p>
+        <p className="login-subtitle">
+          Verify your phone number to continue.
+        </p>
       </div>
 
       <ANTDForm
@@ -46,31 +62,37 @@ function Login() {
         layout="vertical"
         onFinishFailed={onFinishFailed}
       >
-        {entries(formData(t)).map(([key, value]) => {
-          const InputComponent = getFormInput({ inputType: value?.inputType })
-          return (
-            <ANTDFormItem
-              key={key}
-              label={value?.label}
-              name={key}
-              validateTrigger={value?.validateTrigger}
-              rules={value?.rules}
-              className={validationTag(lang)}
-            >
-              <InputComponent />
-            </ANTDFormItem>
-          )
-        })}
+        <ANTDFormItem
+          label={loginFormData.phoneNumber.label}
+          name="phoneNumber"
+          validateTrigger={loginFormData.phoneNumber.validateTrigger}
+          rules={loginFormData.phoneNumber.rules}
+          className={validationTag(lang)}
+        >
+          <PhoneInput
+            inputMode="numeric"
+            maxLength={10}
+            placeholder="Enter phone number"
+            onChange={handlePhoneNumberChange}
+          />
+        </ANTDFormItem>
 
-        <div className="login-forgot">
-          <h4
-            aria-hidden="true"
-            className="primary-color font-bold cursor-pointer"
-            onClick={handleForgotPassword}
+        {otpSent && !phoneNumberChanged && (
+          <ANTDFormItem
+            label={loginFormData.otp.label}
+            name="otp"
+            validateTrigger={loginFormData.otp.validateTrigger}
+            rules={loginFormData.otp.rules}
+            className={validationTag(lang)}
           >
-            {t('auth_ForgetPassword')}?
-          </h4>
-        </div>
+            <ANTDInputOTP
+              autoFocus
+              length={6}
+              inputMode="numeric"
+              formatter={value => value.replace(/\D/g, '')}
+            />
+          </ANTDFormItem>
+        )}
 
         <ANTDButton
           type="primary"
@@ -80,11 +102,9 @@ function Login() {
           block
           className="login-submit"
         >
-          {t('btn_Login')}
+          {otpSent && !phoneNumberChanged ? 'Verify OTP' : 'Generate OTP'}
         </ANTDButton>
       </ANTDForm>
-
-
     </div>
   )
 }
