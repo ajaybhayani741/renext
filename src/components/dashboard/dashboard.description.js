@@ -8,19 +8,29 @@ import {
 } from '../../utils/icons'
 
 const cardKeys = {
-  hostelAuthority: 'hostel-authority',
-  students: 'students',
-  recordMaintenance: 'record-maintenance',
-  staffDetails: 'staff-details',
-  hostelInfraRooms: 'hostel-infra-rooms',
-  hostelInfraSanitation: 'hostel-infra-sanitation',
-  medicalCare: 'medical-care',
-  educationFacilities: 'education-facilities',
-  foodProvisions: 'food-provisions',
-  safetyAndSecurity: 'safety-and-security',
-  conductionMeetings: 'conduction-meetings',
+  // hostelAuthority: 'hostel-authority',
+  // students: 'students',
+  // recordMaintenance: 'record-maintenance',
+  // staffDetails: 'staff-details',
+  // hostelInfraRooms: 'hostel-infra-rooms',
+  // hostelInfraSanitation: 'hostel-infra-sanitation',
+  // medicalCare: 'medical-care',
+  // educationFacilities: 'education-facilities',
+  // foodProvisions: 'food-provisions',
+  // safetyAndSecurity: 'safety-and-security',
+  // conductionMeetings: 'conduction-meetings',
   feedback: 'feedback',
   photos: 'photos',
+  administrationGovernance: 'administration-governance',
+  foodNutrition: 'food-nutrition',
+  accommodation: 'accommodation',
+  sanitationDrainage: 'sanitation-drainage',
+  electricityLighting: 'electricity-lighting',
+  healthMedicalCare: 'health-medical-care',
+  educationAcademicEnvironment: 'education-academic-environment',
+  safetySecurity: 'safety-security',
+  studentFeedback: 'student-feedback',
+  overallAssessment: 'overall-assessment',
 }
 
 const {
@@ -250,6 +260,7 @@ const dealerPaymentData = [
   },
 ]
 
+/*
 const cardList = [
   {
     label: 'Authority & governance data',
@@ -314,6 +325,58 @@ const cardList = [
   {
     label: 'Photo Documentation',
     subLabel: 'job_Photos',
+    key: cardKeys.photos,
+  },
+]
+*/
+
+const cardList = [
+  {
+    label: 'Administration & Governance',
+    key: cardKeys.administrationGovernance,
+  },
+  {
+    label: 'Food & Nutrition',
+    key: cardKeys.foodNutrition,
+  },
+  {
+    label: 'Accommodation',
+    key: cardKeys.accommodation,
+  },
+  {
+    label: 'Sanitation & Drainage',
+    key: cardKeys.sanitationDrainage,
+  },
+  {
+    label: 'Electricity & Lighting',
+    key: cardKeys.electricityLighting,
+  },
+  {
+    label: 'Health & Medical Care',
+    key: cardKeys.healthMedicalCare,
+  },
+  {
+    label: 'Education & Academic Environment',
+    key: cardKeys.educationAcademicEnvironment,
+  },
+  {
+    label: 'Safety & Security',
+    key: cardKeys.safetySecurity,
+  },
+  {
+    label: 'Student Feedback',
+    key: cardKeys.studentFeedback,
+  },
+  {
+    label: 'Overall Assessment',
+    key: cardKeys.overallAssessment,
+  },
+  {
+    label: 'Feedback',
+    key: cardKeys.feedback,
+  },
+  {
+    label: 'Photo Documentation',
     key: cardKeys.photos,
   },
 ]
@@ -792,6 +855,7 @@ export const reportCategoryKeys = t => ({
   [t('job_VariationInRagiMalt')]: 'VARIATION_IN_RAGI_MALT',
 })
 
+/*
 export const photosDashboardData = {
   dash_PhotosOfToilets: { key: 'toilets', type: 'TOILET_PHOTO' },
   dash_PhotoOfBathrooms: { key: 'bathrooms', type: 'BATHROOM_PHOTO' },
@@ -816,6 +880,42 @@ export const photosDashboardData = {
   job_ExtraCurricularActivities: {
     key: 'extra-curricular-activities',
     type: 'PHOTOS_OF_EXTRA_CURRICULAR_ACTIVITIES',
+  },
+}
+*/
+
+export const photosDashboardData = {
+  'Administration & Governance': {
+    key: 'administration-governance',
+    type: 'ADMINISTRATION_GOVERNANCE',
+  },
+  'Food & Nutrition': {
+    key: 'food-nutrition',
+    type: 'FOOD_NUTRITION',
+  },
+  Accommodation: {
+    key: 'accommodation',
+    type: 'ACCOMMODATION',
+  },
+  'Sanitation & Drainage': {
+    key: 'sanitation-drainage',
+    type: 'SANITATION_DRAINAGE',
+  },
+  'Electricity & Lighting': {
+    key: 'electricity-lighting',
+    type: 'ELECTRICITY_LIGHTING',
+  },
+  'Health & Medical Care': {
+    key: 'health-medical-care',
+    type: 'HEALTH_MEDICAL_CARE',
+  },
+  'Education & Academic Environment': {
+    key: 'education-academic-environment',
+    type: 'EDUCATION_ACADEMIC_ENVIRONMENT',
+  },
+  'Safety & Security': {
+    key: 'safety-security',
+    type: 'SAFETY_SECURITY',
   },
 }
 

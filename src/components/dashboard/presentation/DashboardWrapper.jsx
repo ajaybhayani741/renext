@@ -8,6 +8,12 @@ import { tabKeys } from '../../jobs/jobs.description'
 import ViewJob from '../../jobs/presentation/viewJobs'
 import dashboardWrapper from '../container/dashboardWrapper.container'
 
+const assessmentHighlightColors = {
+  SATISFACTORY: '#58b766',
+  NEEDS_ATTENTION: '#f8c21c',
+  CRITICAL: '#ef4444',
+}
+
 const DashboardWrapper = ({
   children,
   selectedColumn,
@@ -47,7 +53,7 @@ const DashboardWrapper = ({
           <ANTDModal
             title={
               selectedColumn?.modalTitle
-                ? `${t(selectedColumn?.chartData?.category)} ${selectedColumn?.chartData?.type ? `(${selectedColumn?.chartData?.type})` : ''}`
+                ? `${selectedColumn?.chartData?.question || t(selectedColumn?.chartData?.category)} (${selectedColumn?.chartData?.type})`
                 : t('txt_Details')
             }
             centered
@@ -106,6 +112,26 @@ const DashboardWrapper = ({
             data={jobModel?.data}
             jobType={jobType}
             loader={jobModel?.loader}
+            highlightCategoryColor={
+              assessmentHighlightColors?.[selectedColumn?.categoryValue] || null
+            }
+            highlightSection={
+              {
+                ADMINISTRATION_GOVERNANCE: 'hostelAdministrationRequestDto',
+                FOOD_NUTRITION: 'foodNutritionRequestDto',
+                ACCOMMODATION: 'accommodationRequestDto',
+                SANITATION_DRAINAGE: 'sanitationDrainageRequestDto',
+                ELECTRICITY_LIGHTING: 'electricityLightingRequestDto',
+                HEALTH_MEDICAL_CARE: 'healthMedicalCareRequestDto',
+                EDUCATION_ACADEMIC_ENVIRONMENT:
+                  'educationAcademicEnvironmentRequestDto',
+                SAFETY_SECURITY: 'safetySecurityRequestDto',
+                STUDENT_FEEDBACK: 'studentFeedbackRequestDto',
+              }[selectedColumn?.moduleName] ||
+              (selectedColumn?.reportChartType === 'OVERALL_HOSTEL_CONDITION'
+                ? 'overallAssessmentRequestDto'
+                : null)
+            }
           />
         </ANTDModal>
       )}

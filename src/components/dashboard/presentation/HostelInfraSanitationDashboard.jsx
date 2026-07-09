@@ -3,8 +3,11 @@ import { useState } from 'react'
 import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
-import hostelInfraSanitation from '../container/hostelInfraSanitation.container'
+import administrationGovernance from '../container/administrationGovernance.container'
+// Legacy chart API disabled while its charts are hidden.
+// import hostelInfraSanitation from '../container/hostelInfraSanitation.container'
 import { hostelInfraSanitationCharts } from '../dashboard.description'
+import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
 import ModernFrequencyChart from '../shared/ModernFrequencyChart'
 import ModernPieChart from '../shared/ModernPieChart'
@@ -33,15 +36,28 @@ const HostelInfraSanitationDashboard = () => {
     onRangeChange,
     handleChartClick,
     seriesData,
-    selectedColumn,
-    handleCloseModal,
-    handleTableChange,
-    hostelsData,
-  } = hostelInfraSanitation({ hostelFilter })
+  } = {} // hostelInfraSanitation({ hostelFilter })
+  const {
+    pieData,
+    handleChartClick: handleAssessmentChartClick,
+    selectedColumn: assessmentSelectedColumn,
+    handleCloseModal: handleAssessmentCloseModal,
+    handleTableChange: handleAssessmentTableChange,
+    hostelsData: assessmentHostelsData,
+    questionOptions: assessmentQuestionOptions,
+    questionName: assessmentQuestionName,
+    setQuestionName: setAssessmentQuestionName,
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'SANITATION_DRAINAGE',
+  })
 
   return (
     <DashboardWrapper
-      {...{ handleCloseModal, hostelsData, selectedColumn, handleTableChange }}
+      handleCloseModal={handleAssessmentCloseModal}
+      selectedColumn={assessmentSelectedColumn}
+      handleTableChange={handleAssessmentTableChange}
+      hostelsData={assessmentHostelsData}
     >
       <div className="dashboard-module-surface dashboard-sanitation-surface">
         <ModuleFilters
@@ -49,8 +65,19 @@ const HostelInfraSanitationDashboard = () => {
           setDistrictFilter={setDistrictFilter}
           hostelFilter={hostelFilter}
           setHostelFilter={setHostelFilter}
+          questionOptions={assessmentQuestionOptions}
+          questionName={assessmentQuestionName}
+          onQuestionChange={setAssessmentQuestionName}
         />
         <div className="dashboard-single-chart-grid">
+          <InspectionAssessmentPieChart
+            data={pieData}
+            handleChartClick={handleAssessmentChartClick}
+            name="dash_AdministrationGovernance"
+          />
+          {/* Existing category charts are intentionally hidden for now. */}
+          {false && (
+            <>
           {entries(hostelInfraSanitationCharts)?.map(([key, value]) => {
             const aesthetic = chartAesthetics[key] || chartAesthetics.dash_TotalToiletsAvailable
 
@@ -97,6 +124,8 @@ const HostelInfraSanitationDashboard = () => {
               </div>
             )
           })}
+            </>
+          )}
         </div>
       </div>
     </DashboardWrapper>

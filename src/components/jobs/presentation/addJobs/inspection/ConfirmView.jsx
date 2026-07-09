@@ -1,5 +1,5 @@
 import InspectionDetailsView from './InspectionDetailsView'
-import InspectionFormField from './InspectionFormField'
+// import InspectionFormField from './InspectionFormField'
 import useTranslations from '../../../../../hooks/useTranslations'
 import ANTDButton from '../../../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../../../shared/antd/ANTDColumn'
@@ -33,15 +33,25 @@ const ConfirmView = ({
   const inspectionData = inspectionListData?.map((details, index) => {
     const {
       hostelAdministrationRequestDto,
-      hostelInfraRoomsRequestDto,
-      hostelInfraSanitationRequestDto,
-      medicalCareRequestDto,
-      educationFacilitiesRequestDto,
-      foodProvisionRequestDto,
-      safetyAndSecurityRequestDto,
-      conductionMeetingsRequestDto,
-      feedbackRequestDto,
-      activitiesRequestDto,
+      foodNutritionRequestDto,
+      accommodationRequestDto,
+      sanitationDrainageRequestDto,
+      electricityLightingRequestDto,
+      healthMedicalCareRequestDto,
+      educationAcademicEnvironmentRequestDto,
+      safetySecurityRequestDto,
+      studentFeedbackRequestDto,
+      overallAssessmentRequestDto,
+      inspectingOfficerFeedbackRequestDto,
+      // hostelInfraRoomsRequestDto,
+      // hostelInfraSanitationRequestDto,
+      // medicalCareRequestDto,
+      // educationFacilitiesRequestDto,
+      // foodProvisionRequestDto,
+      // safetyAndSecurityRequestDto,
+      // conductionMeetingsRequestDto,
+      // feedbackRequestDto,
+      // activitiesRequestDto,
     } = details || {}
 
     const mapKeyValue = (attributes, values) => {
@@ -77,45 +87,89 @@ const ConfirmView = ({
       hostel: selectedUsers?.[hostel]?.[index],
 
       hostelAdministrationRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.hostelAdministrationAttrFn(),
+        inspectionFormFieldsAttr?.administrationAttrFn(),
         hostelAdministrationRequestDto,
       ),
-      hostelInfraRoomsRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.hostelInfraRoomsAttrFn(),
-        hostelInfraRoomsRequestDto,
+      foodNutritionRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.foodNutritionAttrFn(),
+        foodNutritionRequestDto,
       ),
-      hostelInfraSanitationRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.hostelInfraSanitationAttrFn(),
-        hostelInfraSanitationRequestDto,
+      accommodationRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.accommodationAttrFn(),
+        accommodationRequestDto,
       ),
-      medicalCareRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.medicalCareAttrFn(),
-        medicalCareRequestDto,
+      sanitationDrainageRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.sanitationDrainageAttrFn(),
+        sanitationDrainageRequestDto,
       ),
-      educationFacilitiesRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.educationFacilitiesAttrFn(),
-        educationFacilitiesRequestDto,
+      electricityLightingRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.electricityLightingAttrFn(),
+        electricityLightingRequestDto,
       ),
-      foodProvisionRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.foodProvisionAttrFn(),
-        foodProvisionRequestDto,
+      healthMedicalCareRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.healthMedicalCareAttrFn(),
+        healthMedicalCareRequestDto,
       ),
-      safetyAndSecurityRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.safetyAndSecurityAttrFn(),
-        safetyAndSecurityRequestDto,
+      educationAcademicEnvironmentRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.educationAcademicEnvironmentAttrFn(),
+        educationAcademicEnvironmentRequestDto,
       ),
-      conductionMeetingsRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.conductionMeetingsAttrFn(),
-        conductionMeetingsRequestDto,
+      safetySecurityRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.safetySecurityAttrFn(),
+        safetySecurityRequestDto,
       ),
-      feedbackRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.feedbackAttrFn(),
-        feedbackRequestDto,
+      studentFeedbackRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.studentFeedbackAttrFn(),
+        studentFeedbackRequestDto,
       ),
-      activitiesRequestDto: mapKeyValue(
-        inspectionFormFieldsAttr?.curricularActivitiesAttrFn(),
-        activitiesRequestDto,
+      overallAssessmentRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.overallAssessmentAttrFn(),
+        overallAssessmentRequestDto,
       ),
+      inspectingOfficerFeedbackRequestDto: mapKeyValue(
+        inspectionFormFieldsAttr?.inspectingOfficerFeedbackAttrFn(),
+        inspectingOfficerFeedbackRequestDto,
+      ),
+      // hostelAdministrationRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.administrationAttrFn(),
+      //   hostelAdministrationRequestDto,
+      // ),
+      // hostelInfraRoomsRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.hostelInfraRoomsAttrFn(),
+      //   hostelInfraRoomsRequestDto,
+      // ),
+      // hostelInfraSanitationRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.hostelInfraSanitationAttrFn(),
+      //   hostelInfraSanitationRequestDto,
+      // ),
+      // medicalCareRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.medicalCareAttrFn(),
+      //   medicalCareRequestDto,
+      // ),
+      // educationFacilitiesRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.educationFacilitiesAttrFn(),
+      //   educationFacilitiesRequestDto,
+      // ),
+      // foodProvisionRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.foodProvisionAttrFn(),
+      //   foodProvisionRequestDto,
+      // ),
+      // safetyAndSecurityRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.safetyAndSecurityAttrFn(),
+      //   safetyAndSecurityRequestDto,
+      // ),
+      // conductionMeetingsRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.conductionMeetingsAttrFn(),
+      //   conductionMeetingsRequestDto,
+      // ),
+      // feedbackRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.feedbackAttrFn(),
+      //   feedbackRequestDto,
+      // ),
+      // activitiesRequestDto: mapKeyValue(
+      //   inspectionFormFieldsAttr?.curricularActivitiesAttrFn(),
+      //   activitiesRequestDto,
+      // ),
     }
   })
   return (
@@ -192,13 +246,13 @@ const ConfirmView = ({
         inspectionData={inspectionData}
         currentForm={form}
       />
-      <InspectionFormField
+      {/* <InspectionFormField
         {...{
           attrList: findingsAttrFn(),
           name: 'findingsRequestDto',
           disabledAll: true,
         }}
-      />
+      /> */}
     </ANTDConfigProvider>
   )
 }

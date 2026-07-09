@@ -16,10 +16,14 @@ import {
 import UserTable from '../../../userManagement/presentation/UserTable'
 import inspectionFieldAttr from '../../container/inspectionFieldAttr.container'
 import InspectionDetailsView from '../addJobs/inspection/InspectionDetailsView'
-import InspectionFormField from '../addJobs/inspection/InspectionFormField'
+// import InspectionFormField from '../addJobs/inspection/InspectionFormField'
 import DetailListView from '../common/DetailListView'
 
-const InspectionJobView = ({ data }) => {
+const InspectionJobView = ({
+  data,
+  highlightSection,
+  highlightCategoryColor,
+}) => {
   const { t } = useTranslations()
   const form = useFormFn()
   const [inspectionData, setInspectionData] = useState([])
@@ -40,17 +44,28 @@ const InspectionJobView = ({ data }) => {
   }
 
   const {
-    hostelAdministrationAttrFn,
-    hostelInfraRoomsAttrFn,
-    hostelInfraSanitationAttrFn,
-    medicalCareAttrFn,
-    educationFacilitiesAttrFn,
-    foodProvisionAttrFn,
-    safetyAndSecurityAttrFn,
-    conductionMeetingsAttrFn,
-    feedbackAttrFn,
+    administrationAttrFn,
+    foodNutritionAttrFn,
+    accommodationAttrFn,
+    sanitationDrainageAttrFn,
+    electricityLightingAttrFn,
+    healthMedicalCareAttrFn,
+    educationAcademicEnvironmentAttrFn,
+    safetySecurityAttrFn,
+    studentFeedbackAttrFn,
+    overallAssessmentAttrFn,
+    inspectingOfficerFeedbackAttrFn,
+    // administrationAttrFn,
+    // hostelInfraRoomsAttrFn,
+    // hostelInfraSanitationAttrFn,
+    // medicalCareAttrFn,
+    // educationFacilitiesAttrFn,
+    // foodProvisionAttrFn,
+    // safetyAndSecurityAttrFn,
+    // conductionMeetingsAttrFn,
+    // feedbackAttrFn,
     findingsAttrFn,
-    curricularActivitiesAttrFn,
+    // curricularActivitiesAttrFn,
   } = inspectionFieldAttr()
 
   useEffect(() => {
@@ -58,6 +73,16 @@ const InspectionJobView = ({ data }) => {
   }, [])
 
   const setViewData = () => {
+    const getUploadDetails = (values, key) => {
+      const fallbackKey = key?.replace(/DmsIds$/, '')
+      return (
+        values?.[`${key}Details`] ||
+        values?.[`${fallbackKey}DmsDetails`] ||
+        values?.[`${fallbackKey}Details`] ||
+        []
+      )
+    }
+
     const mapKeyValue = (attributes, values) => {
       const details = {}
       entries(attributes)?.forEach(([key, item]) => {
@@ -77,7 +102,7 @@ const InspectionJobView = ({ data }) => {
           }
           details[`${key}Selected`] = values?.[key]
         } else if (item.inputType === 'formUpload') {
-          details[key] = values?.[`${key}Details`]
+          details[key] = getUploadDetails(values, key)
         } else {
           details[key] = values?.[key] ?? '-'
         }
@@ -86,28 +111,48 @@ const InspectionJobView = ({ data }) => {
     }
     const inspectionValues = {
       hostel: data?.hostelInfo,
-      hostelAdministrationRequestDto: mapKeyValue(
-        hostelAdministrationAttrFn(),
+      hostelAdministrationRequestDto: mapKeyValue(administrationAttrFn(), data),
+      foodNutritionRequestDto: mapKeyValue(foodNutritionAttrFn(), data),
+      accommodationRequestDto: mapKeyValue(accommodationAttrFn(), data),
+      sanitationDrainageRequestDto: mapKeyValue(
+        sanitationDrainageAttrFn(),
         data,
       ),
-      hostelInfraRoomsRequestDto: mapKeyValue(hostelInfraRoomsAttrFn(), data),
-      hostelInfraSanitationRequestDto: mapKeyValue(
-        hostelInfraSanitationAttrFn(),
+      electricityLightingRequestDto: mapKeyValue(
+        electricityLightingAttrFn(),
         data,
       ),
-      medicalCareRequestDto: mapKeyValue(medicalCareAttrFn(), data),
-      educationFacilitiesRequestDto: mapKeyValue(
-        educationFacilitiesAttrFn(),
+      healthMedicalCareRequestDto: mapKeyValue(healthMedicalCareAttrFn(), data),
+      educationAcademicEnvironmentRequestDto: mapKeyValue(
+        educationAcademicEnvironmentAttrFn(),
         data,
       ),
-      foodProvisionRequestDto: mapKeyValue(foodProvisionAttrFn(), data),
-      safetyAndSecurityRequestDto: mapKeyValue(safetyAndSecurityAttrFn(), data),
-      conductionMeetingsRequestDto: mapKeyValue(
-        conductionMeetingsAttrFn(),
+      safetySecurityRequestDto: mapKeyValue(safetySecurityAttrFn(), data),
+      studentFeedbackRequestDto: mapKeyValue(studentFeedbackAttrFn(), data),
+      overallAssessmentRequestDto: mapKeyValue(overallAssessmentAttrFn(), data),
+      inspectingOfficerFeedbackRequestDto: mapKeyValue(
+        inspectingOfficerFeedbackAttrFn(),
         data,
       ),
-      feedbackRequestDto: mapKeyValue(feedbackAttrFn(), data),
-      activitiesRequestDto: mapKeyValue(curricularActivitiesAttrFn(), data),
+      // hostelAdministrationRequestDto: mapKeyValue(administrationAttrFn(), data),
+      // hostelInfraRoomsRequestDto: mapKeyValue(hostelInfraRoomsAttrFn(), data),
+      // hostelInfraSanitationRequestDto: mapKeyValue(
+      //   hostelInfraSanitationAttrFn(),
+      //   data,
+      // ),
+      // medicalCareRequestDto: mapKeyValue(medicalCareAttrFn(), data),
+      // educationFacilitiesRequestDto: mapKeyValue(
+      //   educationFacilitiesAttrFn(),
+      //   data,
+      // ),
+      // foodProvisionRequestDto: mapKeyValue(foodProvisionAttrFn(), data),
+      // safetyAndSecurityRequestDto: mapKeyValue(safetyAndSecurityAttrFn(), data),
+      // conductionMeetingsRequestDto: mapKeyValue(
+      //   conductionMeetingsAttrFn(),
+      //   data,
+      // ),
+      // feedbackRequestDto: mapKeyValue(feedbackAttrFn(), data),
+      // activitiesRequestDto: mapKeyValue(curricularActivitiesAttrFn(), data),
     }
 
     const calDifferenceInValue = ({
@@ -216,9 +261,10 @@ const InspectionJobView = ({ data }) => {
         if (isEqual(fieldType, 'dateTimePicker')) {
           data[key] = dateToDayJs(value)
         } else if (isEqual(fieldType, 'formUpload')) {
-          data[key] = length(details?.[`${key}Details`])
+          const uploadDetails = getUploadDetails(details, key)
+          data[key] = length(uploadDetails)
             ? {
-                fileList: modifyFileListKeys(details?.[`${key}Details`]),
+                fileList: modifyFileListKeys(uploadDetails),
               }
             : null
         } else {
@@ -250,7 +296,11 @@ const InspectionJobView = ({ data }) => {
         pagination={false}
       />
 
-      <InspectionDetailsView inspectionData={inspectionData} />
+      <InspectionDetailsView
+        inspectionData={inspectionData}
+        highlightSection={highlightSection}
+        highlightCategoryColor={highlightCategoryColor}
+      />
 
       <ANTDForm
         name="inspection"
@@ -258,13 +308,13 @@ const InspectionJobView = ({ data }) => {
         form={form}
         layout="vertical"
       >
-        <InspectionFormField
+        {/* <InspectionFormField
           {...{
             attrList: findingsAttrFn(),
             name: 'findingsRequestDto',
             disabledAll: true,
           }}
-        />
+        /> */}
       </ANTDForm>
     </>
   )

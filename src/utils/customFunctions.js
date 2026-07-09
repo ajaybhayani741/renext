@@ -76,8 +76,10 @@ const modifyFileListKeys = list =>
     list?.map(file => ({
       name: file?.fileName,
       url: file?.fileUrl,
+      thumbUrl: file?.fileUrl,
       uid: file?.dmsId,
       dmsId: file?.dmsId,
+      status: 'done',
     })),
     [],
   )

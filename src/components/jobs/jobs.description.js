@@ -422,6 +422,12 @@ const booleanOptions = [
   { label: 'btn_No', value: 'NO' },
 ]
 
+const inspectionReportOptions = [
+  { label: 'job_Satisfactory', value: 'SATISFACTORY' },
+  { label: 'job_NeedsAttention', value: 'NEEDS_ATTENTION' },
+  { label: 'job_Critical', value: 'CRITICAL' },
+]
+
 export const APPROVED = 'APPROVED'
 export const REJECTED = 'REJECTED'
 export const PENDING = 'PENDING'
@@ -462,5 +468,6 @@ export {
   shareCertificateFields,
   tabKeys,
   booleanOptions,
+  inspectionReportOptions,
 }
 

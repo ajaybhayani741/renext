@@ -127,24 +127,62 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
 
   const onGenerateReport = async () => {
     setReportLoader(true)
-    const payload = {
-      fromDate: dateRange?.from,
-      toDate: dateRange?.to,
-      chartType: chartTypeKeys?.[selectedColumn?.title],
-      title: isEqual(selectedColumn?.chartData?.chartType, 'rangeFrequency')
-        ? t(selectedColumn?.chartData?.xAxisTitle)
-        : `${t(selectedColumn?.chartData?.category)}${selectedColumn?.chartData?.type ? ` (${selectedColumn?.chartData?.type})` : ''}`,
-    }
-    if (isEqual(selectedColumn?.chartData?.chartType, 'rangeFrequency')) {
+    const isInspectionAssessment = isEqual(
+      selectedColumn?.reportChartType,
+      'INSPECTION_ASSESSMENT',
+    )
+    const isOverallHostelCondition = isEqual(
+      selectedColumn?.reportChartType,
+      'OVERALL_HOSTEL_CONDITION',
+    )
+    const payload = isOverallHostelCondition
+      ? {
+          fromDate: dateRange?.from,
+          toDate: dateRange?.to,
+          chartType: 'OVERALL_HOSTEL_CONDITION',
+          title: 'OVERALL_HOSTEL_CONDITION',
+          filterValue: selectedColumn?.chartData?.filterValue,
+        }
+      : isInspectionAssessment
+        ? {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            chartType: 'INSPECTION_ASSESSMENT',
+            title: `INSPECTION_ASSESSMENT_${selectedColumn?.moduleName}`,
+            category: selectedColumn?.moduleName,
+            filterValue: selectedColumn?.categoryValue,
+            question: selectedColumn?.questionName,
+          }
+        : {
+            fromDate: dateRange?.from,
+            toDate: dateRange?.to,
+            chartType: chartTypeKeys?.[selectedColumn?.title],
+            title: isEqual(
+              selectedColumn?.chartData?.chartType,
+              'rangeFrequency',
+            )
+              ? t(selectedColumn?.chartData?.xAxisTitle)
+              : `${t(selectedColumn?.chartData?.category)}${selectedColumn?.chartData?.type ? ` (${selectedColumn?.chartData?.type})` : ''}`,
+          }
+
+    if (
+      !isInspectionAssessment &&
+      !isOverallHostelCondition &&
+      isEqual(selectedColumn?.chartData?.chartType, 'rangeFrequency')
+    ) {
       Object.assign(payload, {
         start: selectedColumn?.chartData?.start,
         end: selectedColumn?.chartData?.end,
       })
-    } else if (selectedColumn?.chartData?.chartType === 'pie') {
+    } else if (
+      !isInspectionAssessment &&
+      !isOverallHostelCondition &&
+      selectedColumn?.chartData?.chartType === 'pie'
+    ) {
       Object.assign(payload, {
         filterValue: selectedColumn?.categoryValue,
       })
-    } else {
+    } else if (!isInspectionAssessment && !isOverallHostelCondition) {
       Object.assign(payload, {
         category: reportCategoryKeys(t)?.[selectedColumn?.chartData?.category],
         ...(include(
@@ -155,6 +193,7 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
         }),
       })
     }
+
     const response = await getChartReportApi({ payload })
     if (response?.data) {
       downloadReport(response?.data?.dmsDetails?.fileUrl)

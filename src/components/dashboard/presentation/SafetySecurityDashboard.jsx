@@ -3,8 +3,11 @@ import { useState } from 'react'
 import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries, isEqual } from '../../../utils/javascript'
-import safetySecurity from '../container/safetySecurity.container'
+import administrationGovernance from '../container/administrationGovernance.container'
+// Legacy chart API disabled while its charts are hidden.
+// import safetySecurity from '../container/safetySecurity.container'
 import { safetySecurityCharts } from '../dashboard.description'
+import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernCompareChart from '../shared/ModernCompareChart'
 import ModernFrequencyChart from '../shared/ModernFrequencyChart'
 import ModuleFilters from '../shared/ModuleFilters'
@@ -31,16 +34,29 @@ const SafetySecurityDashboard = () => {
     axisOptions,
     handleChartClick,
     seriesData,
-    selectedColumn,
-    handleCloseModal,
-    handleTableChange,
-    hostelsData,
     onRangeChange,
-  } = safetySecurity({ hostelFilter })
+  } = {} // safetySecurity({ hostelFilter })
+  const {
+    pieData,
+    handleChartClick: handleAssessmentChartClick,
+    selectedColumn: assessmentSelectedColumn,
+    handleCloseModal: handleAssessmentCloseModal,
+    handleTableChange: handleAssessmentTableChange,
+    hostelsData: assessmentHostelsData,
+    questionOptions: assessmentQuestionOptions,
+    questionName: assessmentQuestionName,
+    setQuestionName: setAssessmentQuestionName,
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'SAFETY_SECURITY',
+  })
   const { t } = useTranslations()
   return (
     <DashboardWrapper
-      {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
+      handleCloseModal={handleAssessmentCloseModal}
+      selectedColumn={assessmentSelectedColumn}
+      handleTableChange={handleAssessmentTableChange}
+      hostelsData={assessmentHostelsData}
     >
       <div className="dashboard-module-surface dashboard-safety-surface">
         <ModuleFilters
@@ -48,8 +64,19 @@ const SafetySecurityDashboard = () => {
           setDistrictFilter={setDistrictFilter}
           hostelFilter={hostelFilter}
           setHostelFilter={setHostelFilter}
+          questionOptions={assessmentQuestionOptions}
+          questionName={assessmentQuestionName}
+          onQuestionChange={setAssessmentQuestionName}
         />
         <div className="dashboard-single-chart-grid">
+          <InspectionAssessmentPieChart
+            data={pieData}
+            handleChartClick={handleAssessmentChartClick}
+            name="dash_AdministrationGovernance"
+          />
+          {/* Existing category charts are intentionally hidden for now. */}
+          {false && (
+            <>
           {entries(safetySecurityCharts)?.map(([key, value]) => {
             const isAnimalThreat = isEqual(key, 'dash_AnimalThreat')
 
@@ -89,6 +116,8 @@ const SafetySecurityDashboard = () => {
               </div>
             )
           })}
+            </>
+          )}
         </div>
       </div>
     </DashboardWrapper>

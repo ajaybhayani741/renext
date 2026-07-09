@@ -78,6 +78,10 @@ const API_ROUTES = {
   DASHBOARD_DISCREPANCIES: '/dashboard-management/v1/discrepancies',
   DASHBOARD_PRINCIPAL_AUTHORITY_BAR_CHART:
     '/dashboard-management/v1/principal-authority/bar-chart',
+  DASHBOARD_INSPECTION_ASSESSMENT_PIE_CHART:
+    '/dashboard-management/v1/inspection-assessment/pie-chart',
+  DASHBOARD_INSPECTION_ASSESSMENT_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/inspection-assessment/pie-chart/hostels/${pageNo}`,
   DASHBOARD_PRINCIPAL_AUTHORITY_HOSTELS: ({ params }) =>
     `/dashboard-management/v1/principal-authority/hostels/${params}`,
   GET_COLUMN_LIST: ({ params }) => `/job-management/v1/reportcolumn${params}`,
@@ -96,6 +100,9 @@ const API_ROUTES = {
   GET_AVAILABLE_TOILETS_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/hostel-toilets-available-chart/hostels/${pageNo}`,
   DASHBOARD_RECORD_MAINTENANCE_BAR_CHART: `/dashboard-management/v1/record-maintenance/bar-chart`,
+  DASHBOARD_OVERALL_HOSTEL_CONDITION_BAR_CHART: `/dashboard-management/v1/overall-hostel-condition/bar-chart`,
+  DASHBOARD_OVERALL_HOSTEL_CONDITION_HOSTELS: ({ pageNo }) =>
+    `/dashboard-management/v1/overall-hostel-condition/hostels/${pageNo}`,
   DASHBOARD_RECORD_MAINTENANCE_HOSTELS: ({ params }) =>
     `/dashboard-management/v1/record-maintenance/hostels/${params}`,
   DASHBOARD_WASTE_MANAGEMENT_BAR_CHART: `/dashboard-management/v1/waste-management/bar-chart`,
@@ -170,8 +177,12 @@ const API_ROUTES = {
   GET_PHC_DISTANCE_CHART: `/dashboard-management/v1/distance-to-nearest-phc-chart`,
   GET_PHC_DISTANCE_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/distance-to-nearest-phc-chart/hostels/${pageNo}`,
+  // GET_FEEDBACK_HOSTELS: ({ pageNo }) =>
+  //   `/dashboard-management/v1/feedback/hostels/${pageNo}`,
   GET_FEEDBACK_HOSTELS: ({ pageNo }) =>
-    `/dashboard-management/v1/feedback/hostels/${pageNo}`,
+    `/dashboard-management/v1/inspecting-officer-feedback/hostels/${pageNo}`,
+  GET_STUDENT_TOP_THREE_CONCERNS: ({ pageNo }) =>
+    `/dashboard-management/v1/student-top-three-concerns/hostels/${pageNo}`,
   CHART_REPORT: `/dashboard-management/v1/trigger-report`,
   GET_NOTIFICATIONS: ({ pageNo }) =>
     `/user-management/v1/notifications/${pageNo}`,

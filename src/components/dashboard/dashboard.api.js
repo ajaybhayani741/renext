@@ -12,8 +12,12 @@ const {
   GET_AVAILABLE_TOILETS_CHART,
   GET_AVAILABLE_TOILETS_HOSTELS,
   DASHBOARD_PRINCIPAL_AUTHORITY_BAR_CHART,
+  DASHBOARD_INSPECTION_ASSESSMENT_PIE_CHART,
+  DASHBOARD_INSPECTION_ASSESSMENT_HOSTELS,
   DASHBOARD_PRINCIPAL_AUTHORITY_HOSTELS,
   DASHBOARD_RECORD_MAINTENANCE_BAR_CHART,
+  DASHBOARD_OVERALL_HOSTEL_CONDITION_BAR_CHART,
+  DASHBOARD_OVERALL_HOSTEL_CONDITION_HOSTELS,
   DASHBOARD_RECORD_MAINTENANCE_HOSTELS,
   DASHBOARD_WASTE_MANAGEMENT_BAR_CHART,
   DASHBOARD_WASTE_MANAGEMENT_HOSTELS,
@@ -62,6 +66,7 @@ const {
   GET_FUNCTIONING_CCTV_CHART,
   GET_FUNCTIONING_CCTV_HOSTELS,
   GET_FEEDBACK_HOSTELS,
+  GET_STUDENT_TOP_THREE_CONCERNS,
   GET_PHC_DISTANCE_CHART,
   GET_PHC_DISTANCE_HOSTELS,
   CHART_REPORT,
@@ -110,6 +115,19 @@ const getPrincipalAuthorityBarChartApi = async ({ params }) => {
   })
   return response?.data
 }
+const getInspectionAssessmentPieChartApi = async ({ params }) => {
+  const response = await getMethod(DASHBOARD_INSPECTION_ASSESSMENT_PIE_CHART, {
+    params,
+  })
+  return response?.data
+}
+const getInspectionAssessmentHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_INSPECTION_ASSESSMENT_HOSTELS({ pageNo }),
+    { params },
+  )
+  return response?.data
+}
 
 const getAvailableToiletsChartApi = async ({ params }) => {
   const response = await getMethod(GET_AVAILABLE_TOILETS_CHART, { params })
@@ -136,6 +154,24 @@ const getRecordMaintenanceBarChartApi = async ({ params }) => {
   const response = await getMethod(DASHBOARD_RECORD_MAINTENANCE_BAR_CHART, {
     params,
   })
+  return response?.data
+}
+
+const getOverallHostelConditionBarChartApi = async ({ params }) => {
+  const response = await getMethod(
+    DASHBOARD_OVERALL_HOSTEL_CONDITION_BAR_CHART,
+    {
+      params,
+    },
+  )
+  return response?.data
+}
+
+const getOverallHostelConditionHostelsApi = async ({ params, pageNo = 1 }) => {
+  const response = await getMethod(
+    DASHBOARD_OVERALL_HOSTEL_CONDITION_HOSTELS({ pageNo }),
+    { params },
+  )
   return response?.data
 }
 
@@ -482,7 +518,17 @@ const getFunctioningCCTVHostelsApi = async ({ pageNo, params }) => {
   return response?.data
 }
 const getFeedbackHostelsApi = async ({ pageNo, params }) => {
+  // const response = await getMethod(GET_FEEDBACK_HOSTELS({ pageNo }), {
+  //   params,
+  // })
   const response = await getMethod(GET_FEEDBACK_HOSTELS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
+const getStudentTopThreeConcernsApi = async ({ pageNo, params }) => {
+  const response = await getMethod(GET_STUDENT_TOP_THREE_CONCERNS({ pageNo }), {
     params,
   })
   return response?.data
@@ -504,6 +550,8 @@ export {
   getDiscrepanciesApi,
   getShiftReportApi,
   getPrincipalAuthorityBarChartApi,
+  getInspectionAssessmentPieChartApi,
+  getInspectionAssessmentHostelsApi,
   getPrincipalAuthorityHostelsApi,
   getDrinkingWaterChartApi,
   getDrinkingWaterHostelsApi,
@@ -512,6 +560,8 @@ export {
   getStaffAvailabilityChartApi,
   getStaffAvailabilityHostelsApi,
   getRecordMaintenanceBarChartApi,
+  getOverallHostelConditionBarChartApi,
+  getOverallHostelConditionHostelsApi,
   getRecordMaintenanceHostelsApi,
   getWasteManagementBarChartApi,
   getWasteManagementHostelsApi,
@@ -560,6 +610,7 @@ export {
   getFunctioningCCTVChartApi,
   getFunctioningCCTVHostelsApi,
   getFeedbackHostelsApi,
+  getStudentTopThreeConcernsApi,
   getPHCDistanceChartApi,
   getPHCDistanceHostelsApi,
   getChartReportApi,

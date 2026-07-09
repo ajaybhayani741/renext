@@ -1332,3 +1332,27 @@
     }
   }
 }
+
+.collapse-header.collapse-highlight-blink {
+  font-size: 27px;
+  scroll-margin-top: 70px;
+  --collapse-highlight-color: #70dc8d;
+
+  .ant-collapse-header-text {
+    animation: administration-collapse-text-blink 1s ease-in-out infinite;
+    font-weight: 700;
+  }
+}
+
+@keyframes administration-collapse-text-blink {
+  0%,
+  100% {
+    color: var(--collapse-highlight-color);
+    opacity: 1;
+  }
+
+  50% {
+    color: #fff;
+    opacity: 0.4;
+  }
+}

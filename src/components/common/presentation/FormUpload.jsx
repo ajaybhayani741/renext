@@ -71,7 +71,7 @@ const FormUpload = ({
           onPreview={isPreview ? handlePreview : false}
           fileList={value?.fileList}
           disabled={disabled}
-          openFileDialogOnClick={!disabled}
+          openFileDialogOnClick={!disabled && !disableGalleryUpload}
           {...props}
         >
           {props?.directory ? (
@@ -81,7 +81,9 @@ const FormUpload = ({
           ) : (
             uploadMoreCondition && (
               <div className={`ant-badge ${className}`}>
-                {t(props?.uploadText || 'txt_Upload')}
+                {!disableGalleryUpload
+                  ? t(props?.uploadText || 'txt_Upload')
+                  : ''}
               </div>
             )
           )}

@@ -3,8 +3,11 @@ import { useState } from 'react'
 import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
 import { entries } from '../../../utils/javascript'
-import staffDetails from '../container/staffDetails.container'
+import administrationGovernance from '../container/administrationGovernance.container'
+// Legacy chart API disabled while its charts are hidden.
+// import staffDetails from '../container/staffDetails.container'
 import { staffDetailsCharts } from '../dashboard.description'
+import InspectionAssessmentPieChart from '../shared/InspectionAssessmentPieChart'
 import ModernFrequencyChart from '../shared/ModernFrequencyChart'
 import ModuleFilters from '../shared/ModuleFilters'
 
@@ -54,21 +57,29 @@ const StaffDetailsDashboard = () => {
   const {
     onRangeChange,
     seriesData,
-    selectedColumn,
     handleChartClick,
-    handleCloseModal,
-    hostelsData,
-    handleTableChange,
-  } = staffDetails({ hostelFilter })
+  } = {} // staffDetails({ hostelFilter })
+  const {
+    pieData,
+    handleChartClick: handleAssessmentChartClick,
+    selectedColumn: assessmentSelectedColumn,
+    handleCloseModal: handleAssessmentCloseModal,
+    handleTableChange: handleAssessmentTableChange,
+    hostelsData: assessmentHostelsData,
+    questionOptions: assessmentQuestionOptions,
+    questionName: assessmentQuestionName,
+    setQuestionName: setAssessmentQuestionName,
+  } = administrationGovernance({
+    hostelFilter,
+    moduleName: 'ELECTRICITY_LIGHTING',
+  })
 
   return (
     <DashboardWrapper
-      {...{
-        selectedColumn,
-        handleCloseModal,
-        hostelsData,
-        handleTableChange,
-      }}
+      handleCloseModal={handleAssessmentCloseModal}
+      selectedColumn={assessmentSelectedColumn}
+      handleTableChange={handleAssessmentTableChange}
+      hostelsData={assessmentHostelsData}
     >
       <div className="dashboard-module-surface dashboard-staff-surface">
         <ModuleFilters
@@ -76,8 +87,19 @@ const StaffDetailsDashboard = () => {
           setDistrictFilter={setDistrictFilter}
           hostelFilter={hostelFilter}
           setHostelFilter={setHostelFilter}
+          questionOptions={assessmentQuestionOptions}
+          questionName={assessmentQuestionName}
+          onQuestionChange={setAssessmentQuestionName}
         />
         <div className="dashboard-single-chart-grid">
+          <InspectionAssessmentPieChart
+            data={pieData}
+            handleChartClick={handleAssessmentChartClick}
+            name="dash_AdministrationGovernance"
+          />
+          {/* Existing category charts are intentionally hidden for now. */}
+          {false && (
+            <>
           {entries(staffDetailsCharts)?.map(([key, value]) => {
             const aesthetic = chartAesthetics[key] || chartAesthetics.dash_TotalNumberOfWorkersOnPayroll
 
@@ -100,6 +122,8 @@ const StaffDetailsDashboard = () => {
               </div>
             )
           })}
+            </>
+          )}
         </div>
       </div>
     </DashboardWrapper>
