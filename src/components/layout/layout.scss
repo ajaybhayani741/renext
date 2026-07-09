@@ -428,12 +428,15 @@ img {
     min-height: 52px;
     height: auto;
     line-height: normal;
-    z-index: 100;
+    z-index: 10;
 
     > .d-flex {
       min-height: 52px;
       align-items: center;
       gap: 10px;
+       @media screen and (max-width: 991px) {
+        gap: 5px;
+       }
     }
 
     @media screen and (min-width: 992px) {
@@ -551,7 +554,7 @@ img {
 
       .welcome-text {
         display: flex;
-        align-items: baseline;
+        align-items: center;
         gap: 6px;
         min-width: 0;
         line-height: 1.2;
@@ -587,7 +590,6 @@ img {
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
-          margin-bottom: 4px;
         }
 
         span:first-child {
@@ -688,7 +690,7 @@ img {
       .ant-select-arrow {
         color: #000;
         font-size: 20px;
-        right: 5px;
+        right: 15px;
         opacity: 1;
 
         @media only screen and (max-width: 480px) {
@@ -1155,7 +1157,6 @@ img {
 
 // --- Floating header: refine welcome text + action buttons ---
 .ant-layout .ant-layout-header {
-  border: 1px solid rgba(255, 255, 255, 0.7);
   gap: 6px;
 
   .username {
@@ -1178,8 +1179,6 @@ img {
     .anticon {
       display: grid;
       place-items: center;
-      width: 40px;
-      height: 40px;
       border-radius: 50%;
       background: var(--color-bg);
       color: var(--color-font);
@@ -1617,6 +1616,7 @@ img {
 
   @media screen and (max-width: 380px) {
     width: 34px;
+    align-items: center;
 
     .ant-select-selector {
       width: 34px !important;
