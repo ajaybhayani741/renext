@@ -1,5 +1,4 @@
 import ConfirmView from './ConfirmView'
-import InspectionFormField from './InspectionFormField'
 import InspectionFormList from './InspectionFormList'
 import ANTDButton from '../../../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../../../shared/antd/ANTDColumn'
@@ -185,17 +184,6 @@ const InspectionJob = ({ editData, setEditData }) => {
       </div>
     ),
     2: (
-      <>
-        <InspectionFormField
-          {...{
-            attrList: findingsAttrFn(),
-            name: 'findingsRequestDto',
-            apiCall,
-          }}
-        />
-      </>
-    ),
-    3: (
       <ConfirmView
         selectedUsers={selectedUsers}
         inspectionFormFieldsAttr={inspectionFormFieldsAttr}
@@ -203,7 +191,7 @@ const InspectionJob = ({ editData, setEditData }) => {
         getCurrentLocation={getCurrentLocation}
       />
     ),
-    4: (
+    3: (
       <>
         <div className="text-center align-center m-auto">
           <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -255,7 +243,7 @@ const InspectionJob = ({ editData, setEditData }) => {
               steps: inspectionSteps,
               current,
               loader,
-              completeStep: 3,
+              completeStep: 2,
               displayForm,
               handleNext,
               handlePrevious,
@@ -287,3 +275,4 @@ const InspectionJob = ({ editData, setEditData }) => {
 }
 
 export default InspectionJob
+

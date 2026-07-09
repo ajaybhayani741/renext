@@ -814,7 +814,7 @@ const inspection = ({
         }
         isComplete &&
           response?.data?.data &&
-          isEqual(current, 3) &&
+          isEqual(current, 2) &&
           triggerJobReport(isComplete)
         if (!isComplete) {
           Object.assign(payload, { id: response?.data?.data?.id })
@@ -1365,22 +1365,22 @@ const inspection = ({
   const handleNext = async () => {
     let isValid = await validationFn({ validateAll: true })
     if (!isValid) return
-    if (include([1, 2], current)) {
+    if (include([1], current)) {
       isValid = await apiCall({
         showMsg: true,
         isLoading: true,
       })
-    } else if (isEqual(current, 3)) {
+    } else if (isEqual(current, 2)) {
       setCompleteConfirmation({ open: true })
       return
     }
     if (!isValid) return
 
-    return setCurrent(isEqual(current, 1) ? current + 2 : current + 1)
+    return setCurrent(current + 1)
   }
 
   const handlePrevious = () => {
-    setCurrent(isEqual(current, 3) ? current - 2 : current - 1)
+    setCurrent(current - 1)
   }
 
   const onCompleteConfirmationClose = () => {
@@ -1518,3 +1518,4 @@ const inspection = ({
 }
 
 export default inspection
+
