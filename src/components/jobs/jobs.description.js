@@ -111,7 +111,6 @@ const payloadType = {
 const inspectionSteps = [
   'job_NameAndDate',
   'txt_Details',
-  'job_Findings',
   'job_Confirm',
   'job_Complete',
 ]
@@ -464,3 +463,4 @@ export {
   tabKeys,
   booleanOptions,
 }
+
