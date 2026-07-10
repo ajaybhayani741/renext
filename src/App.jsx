@@ -52,6 +52,8 @@ function AuthQueryRedirect({ children }) {
     setItem('userId', userId)
     setItem('token', authToken)
     setItem('refreshToken', refreshToken)
+    setItem('userExists', true)
+    setItem('urlAuthLogin', true)
     navigate(pathName.HOME, { replace: true })
   }, [navigate, search])
 
