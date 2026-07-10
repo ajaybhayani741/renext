@@ -11,14 +11,17 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 
+import MsoMonitoringDashboard from './MsoMonitoringDashboard'
 import useTranslations from '../../../hooks/useTranslations'
+import { userWiseRole } from '../../../utils/constant'
+import { isEqual } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
 import FiscalYearSelect from '../../common/presentation/FiscalYearSelect'
 import dashboard from '../container/dashboard.container'
 import { cardList } from '../dashboard.description'
 import DashboardCard from '../shared/DashboardCard'
 import DashboardGrid from '../shared/DashboardGrid'
 import DashboardHeader from '../shared/DashboardHeader'
-
 const cardAesthetics = [
   { icon: <TeamOutlined />, accent: '#7C3AED', accentLight: '#EDE9FE' },
   { icon: <UserOutlined />, accent: '#059669', accentLight: '#D1FAE5' },
@@ -38,6 +41,11 @@ const cardAesthetics = [
 const Dashboard = () => {
   const { t } = useTranslations()
   const { handleCardSelect } = dashboard()
+  const userData = JSON.parse(getItem('userData'))
+
+  if (isEqual(userData?.roleId, userWiseRole.mandalSpecialOfficer)) {
+    return <MsoMonitoringDashboard />
+  }
 
   return (
     <div className="dashboard-container">

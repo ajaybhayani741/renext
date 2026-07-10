@@ -7,7 +7,6 @@ import useTranslations from '../../../hooks/useTranslations'
 import { setDeviceStatus, setMobileStatus } from '../../../redux/app/reducer'
 import pathName, {
   DASHBOARD_TXT,
-  NEW_DASHBOARD_TXT,
   USER_TXT,
 } from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
@@ -33,7 +32,7 @@ const appLayout = () => {
   const activeItem1 = location.pathname
   const defaultOpenKeys = [`/${activeItem1.split('/')?.[1]}`]
   const [collapsed, setCollapsed] = useState(false)
-  const { districtCollector } = userWiseRole
+  const { districtCollector, mandalSpecialOfficer } = userWiseRole
 
   const removeAddFromLastPath = () => {
     let url = ''
@@ -45,10 +44,6 @@ const appLayout = () => {
       activeItem1.startsWith(`${DASHBOARD_TXT}/`)
     ) {
       return DASHBOARD_TXT
-    }
-
-    if (activeItem1 === NEW_DASHBOARD_TXT) {
-      return NEW_DASHBOARD_TXT
     }
 
     if (
@@ -129,7 +124,7 @@ const appLayout = () => {
             filtered.push(filteredMenu)
           }
         }
-        return isEqual(roleId, districtCollector)
+        return include([districtCollector, mandalSpecialOfficer], roleId)
           ? filtered.filter(menu => !isEqual(menu.key, USER_TXT))
           : filtered
       }, []),

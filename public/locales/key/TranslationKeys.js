@@ -348,6 +348,7 @@ const TranslationKeys = {
   'user_StateAdminOfficer' : 'user_StateAdminOfficer',
   'user_DistrictCollector' : 'user_DistrictCollector',
   'user_InspectionOfficer' : 'user_InspectionOfficer',
+  'user_MandalSpecialOfficer' : 'user_MandalSpecialOfficer',
   'user_Hostel' : 'user_Hostel',
   'user_AssociatedStateHostelDepartment' : 'user_AssociatedStateHostelDepartment',
   'user_AssociatedDistrictCollector' : 'user_AssociatedDistrictCollector',

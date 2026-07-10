@@ -8,6 +8,7 @@ const STATE_ADMIN_OFFICER = 'state-admin-officer'
 const DISTRICT_COLLECTOR = 'district-collector'
 const INSPECTION_OFFICER = 'inspection-officer'
 const HOSTEL = 'hostel'
+const MANDAL_SPECIAL_OFFICER = 'mandal-special-officer'
 
 //book keeping path
 const BOOK_KEEPING_TXT = '/book-keeping'
@@ -67,6 +68,7 @@ export {
   DISTRICT_COLLECTOR,
   INSPECTION_OFFICER,
   HOSTEL,
+  MANDAL_SPECIAL_OFFICER,
   BOOK_KEEPING_TXT,
   SCRATCH_TICKET_TRACKING,
   JOHN_TUBES,
