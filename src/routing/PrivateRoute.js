@@ -11,22 +11,24 @@ import {
 import useRedux from '../hooks/useRedux'
 import useRouter from '../hooks/useRouter'
 import { setShiftDetails, setStoreDetails } from '../redux/app/reducer'
+import { setJobActiveTab } from '../redux/jobs/reducer'
 import { profileDetails } from '../redux/user_management/reducer'
 import { userWiseRole } from '../utils/constant'
-import { include } from '../utils/javascript'
-import { getItem, setItem } from '../utils/localstorage'
+import { include, isEqual } from '../utils/javascript'
+import { getItem, removeItem, setItem } from '../utils/localstorage'
 
 const ProtectedRoute = ({ children }) => {
   const isAuth = getItem('token')
   const adminId = getItem('adminId')
   const userId = getItem('userId')
-  const { queryParams } = useRouter()
+  const isUrlAuthLogin = getItem('urlAuthLogin')
+  const { navigate, queryParams } = useRouter()
   const code = queryParams.get('code')
   let navigatePath = pathName.LANDING
   const userData = JSON.parse(getItem('userData'))
   const { dispatch } = useRedux()
 
-  const { admin, storeEmployee, storeManager } = userWiseRole
+  const { admin, inspectionOfficer, storeEmployee, storeManager } = userWiseRole
 
   useEffect(() => {
     const getProfile = async () => {
@@ -42,6 +44,21 @@ const ProtectedRoute = ({ children }) => {
           if (resp?.data) {
             setItem('adminId', resp?.data?.list?.[0]?.id)
           }
+        }
+        if (isUrlAuthLogin) {
+          removeItem('urlAuthLogin')
+          if (isEqual(response?.data?.data?.roleId, inspectionOfficer)) {
+            dispatch(
+              setJobActiveTab({
+                status: tabKeys.active,
+                type: tabKeys.inspection,
+              }),
+            )
+            navigate(pathName.JOBS, { replace: true })
+            return
+          }
+          navigate(pathName.HOME, { replace: true })
+          return
         }
         if (include([storeEmployee, storeManager], response?.data?.data?.roleId)) {
           const storeId = response?.data?.data?.parent?.id
