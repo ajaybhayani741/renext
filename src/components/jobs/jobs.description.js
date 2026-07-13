@@ -25,8 +25,8 @@ const getJobTabList = roleId => {
     },
   ]
 
-  // Add unassign hostel tab only for district collector
-  if (isEqual(roleId, districtCollector)) {
+  // Add unassign hostel tab for district collector and inspection officer
+  if (isEqual(roleId, inspectionOfficer)) {
     baseStatusTabs.unshift({
       label: 'job_Unassign',
       key: unassignHostel,

@@ -9,12 +9,14 @@ const FiscalYearSelect = ({
   showDateRange = true,
   setDefault,
   isDateRange = true,
+  showRecentPresets = false,
 }) => {
   const { t } = useTranslations()
   const { dateRangeProps, fiscalYearSelector } = fiscalYearSelect({
     onDateChange,
     setDefault,
     isDateRange,
+    showRecentPresets,
   })
 
   return (

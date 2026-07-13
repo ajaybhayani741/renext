@@ -24,6 +24,7 @@ const userRelationKey = {
 const associateKey = {
   user_StateHostelDepartment: 'user_AssociatedStateHostelDepartment',
   user_DistrictCollector: 'user_AssociatedDistrictCollector',
+  user_Hostel: 'user_AssociatedHostel',
 }
 
 const {

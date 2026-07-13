@@ -10,7 +10,7 @@ import { userRelationKey } from '../../userManagement/user.description'
 
 const unassignedHostels = () => {
   const { t } = useTranslations()
-  const { dispatch } = useRedux()
+  const { dispatch, selector } = useRedux()
   const [hostelData, setHostelData] = useState({})
   const [inspectionOfficerModal, setInspectionOfficerModal] = useState({
     open: false,
@@ -20,6 +20,8 @@ const unassignedHostels = () => {
     list: [],
     loader: false,
   })
+  const userData = selector(state => state.user?.profile_details)
+
   const [
     confirmAssignInspectionRandomModal,
     setConfirmAssignInspectionRandomModal,
@@ -32,7 +34,7 @@ const unassignedHostels = () => {
 
   const hostelApiCall = async (pageNo = 1) => {
     setHostelData(pre => ({ ...pre, loader: true }))
-    const params = `${pageNo}?roleId=${hostel}&relationType=${userRelationKey?.nonAssociate}`
+    const params = `${pageNo}?roleId=${hostel}&relationType=${userRelationKey?.nonAssociate}&msoUserId=${userData?.associatedMsoDetails?.id}`
     const response = await getUserList({ params })
     setHostelData({
       ...response?.data,

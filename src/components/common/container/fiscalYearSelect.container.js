@@ -10,6 +10,7 @@ const fiscalYearSelect = ({
   onDateChange,
   setDefault = true,
   isDateRange,
+  showRecentPresets = false,
 } = {}) => {
   const { dispatch, selector } = useRedux()
   const { value, options, dateRange } = selector(
@@ -60,6 +61,11 @@ const fiscalYearSelect = ({
     onDateChange && onDateChange(startDate, endDate)
   }
 
+  const getLastDaysRange = days => {
+    const end = dayJs()
+    return [end.subtract(days - 1, 'day'), end]
+  }
+
   const fiscalYearSelector = {
     width: '100%',
     value: value,
@@ -80,6 +86,14 @@ const fiscalYearSelect = ({
     allowClear: false,
     allowEmpty: isDisable,
     disabled: isDisable,
+    presets: showRecentPresets
+      ? [
+          { label: 'Last 7 Days', value: getLastDaysRange(7) },
+          { label: 'Last 14 Days', value: getLastDaysRange(14) },
+          { label: 'Last 30 Days', value: getLastDaysRange(30) },
+          { label: 'Last 90 Days', value: getLastDaysRange(90) },
+        ]
+      : undefined,
   }
 
   return { dateRangeProps, fiscalYearSelector }

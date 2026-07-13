@@ -135,11 +135,13 @@ const userChildrenList = [
       user_InspectionOfficer: [
         {
           payload: { roleId: inspectionOfficer, relationType: associate },
+          addAssociate: [districtCollector],
         },
       ],
-      user_Hostel: [
+      user_AssociatedHostel: [
         {
           payload: { roleId: hostel, relationType: associate },
+          addAssociate: [districtCollector],
         },
       ],
     },
@@ -160,6 +162,12 @@ const userChildrenList = [
       user_AssignedHostelsForInspection: [
         {
           payload: { roleId: hostel, relationType: associate },
+          addAssociate: [admin, districtCollector],
+        },
+      ],
+      user_AssociatedMSO: [
+        {
+          payload: { roleId: mandalSpecialOfficer, relationType: associate },
           addAssociate: [admin, districtCollector],
         },
       ],
@@ -199,6 +207,12 @@ const userChildrenList = [
           addAssociate: [],
         },
       ],
+      user_AssociatedMSO: [
+        {
+          payload: { roleId: mandalSpecialOfficer, relationType: associate },
+          addAssociate: [admin, districtCollector],
+        },
+      ],
       user_AssociatedStateHostelDepartment: [
         {
           payload: { roleId: stateHostelDepartment, relationType: associate },
@@ -234,13 +248,13 @@ const sidebarMenus = [
     key: `${USER_TXT}/${INSPECTION_OFFICER}`,
     Icon: UserIcon,
     label: 'user_ListOfInspectionOfficer',
-    sidebar: [mandalSpecialOfficer],
+    sidebar: [mandalSpecialOfficer, districtCollector],
   },
   {
     key: `${USER_TXT}/${HOSTEL}`,
     Icon: DealerIcon,
     label: 'user_ListOfHostels',
-    sidebar: [mandalSpecialOfficer],
+    sidebar: [mandalSpecialOfficer, districtCollector],
   },
   {
     key: USER_TXT,
@@ -255,16 +269,16 @@ const sidebarMenus = [
       })),
   },
   {
-    key: `/${HOSTEL}`,
+    key: `${USER_TXT}/${HOSTEL}`,
     Icon: ClipboardIcon,
-    label: 'user_AssignHostelToInspectionOfficer',
-    sidebar: [districtCollector],
+    label: 'user_Hostel',
+    sidebar: [],
   },
   {
     key: `${USER_TXT}/${INSPECTION_OFFICER}`,
     Icon: UserIcon,
-    label: 'user_AssignInspectionOfficerToHostel',
-    sidebar: [districtCollector],
+    label: 'user_InspectionOfficer',
+    sidebar: [],
   },
   {
     key: JOBS,

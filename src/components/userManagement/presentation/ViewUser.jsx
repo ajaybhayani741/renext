@@ -81,9 +81,10 @@ const ViewUser = ({
         {userListView &&
           entries(userListView).map(([key, value]) => {
             if (value?.some(v => v?.hideInProfile)) return null
+            const sectionTitle = value?.[0]?.sectionTitle || key
             return (
               <Fragment key={key}>
-                <h2 className="content-title">{t(key)}</h2>
+                <h2 className="content-title">{t(sectionTitle)}</h2>
                 {value.map((v, i) => {
                   const showAdd =
                     v?.isBuilding || include(v?.addAssociate, loginUserRoleId)

@@ -159,7 +159,7 @@ const inspection = ({
     setConfirmModel({
       open: true,
       description:
-        current === 3 ? t('msg_confirmEndLocation') : t('msg_confirmLocation'),
+        current === 2 ? t('msg_confirmEndLocation') : t('msg_confirmLocation'),
     })
     const isAccepted = await createPromise()
     if (isAccepted) {
@@ -177,7 +177,7 @@ const inspection = ({
         : latLng
       form.setFieldsValue({
         ...form.getFieldsValue(),
-        ...(current === 3
+        ...(current === 2
           ? {
               endAddressInspection: address,
               endLocationInspection: latLng,

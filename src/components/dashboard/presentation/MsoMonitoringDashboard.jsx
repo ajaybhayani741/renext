@@ -1,15 +1,23 @@
 import {
   CheckCircleOutlined,
-  DownloadOutlined,
-  EyeOutlined,
-  FilterOutlined,
   PlusOutlined,
   SearchOutlined,
   SnippetsOutlined,
 } from '@ant-design/icons'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
+import useRedux from '../../../hooks/useRedux'
+import useRouter from '../../../hooks/useRouter'
+import useTranslations from '../../../hooks/useTranslations'
+import { setJobActiveTab } from '../../../redux/jobs/reducer'
+import pathName from '../../../routing/pathName.constant'
 import ANTDModal from '../../../shared/antd/ANTDModal'
+import { userWiseRole } from '../../../utils/constant'
+import { getItem } from '../../../utils/localstorage'
+import { getJobListApi } from '../../jobs/jobs.api'
+import { payloadType, tabKeys } from '../../jobs/jobs.description'
+import { getUserList } from '../../userManagement/user.api'
+import { userRelationKey } from '../../userManagement/user.description'
 
 const initialInstitutions = [
   {
@@ -195,13 +203,49 @@ const officerPool = [
   },
 ]
 
-const dateFilters = ['Weekly', 'Monthly', 'Yearly']
-
 const MsoMonitoringDashboard = () => {
+  const { t } = useTranslations()
+  const { dispatch, selector } = useRedux()
+  const { navigate } = useRouter()
+  const loginUser = JSON.parse(getItem('userData') || '{}')
+  const [associatedHostelCount, setAssociatedHostelCount] = useState(0)
+  const [completedJobCount, setCompletedJobCount] = useState(0)
   const [institutions, setInstitutions] = useState(initialInstitutions)
   const [selectedInstitutionName, setSelectedInstitutionName] = useState(null)
   const [associationModal, setAssociationModal] = useState(null)
   const [selectedRowIds, setSelectedRowIds] = useState([])
+  const fiscalYear = selector(state => state?.app?.fiscalYear?.value)
+  const { hostel } = userWiseRole
+
+  useEffect(() => {
+    const getAssociatedHostelCount = async () => {
+      const params = `1?roleId=${hostel}&userId=${loginUser?.id}&relationType=${userRelationKey.associate}`
+      const response = await getUserList({ params })
+      setAssociatedHostelCount(response?.data?.fullCount || 0)
+    }
+
+    if (loginUser?.id) {
+      getAssociatedHostelCount()
+    }
+  }, [hostel, loginUser?.id])
+
+  useEffect(() => {
+    const getCompletedJobCount = async () => {
+      const response = await getJobListApi({
+        pageNo: 1,
+        params: {
+          jobType: payloadType[tabKeys.inspection],
+          fiscalYear,
+          active: false,
+        },
+      })
+      setCompletedJobCount(response?.data?.fullCount || 0)
+    }
+
+    if (fiscalYear) {
+      getCompletedJobCount()
+    }
+  }, [fiscalYear])
 
   const selectedInstitution = useMemo(
     () => institutions.find(item => item.name === selectedInstitutionName),
@@ -222,10 +266,25 @@ const MsoMonitoringDashboard = () => {
     return source.filter(item => !associatedIds.has(item.id))
   }, [associationModal, selectedInstitution])
 
+  const hostelSuccessPercentage = associatedHostelCount
+    ? Math.round((completedJobCount / associatedHostelCount) * 100)
+    : 0
+
   const handleCloseViewModal = () => {
     setSelectedInstitutionName(null)
     setAssociationModal(null)
     setSelectedRowIds([])
+  }
+
+  const handleCompletedJobsClick = event => {
+    event.preventDefault()
+    dispatch(
+      setJobActiveTab({
+        status: tabKeys.complete,
+        type: tabKeys.inspection,
+      }),
+    )
+    navigate(pathName.JOBS)
   }
 
   const openAssociationModal = type => {
@@ -270,145 +329,53 @@ const MsoMonitoringDashboard = () => {
 
   const modalTitle =
     associationModal === 'hostels'
-      ? 'State Hostel Department'
-      : 'Inspection Officer'
+      ? t('mso_StateHostelDepartment')
+      : t('user_InspectionOfficer')
 
   return (
     <div className="mso-dashboard">
-      <div className="mso-date-filter" aria-label="Date filter">
-        {dateFilters.map((filter, index) => (
-          <button
-            type="button"
-            className={index === 0 ? 'active' : ''}
-            key={filter}
-          >
-            {filter}
-          </button>
-        ))}
-      </div>
-
       <div className="mso-summary-grid">
         <section className="mso-summary-card">
           <div className="mso-card-title-row">
-            <span>Total Count Mandal Wise</span>
+            <span>{t('mso_TotalCountMandalWise')}</span>
             <SnippetsOutlined />
           </div>
           <div className="mso-total-counts">
-            <strong>112 Hostels</strong>
+            <strong>
+              {associatedHostelCount} {t('mso_Hostels')}
+            </strong>
           </div>
-          <p>Total registered institutions</p>
+          <p>{t('mso_TotalRegisteredInstitutions')}</p>
           <div className="mso-card-metrics">
             <span>
-              <strong>100%</strong>
-              Coverage
-            </span>
-            <span>
-              <strong>Active</strong>
-              Status
+              <strong>{t('mso_Active')}</strong>
+              {t('mso_Status')}
             </span>
           </div>
         </section>
 
         <section className="mso-summary-card">
           <div className="mso-card-title-row">
-            <span>Inspection Status</span>
+            <span>{t('mso_InspectionStatus')}</span>
             <CheckCircleOutlined />
           </div>
           <div className="mso-total-counts">
-            <strong>25 Hostels</strong>
+            <strong>
+              <a href={pathName.JOBS} onClick={handleCompletedJobsClick}>
+                {completedJobCount} {t('mso_CompletedJobs')}
+              </a>
+            </strong>
           </div>
-          <p>Successfully completed and filed</p>
+          <p>{t('mso_SuccessfullyCompletedAndFiled')}</p>
           <div className="mso-card-metrics">
             <span>
-              <strong>62%</strong>
-              Hostel Success
+              <strong>{hostelSuccessPercentage}%</strong>
+              {t('mso_HostelSuccess')}
             </span>
           </div>
         </section>
       </div>
 
-      <section className="mso-table-panel">
-        <div className="mso-toolbar">
-          <label className="mso-search">
-            <SearchOutlined />
-            <input placeholder="Search by School or Mandal Name..." />
-          </label>
-          <button type="button" className="mso-light-button">
-            <FilterOutlined />
-            Filters
-          </button>
-          <button type="button" className="mso-link-button">
-            <DownloadOutlined />
-            Export CSV
-          </button>
-          <button type="button" className="mso-dark-button">
-            Generate Report
-          </button>
-        </div>
-
-        <div className="mso-table-scroll">
-          <table className="mso-institution-table">
-            <thead>
-              <tr>
-                <th>Institution Name</th>
-                <th>Mandal</th>
-                <th>Type</th>
-                <th>Total Units</th>
-                <th>Inspection Done</th>
-                <th>Last Sync</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {institutions.map(item => (
-                <tr key={item.name}>
-                  <td>
-                    <div className="mso-institution-name">
-                      <span>{item.name.charAt(0)}</span>
-                      <strong>{item.name}</strong>
-                    </div>
-                  </td>
-                  <td>{item.mandal}</td>
-                  <td>
-                    <span className="mso-type-pill">{item.type}</span>
-                  </td>
-                  <td>{item.totalUnits}</td>
-                  <td>
-                    {item.done ? (
-                      <span className="mso-done">{item.done} Done</span>
-                    ) : (
-                      <span className="mso-pending">
-                        {item.pending} Pending
-                      </span>
-                    )}
-                  </td>
-                  <td>{item.lastSync}</td>
-                  <td>
-                    <button
-                      type="button"
-                      className="mso-view-button"
-                      aria-label={`View ${item.name}`}
-                      onClick={() => setSelectedInstitutionName(item.name)}
-                    >
-                      <EyeOutlined />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="mso-table-footer">
-          <span>Showing 1-4 of 48 institutions</span>
-          <div className="mso-pagination">
-            <button type="button" className="active">
-              1
-            </button>
-            <button type="button">2</button>
-            <button type="button">3</button>
-          </div>
-        </div>
-      </section>
 
       <ANTDModal
         centered
@@ -429,20 +396,21 @@ const MsoMonitoringDashboard = () => {
             </div>
 
             <AssociationSection
-              title="Associated State Hostel Department"
+              title={t('mso_AssociatedStateHostelDepartment')}
               onAdd={() => openAssociationModal('hostels')}
+              t={t}
             >
               <table className="mso-association-table">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Image</th>
-                    <th>Business Name</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Contact</th>
-                    <th>Address</th>
-                    <th>Last Inspection</th>
+                    <th>{t('mso_ID')}</th>
+                    <th>{t('mso_Image')}</th>
+                    <th>{t('mso_BusinessName')}</th>
+                    <th>{t('mso_Name')}</th>
+                    <th>{t('mso_Email')}</th>
+                    <th>{t('mso_Contact')}</th>
+                    <th>{t('mso_Address')}</th>
+                    <th>{t('mso_LastInspection')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -465,18 +433,19 @@ const MsoMonitoringDashboard = () => {
             </AssociationSection>
 
             <AssociationSection
-              title="Inspection Officer"
+              title={t('user_InspectionOfficer')}
               onAdd={() => openAssociationModal('officers')}
+              t={t}
             >
               <table className="mso-association-table">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Designation</th>
-                    <th>Contact</th>
-                    <th>Place of Posting</th>
+                    <th>{t('mso_ID')}</th>
+                    <th>{t('mso_Image')}</th>
+                    <th>{t('mso_Name')}</th>
+                    <th>{t('mso_Designation')}</th>
+                    <th>{t('mso_Contact')}</th>
+                    <th>{t('mso_PlaceOfPosting')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -519,12 +488,12 @@ const MsoMonitoringDashboard = () => {
             className="mso-association-ok-button"
             onClick={handleAssociateSelected}
           >
-            OK
+            {t('mso_OK')}
           </button>
         </div>
         <label className="mso-modal-search">
-          <input placeholder="Business Name" />
-          <button type="button" aria-label="Search">
+          <input placeholder={t('mso_BusinessName')} />
+          <button type="button" aria-label={t('mso_Search')}>
             <SearchOutlined />
           </button>
         </label>
@@ -548,118 +517,127 @@ const MsoMonitoringDashboard = () => {
   )
 }
 
-const AssociationSection = ({ title, onAdd, children }) => (
+const AssociationSection = ({ title, onAdd, children, t }) => (
   <section className="mso-association-section">
     <div className="mso-association-heading">
       <h3>{title}</h3>
       <button type="button" onClick={onAdd}>
-        Add <PlusOutlined />
+        {t('btn_Add')} <PlusOutlined />
       </button>
     </div>
     <div className="mso-association-table-wrap">{children}</div>
   </section>
 )
 
-const SelectableHostelTable = ({ rows, selectedRowIds, onCheck }) => (
-  <table className="mso-association-table mso-selection-table">
-    <thead>
-      <tr>
-        <th>Select</th>
-        <th>ID</th>
-        <th>Image</th>
-        <th>Business Name</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Contact</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {rows.length ? (
-        rows.map(row => (
-          <tr key={row.id}>
-            <td>
-              <input
-                checked={selectedRowIds.includes(row.id)}
-                type="checkbox"
-                onChange={() => onCheck(row.id)}
-              />
-            </td>
-            <td>{row.id}</td>
-            <td>
-              <span className="mso-table-avatar">{row.name[0]}</span>
-            </td>
-            <td>{row.businessName}</td>
-            <td>{row.name}</td>
-            <td>{row.email}</td>
-            <td>{row.contact}</td>
-            <td>
-              <button type="button" className="mso-table-view-action">
-                View
-              </button>
-            </td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan="8" className="mso-no-data">
-            No Data
-          </td>
-        </tr>
-      )}
-    </tbody>
-  </table>
-)
+const SelectableHostelTable = ({ rows, selectedRowIds, onCheck }) => {
+  const { t } = useTranslations()
 
-const SelectableOfficerTable = ({ rows, selectedRowIds, onCheck }) => (
-  <table className="mso-association-table mso-selection-table">
-    <thead>
-      <tr>
-        <th>Select</th>
-        <th>ID</th>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Designation</th>
-        <th>Contact</th>
-        <th>Place of Posting</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {rows.length ? (
-        rows.map(row => (
-          <tr key={row.id}>
-            <td>
-              <input
-                checked={selectedRowIds.includes(row.id)}
-                type="checkbox"
-                onChange={() => onCheck(row.id)}
-              />
-            </td>
-            <td>{row.id}</td>
-            <td>
-              <span className="mso-table-avatar">{row.name[0]}</span>
-            </td>
-            <td>{row.name}</td>
-            <td>{row.designation}</td>
-            <td>{row.contact}</td>
-            <td>{row.placeOfPosting}</td>
-            <td>
-              <button type="button" className="mso-table-view-action">
-                View
-              </button>
+  return (
+    <table className="mso-association-table mso-selection-table">
+      <thead>
+        <tr>
+          <th>{t('mso_Select')}</th>
+          <th>{t('mso_ID')}</th>
+          <th>{t('mso_Image')}</th>
+          <th>{t('mso_BusinessName')}</th>
+          <th>{t('mso_Name')}</th>
+          <th>{t('mso_Email')}</th>
+          <th>{t('mso_Contact')}</th>
+          <th>{t('mso_Action')}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.length ? (
+          rows.map(row => (
+            <tr key={row.id}>
+              <td>
+                <input
+                  checked={selectedRowIds.includes(row.id)}
+                  type="checkbox"
+                  onChange={() => onCheck(row.id)}
+                />
+              </td>
+              <td>{row.id}</td>
+              <td>
+                <span className="mso-table-avatar">{row.name[0]}</span>
+              </td>
+              <td>{row.businessName}</td>
+              <td>{row.name}</td>
+              <td>{row.email}</td>
+              <td>{row.contact}</td>
+              <td>
+                <button type="button" className="mso-table-view-action">
+                  {t('btn_View')}
+                </button>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="8" className="mso-no-data">
+              {t('txt_NoData')}
             </td>
           </tr>
-        ))
-      ) : (
+        )}
+      </tbody>
+    </table>
+  )
+}
+
+const SelectableOfficerTable = ({ rows, selectedRowIds, onCheck }) => {
+  const { t } = useTranslations()
+
+  return (
+    <table className="mso-association-table mso-selection-table">
+      <thead>
         <tr>
-          <td colSpan="8" className="mso-no-data">
-            No Data
-          </td>
+          <th>{t('mso_Select')}</th>
+          <th>{t('mso_ID')}</th>
+          <th>{t('mso_Image')}</th>
+          <th>{t('mso_Name')}</th>
+          <th>{t('mso_Designation')}</th>
+          <th>{t('mso_Contact')}</th>
+          <th>{t('mso_PlaceOfPosting')}</th>
+          <th>{t('mso_Action')}</th>
         </tr>
-      )}
-    </tbody>
-  </table>
-)
+      </thead>
+      <tbody>
+        {rows.length ? (
+          rows.map(row => (
+            <tr key={row.id}>
+              <td>
+                <input
+                  checked={selectedRowIds.includes(row.id)}
+                  type="checkbox"
+                  onChange={() => onCheck(row.id)}
+                />
+              </td>
+              <td>{row.id}</td>
+              <td>
+                <span className="mso-table-avatar">{row.name[0]}</span>
+              </td>
+              <td>{row.name}</td>
+              <td>{row.designation}</td>
+              <td>{row.contact}</td>
+              <td>{row.placeOfPosting}</td>
+              <td>
+                <button type="button" className="mso-table-view-action">
+                  {t('btn_View')}
+                </button>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="8" className="mso-no-data">
+              {t('txt_NoData')}
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  )
+}
 
 export default MsoMonitoringDashboard
+
