@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
-import useTranslations from '../../../hooks/useTranslations'
 import { setPopupMessageModel } from '../../../redux/app/reducer'
 import { apiParams } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
@@ -9,7 +8,6 @@ import { addAssociateApi, getUserList } from '../../userManagement/user.api'
 import { userRelationKey } from '../../userManagement/user.description'
 
 const unassignedHostels = () => {
-  const { t } = useTranslations()
   const { dispatch, selector } = useRedux()
   const [hostelData, setHostelData] = useState({})
   const [inspectionOfficerModal, setInspectionOfficerModal] = useState({
@@ -58,27 +56,28 @@ const unassignedHostels = () => {
   const onAssignInspectionOfficer = async selectedUsers => {
     setInspectionOfficerData(pre => ({ ...pre, loader: true }))
     const payloadData = `?userId=${
-      inspectionOfficerModal?.data?.id
-    }&associateUserId=${selectedUsers?.map(user => user?.id)}`
-    const { data } = await addAssociateApi({ params: payloadData })
-    setInspectionOfficerData(pre => ({ ...pre, loader: false }))
-    if (data?.success) {
+      userData?.id
+      }&associateUserId=${[confirmAssignInspectionRandomModal?.data?.id]}`
+      const resp = await addAssociateApi({ params: payloadData })
+   if (resp?.data) {
       dispatch(
         setPopupMessageModel({
           open: true,
-          message: t('msg_HostelAssignedToInspectionOfficer', {
-            hostelName: inspectionOfficerModal?.data?.lastName,
-            inspectionOfficer:
-              selectedUsers?.[0]?.businessName ||
-              selectedUsers?.[0]?.lastName ||
-              '-',
-          }),
+          message: 'msg_HostelAssignedSuccessfully',
           success: true,
         }),
       )
-      handleCloseInspectionOfficerModal()
       hostelApiCall()
+    } else {
+      dispatch(
+        setPopupMessageModel({
+          open: true,
+          message: resp?.data?.message || 'msg_SomethingWentWrong',
+          success: false,
+        }),
+      )
     }
+    handleAssignInspectionOfficerRandomly()
   }
 
   const getInspectionOfficerList = async ({ pageNo }) => {
