@@ -1,7 +1,6 @@
 import InspectionDetailsView from './InspectionDetailsView'
 // import InspectionFormField from './InspectionFormField'
 import useTranslations from '../../../../../hooks/useTranslations'
-import ANTDButton from '../../../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../../../shared/antd/ANTDColumn'
 import ANTDConfigProvider from '../../../../../shared/antd/ANTDConfigProvider'
 import { ANTDDatePicker } from '../../../../../shared/antd/ANTDDatePicker'
@@ -10,7 +9,6 @@ import {
   ANTDFormItem,
   useFormInstanceFn,
 } from '../../../../../shared/antd/ANTDForm'
-import ANTDInput from '../../../../../shared/antd/ANTDInput'
 import ANTDRow from '../../../../../shared/antd/ANTDRow'
 import { userWiseRole } from '../../../../../utils/constant'
 import { validationTag } from '../../../../../utils/customFunctions'
@@ -22,7 +20,6 @@ const ConfirmView = ({
   selectedUsers,
   inspectionFormFieldsAttr,
   findingsAttrFn,
-  getCurrentLocation,
 }) => {
   const { t } = useTranslations()
   const form = useFormInstanceFn()
@@ -181,11 +178,10 @@ const ConfirmView = ({
       }}
     >
       <h2 className="content-title mb-15">{t('job_Preview')}</h2>
-      <ANTDDivider className="mb-10" />
+      <ANTDDivider />
       <ANTDRow
         align="center"
         className="date-management-number"
-        gutter={[10, 10]}
       >
         <ANTDColumn md={24} lg={12} sm={24} xs={24}>
           <ANTDFormItem
@@ -210,37 +206,6 @@ const ConfirmView = ({
             />
           </ANTDFormItem>
         </ANTDColumn>
-        <ANTDColumn
-          md={24}
-          lg={12}
-          sm={24}
-          xs={24}
-          className="d-flex space-between inspection-location-capture-column"
-          style={{ alignItems: 'baseline' }}
-        >
-          <ANTDFormItem
-            label={t('job_LocationOfInspection')}
-            name={'endAddressInspection'}
-            className={`${validationTag(lang)} date-label w-100`}
-            rules={[
-              {
-                required: true,
-                message: t('error_FieldISRequire'),
-              },
-            ]}
-          >
-            <ANTDInput disabled />
-          </ANTDFormItem>
-          <ANTDFormItem
-            label=" "
-            layout="vertical"
-            className="ml-5 capture-location-action"
-          >
-            <ANTDButton type="primary" onClick={getCurrentLocation}>
-              {t('job_CaptureLocation')}
-            </ANTDButton>
-          </ANTDFormItem>
-        </ANTDColumn>
       </ANTDRow>
       <InspectionDetailsView
         inspectionData={inspectionData}
@@ -258,3 +223,4 @@ const ConfirmView = ({
 }
 
 export default ConfirmView
+
