@@ -4,8 +4,7 @@ import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import { userWiseRole } from '../../../utils/constant'
-import { include, isEqual, ternary } from '../../../utils/javascript'
-import { getItem } from '../../../utils/localstorage'
+import { isEqual, ternary } from '../../../utils/javascript'
 import userList from '../container/userList.container'
 import { userRelationKey, userTranslationKey } from '../user.description'
 import AddUser from './AddUser'
@@ -40,8 +39,7 @@ function UserList({
     modelData,
   } = userList({ payload, isBuilding })
   const { t } = useTranslations()
-  const { inspectionOfficer, hostel, admin } = userWiseRole
-  const loginUserRoleId = JSON.parse(getItem('userData'))
+  const { hostel } = userWiseRole
 
   return (
     <div className={className}>
@@ -56,20 +54,19 @@ function UserList({
         style={{ flexWrap: 'wrap', gap: '10px' }}
       >
         {subTitle && <h3 style={{ margin: 0, padding: 0 }}>{t(subTitle)}</h3>}
-        {showAdd &&
-          (isEqual(loginUserRoleId?.roleId, admin)
+        {showAdd && (
+          /*  (isEqual(loginUserRoleId?.roleId, admin)
             ? !isEqual(payload?.roleId, hostel)
-            : !include([inspectionOfficer], payload?.roleId)) && (
-            <div className="d-flex justify-content-end">
-              <ANTDButton
-                type="primary"
-                className="btn text-end"
-                onClick={handleNonAssociateUser}
-              >
-                {t('btn_Add') + ' +'}
-              </ANTDButton>
-            </div>
-          )}
+            : !include([inspectionOfficer], payload?.roleId)) &&  */ <div className="d-flex justify-content-end">
+            <ANTDButton
+              type="primary"
+              className="btn text-end"
+              onClick={handleNonAssociateUser}
+            >
+              {t('btn_Add') + ' +'}
+            </ANTDButton>
+          </div>
+        )}
       </div>
       <UserTable
         {...{
