@@ -73,7 +73,11 @@ const inspection = ({
     open: false,
     description: '',
   })
-  const [activeFormField, setActiveFormField] = useState({ isOpen: false })
+  const [activeFormField, setActiveFormField] = useState({
+    isOpen: false,
+    key: null,
+    index: null,
+  })
   const [formFieldPercentage, setFormFieldPercentage] = useState({})
   const [completeConfirmation, setCompleteConfirmation] = useState({
     open: false,
@@ -1423,10 +1427,13 @@ const inspection = ({
 
   const onActiveKeysChange = (keys, index) => {
     if (isMobile) {
-      const currentKey = keys?.filter(
-        item => !activeKeys?.[index]?.includes(item),
-      )
-      setActiveFormField({ isOpen: true, key: currentKey?.[0] })
+      const nextKeys = isArray(keys) ? keys : [keys]
+      const previousKeys = activeKeys?.[index] || []
+      const currentKey = nextKeys?.find(item => !previousKeys?.includes(item))
+
+      if (currentKey) {
+        setActiveFormField({ isOpen: true, key: currentKey, index })
+      }
     }
     setActiveKeys(prev => {
       const clonePrev = [...(prev || [])]
@@ -1436,7 +1443,7 @@ const inspection = ({
   }
 
   const handleActiveFieldModal = (key, index) => {
-    setActiveFormField({ isOpen: false, key: null })
+    setActiveFormField({ isOpen: false, key: null, index: null })
     const updatedKeys = activeKeys?.[index]?.filter(v => notEqual(v, key))
     setActiveKeys(prev => {
       const clonePrev = [...(prev || [])]
@@ -1518,4 +1525,3 @@ const inspection = ({
 }
 
 export default inspection
-
