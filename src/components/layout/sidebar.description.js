@@ -132,7 +132,7 @@ const userChildrenList = [
     addEdit: [districtCollector],
     level: {},
     userView: {
-      user_InspectionOfficer: [
+      user_AssociatedInspectionOfficer: [
         {
           payload: { roleId: inspectionOfficer, relationType: associate },
           addAssociate: [districtCollector],
@@ -140,7 +140,7 @@ const userChildrenList = [
       ],
       user_AssociatedHostel: [
         {
-          payload: { roleId: hostel, relationType: associate },
+          payload: { roleId: hostel, relationType: associate ,userId:mandalSpecialOfficer},
           addAssociate: [districtCollector],
         },
       ],
