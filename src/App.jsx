@@ -46,12 +46,15 @@ function AuthQueryRedirect({ children }) {
     const userId = queryParams.get('userId')
     const authToken = queryParams.get('authToken')
     const refreshToken = queryParams.get('refreshToken')
+    const lang = (queryParams.get('lang') || 'EN').toLowerCase()
 
     if (!userId || !authToken || !refreshToken) return
 
     setItem('userId', userId)
     setItem('token', authToken)
     setItem('refreshToken', refreshToken)
+    setItem('lang', lang)
+    setItem('i18nextLng', lang)
     setItem('userExists', true)
     setItem('urlAuthLogin', true)
     navigate(pathName.HOME, { replace: true })

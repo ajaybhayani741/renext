@@ -837,5 +837,7 @@
   "mso_StateHostelDepartment": "State Hostel Department",
   "mso_Hostels": "Hostels",
   "mso_CompletedJobs": "Completed Jobs",
-  "job_assign": "Assign"
+  "job_assign": "Assign",
+  "msg_HostelAssignedSuccessfully":"Hostel has been assigned successfully",
+  "user_AssociatedInspectionOfficer": "Associated Inspection Officer"
 }
