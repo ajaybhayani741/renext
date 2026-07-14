@@ -162,7 +162,6 @@ const userChildrenList = [
       user_AssignedHostelsForInspection: [
         {
           payload: { roleId: hostel, relationType: associate },
-          addAssociate: [admin, districtCollector],
         },
       ],
       user_AssociatedMSO: [
@@ -197,20 +196,17 @@ const userChildrenList = [
       user_InspectionOfficer: [
         {
           payload: { roleId: inspectionOfficer, relationType: associate },
-          addAssociate: [admin, districtCollector],
         },
       ],
       user_PreviousInspections: [
         {
           viewJobs: true,
           payload: { jobType: tabKeys.inspection, active: false },
-          addAssociate: [],
         },
       ],
       user_AssociatedMSO: [
         {
           payload: { roleId: mandalSpecialOfficer, relationType: associate },
-          addAssociate: [admin, districtCollector],
         },
       ],
       user_AssociatedStateHostelDepartment: [
