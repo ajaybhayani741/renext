@@ -77,6 +77,9 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
   const userData = JSON.parse(getItem('userData') || '{}')
   const { roleId } = userData || {}
   const { inspectionOfficer } = userWiseRole
+  const visibleTabEntries = entries(tabList)?.filter(([key]) =>
+    notEqual(key, 'type'),
+  )
 
   return (
     <>
@@ -98,7 +101,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
             {/* <h2 className="page-title">{t('menu_Jobs')}</h2> */}
             <StoreSelect />
           </div>
-          {entries(tabList)?.map(([key, value]) =>
+          {visibleTabEntries?.map(([key, value]) =>
             value && value.length > 0 ? (
               <ANTDTab
                 size="small"
@@ -154,13 +157,12 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
             )}
           {!isUnassignHostelTab && (
             <>
-              {notEqual(roleId, inspectionOfficer) && (
                 <div className="d-flex flex-end">
                   <FiscalYearSelect
                     onDateChange={(from, to) => apiCall(1, { from, to })}
+                    showRecentPresets
                   />
                 </div>
-              )}
               {notEqual(roleId, inspectionOfficer) && (
                 <div className="d-flex flex-end mt-10 generate-master-sheet">
                   <ANTDButton

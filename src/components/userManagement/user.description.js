@@ -11,6 +11,7 @@ import {
   DISTRICT_COLLECTOR,
   INSPECTION_OFFICER,
   HOSTEL,
+  MANDAL_SPECIAL_OFFICER,
 } from '../../routing/pathName.constant'
 import { userWiseRole } from '../../utils/constant'
 
@@ -23,6 +24,7 @@ const userRelationKey = {
 const associateKey = {
   user_StateHostelDepartment: 'user_AssociatedStateHostelDepartment',
   user_DistrictCollector: 'user_AssociatedDistrictCollector',
+  user_Hostel: 'user_AssociatedHostel',
 }
 
 const {
@@ -32,6 +34,7 @@ const {
   districtCollector,
   inspectionOfficer,
   hostel,
+  mandalSpecialOfficer,
 } = userWiseRole
 
 const userTranslationKey = {
@@ -41,6 +44,7 @@ const userTranslationKey = {
   [districtCollector]: 'user_DistrictCollector',
   [inspectionOfficer]: 'user_InspectionOfficer',
   [hostel]: 'user_Hostel',
+  [mandalSpecialOfficer]: 'user_MandalSpecialOfficer',
 }
 
 const roleIdByPath = {
@@ -50,6 +54,7 @@ const roleIdByPath = {
   [DISTRICT_COLLECTOR]: districtCollector,
   [INSPECTION_OFFICER]: inspectionOfficer,
   [HOSTEL]: hostel,
+  [MANDAL_SPECIAL_OFFICER]: mandalSpecialOfficer,
 }
 
 const commonForm = {

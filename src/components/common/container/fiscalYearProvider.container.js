@@ -6,14 +6,17 @@ import useRedux from '../../../hooks/useRedux'
 import { setFiscalYear } from '../../../redux/app/reducer'
 import { calendarYearDate } from '../../../utils/customFunctions'
 import { length } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
 
 const fiscalYearProvider = () => {
   const { dispatch, selector } = useRedux()
   const { value, options, dateRange } = selector(
     state => state?.app?.fiscalYear,
   )
+  const authToken = getItem('token')
 
   useEffect(() => {
+    if (!authToken) return
     // Only initialize if fiscal year data is not already available
     if (
       options &&
@@ -52,7 +55,7 @@ const fiscalYearProvider = () => {
     }
 
     initializeFiscalYear()
-  }, [dispatch, options, value, dateRange])
+  }, [dispatch, options, value, dateRange, authToken])
 
   return {
     isInitialized: !!(

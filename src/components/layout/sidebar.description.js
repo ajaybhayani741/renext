@@ -2,9 +2,9 @@ import pathName, {
   ADMIN,
   DASHBOARD_TXT,
   DISTRICT_COLLECTOR,
-  NEW_DASHBOARD_TXT,
   HOSTEL,
   INSPECTION_OFFICER,
+  MANDAL_SPECIAL_OFFICER,
   STATE_ADMIN_OFFICER,
   STATE_HOSTEL_DEPARTMENT,
   USER_TXT,
@@ -16,8 +16,6 @@ import {
   DashboardIcon,
   DealerIcon,
   HomeIcon,
-  // JobsIcon,
-  // Purchasing,
   UserIcon,
 } from '../../utils/icons'
 import { tabKeys } from '../jobs/jobs.description'
@@ -32,6 +30,7 @@ const {
   districtCollector,
   inspectionOfficer,
   hostel,
+  mandalSpecialOfficer,
 } = userWiseRole
 
 const allUser = [
@@ -41,6 +40,7 @@ const allUser = [
   districtCollector,
   inspectionOfficer,
   hostel,
+  mandalSpecialOfficer,
 ]
 
 const { associate } = userRelationKey
@@ -61,13 +61,7 @@ const userChildrenList = [
     userId: stateHostelDepartment,
     Icon: DealerIcon,
     label: 'user_StateHostelDepartment',
-    sidebar: [
-      admin,
-      stateAdminOfficer,
-      // districtCollector,
-      // inspectionOfficer,
-      hostel,
-    ],
+    sidebar: [admin, stateAdminOfficer, hostel],
     addEdit: [admin],
     level: {},
     userView: {
@@ -101,16 +95,15 @@ const userChildrenList = [
     userId: districtCollector,
     Icon: DealerIcon,
     label: 'user_DistrictCollector',
-    sidebar: [
-      admin,
-      stateAdminOfficer,
-      stateHostelDepartment,
-      // inspectionOfficer,
-      hostel,
-    ],
+    sidebar: [admin, stateAdminOfficer, stateHostelDepartment, hostel],
     addEdit: [admin],
     level: {},
     userView: {
+      user_MandalSpecialOfficer: [
+        {
+          payload: { roleId: mandalSpecialOfficer },
+        },
+      ],
       user_InspectionOfficer: [
         {
           payload: { roleId: inspectionOfficer },
@@ -120,17 +113,6 @@ const userChildrenList = [
         {
           payload: { roleId: hostel },
         },
-        // {
-        //   subTitle: 'dash_Assigned',
-        //   payload: { roleId: hostel, relationType: userRelationKey?.associate },
-        // },
-        // {
-        //   subTitle: 'dash_Unassigned',
-        //   payload: {
-        //     roleId: hostel,
-        //     relationType: userRelationKey?.nonAssociate,
-        //   },
-        // },
       ],
       user_AssociatedStateHostelDepartment: [
         {
@@ -142,17 +124,49 @@ const userChildrenList = [
     parent: { label: 'user_Admin', id: admin },
   },
   {
+    key: MANDAL_SPECIAL_OFFICER,
+    userId: mandalSpecialOfficer,
+    Icon: UserIcon,
+    label: 'user_MandalSpecialOfficer',
+    sidebar: [districtCollector],
+    addEdit: [districtCollector],
+    level: {},
+    userView: {
+      user_InspectionOfficer: [
+        {
+          payload: { roleId: inspectionOfficer, relationType: associate },
+          addAssociate: [districtCollector],
+        },
+      ],
+      user_AssociatedHostel: [
+        {
+          payload: { roleId: hostel, relationType: associate },
+          addAssociate: [districtCollector],
+        },
+      ],
+    },
+    parent: {
+      label: 'user_DistrictCollector',
+      id: districtCollector,
+    },
+  },
+  {
     key: INSPECTION_OFFICER,
     userId: inspectionOfficer,
     Icon: UserIcon,
     label: 'user_InspectionOfficer',
-    sidebar: [admin, districtCollector, hostel],
+    sidebar: [admin, districtCollector, hostel, mandalSpecialOfficer],
     addEdit: [admin, districtCollector],
     level: { 'sub-menu': [admin, hostel] },
     userView: {
       user_AssignedHostelsForInspection: [
         {
           payload: { roleId: hostel, relationType: associate },
+        },
+      ],
+      user_AssociatedMSO: [
+        {
+          payload: { roleId: mandalSpecialOfficer, relationType: associate },
           addAssociate: [admin, districtCollector],
         },
       ],
@@ -175,21 +189,24 @@ const userChildrenList = [
     userId: hostel,
     Icon: DealerIcon,
     label: 'user_Hostel',
-    sidebar: [admin, districtCollector],
+    sidebar: [admin, districtCollector, mandalSpecialOfficer],
     addEdit: [admin, districtCollector],
     level: { 'sub-menu': [admin, inspectionOfficer] },
     userView: {
       user_InspectionOfficer: [
         {
           payload: { roleId: inspectionOfficer, relationType: associate },
-          addAssociate: [admin, districtCollector],
         },
       ],
       user_PreviousInspections: [
         {
           viewJobs: true,
           payload: { jobType: tabKeys.inspection, active: false },
-          addAssociate: [],
+        },
+      ],
+      user_AssociatedMSO: [
+        {
+          payload: { roleId: mandalSpecialOfficer, relationType: associate },
         },
       ],
       user_AssociatedStateHostelDepartment: [
@@ -215,50 +232,67 @@ const sidebarMenus = [
     key: HOME,
     Icon: HomeIcon,
     label: 'menu_Home',
-    sidebar: allUserExceptIO, // Removed IO from Home
+    sidebar: allUserExceptIO,
+  },
+  {
+    key: `${USER_TXT}/${MANDAL_SPECIAL_OFFICER}`,
+    Icon: UserIcon,
+    label: 'user_MandalSpecialOfficer',
+    sidebar: [districtCollector],
+  },
+  {
+    key: `${USER_TXT}/${INSPECTION_OFFICER}`,
+    Icon: UserIcon,
+    label: 'user_ListOfInspectionOfficer',
+    sidebar: [mandalSpecialOfficer, districtCollector],
+  },
+  {
+    key: `${USER_TXT}/${HOSTEL}`,
+    Icon: DealerIcon,
+    label: 'user_ListOfHostels',
+    sidebar: [mandalSpecialOfficer, districtCollector],
   },
   {
     key: USER_TXT,
     Icon: UserIcon,
     label: 'menu_User',
-    sidebar: allUserExceptIO, // Removed IO from User
+    sidebar: allUserExceptIO,
     children: userChildrenList
-      .filter(prop => prop.key !== ADMIN) // Hide Admin from User Management
+      .filter(prop => prop.key !== ADMIN)
       .map(prop => ({
         ...prop,
         key: `${USER_TXT}/${prop.key}`,
       })),
   },
   {
-    key: `/${HOSTEL}`,
+    key: `${USER_TXT}/${HOSTEL}`,
     Icon: ClipboardIcon,
-    label: 'user_AssignHostelToInspectionOfficer',
-    sidebar: [districtCollector],
+    label: 'user_Hostel',
+    sidebar: [],
   },
   {
     key: `${USER_TXT}/${INSPECTION_OFFICER}`,
     Icon: UserIcon,
-    label: 'user_AssignInspectionOfficerToHostel',
-    sidebar: [districtCollector],
+    label: 'user_InspectionOfficer',
+    sidebar: [],
   },
   {
     key: JOBS,
     Icon: ClipboardIcon,
     label: 'job_InspectionJob',
     disabled: false,
-    sidebar: [admin, districtCollector, inspectionOfficer],
+    sidebar: [
+      admin,
+      districtCollector,
+      inspectionOfficer,
+      mandalSpecialOfficer,
+    ],
   },
   {
     key: DASHBOARD_TXT,
     Icon: DashboardIcon,
     label: 'job_Dashboard',
-    sidebar: [districtCollector],
-  },
-  {
-    key: NEW_DASHBOARD_TXT,
-    Icon: DashboardIcon,
-    label: 'job_DashboardUpdated',
-    sidebar: [districtCollector],
+    sidebar: [districtCollector, mandalSpecialOfficer],
   },
 ]
 

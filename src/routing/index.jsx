@@ -1,11 +1,7 @@
 import { lazy, memo } from 'react'
 import { Navigate, useRoutes } from 'react-router-dom'
 
-import pathName, {
-  DASHBOARD_TXT,
-  HOSTEL,
-  NEW_DASHBOARD_TXT,
-} from './pathName.constant'
+import pathName, { DASHBOARD_TXT, HOSTEL } from './pathName.constant'
 import PrivacyPolicy from './PrivacyPolicy'
 import ProtectedRoute from './PrivateRoute'
 import DashboardView from '../components/dashboard/presentation/DashboardView'
@@ -35,9 +31,6 @@ const AddEditJobs = lazy(
 )
 const SelectedPhotoDashboard = lazy(
   () => import('../components/dashboard/presentation/SelectedPhotoDashboard'),
-)
-const UpdatedDashboard = lazy(
-  () => import('../components/dashboard/presentation/UpdatedDashboard'),
 )
 // const BookKeeping = lazy(
 //   () => import('../components/bookKeeping/presentation/Index'),
@@ -76,10 +69,6 @@ const Routing = () => {
         {
           path: pathName.DASHBOARD,
           element: <DashboardView />,
-        },
-        {
-          path: NEW_DASHBOARD_TXT,
-          element: <UpdatedDashboard />,
         },
         {
           path: pathName.PHOTO_DASHBOARD,

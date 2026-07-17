@@ -7,11 +7,18 @@ const userWiseRole = {
   districtCollector: 4,
   inspectionOfficer: 5,
   hostel: 6,
+  mandalSpecialOfficer: 7,
 }
 
-const { stateAdminOfficer, inspectionOfficer, hostel } = userWiseRole
+const { stateAdminOfficer, inspectionOfficer, hostel, mandalSpecialOfficer } =
+  userWiseRole
 
-const childUsers = [stateAdminOfficer, inspectionOfficer, hostel]
+const childUsers = [
+  stateAdminOfficer,
+  inspectionOfficer,
+  hostel,
+  mandalSpecialOfficer,
+]
 
 const MAX_FILE_SIZE = 1024 * 1024 * 5 //5MB
 
