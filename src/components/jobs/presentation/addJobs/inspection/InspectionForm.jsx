@@ -660,8 +660,10 @@ const InspectionForm = ({
   //    },
   //  ].filter(({ hidden }) => !hidden)
 
+  const isCurrentMobileModal =
+    activeFormField?.isOpen && isEqual(activeFormField?.index, index)
   const currentActive = collapseItems?.find(v =>
-    isEqual(v?.key, activeFormField?.key),
+    isEqual(v?.key, isCurrentMobileModal ? activeFormField?.key : null),
   )
 
   return (
@@ -701,7 +703,7 @@ const InspectionForm = ({
       />
       {isMobile && (
         <ANTDModal
-          open={activeFormField?.isOpen}
+          open={isCurrentMobileModal}
           footer={null}
           onCancel={() => handleActiveFieldModal(currentActive?.key, index)}
           title={

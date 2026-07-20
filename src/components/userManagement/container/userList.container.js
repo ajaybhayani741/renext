@@ -8,7 +8,6 @@ import { setPopupMessageModel } from '../../../redux/app/reducer'
 import { USER_TXT } from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual } from '../../../utils/javascript'
-import { getItem } from '../../../utils/localstorage'
 import { addAssociateApi, getUserList } from '../user.api'
 import { userRelationKey, userTranslationKey } from '../user.description'
 
@@ -26,8 +25,7 @@ const userList = ({ payload, isBuilding }) => {
   const [selectedAssigneeUser, setSelectedAssigneeUser] = useState(null)
   const [buildingInfo, setBuildingInfo] = useState({ flag: false, data: {} })
   const modelTitle = userTranslationKey[payload?.roleId]
-  const loginUserRoleId = JSON.parse(getItem('userData'))
-  const { hostel, districtCollector, inspectionOfficer } = userWiseRole
+  const { hostel, inspectionOfficer } = userWiseRole
 
   const apiCall = async ({ pageNo }) => {
     let params = `${pageNo}`
@@ -66,12 +64,12 @@ const userList = ({ payload, isBuilding }) => {
 
   const associateApiCall = async ({ pageNo, roleId = null }) => {
     setAssociatedData(pre => ({ ...pre, loader: true }))
-    const districtCollectorId =
-      isEqual(roleId || payload?.roleId, hostel) &&
-      isEqual(loginUserRoleId?.roleId, districtCollector)
-        ? loginUserRoleId?.id
-        : null
-    const params = `${pageNo}?roleId=${roleId || payload?.roleId}&userId=${districtCollectorId || payload?.userId}&relationType=${userRelationKey.nonAssociate}`
+    // const districtCollectorId =
+    //   isEqual(roleId || payload?.roleId, hostel) &&
+    //   isEqual(loginUserRoleId?.roleId, districtCollector)
+    //     ? loginUserRoleId?.id
+    //     : null
+    const params = `${pageNo}?roleId=${roleId || payload?.roleId}&userId=${ payload?.userId}&relationType=${userRelationKey.nonAssociate}`
     const result = await getUserList({ params })
     setAssociatedData({ ...result?.data, loader: false })
   }

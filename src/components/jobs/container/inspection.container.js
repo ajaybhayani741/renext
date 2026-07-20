@@ -73,7 +73,11 @@ const inspection = ({
     open: false,
     description: '',
   })
-  const [activeFormField, setActiveFormField] = useState({ isOpen: false })
+  const [activeFormField, setActiveFormField] = useState({
+    isOpen: false,
+    key: null,
+    index: null,
+  })
   const [formFieldPercentage, setFormFieldPercentage] = useState({})
   const [completeConfirmation, setCompleteConfirmation] = useState({
     open: false,
@@ -158,8 +162,7 @@ const inspection = ({
   const getCurrentLocation = async () => {
     setConfirmModel({
       open: true,
-      description:
-        current === 2 ? t('msg_confirmEndLocation') : t('msg_confirmLocation'),
+      description: t('msg_confirmLocation'),
     })
     const isAccepted = await createPromise()
     if (isAccepted) {
@@ -177,17 +180,12 @@ const inspection = ({
         : latLng
       form.setFieldsValue({
         ...form.getFieldsValue(),
-        ...(current === 2
+        ...(current === 0
           ? {
-              endAddressInspection: address,
-              endLocationInspection: latLng,
+              addressInspection: address,
+              locationInspection: latLng,
             }
-          : current === 0
-            ? {
-                addressInspection: address,
-                locationInspection: latLng,
-              }
-            : {}),
+          : {}),
       })
 
       jobId && debounceApiCall({})
@@ -369,20 +367,13 @@ const inspection = ({
       editData?.latitude && editData?.longitude
         ? `${editData?.latitude},${editData?.longitude}`
         : ''
-    const latLng1 =
-      editData?.latitude2 && editData?.longitude2
-        ? `${editData?.latitude2},${editData?.longitude2}`
-        : ''
     const preFormValues = {
       inspectionDate: editData?.inspectionDate
         ? dayJs(editData?.inspectionDate, 'DD/MM/YYYY HH:mm')
         : dayJs(new Date()),
       locationInspection:
         editData?.latitude && editData?.longitude ? latLng : '',
-      endLocationInspection:
-        editData?.latitude2 && editData?.longitude2 ? latLng1 : '',
       addressInspection: editData?.address ? editData?.address : latLng,
-      endAddressInspection: editData?.address2 ? editData?.address2 : latLng1,
       inspectionList: [inspectionDetails],
       findingsRequestDto: {
         ...formValueFromResponse(editData, findingsAttrFn()),
@@ -609,7 +600,6 @@ const inspection = ({
 
     const jobData = {
       locationInspection: formData?.locationInspection,
-      endLocationInspection: formData?.endLocationInspection,
       inspectionDate: formData?.inspectionDate,
       ...inspectionJobData?.reduce((acc, key) => {
         acc[key] =
@@ -689,9 +679,6 @@ const inspection = ({
     const latLng = formData.locationInspection
       ? formData.locationInspection?.split(',')
       : []
-    const latLng2 = formData.endLocationInspection
-      ? formData.endLocationInspection?.split(',')
-      : []
     const payload = {
       id: jobId || currentJobId,
       jobType: payloadType?.[tabKeys?.inspection],
@@ -699,8 +686,6 @@ const inspection = ({
       hostelId: selectedUsers?.[userWiseRole?.hostel]?.[0]?.id || hostelId?.id,
       latitude: latLng?.[0] ? parseFloat(latLng?.[0]) : null,
       longitude: latLng?.[1] ? parseFloat(latLng?.[1]) : null,
-      latitude2: latLng2?.[0] ? parseFloat(latLng2?.[0]) : null,
-      longitude2: latLng2?.[1] ? parseFloat(latLng2?.[1]) : null,
       stepNumber: location?.state?.restart ? 1 : current + 1,
       progressPercentage: fromNotification
         ? 0
@@ -1423,10 +1408,13 @@ const inspection = ({
 
   const onActiveKeysChange = (keys, index) => {
     if (isMobile) {
-      const currentKey = keys?.filter(
-        item => !activeKeys?.[index]?.includes(item),
-      )
-      setActiveFormField({ isOpen: true, key: currentKey?.[0] })
+      const nextKeys = isArray(keys) ? keys : [keys]
+      const previousKeys = activeKeys?.[index] || []
+      const currentKey = nextKeys?.find(item => !previousKeys?.includes(item))
+
+      if (currentKey) {
+        setActiveFormField({ isOpen: true, key: currentKey, index })
+      }
     }
     setActiveKeys(prev => {
       const clonePrev = [...(prev || [])]
@@ -1436,7 +1424,7 @@ const inspection = ({
   }
 
   const handleActiveFieldModal = (key, index) => {
-    setActiveFormField({ isOpen: false, key: null })
+    setActiveFormField({ isOpen: false, key: null, index: null })
     const updatedKeys = activeKeys?.[index]?.filter(v => notEqual(v, key))
     setActiveKeys(prev => {
       const clonePrev = [...(prev || [])]

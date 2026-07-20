@@ -188,7 +188,6 @@ const InspectionJob = ({ editData, setEditData }) => {
         selectedUsers={selectedUsers}
         inspectionFormFieldsAttr={inspectionFormFieldsAttr}
         findingsAttrFn={findingsAttrFn}
-        getCurrentLocation={getCurrentLocation}
       />
     ),
     3: (
