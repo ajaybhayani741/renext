@@ -99,6 +99,9 @@ const InspectionFormField = ({
           const isHidden = isEqual(typeof hidden, 'function')
             ? hidden(inspectionListData)
             : hidden
+          const isRequired = isEqual(typeof required, 'function')
+            ? required(inspectionListData)
+            : required
           const isDisabled = isEqual(typeof disabled, 'function')
             ? disabled({ ...inspectionListData, disabledAll })
             : (disabled ?? disabledAll) //individual field has more precedence than section disabled
@@ -188,7 +191,7 @@ const InspectionFormField = ({
                       label={t(label)}
                       validateTrigger={'onChange'}
                       rules={
-                        required
+                        isRequired
                           ? [
                               ...(disabledAll
                                 ? []
@@ -204,7 +207,7 @@ const InspectionFormField = ({
                       }
                       dependencies={dependenciesArr}
                       className={
-                        required && !disabledAll ? validationTag(lang) : ''
+                        isRequired && !disabledAll ? validationTag(lang) : ''
                       }
                       initialValue={initialValue}
                       extra={extra}
@@ -255,3 +258,4 @@ const InspectionFormField = ({
 }
 
 export default memo(InspectionFormField)
+
