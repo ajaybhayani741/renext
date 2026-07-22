@@ -23,6 +23,7 @@ const UnassignedHostels = () => {
     handleTableChange,
     handleAssignInspectionOfficer,
     handleAssignInspectionOfficerRandomly,
+    handleCloseAssignInspectionRandomModal,
     handleCloseInspectionOfficerModal,
     inspectionOfficerData,
     handleInspectionOfficerTableChange,
@@ -92,9 +93,9 @@ const UnassignedHostels = () => {
       {confirmAssignInspectionRandomModal?.open && (
         <PopUpConfirm
           isOpen={confirmAssignInspectionRandomModal?.open}
-          onCancelModel={handleAssignInspectionOfficerRandomly}
+          onCancelModel={handleCloseAssignInspectionRandomModal}
           onAccept={onAssignInspectionOfficer}
-          onReject={handleAssignInspectionOfficerRandomly}
+          onReject={handleCloseAssignInspectionRandomModal}
           description={t('msg_AreYouSureWantToAssign')}
         />
       )}

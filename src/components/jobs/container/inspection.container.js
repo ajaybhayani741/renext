@@ -836,7 +836,7 @@ const inspection = ({
           },
         })
       }
-      if (res?.data?.data && showMsg) {
+      if (res?.data?.data && showMsg && !isMobile) {
         notifyMethod.success({
           message: t('msg_JobUpdatedSuccessfully', {
             jobId: res?.data?.data?.id,
@@ -1506,4 +1506,5 @@ const inspection = ({
 }
 
 export default inspection
+
 

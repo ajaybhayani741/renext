@@ -77,7 +77,7 @@ const unassignedHostels = () => {
         }),
       )
     }
-    handleAssignInspectionOfficerRandomly()
+    handleCloseAssignInspectionRandomModal()
   }
 
   const getInspectionOfficerList = async ({ pageNo }) => {
@@ -92,11 +92,12 @@ const unassignedHostels = () => {
     await getInspectionOfficerList({ pageNo: 1 })
   }
 
-  const handleAssignInspectionOfficerRandomly = async ({ rowData } = {}) => {
-    setConfirmAssignInspectionRandomModal({
-      open: !confirmAssignInspectionRandomModal?.open,
-      data: rowData,
-    })
+  const handleAssignInspectionOfficerRandomly = ({ rowData } = {}) => {
+    setConfirmAssignInspectionRandomModal({ open: true, data: rowData })
+  }
+
+  const handleCloseAssignInspectionRandomModal = () => {
+    setConfirmAssignInspectionRandomModal({ open: false, data: null })
   }
 
   const confirmAssignInspectionOfficer = async () => {
@@ -126,7 +127,7 @@ const unassignedHostels = () => {
         }),
       )
     }
-    handleAssignInspectionOfficerRandomly()
+    handleCloseAssignInspectionRandomModal()
   }
 
   return {
@@ -135,6 +136,7 @@ const unassignedHostels = () => {
     handleTableChange,
     onAssignInspectionOfficer,
     handleAssignInspectionOfficerRandomly,
+    handleCloseAssignInspectionRandomModal,
     confirmAssignInspectionOfficer,
     handleAssignInspectionOfficer,
     handleCloseInspectionOfficerModal,
