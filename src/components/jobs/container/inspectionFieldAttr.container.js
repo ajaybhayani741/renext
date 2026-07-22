@@ -31,7 +31,7 @@ const inspectionReportFields = ({
       label: 'job_Photo',
       inputType: 'formUpload',
       acceptFileTypes: '.png,.jpg,.jpeg',
-      required: true,
+      required: data => data?.[fieldName] === 'CRITICAL',
       hidden: data =>
         !['NEEDS_ATTENTION', 'CRITICAL'].includes(data?.[fieldName]),
       disableGalleryUpload: true,
@@ -42,7 +42,7 @@ const inspectionReportFields = ({
     [remarkField]: {
       label: 'job_Remarks',
       inputType: 'textArea',
-      required: true,
+      required: data => data?.[fieldName] === 'CRITICAL',
       rows: 2,
       hidden: data =>
         !['NEEDS_ATTENTION', 'CRITICAL'].includes(data?.[fieldName]),
@@ -1895,3 +1895,4 @@ const inspectionFieldAttr = () => {
 }
 
 export default inspectionFieldAttr
+
