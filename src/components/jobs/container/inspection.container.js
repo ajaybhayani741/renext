@@ -383,10 +383,16 @@ const inspection = ({
   }
 
   const setFieldsPercentageFn = (editData, onEdit = false) => {
+    const isRequiredField = (fieldAttr, sectionData = {}) =>
+      isEqual(typeof fieldAttr?.required, 'function')
+        ? fieldAttr.required(sectionData)
+        : fieldAttr?.required
+
     const getVisibleFormFields = (formAttr, sectionData = {}) => {
       return Object.fromEntries(
         entries(formAttr)?.filter(([_, value]) => {
           if (!value?.label || value?.disabled) return false
+          if (!isRequiredField(value, sectionData)) return false
           const isHidden = isEqual(typeof value?.hidden, 'function')
             ? value.hidden(sectionData)
             : value?.hidden
@@ -500,11 +506,17 @@ const inspection = ({
     }
 
     const sectionDetails = formData?.inspectionList?.[0] || {}
+    const isRequiredField = (fieldAttr, sectionData = {}) =>
+      isEqual(typeof fieldAttr?.required, 'function')
+        ? fieldAttr.required(sectionData)
+        : fieldAttr?.required
+
     const getVisibleFieldKeys = (formAttr, sectionData = {}) => {
       return (
         entries(formAttr)
           ?.filter(([_, value]) => {
             if (!value?.label || !value?.inputType) return false
+            if (!isRequiredField(value, sectionData)) return false
             const isHidden = isEqual(typeof value?.hidden, 'function')
               ? value.hidden(sectionData)
               : value?.hidden
@@ -836,7 +848,7 @@ const inspection = ({
           },
         })
       }
-      if (res?.data?.data && showMsg) {
+      if (res?.data?.data && showMsg && !isMobile) {
         notifyMethod.success({
           message: t('msg_JobUpdatedSuccessfully', {
             jobId: res?.data?.data?.id,
