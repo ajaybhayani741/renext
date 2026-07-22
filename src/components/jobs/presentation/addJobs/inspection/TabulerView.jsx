@@ -127,16 +127,19 @@ const CellRender = ({
         ) : isEqual(inputType, 'select') ? (
           t(options?.find(item => item?.value === rowData)?.label || rowData)
         ) : isEqual(inputType, 'formUpload') ? (
-          rowData?.map?.(item => (
-            <ANTDImage
-              className="inspection-images"
-              key={item?.id || item?.uid}
-              src={item?.fileUrl || item?.url}
-              height={70}
-              width={70}
-              visible={false}
-            />
-          ))
+          rowData?.map?.(item => {
+            const imageSrc = item?.fileUrl || item?.url || item?.thumbUrl
+
+            return imageSrc ? (
+              <ANTDImage
+                className="inspection-images"
+                key={item?.id || item?.uid || imageSrc}
+                src={imageSrc}
+                height={70}
+                width={70}
+              />
+            ) : null
+          })
         ) : isEqual(inputType, 'dateTimePicker') ? (
           rowData ? (
             rowData
