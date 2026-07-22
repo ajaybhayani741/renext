@@ -32,7 +32,7 @@ const appLayout = () => {
   const activeItem1 = location.pathname
   const defaultOpenKeys = [`/${activeItem1.split('/')?.[1]}`]
   const [collapsed, setCollapsed] = useState(false)
-  const { districtCollector, mandalSpecialOfficer } = userWiseRole
+  const { districtCollector, inspectionOfficer, mandalSpecialOfficer } = userWiseRole
 
   const removeAddFromLastPath = () => {
     let url = ''
@@ -90,9 +90,13 @@ const appLayout = () => {
           menu.sidebar.includes(roleIdToFilter)
         ) {
           const { key, label, Icon, disabled } = menu
+          const menuLabel =
+            isEqual(roleIdToFilter, inspectionOfficer) && isEqual(key, pathName.JOBS)
+              ? 'job_Inspection'
+              : label
           const filteredMenu = {
             key,
-            label: t(label),
+            label: t(menuLabel),
             title: false,
             className: newClass,
             Icon,
