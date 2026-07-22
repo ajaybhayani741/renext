@@ -50,10 +50,12 @@ const resetFiscalYearToDefault = (dispatch, options) => {
 }
 
 const addressFormat = data => {
-  if (data?.pincode || data?.address) {
+  if (data?.address) {
     return `${data?.address ? data?.address + ',' : ''} ${
       data?.pincode ? data?.pincode : ''
     }`
+  } else if (data?.pincode || data?.state || data?.city || data?.address) {
+    return `${data?.address ? data?.address + ',' : ''} ${data?.city ? data?.city + ',' : ''} ${data?.state ? data?.state + ',' : ''} ${data?.pincode || ''}`
   } else {
     return '-'
   }
