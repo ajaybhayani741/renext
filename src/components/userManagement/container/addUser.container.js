@@ -62,6 +62,7 @@ const addUser = ({
     stateAdminOfficer,
     inspectionOfficer,
     districtCollector,
+    mandalSpecialOfficer,
   } = userWiseRole
   const userType = params?.userType
   const formRoleId =
@@ -82,9 +83,18 @@ const addUser = ({
   const formField =
     userFormByRoleId[formRoleId] ||
     (include(childUsers, formRoleId) ? childUserFormFields : userFormFields)
+  const normalizedFormField = isEqual(formRoleId, mandalSpecialOfficer)
+    ? {
+        ...formField,
+        city: {
+          ...formField.city,
+          label: 'mso_Mandal',
+        },
+      }
+    : formField
 
   const [userForm, setUserForm] = useState(
-    JSON.parse(JSON.stringify(formField)),
+    JSON.parse(JSON.stringify(normalizedFormField)),
   )
   const initialEditData = useRef({})
   const [currentAddress, setCurrentAddress] = useState('')
@@ -757,3 +767,4 @@ const addUser = ({
 }
 
 export default addUser
+
