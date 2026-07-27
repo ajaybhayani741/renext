@@ -38,7 +38,8 @@ const userColumns = ({
   // const { roleId: loginUserRoleId } = { ...userData }
 
   const isChildUser = include(childUsers, roleId)
-  const { inspectionOfficer, hostel } = userWiseRole
+  const { inspectionOfficer, hostel, mandalSpecialOfficer } = userWiseRole
+
   const actionButtons = rowData => (
     <div className="card-extra-buttons">
       {showAssignInspectionOfficer && (
@@ -159,7 +160,10 @@ const userColumns = ({
       dataIndex: 'emailId',
       key: 'user_Email',
       render: rowData => rowData || '-',
-      hidden: isEqual(roleId, inspectionOfficer),
+      hidden: include(
+        [inspectionOfficer, hostel, mandalSpecialOfficer],
+        roleId,
+      ),
     },
     {
       title: t('user_Contact'),
@@ -168,15 +172,14 @@ const userColumns = ({
       render: rowData => <div className="w-nowrap">{rowData || '-'}</div>,
     },
     {
-      title: isEqual(roleId, inspectionOfficer)
-        ? t('user_PlaceOfPosting')
-        : t('user_Address'),
+      title: t('user_Address'),
       key: 'user_Address',
       width: '250px',
       className: 'address',
       render: rowData => {
         return addressFormat(rowData)
       },
+      hidden: include([inspectionOfficer, mandalSpecialOfficer], roleId),
     },
     {
       title: t('user_DOJ'),
@@ -241,14 +244,16 @@ const userColumns = ({
       {
         label: 'user_Email',
         value: emailId,
-        hidden: isEqual(roleId, inspectionOfficer),
+        hidden: include(
+          [inspectionOfficer, hostel, mandalSpecialOfficer],
+          roleId,
+        ),
       },
       { label: 'user_Contact', value: phoneNumber },
       {
-        label: isEqual(roleId, inspectionOfficer)
-          ? 'user_PlaceOfPosting'
-          : 'user_Address',
+        label: 'user_Address',
         value: addressFormat(user),
+        hidden: include([inspectionOfficer, mandalSpecialOfficer], roleId),
       },
       {
         label: 'user_DOJ',

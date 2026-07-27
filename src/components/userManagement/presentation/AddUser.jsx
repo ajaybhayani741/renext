@@ -30,12 +30,12 @@ function AddUser({
     handleValuesChange,
     onFinish,
     currentUserDescription,
-    handleSelectClick,
+    // handleSelectClick,
     selectUser,
     handleSelectCancel,
     handleTableChange,
     onSelectUser,
-    isSelect,
+    // isSelect,
     loader,
     handleSameAsParent,
     popup,
@@ -64,7 +64,7 @@ function AddUser({
         <h2 className="mb-15">{t(currentUserDescription?.label)}</h2>
       )}
       <div>
-        {currentUserDescription &&
+        {/* {currentUserDescription &&
         currentUserDescription?.parent &&
         !isBuilding &&
         !editInfo?.data?.id ? (
@@ -94,8 +94,7 @@ function AddUser({
               </h3>
             )}
           </div>
-        ) : null}
-
+        ) : null} */}
         {isBuilding && (
           <div className="text-end">
             <ANTDButton

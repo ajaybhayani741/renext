@@ -31,8 +31,8 @@ import {
   stateOptions,
 } from '../addressData'
 import {
-  getUserList,
   addNewUserApi,
+  getUserList,
   getUserProfileApi,
   updateUserApi,
   userValidationApi,
@@ -40,6 +40,8 @@ import {
 import {
   childUserFormFields,
   countriesList,
+  hostelDepartmentOptions,
+  inspectionOfficerDesignationOptions,
   roleIdByPath,
   userFormByRoleId,
   userFormFields,
@@ -80,7 +82,7 @@ const addUser = ({
   const userDetails = JSON.parse(getItem('userData'))
   const { roleId, id: loginUserId } = { ...userDetails }
   const formField =
-    userFormByRoleId[formRoleId] ||
+    userFormByRoleId(t, form.getFieldValue())?.[formRoleId] ||
     (include(childUsers, formRoleId) ? childUserFormFields : userFormFields)
 
   const [userForm, setUserForm] = useState(
@@ -172,7 +174,33 @@ const addUser = ({
         return formValues
       }
 
-      const formData = setFormData(userForm, editInfo?.data)
+      const departmentOptions = hostelDepartmentOptions.map(v => t(v))
+      const hasCustomDepartment =
+        isEqual(formRoleId, hostel) &&
+        editInfo?.data?.departmentName &&
+        !include(departmentOptions, editInfo?.data?.departmentName)
+      const designationOptions = inspectionOfficerDesignationOptions.map(v =>
+        t(v),
+      )
+      const hasCustomDesignation =
+        isEqual(formRoleId, inspectionOfficer) &&
+        editInfo?.data?.designation &&
+        !include(designationOptions, editInfo?.data?.designation)
+      const formData = setFormData(userForm, {
+        ...editInfo?.data,
+        ...(hasCustomDepartment
+          ? {
+              departmentName: 'OTHER',
+              customDepartmentName: editInfo?.data?.departmentName,
+            }
+          : {}),
+        ...(hasCustomDesignation
+          ? {
+              designation: 'OTHER',
+              customDesignation: editInfo?.data?.designation,
+            }
+          : {}),
+      })
       form.setFieldsValue({
         ...formData,
         country: Object.keys(countriesList).find(key =>
@@ -185,22 +213,26 @@ const addUser = ({
       setUserForm(prevForm => {
         const { profile, username, password, ...editForm } = prevForm || {}
         return isEqual(roleId, districtCollector) &&
-          isEqual(editInfo?.data?.roleId, inspectionOfficer)
+          include([inspectionOfficer, hostel], editInfo?.data?.roleId)
           ? {
-              profile: { ...profile },
-              deleteBtn: {
-                inputType: 'button',
-                type: 'primary',
-                className: 'bg-danger',
-                children: t('btn_Delete'),
-                onClick: handleDeletePopup,
-                md: 12,
-                xs: 12,
-                colClassName: 'text-end',
-              },
-              ...prevForm,
-              username: { ...prevForm.username, disabled: true },
-              password: { ...prevForm.password, required: false },
+              ...(isEqual(inspectionOfficer, editInfo?.data?.roleId)
+                ? {
+                    profile: { ...profile },
+                    deleteBtn: {
+                      inputType: 'button',
+                      type: 'primary',
+                      className: 'bg-danger',
+                      children: t('btn_Delete'),
+                      onClick: handleDeletePopup,
+                      md: 12,
+                      xs: 12,
+                      colClassName: 'text-end',
+                    },
+                  }
+                : {}),
+              ...userFormByRoleId(t, form.getFieldValue())?.[formRoleId],
+              // username: { ...prevForm.username, disabled: true },
+              // password: { ...prevForm.password, required: false },
             }
           : {
               ...(profile ? { profile: { ...profile } } : {}),
@@ -226,24 +258,24 @@ const addUser = ({
     }
   }, [editInfo])
 
-  useEffect(() => {
-    if (include(childUsers, formRoleId) && selectUser?.data?.id) {
-      //Add same as parent button
-      if (include([stateAdminOfficer], formRoleId)) {
-        handleSameAsParent(selectUser?.data)
-      }
-      setUserForm(prev => {
-        const updatedFormField = { ...prev }
-        updatedFormField.sameAsParentBtn = {
-          ...updatedFormField.sameAsParentBtn,
-          hidden: false,
-          children: t('btn_SameAsParent'),
-          onClick: () => handleSameAsParent(selectUser?.data),
-        }
-        return updatedFormField
-      })
-    }
-  }, [selectUser?.data])
+  // useEffect(() => {
+  //   if (include(childUsers, formRoleId) && selectUser?.data?.id) {
+  //     //Add same as parent button
+  //     if (include([stateAdminOfficer], formRoleId)) {
+  //       handleSameAsParent(selectUser?.data)
+  //     }
+  //     setUserForm(prev => {
+  //       const updatedFormField = { ...prev }
+  //       updatedFormField.sameAsParentBtn = {
+  //         ...updatedFormField.sameAsParentBtn,
+  //         hidden: false,
+  //         children: t('btn_SameAsParent'),
+  //         onClick: () => handleSameAsParent(selectUser?.data),
+  //       }
+  //       return updatedFormField
+  //     })
+  //   }
+  // }, [selectUser?.data])
 
   const handleDeletePopup = () => {
     setDeleteConfirmation({
@@ -300,7 +332,7 @@ const addUser = ({
   }, 400)
 
   const handleValuesChange = (val, data) => {
-    const updatedForm = { ...userForm }
+    let updatedForm = { ...userForm }
 
     let parentKey
     let currentKey
@@ -458,6 +490,30 @@ const addUser = ({
 
     if (e?.businessName) {
       businessNameCheck({ type: 'BUSINESSNAME', value: e?.businessName })
+    } else if (isEqual(currentKey, 'departmentName')) {
+      const isOtherDepartment = isEqual(e?.departmentName, 'OTHER')
+      if (isEqual(formRoleId, hostel)) {
+        updatedForm =
+          userFormByRoleId(t, {
+            ...updatedFormData,
+            departmentName: e?.departmentName,
+          })?.[formRoleId] || updatedForm
+      }
+      if (!isOtherDepartment) {
+        updatedFormData.customDepartmentName = undefined
+      }
+    } else if (isEqual(currentKey, 'designation')) {
+      const isOtherDesignation = isEqual(e?.designation, 'OTHER')
+      if (isEqual(formRoleId, inspectionOfficer)) {
+        updatedForm =
+          userFormByRoleId(t, {
+            ...updatedFormData,
+            designation: e?.designation,
+          })?.[formRoleId] || updatedForm
+      }
+      if (!isOtherDesignation) {
+        updatedFormData.customDesignation = undefined
+      }
     } else if (e?.employeeId) {
       businessNameCheck({ type: 'EMPLOYEE_ID', value: e?.employeeId })
       updatedFormData.username = e?.employeeId
@@ -468,7 +524,19 @@ const addUser = ({
     }
 
     if (
-      include(['pincode', 'state', 'city', 'country', 'employeeId'], currentKey)
+      include(
+        [
+          'pincode',
+          'state',
+          'city',
+          'country',
+          'employeeId',
+          'mandal',
+          'departmentName',
+          'designation',
+        ],
+        currentKey,
+      )
     ) {
       setUserForm(updatedForm)
       form.setFieldsValue(updatedFormData)
@@ -526,13 +594,22 @@ const addUser = ({
       return setPopup({ open: true, message: checkErrorArr?.find(err => err) })
     }
     let data = form.getFieldValue()
+    if (isEqual(data?.departmentName, 'OTHER')) {
+      data.departmentName = data?.customDepartmentName
+    }
+    if (isEqual(data?.designation, 'OTHER')) {
+      data.designation = data?.customDesignation
+    }
     const emailObj = createEmailPayload(data?.emailId)
     data = { ...data, ...emailObj, country: countriesList?.[data?.country] }
+    delete data.customDepartmentName
+    delete data.customDesignation
+    delete data.customMandal
     if (editInfo?.data?.id) {
       setLoader(true)
       const payload = {
         userId: editInfo?.data?.id,
-        country: editInfo?.data?.country,
+        country: editInfo?.data?.country || configData?.country,
       }
       keys(data).forEach(k => {
         if (include(k, ['profile'])) return
@@ -551,7 +628,9 @@ const addUser = ({
           )
         } else if (isEqual('sameAsParentBtn', k)) {
         } else if (notEqual(data?.[k], editInfo?.data?.[k])) {
-          payload[k] = data?.[k] ?? '-1' // -1 for removing or empty field value while editing
+          payload[k] = isEqual(k, 'country')
+            ? data?.[k] || configData?.country
+            : (data?.[k] ?? '-1') // -1 for removing or empty field value while editing
         }
       })
 
@@ -593,6 +672,7 @@ const addUser = ({
         setLoader(true)
         const payload = {
           ...data,
+          country: configData?.country,
           forRoleId: formRoleId,
           forUserId: currentUserDescription?.parent
             ? selectUser?.data?.id

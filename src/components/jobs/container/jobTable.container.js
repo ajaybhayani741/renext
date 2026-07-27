@@ -251,12 +251,15 @@ const jobTable = ({
         // dataIndex: 'status',
         className: 'nowrap',
         render: rowData => {
+          const progress = Number(rowData?.progressPercentage || 0) || 0
           return isEqual(activeTab?.status, tabKeys.active) ? (
             <ANTDProgress
               percent={Number(rowData?.progressPercentage || 0) || 0}
               percentPosition={{ align: 'center', type: 'inner' }}
               size={[100, 20]}
-              strokeColor="#FA8128"
+              strokeColor={
+                progress > 0 && progress < 100 ? '#40A368' : '#FA8128'
+              }
             />
           ) : (
             <ANTDTag
