@@ -85,12 +85,12 @@ const addUser = ({
     userFormByRoleId(t, form.getFieldValue())?.[formRoleId] ||
     (include(childUsers, formRoleId) ? childUserFormFields : userFormFields)
   const normalizedFormField = {
-        ...formField,
-        city: {
-          ...formField.city,
-          label: 'mso_Mandal',
-        },
-      }
+    ...formField,
+    // city: {
+    //   ...formField.city,
+    //   label: 'mso_Mandal',
+    // },
+  }
 
   const [userForm, setUserForm] = useState(
     JSON.parse(JSON.stringify(normalizedFormField)),
@@ -844,4 +844,3 @@ const addUser = ({
 }
 
 export default addUser
-
