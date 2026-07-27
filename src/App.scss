@@ -353,6 +353,7 @@ h6 {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  margin-top: 10px;
 
   .ant-btn {
     min-width: 58px;
@@ -1128,7 +1129,7 @@ h6 {
       margin: 0;
       padding: 0;
 
-      >li {
+      > li {
         margin-bottom: 35px;
       }
 
@@ -1138,7 +1139,7 @@ h6 {
         margin-bottom: 20px;
 
         &:before {
-          content: counters(item, ".") ".";
+          content: counters(item, '.') '.';
           display: table-cell;
           padding-right: 25px;
 
@@ -1160,9 +1161,8 @@ h6 {
 
             &::before {
               padding-right: 5px;
-              content: counters(item, ".") ".";
+              content: counters(item, '.') '.';
             }
-
           }
         }
       }

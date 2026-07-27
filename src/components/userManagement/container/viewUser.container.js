@@ -10,6 +10,8 @@ const viewUser = ({ userDetails }) => {
     businessName,
     emailId,
     phoneNumber,
+    mandal,
+    designation,
     roleId,
     lastName,
     name,
@@ -35,6 +37,7 @@ const viewUser = ({ userDetails }) => {
     manufacturer,
     customer,
     inspectionOfficer,
+    mandalSpecialOfficer,
     hostel,
   } = userWiseRole
   const allUser = [
@@ -92,15 +95,34 @@ const viewUser = ({ userDetails }) => {
       value: ternary(roleId, lastName, name),
       hidden: include([store], roleId),
     },
+    ...(isEqual(roleId, inspectionOfficer)
+      ? [
+          {
+            label: 'user_Designation',
+            value: designation,
+            hidden: !isEqual(roleId, inspectionOfficer),
+          },
+          {
+            label: 'mso_Mandal',
+            value: mandal,
+            hidden: !isEqual(roleId, inspectionOfficer),
+          },
+        ]
+      : []),
     {
       label: 'user_Email',
       value: emailId,
       type: 'email',
+      hidden: include(
+        [inspectionOfficer, mandalSpecialOfficer, hostel],
+        roleId,
+      ),
     },
     { label: 'user_Contact', value: phoneNumber },
     {
       label: 'user_Address',
       value: addressFormat(userDetails),
+      hidden: include([inspectionOfficer, mandalSpecialOfficer], roleId),
       isBottomLine: true,
     },
   ]
