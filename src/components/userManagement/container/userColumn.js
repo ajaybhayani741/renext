@@ -189,7 +189,7 @@ const userColumns = ({
         const { newDate } = rowData ? dateFormat(rowData) : {}
         return <>{newDate ? newDate : '-'}</>
       },
-      hidden: include([inspectionOfficer, hostel], roleId),
+      hidden: include([inspectionOfficer, hostel, mandalSpecialOfficer], roleId),
     },
     {
       title: t('user_LastInspectionDate'),
@@ -258,7 +258,10 @@ const userColumns = ({
       {
         label: 'user_DOJ',
         value: ternary(creationDate, dateFormat(creationDate)?.dmyDate, null),
-        hidden: isEqual(roleId, inspectionOfficer),
+        hidden: include(
+          [inspectionOfficer, hostel, mandalSpecialOfficer],
+          roleId,
+        ),
       },
     ].filter(item => !item.hidden)
 
