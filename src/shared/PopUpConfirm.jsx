@@ -1,10 +1,8 @@
-import React from 'react'
-
+import useTranslations from '../hooks/useTranslations'
+import { successSvg } from '../utils/icons'
+import { ternary } from '../utils/javascript'
 import ANTDButton from './antd/ANTDButton'
 import ANTDModal from './antd/ANTDModal'
-import useTranslations from '../hooks/useTranslations'
-import { successSvg, warningImage } from '../utils/icons'
-import { ternary } from '../utils/javascript'
 
 const PopUpConfirm = ({
   footer = null,
@@ -33,12 +31,9 @@ const PopUpConfirm = ({
         {title && <h3>{t(title)}</h3>}
         <div className="popup-content">
           <div className="d-flex align-center">
-            <img
-              src={ternary(success, successSvg, warningImage)}
-              alt="warning"
-            />
+            {success ? <img src={successSvg} alt="warning" /> : null}
             <span className="d-inline-block popup-heading">
-              {t(ternary(success, 'msg_Success', 'msg_Warning'))}
+              {t(ternary(success, 'msg_Success', 'msg_Confirmation'))}
             </span>
           </div>
           <ul className="pl-15 ml-15 mt-20">

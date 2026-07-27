@@ -208,6 +208,158 @@ const addUserForm = {
   },
   ...commonWithUserNamePassword,
 }
+
+const inspectionOfficerMandalOptions = [
+  { label: 'Basar', value: 'BASAR' },
+  { label: 'Bhainsa', value: 'BHAINSA' },
+  { label: 'Kubeer', value: 'KUBEER' },
+  { label: 'Kuntala', value: 'KUNTALA' },
+  { label: 'Lokeshwaram', value: 'LOKESHWARAM' },
+  { label: 'Mudhole', value: 'MUDHOLE' },
+  { label: 'Tanoor', value: 'TANOOR' },
+  { label: 'Nirmal (Urban)', value: 'NIRMAL_URBAN' },
+  { label: 'Nirmal (Rural)', value: 'NIRMAL_RURAL' },
+  { label: 'Dilawarpur', value: 'DILAWARPUR' },
+  { label: 'Laxmanchanda', value: 'LAXMANCHANDA' },
+  { label: 'Narsapur-G', value: 'NARSAPUR_G' },
+  { label: 'Sarangapur', value: 'SARANGPUR' },
+  { label: 'Soan', value: 'SOAN' },
+  { label: 'Dasturabad', value: 'DASTURABAD' },
+  { label: 'Kaddam Peddur', value: 'KADDAM_PEDDUR' },
+  { label: 'Khanapur', value: 'KHANAPUR' },
+  { label: 'Mamada', value: 'MAMADA' },
+  { label: 'Pembi', value: 'PEMBI' },
+]
+
+const inspectionOfficerDesignationOptions = [
+  'inspectionOfficer_Designation_Tahsildar',
+  'inspectionOfficer_Designation_MAO',
+  'inspectionOfficer_Designation_MEO',
+  'inspectionOfficer_Designation_MPDO',
+  'inspectionOfficer_Designation_MRO',
+  'inspectionOfficer_Designation_MPO',
+  'inspectionOfficer_Designation_MSO',
+  'inspectionOfficer_Designation_APMDRDA',
+  'text_Other',
+]
+
+const hostelDepartmentOptions = [
+  'hostel_DepartmentUnit_BCWelfare',
+  'hostel_DepartmentUnit_SCWelfare',
+  'hostel_DepartmentUnit_STWelfare',
+  'hostel_DepartmentUnit_MinorityDepartment',
+  'text_Other',
+]
+
+const inspectionOfficerForm = (t, formValues) => ({
+  profile: addUserForm.profile,
+  lastName: addUserForm.lastName,
+  designation: {
+    ...addUserForm.designation,
+    inputType: 'select',
+    required: true,
+    options: inspectionOfficerDesignationOptions.map(v => ({
+      label: t(v),
+      value: t(v),
+    })),
+  },
+  customDesignation: {
+    label: 'user_OtherDesignation',
+    validateTrigger: 'onChange',
+    inputType: 'input',
+    required: true,
+    hidden: formValues?.designation !== 'OTHER',
+    md: 24,
+    xs: 24,
+  },
+  mandal: {
+    label: 'mso_Mandal',
+    validateTrigger: 'onChange',
+    inputType: 'select',
+    required: true,
+    options: inspectionOfficerMandalOptions,
+    md: 24,
+    xs: 24,
+  },
+  phoneNumber: {
+    ...commonForm.phoneNumber,
+    required: true,
+  },
+})
+
+const mandalSpecialOfficerForm = formValues => ({
+  profile: addUserForm.profile,
+  lastName: addUserForm.lastName,
+  mandal: {
+    label: 'mso_Mandal',
+    validateTrigger: 'onChange',
+    inputType: 'select',
+    required: true,
+    options: inspectionOfficerMandalOptions,
+    md: 24,
+    xs: 24,
+  },
+  phoneNumber: {
+    ...commonForm.phoneNumber,
+    required: true,
+  },
+  username: {
+    ...commonWithUserNamePassword.username,
+  },
+  password: {
+    ...commonWithUserNamePassword.password,
+  },
+})
+
+const hostelForm = (t, formValues) => ({
+  lastName: addUserForm.lastName,
+  departmentName: {
+    label: 'hostel_DepartmentUnit',
+    validateTrigger: 'onChange',
+    inputType: 'select',
+    required: true,
+    options: hostelDepartmentOptions.map(v => ({ label: t(v), value: t(v) })),
+    md: 24,
+    xs: 24,
+  },
+  customDepartmentName: {
+    label: 'user_OtherDepartment',
+    validateTrigger: 'onChange',
+    inputType: 'input',
+    required: true,
+    hidden: formValues?.departmentName !== 'OTHER',
+    md: 24,
+    xs: 24,
+  },
+  mandal: {
+    label: 'mso_Mandal',
+    validateTrigger: 'onChange',
+    inputType: 'select',
+    required: true,
+    options: inspectionOfficerMandalOptions,
+    md: 24,
+    xs: 24,
+  },
+  address: {
+    ...commonForm.address,
+    required: true,
+  },
+  state: {
+    ...commonForm.state,
+    required: true,
+  },
+  pincode: {
+    ...commonForm.pincode,
+    required: true,
+    md: 12,
+  },
+  phoneNumber: {
+    ...commonForm.phoneNumber,
+  },
+  inchargeName: {
+    ...commonWithUserNamePassword.inchargeName,
+  },
+})
 const addBuildingForm = {
   name: {
     label: 'user_Name',
@@ -222,7 +374,13 @@ const addBuildingForm = {
 const { ...userFormFields } = addUserForm
 const { businessName, ...childUserFormFields } = userFormFields
 
-const userFormByRoleId = {}
+const userFormByRoleId = (t, formValues) => {
+  return {
+    [inspectionOfficer]: inspectionOfficerForm(t, formValues),
+    [mandalSpecialOfficer]: mandalSpecialOfficerForm(t, formValues),
+    [hostel]: hostelForm(t, formValues),
+  }
+}
 
 const RATING_LENGTH = 5
 
@@ -247,4 +405,7 @@ export {
   userFormFields,
   childUserFormFields,
   countriesList,
+  inspectionOfficerMandalOptions,
+  hostelDepartmentOptions,
+  inspectionOfficerDesignationOptions,
 }

@@ -134,14 +134,17 @@ const userChildrenList = [
     userView: {
       user_AssociatedInspectionOfficer: [
         {
-          payload: { roleId: inspectionOfficer, relationType: associate },
-          addAssociate: [districtCollector],
+          payload: { roleId: inspectionOfficer },
+          // addAssociate: [districtCollector],
         },
       ],
       user_AssociatedHostel: [
         {
-          payload: { roleId: hostel, relationType: associate ,userId:mandalSpecialOfficer},
-          addAssociate: [districtCollector],
+          payload: {
+            roleId: hostel,
+            userId: mandalSpecialOfficer,
+          },
+          // addAssociate: [districtCollector],
         },
       ],
     },
@@ -161,13 +164,13 @@ const userChildrenList = [
     userView: {
       user_AssignedHostelsForInspection: [
         {
-          payload: { roleId: hostel, relationType: associate },
+          payload: { roleId: hostel },
         },
       ],
       user_AssociatedMSO: [
         {
-          payload: { roleId: mandalSpecialOfficer, relationType: associate },
-          addAssociate: [admin, districtCollector],
+          payload: { roleId: mandalSpecialOfficer },
+          // addAssociate: [admin, districtCollector],
         },
       ],
       user_AssociatedStateHostelDepartment: [
@@ -195,7 +198,7 @@ const userChildrenList = [
     userView: {
       user_InspectionOfficer: [
         {
-          payload: { roleId: inspectionOfficer, relationType: associate },
+          payload: { roleId: inspectionOfficer },
         },
       ],
       user_PreviousInspections: [
@@ -206,7 +209,7 @@ const userChildrenList = [
       ],
       user_AssociatedMSO: [
         {
-          payload: { roleId: mandalSpecialOfficer, relationType: associate },
+          payload: { roleId: mandalSpecialOfficer },
         },
       ],
       user_AssociatedStateHostelDepartment: [

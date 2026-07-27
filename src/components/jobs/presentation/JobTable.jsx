@@ -55,6 +55,10 @@ const JobTable = ({
   // const isAnyUnread = length(list) && list?.some(record => !record?.read)
   const scrollElem = document.querySelector('.main-layout > main')
   const activeTab = selector(state => state?.jobs?.activeTab)
+  const getStatusProgressColor = progressPercentage => {
+    const progress = Number(progressPercentage || 0) || 0
+    return progress > 0 && progress < 100 ? '#40A368' : '#FA8128'
+  }
 
   return (
     <>
@@ -145,7 +149,9 @@ const JobTable = ({
                                           type: 'inner',
                                         }}
                                         size={[100, 20]}
-                                        strokeColor="#FA8128"
+                                        strokeColor={getStatusProgressColor(
+                                          item?.progressPercentage,
+                                        )}
                                       />
                                     ) : (
                                       <ANTDTag
