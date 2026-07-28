@@ -857,5 +857,17 @@
   "text_Other": "OTHER",
   "user_OtherDesignation": "Other Designation",
   "user_OtherDepartment": "Other Department",
-  "msg_Confirmation": "Confirmation"
+  "msg_Confirmation": "Confirmation",
+  "dash_Metrics": "Metrics",
+  "dash_MetricsHostel": "Hostel",
+  "dash_MetricsInspectionOfficer": "Inspection Officer",
+  "dash_TotalHostelsOnboarded": "Total Hostels Onboarded",
+  "dash_TotalHostelsInspectedThisWeek": "Total Hostels Inspected this week",
+  "dash_TotalHostelsInspectedLastWeek": "Total Hostels Inspected last week",
+  "dash_TotalHostelsUnderActiveInspectionThisWeek": "Total Hostels under active inspection this week",
+  "dash_TotalHostelsYetToBeAssignedForInspectionThisWeek": "Total Hostels yet to be assigned for inspection this week",
+  "dash_HostelInspectionOverview": "Hostel Inspection Overview",
+  "dash_TotalInspectionOfficersOnboarded": "Total Inspection officers Onboarded",
+  "dash_IOsCompletedAtLeastOneInspectionCurrentWeek": "IOs completed at least one inspection in the current week",
+  "dash_IOsCompletedAtLeastOneInspectionLastWeek": "IOs completed at least one inspection in the last week"
 }

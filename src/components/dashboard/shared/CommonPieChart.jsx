@@ -8,6 +8,7 @@ const CommonPieChart = ({
   size = '320px',
   handleChartClick,
   name,
+  showValueLabels = false,
 }) => {
   const options = useMemo(
     () => ({
@@ -21,7 +22,9 @@ const CommonPieChart = ({
         enabled: true,
       },
       tooltip: {
-        pointFormat: '<b>{point.percentage:.0f}%</b>',
+        pointFormat: showValueLabels
+          ? '<b>{point.y}</b>'
+          : '<b>{point.percentage:.0f}%</b>',
       },
       plotOptions: {
         pie: {
@@ -42,7 +45,7 @@ const CommonPieChart = ({
           dataLabels: {
             enabled: true,
             distance: -46,
-            format: '{point.percentage:.0f}%',
+            format: showValueLabels ? '{point.y}' : '{point.percentage:.0f}%',
             style: {
               color: '#ffffff',
               fontSize: '18px',
@@ -66,7 +69,7 @@ const CommonPieChart = ({
         },
       ],
     }),
-    [data, handleChartClick, name, size],
+    [data, handleChartClick, name, showValueLabels, size],
   )
 
   return <HightChart options={options} title={title} />
