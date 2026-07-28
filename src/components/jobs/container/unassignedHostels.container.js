@@ -32,7 +32,7 @@ const unassignedHostels = () => {
 
   const hostelApiCall = async (pageNo = 1) => {
     setHostelData(pre => ({ ...pre, loader: true }))
-    const params = `${pageNo}?roleId=${hostel}&relationType=${userRelationKey?.nonAssociate}&msoUserId=${userData?.associatedMsoDetails?.id || -1}`
+    const params = `${pageNo}?roleId=${hostel}&relationType=${userRelationKey?.nonAssociate}`
     const response = await getUserList({ params })
     setHostelData({
       ...response?.data,
@@ -57,9 +57,9 @@ const unassignedHostels = () => {
     setInspectionOfficerData(pre => ({ ...pre, loader: true }))
     const payloadData = `?userId=${
       userData?.id
-      }&associateUserId=${[confirmAssignInspectionRandomModal?.data?.id]}`
-      const resp = await addAssociateApi({ params: payloadData })
-   if (resp?.data) {
+    }&associateUserId=${[confirmAssignInspectionRandomModal?.data?.id]}`
+    const resp = await addAssociateApi({ params: payloadData })
+    if (resp?.data) {
       dispatch(
         setPopupMessageModel({
           open: true,
