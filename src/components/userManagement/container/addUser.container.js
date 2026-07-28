@@ -61,6 +61,7 @@ const addUser = ({
   const {
     admin,
     hostel,
+    mandalSpecialOfficer,
     stateAdminOfficer,
     inspectionOfficer,
     districtCollector,
@@ -220,9 +221,15 @@ const addUser = ({
       setUserForm(prevForm => {
         const { profile, username, password, ...editForm } = prevForm || {}
         return isEqual(roleId, districtCollector) &&
-          include([inspectionOfficer, hostel], editInfo?.data?.roleId)
+          include(
+            [inspectionOfficer, hostel, mandalSpecialOfficer],
+            editInfo?.data?.roleId,
+          )
           ? {
-              ...(isEqual(inspectionOfficer, editInfo?.data?.roleId)
+              ...(include(
+                [inspectionOfficer, hostel, mandalSpecialOfficer],
+                editInfo?.data?.roleId,
+              )
                 ? {
                     profile: { ...profile },
                     deleteBtn: {
@@ -244,7 +251,7 @@ const addUser = ({
           : {
               ...(profile ? { profile: { ...profile } } : {}),
               ...(include(
-                [hostel, inspectionOfficer],
+                [hostel, inspectionOfficer, mandalSpecialOfficer],
                 editInfo?.data?.roleId,
               ) &&
                 notEqual(roleId, editInfo?.data?.roleId) && {
