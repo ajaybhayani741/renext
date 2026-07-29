@@ -10,7 +10,6 @@ import viewUser from '../container/viewUser.container'
 import { userTranslationKey } from '../user.description'
 import BasicInfo from './BasicInfo'
 import UserList from './UserList'
-import UserRating from './UserRating'
 
 const ViewUser = ({
   open,
@@ -20,18 +19,16 @@ const ViewUser = ({
   editButtons,
 }) => {
   const {
-    parentData,
     otherDetail,
     userListView,
     basicInfoData,
-    parentInfoData,
     loginUserRoleId,
     getEmailList,
   } = viewUser({
     userDetails,
   })
 
-  const { hostel, inspectionOfficer, districtCollector } = userWiseRole
+  const { hostel, inspectionOfficer } = userWiseRole
 
   const { t } = useTranslations()
   const isChildUser =
@@ -59,7 +56,7 @@ const ViewUser = ({
             ...(!isChildUser && { otherDetail }),
           }}
         />
-        {isChildUser && (
+        {/* {isChildUser && (
           <>
             <h2 className="content-title">{t('user_ParentInformation')}</h2>
             <BasicInfo
@@ -71,12 +68,12 @@ const ViewUser = ({
               }}
             />
           </>
-        )}
+        )} */}
 
-        {!include(
+        {/* {!include(
           [hostel, inspectionOfficer, districtCollector],
           userDetails?.roleId,
-        ) && <UserRating />}
+        ) && <UserRating />} */}
 
         {userListView &&
           entries(userListView).map(([key, value]) => {

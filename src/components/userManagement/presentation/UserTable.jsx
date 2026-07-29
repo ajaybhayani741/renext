@@ -158,6 +158,7 @@ function UserTable({
             rowClassName={rowClassNameFn && (record => rowClassNameFn(record))}
             loading={loader || searchResult.loader}
             columns={column}
+            size='medium'
             dataSource={
               list?.map(val => ({
                 ...val,
