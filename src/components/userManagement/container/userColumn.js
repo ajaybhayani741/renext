@@ -13,6 +13,7 @@ import {
   notEqual,
   ternary,
 } from '../../../utils/javascript'
+import { inspectionOfficerMandalOptions } from '../user.description'
 // import { getItem } from '../../../utils/localstorage'
 
 const userColumns = ({
@@ -152,8 +153,14 @@ const userColumns = ({
       title: t('mso_Mandal'),
       key: 'mso_Mandal',
       render: rowData => {
-        return rowData?.mandal ?? '-'
-        },
+        return (
+          inspectionOfficerMandalOptions.find(
+            option => option.value === rowData?.mandal,
+          )?.label ??
+          rowData?.mandal ??
+          '-'
+        )
+      },
       hidden: !include([inspectionOfficer, hostel, mandalSpecialOfficer], roleId),
       
     },

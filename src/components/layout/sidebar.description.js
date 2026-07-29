@@ -142,7 +142,7 @@ const userChildrenList = [
         {
           payload: {
             roleId: hostel,
-            userId: mandalSpecialOfficer,
+            // userId: mandalSpecialOfficer,
           },
           // addAssociate: [districtCollector],
         },

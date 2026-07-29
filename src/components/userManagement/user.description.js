@@ -232,7 +232,7 @@ const inspectionOfficerMandalOptions = [
 ]
 
 const inspectionOfficerDesignationOptions = [
-  'inspectionOfficer_Designation_Tahsildar',
+  // 'inspectionOfficer_Designation_Tahsildar',
   'inspectionOfficer_Designation_MAO',
   'inspectionOfficer_Designation_MEO',
   'inspectionOfficer_Designation_MPDO',
@@ -303,12 +303,12 @@ const mandalSpecialOfficerForm = formValues => ({
     ...commonForm.phoneNumber,
     required: true,
   },
-  username: {
-    ...commonWithUserNamePassword.username,
-  },
-  password: {
-    ...commonWithUserNamePassword.password,
-  },
+  // username: {
+  //   ...commonWithUserNamePassword.username,
+  // },
+  // password: {
+  //   ...commonWithUserNamePassword.password,
+  // },
 })
 
 const hostelForm = (t, formValues) => ({
