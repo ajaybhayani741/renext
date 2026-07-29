@@ -38,7 +38,7 @@ const userColumns = ({
   // const { roleId: loginUserRoleId } = { ...userData }
 
   const isChildUser = include(childUsers, roleId)
-  const { inspectionOfficer, hostel, mandalSpecialOfficer } = userWiseRole
+  const { inspectionOfficer, hostel, mandalSpecialOfficer, districtCollector } = userWiseRole
 
   const actionButtons = rowData => (
     <div className="card-extra-buttons">
@@ -106,7 +106,7 @@ const userColumns = ({
       title: t('user_ID'),
       dataIndex: 'id',
       key: 'user_ID',
-      hidden: include([inspectionOfficer, hostel], roleId),
+      hidden: include([inspectionOfficer, hostel, mandalSpecialOfficer, districtCollector], roleId),
     },
     {
       title: t('user_Image'),
@@ -147,6 +147,15 @@ const userColumns = ({
       render: rowData => {
         return isBuilding ? rowData?.name : rowData?.lastName
       },
+    },
+      {
+      title: t('mso_Mandal'),
+      key: 'mso_Mandal',
+      render: rowData => {
+        return rowData?.mandal ?? '-'
+        },
+      hidden: !include([inspectionOfficer, hostel, mandalSpecialOfficer], roleId),
+      
     },
     {
       title: t('user_Designation'),
