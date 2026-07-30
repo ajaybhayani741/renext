@@ -13,7 +13,7 @@ import { addressFormat } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
 import { downloadReport } from '../../../utils/customFunctions'
 import { dateFormat } from '../../../utils/dateFormat'
-import { DownloadOutlined, noImage } from '../../../utils/icons'
+import { DownloadOutlined } from '../../../utils/icons'
 import { include, isEqual, length, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { columnKeys, jobStatusList, tabKeys } from '../jobs.description'
@@ -185,16 +185,7 @@ const jobTable = ({
         key: columnKeys.hostel,
         dataIndex: 'hostelInfo',
         ellipsis: true,
-        render: rowData => {
-          return rowData?.lastName ? (
-            <div className="user-image-job">
-              <img src={rowData?.profile?.fileUrl || noImage} alt={'pic'} />
-              <p>{rowData?.lastName || '-'}</p>
-            </div>
-          ) : (
-            '-'
-          )
-        },
+        render: rowData => rowData?.lastName || '-',
       },
       {
         title: t('user_HostelAddress'),
@@ -204,6 +195,13 @@ const jobTable = ({
         render: rowData => {
           return addressFormat(rowData)
         },
+      },
+      {
+        title: t('mso_Mandal'),
+        key: columnKeys.mandal,
+        dataIndex: 'hostelInfo',
+        ellipsis: true,
+        render: rowData => rowData?.mandal || '-',
       },
       {
         title: t('user_Contact'),
@@ -217,18 +215,22 @@ const jobTable = ({
         key: columnKeys.inspectionOfficer,
         dataIndex: 'userInfo',
         ellipsis: true,
-        render: rowData => {
-          return rowData?.lastName ? (
-            <div className="user-image-job">
-              <img src={rowData?.profile?.fileUrl || noImage} alt={'pic'} />
-              <p>{rowData?.lastName || '-'}</p>
-            </div>
-          ) : (
-            '-'
-          )
-        },
+        render: rowData => rowData?.lastName || '-',
       },
-
+      {
+        title: t('job_CreationName'),
+        key: columnKeys.creationName,
+        ellipsis: true,
+        render: rowData =>
+          rowData?.creationName ||
+          rowData?.createdByName ||
+          rowData?.creatorName ||
+          rowData?.createdBy?.lastName ||
+          rowData?.createdBy?.businessName ||
+          rowData?.createdByUser?.lastName ||
+          rowData?.createdByUser?.businessName ||
+          '-',
+      },
       {
         title: t('user_CreationDate'),
         key: columnKeys.createdDate,
@@ -319,18 +321,25 @@ const jobTable = ({
     ...jobData
   }) => {
     return [
-      { label: 'job_Id', value: id },
       // { label: 'job_Title', value: jobTitle },
       { label: 'job_hostelName', value: hostelInfo?.lastName },
-      { label: 'user_HostelAddress', value: hostelInfo?.address },
+      { label: 'mso_Mandal', value: hostelInfo?.mandal },
+      { label: 'user_Contact', value: hostelInfo?.phoneNumber },
       {
-        label: 'user_CreationDate',
-        value: dateFormat(creationDate)?.dmyDate,
+        label: 'user_InspectionOfficer',
+        value: jobData?.userInfo?.lastName ,
       },
-      // {
-      //   label: 'job_UpdatedDate',
-      //   value: dateFormat(modificationDate)?.dmyDate,
-      // },
+      {
+        label: 'job_CreationName',
+        value:
+          jobData?.creationName ||
+          jobData?.createdByName ||
+          jobData?.creatorName ||
+          jobData?.createdBy?.lastName ||
+          jobData?.createdBy?.businessName ||
+          jobData?.createdByUser?.lastName ||
+          jobData?.createdByUser?.businessName,
+      },
       { label: 'job_Status', value: jobData?.status },
     ].filter(item => !item.hidden)
   }

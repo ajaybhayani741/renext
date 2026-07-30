@@ -227,11 +227,38 @@ const userColumns = ({
     },
   ]
 
+  const mandalSpecialOfficerColumnOrder = [
+    'mso_Mandal',
+    'user_Image',
+    'user_Name',
+    'user_Contact',
+    'txt_Action',
+  ]
+
+  const inspectionOfficerColumnOrder = [
+    'mso_Mandal',
+    'user_Image',
+    'user_Name',
+    'designation',
+    'user_Contact',
+    'txt_Action',
+  ]
+
+  const roleColumnOrder = isEqual(roleId, mandalSpecialOfficer)
+    ? mandalSpecialOfficerColumnOrder
+    : isEqual(roleId, inspectionOfficer)
+      ? inspectionOfficerColumnOrder
+      : null
+
   const filteredColumn = length(columnFilter)
     ? columnFilter
         .map(filterKey => column.find(item => item.key === filterKey))
         .filter(Boolean)
-    : column
+    : roleColumnOrder
+      ? roleColumnOrder
+          .map(filterKey => column.find(item => item.key === filterKey))
+          .filter(Boolean)
+      : column
 
   const cardViewFn = ({
     lastName,

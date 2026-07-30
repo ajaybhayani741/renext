@@ -842,7 +842,7 @@
   "user_AssociatedInspectionOfficer": "Associated Inspection Officer",
   "job_inspection": "Inspection",
   "hostel_DepartmentUnit": "Department Unit",
-  "hostel_DepartmentUnit_BCWelfare": "TGBCWD/MJPTBCWREIS (BC Welfare )",
+   "hostel_DepartmentUnit_BCWelfare": "TGBCWD/MJPTBCWREIS (BC Welfare )",
   "hostel_DepartmentUnit_SCWelfare": "TGSCDD/TGSWREIS (SC Welfare)",
   "hostel_DepartmentUnit_STWelfare": "TGTWD/TGTWREIS (ST Welfare)",
   "hostel_DepartmentUnit_MinorityDepartment": "TGMWD/TGMREIS (Minority Department)",
@@ -857,5 +857,11 @@
   "text_Other": "OTHER",
   "user_OtherDesignation": "Other Designation",
   "user_OtherDepartment": "Other Department",
-  "msg_Confirmation": "Confirmation"
+  "msg_Confirmation": "Confirmation",
+   "job_CreationName": "Creation Name",
+  "job_ResidentialHostel": "Residential Hostel",
+  "job_NonResidentialHostel": "Non-Residential Hostel",
+  "hostel_TypeOfHostel": "Type of Hostel",
+  "hostel_ResidentialHostel": "Residential Hostel",
+  "hostel_NonResidentialHostel": "Non-residential Hostel"
 }

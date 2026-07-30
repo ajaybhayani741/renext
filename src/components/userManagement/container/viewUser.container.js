@@ -3,6 +3,7 @@ import { childUsers, userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { userChildrenList } from '../../layout/sidebar.description'
+import { inspectionOfficerMandalOptions } from '../user.description'
 
 const viewUser = ({ userDetails }) => {
   const {
@@ -24,6 +25,9 @@ const viewUser = ({ userDetails }) => {
     ...userDetails,
   }
   const parentData = parent || parentDetails
+  const mandalLabel =
+    inspectionOfficerMandalOptions.find(option => option.value === mandal)
+      ?.label || mandal
   const currentUser = userChildrenList.find(val => isEqual(val.userId, roleId))
   const userListView = currentUser?.userView
   const loginUserRoleId = JSON.parse(getItem('userData'))?.roleId
@@ -102,10 +106,13 @@ const viewUser = ({ userDetails }) => {
             value: designation,
             hidden: !isEqual(roleId, inspectionOfficer),
           },
+        ]
+      : []),
+    ...(include([inspectionOfficer, mandalSpecialOfficer, hostel], roleId)
+      ? [
           {
             label: 'mso_Mandal',
-            value: mandal,
-            hidden: !isEqual(roleId, inspectionOfficer),
+            value: mandalLabel,
           },
         ]
       : []),

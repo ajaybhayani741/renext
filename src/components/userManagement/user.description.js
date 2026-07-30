@@ -251,6 +251,11 @@ const hostelDepartmentOptions = [
   'text_Other',
 ]
 
+const hostelTypeOptions = [
+  { label: 'hostel_ResidentialHostel', value: 'RESIDENTIAL_HOSTEL' },
+  { label: 'hostel_NonResidentialHostel', value: 'NON_RESIDENTIAL_HOSTEL' },
+]
+
 const inspectionOfficerForm = (t, formValues) => ({
   profile: addUserForm.profile,
   lastName: addUserForm.lastName,
@@ -340,6 +345,18 @@ const hostelForm = (t, formValues) => ({
     md: 24,
     xs: 24,
   },
+  typeOfHostel: {
+    label: 'hostel_TypeOfHostel',
+    validateTrigger: 'onChange',
+    inputType: 'select',
+    required:true,
+    options: hostelTypeOptions.map(({ label, value }) => ({
+      label: t(label),
+      value,
+    })),
+    md: 24,
+    xs: 24,
+  },
   address: {
     ...commonForm.address,
     required: true,
@@ -407,5 +424,6 @@ export {
   countriesList,
   inspectionOfficerMandalOptions,
   hostelDepartmentOptions,
+  hostelTypeOptions,
   inspectionOfficerDesignationOptions,
 }
