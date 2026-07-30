@@ -13,7 +13,10 @@ import {
   notEqual,
   ternary,
 } from '../../../utils/javascript'
-import { inspectionOfficerMandalOptions } from '../user.description'
+import {
+  hostelTypeOptions,
+  inspectionOfficerMandalOptions,
+} from '../user.description'
 // import { getItem } from '../../../utils/localstorage'
 
 const userColumns = ({
@@ -39,7 +42,7 @@ const userColumns = ({
   // const { roleId: loginUserRoleId } = { ...userData }
 
   const isChildUser = include(childUsers, roleId)
-  const { inspectionOfficer, hostel, mandalSpecialOfficer, districtCollector } = userWiseRole
+  const { inspectionOfficer, hostel, mandalSpecialOfficer } = userWiseRole
 
   const actionButtons = rowData => (
     <div className="card-extra-buttons">
@@ -103,12 +106,12 @@ const userColumns = ({
       },
       hidden: !handleSelectChange,
     },
-    {
-      title: t('user_ID'),
-      dataIndex: 'id',
-      key: 'user_ID',
-      hidden: include([inspectionOfficer, hostel, mandalSpecialOfficer, districtCollector], roleId),
-    },
+    // {
+    //   title: t('user_ID'),
+    //   dataIndex: 'id',
+    //   key: 'user_ID',
+    //   hidden: include([inspectionOfficer, hostel, mandalSpecialOfficer, districtCollector], roleId),
+    // },
     {
       title: t('user_Image'),
       dataIndex: 'profile',
@@ -165,11 +168,30 @@ const userColumns = ({
       
     },
     {
+      title: t('hostel_TypeOfHostel'),
+      dataIndex: 'typeOfHostel',
+      key: 'hostel_TypeOfHostel',
+      render: rowData => {
+        const typeLabel =
+          hostelTypeOptions.find(option => option.value === rowData)?.label ||
+          rowData
+        return typeLabel ? t(typeLabel) : '-'
+      },
+      hidden: notEqual(roleId, hostel),
+    },
+    {
+      title: t('hostel_DepartmentUnit'),
+      dataIndex: 'departmentName',
+      key: 'hostel_DepartmentUnit',
+      render: rowData => rowData || '-',
+      hidden: notEqual(roleId, hostel),
+    },
+    {
       title: t('user_Designation'),
       key: 'designation',
       dataIndex: 'designation',
       render: rowData => rowData || '-',
-      hidden: notEqual(roleId, inspectionOfficer),
+      hidden: !include([inspectionOfficer, mandalSpecialOfficer], roleId),
     },
     {
       title: t('user_Email'),
@@ -228,19 +250,27 @@ const userColumns = ({
   ]
 
   const mandalSpecialOfficerColumnOrder = [
-    'mso_Mandal',
-    'user_Image',
     'user_Name',
+    'designation',
+    'mso_Mandal',
     'user_Contact',
     'txt_Action',
   ]
 
   const inspectionOfficerColumnOrder = [
-    'mso_Mandal',
-    'user_Image',
     'user_Name',
     'designation',
+    'mso_Mandal',
     'user_Contact',
+    'txt_Action',
+  ]
+
+  const hostelColumnOrder = [
+    'user_Name',
+    'mso_Mandal',
+    'hostel_TypeOfHostel',
+    'hostel_DepartmentUnit',
+    'user_LastInspectionDate',
     'txt_Action',
   ]
 
@@ -248,7 +278,9 @@ const userColumns = ({
     ? mandalSpecialOfficerColumnOrder
     : isEqual(roleId, inspectionOfficer)
       ? inspectionOfficerColumnOrder
-      : null
+      : isEqual(roleId, hostel)
+        ? hostelColumnOrder
+        : null
 
   const filteredColumn = length(columnFilter)
     ? columnFilter
@@ -282,7 +314,7 @@ const userColumns = ({
       {
         label: 'user_Designation',
         value: designation,
-        hidden: notEqual(roleId, inspectionOfficer),
+        hidden: !include([inspectionOfficer, mandalSpecialOfficer], roleId),
       },
       {
         label: 'user_Email',
@@ -312,3 +344,5 @@ const userColumns = ({
 }
 
 export default userColumns
+
+

@@ -862,6 +862,6 @@
   "job_ResidentialHostel": "Residential Hostel",
   "job_NonResidentialHostel": "Non-Residential Hostel",
   "hostel_TypeOfHostel": "Type of Hostel",
-  "hostel_ResidentialHostel": "Residential Hostel",
-  "hostel_NonResidentialHostel": "Non-residential Hostel"
+  "hostel_ResidentialSchool": "Residential School",
+  "job_Inprogress": "Inprogress"
 }

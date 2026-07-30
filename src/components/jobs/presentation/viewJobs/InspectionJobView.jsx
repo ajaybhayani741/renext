@@ -29,9 +29,13 @@ const InspectionJobView = ({
   const [inspectionData, setInspectionData] = useState([])
 
   const { inspectionOfficer } = userWiseRole
+  const status = {
+    JOB_REQUEST_INPROGRESS: "job_Inprogress",
+    JOB_COMPLETED: "job_Complete"
+  }
   const infoData = {
     user_BasicInformation: [
-      { label: 'user_ID', value: data?.id },
+      // { label: 'user_ID', value: data?.id },
       { label: 'job_DateOfInspectionAndTime', value: data?.inspectionDate },
       {
         label: 'user_CreationDate',
@@ -39,7 +43,7 @@ const InspectionJobView = ({
           ? dayJs(data?.creationDate).format(DISPLAY_DATE_FORMAT)
           : '-',
       },
-      { label: 'job_Status', value: t(data?.status) },
+      { label: 'job_Status', value: t(status[data?.status]) },
     ],
   }
 
