@@ -3,10 +3,13 @@ import { childUsers, userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { userChildrenList } from '../../layout/sidebar.description'
+import {
+  hostelTypeOptions,
+  inspectionOfficerMandalOptions,
+} from '../user.description'
 
 const viewUser = ({ userDetails }) => {
   const {
-    id,
     businessName,
     emailId,
     phoneNumber,
@@ -20,10 +23,18 @@ const viewUser = ({ userDetails }) => {
     employeeId,
     companyCode,
     storeCode,
+    departmentName,
+    typeOfHostel,
   } = {
     ...userDetails,
   }
   const parentData = parent || parentDetails
+  const mandalLabel =
+    inspectionOfficerMandalOptions.find(option => option.value === mandal)
+      ?.label || mandal
+  const hostelTypeLabel =
+    hostelTypeOptions.find(option => option.value === typeOfHostel)?.label ||
+    typeOfHostel
   const currentUser = userChildrenList.find(val => isEqual(val.userId, roleId))
   const userListView = currentUser?.userView
   const loginUserRoleId = JSON.parse(getItem('userData'))?.roleId
@@ -63,11 +74,11 @@ const viewUser = ({ userDetails }) => {
   }
 
   const basicInfoData = [
-    {
-      label: 'user_ID',
-      value: id,
-      hidden: include([inspectionOfficer, hostel], loginUserRoleId),
-    },
+    // {
+    //   label: 'user_ID',
+    //   value: id,
+    //   hidden: include([inspectionOfficer, hostel], loginUserRoleId),
+    // },
     {
       label: isEqual(roleId, storeOwner)
         ? 'job_CompanyName'
@@ -95,17 +106,32 @@ const viewUser = ({ userDetails }) => {
       value: ternary(roleId, lastName, name),
       hidden: include([store], roleId),
     },
-    ...(isEqual(roleId, inspectionOfficer)
+    ...(include([inspectionOfficer, mandalSpecialOfficer], roleId)
       ? [
           {
             label: 'user_Designation',
             value: designation,
-            hidden: !isEqual(roleId, inspectionOfficer),
           },
+        ]
+      : []),
+    ...(include([inspectionOfficer, mandalSpecialOfficer, hostel], roleId)
+      ? [
           {
             label: 'mso_Mandal',
-            value: mandal,
-            hidden: !isEqual(roleId, inspectionOfficer),
+            value: mandalLabel,
+          },
+        ]
+      : []),
+    ...(isEqual(roleId, hostel)
+      ? [
+          {
+            label: 'hostel_TypeOfHostel',
+            value: hostelTypeLabel,
+            translateValue: true,
+        },
+         {
+            label: 'hostel_DepartmentUnit',
+            value: departmentName,
           },
         ]
       : []),
@@ -170,3 +196,6 @@ const viewUser = ({ userDetails }) => {
 }
 
 export default viewUser
+
+
+

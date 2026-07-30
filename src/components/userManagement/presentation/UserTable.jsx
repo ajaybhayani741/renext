@@ -5,14 +5,19 @@ import UserTableCard from './UserTableCard'
 import ViewUser from './ViewUser'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
+import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import { ANTDSearch } from '../../../shared/antd/ANTDInput'
 import ANTDModal from '../../../shared/antd/ANTDModal'
+import ANTDRow from '../../../shared/antd/ANTDRow'
+import ANTDSelect from '../../../shared/antd/ANTDSelect'
 import ANTDTable from '../../../shared/antd/ANTDTable'
+import Label from '../../../shared/Label'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
-import { childUsers } from '../../../utils/constant'
-import { include, ternary } from '../../../utils/javascript'
+import { childUsers, userWiseRole } from '../../../utils/constant'
+import { include, isEqual, ternary } from '../../../utils/javascript'
 import userColumns from '../container/userColumn'
 import userTable from '../container/userTable.container'
+import { inspectionOfficerMandalOptions } from '../user.description'
 
 function UserTable({
   isSearch = false,
@@ -48,6 +53,9 @@ function UserTable({
     viewModel,
     isDesktop,
     searchResult,
+    searchBy,
+    handleSearchByChange,
+    onMandalSearch,
     handleView,
     handleCancel,
     handleEdit,
@@ -92,6 +100,15 @@ function UserTable({
     userKey,
   })
   const { t } = useTranslations()
+  const { inspectionOfficer, mandalSpecialOfficer } = userWiseRole
+  const showRoleSearch = include(
+    [inspectionOfficer, mandalSpecialOfficer],
+    payload?.roleId,
+  )
+  const searchByOptions = [
+    { label: t('user_Name'), value: 'name' },
+    { label: t('mso_Mandal'), value: 'mandal' },
+  ]
 
   if (isSearch && searchResult.data) {
     userData = searchResult.data
@@ -99,7 +116,7 @@ function UserTable({
   }
 
   const { loader, list } = userData || { loader: false, list: [] }
-  const pageSize = ternary(isBuilding, 10, 5)
+  const pageSize = 10
 
   const viewUserFN = useMemo(
     () =>
@@ -133,21 +150,53 @@ function UserTable({
       <>
         {ternary(
           isSearch,
-          <ANTDSearch
-            className="w-100"
-            placeholder={t(
-              ternary(
-                searchByEmail,
-                'user_SearchEmail',
+          showRoleSearch ? (
+            <ANTDRow gutter={10}>
+              <ANTDColumn md={12} lg={12} xs={24}>
+                <Label text={t('job_SearchBy')} />
+                <ANTDSelect
+                  className="w-100 mb-5"
+                  value={searchBy}
+                  options={searchByOptions}
+                  onChange={handleSearchByChange}
+                />
+              </ANTDColumn>
+              <ANTDColumn md={12} lg={12} xs={24}>
+                <Label text={t('txt_Search')} />
+                {isEqual(searchBy, 'mandal') ? (
+                  <ANTDSelect
+                    className="w-100 mb-5"
+                    placeholder={t('mso_Mandal')}
+                    options={inspectionOfficerMandalOptions}
+                    onChange={onMandalSearch}
+                    allowClear
+                  />
+                ) : (
+                  <ANTDSearch
+                    className="mb-5"
+                    placeholder={t('user_Name')}
+                    onChange={onSearch}
+                  />
+                )}
+              </ANTDColumn>
+            </ANTDRow>
+          ) : (
+            <ANTDSearch
+              className="w-100"
+              placeholder={t(
                 ternary(
-                  include(childUsers, payload?.roleId),
-                  'user_Name',
-                  'user_BusinessName',
+                  searchByEmail,
+                  'user_SearchEmail',
+                  ternary(
+                    include(childUsers, payload?.roleId),
+                    'user_Name',
+                    'user_BusinessName',
+                  ),
                 ),
-              ),
-            )}
-            onChange={onSearch}
-          />,
+              )}
+              onChange={onSearch}
+            />
+          ),
           null,
         )}
       </>

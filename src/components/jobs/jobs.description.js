@@ -89,20 +89,35 @@ const columnKeys = {
   hostelContact: 'user_Contact',
   hostelName: 'job_hostelName',
   inspectionOfficerName: 'job_InspectionOfficerName',
+  mandal: 'mso_Mandal',
+  creationName: 'job_CreationName',
 }
 
 const searchByKeys = {
   jobId: 'JOB_ID',
   inspectionOfficerName: 'INSPECTION_OFFICER_NAME',
   hostelName: 'HOSTEL_NAME',
+  departmentUnit: 'DEPARTMENT',
+  residentialHostel: 'RESIDENTIAL_HOSTEL',
+  nonResidentialHostel: 'NON_RESIDENTIAL_HOSTEL',
 }
 
-const { jobId, inspectionOfficerName, hostelName } = searchByKeys
+const {
+  jobId,
+  inspectionOfficerName,
+  hostelName,
+  departmentUnit,
+  residentialHostel,
+  nonResidentialHostel,
+} = searchByKeys
 
 const searchByLabels = {
   [jobId]: 'job_Id',
   [inspectionOfficerName]: 'job_InspectionOfficerName',
   [hostelName]: 'job_hostelName',
+  [departmentUnit]: 'hostel_DepartmentUnit',
+  [residentialHostel]: 'job_ResidentialHostel',
+  [nonResidentialHostel]: 'job_NonResidentialHostel',
 }
 
 const payloadType = {
@@ -447,9 +462,11 @@ export const jobTypeRoleSearchBy = (jobType, roleId) => {
   switch (jobType) {
     case tabKeys.inspection:
       return [
-        jobId,
         ...(notEqual(roleId, inspectionOfficer) ? [inspectionOfficerName] : []),
         hostelName,
+        departmentUnit,
+        residentialHostel,
+        nonResidentialHostel,
       ]
 
     default:

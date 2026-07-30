@@ -145,7 +145,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
 
   useEffect(() => {
     if (!include(currentSearchBy, searchBy)) {
-      setSearchBy(searchByKeys.employeeName)
+      setSearchBy(currentSearchBy?.[0] || searchByKeys.jobId)
     }
     if (status) {
       setColumnFilters(currentColumns)
@@ -177,32 +177,21 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
 
   const currentColumns = useMemo(() => {
     const {
-      jobId,
-      // jobTitle,
-      createdDate,
-      // updatedDate,
       status,
       hostel: hostelCol,
-      hostelAddress: hostelAddressCol,
       hostelContact: hostelContactCol,
       inspectionOfficer: inspectionOfficerCol,
+      mandal,
+      creationName,
     } = columnKeys
 
     return [
-      jobId,
-      // jobTitle,
       hostelCol,
-      hostelAddressCol,
+      mandal,
       hostelContactCol,
-      ...(notEqual(roleId, userWiseRole.inspectionOfficer)
-        ? [inspectionOfficerCol]
-        : []),
-      createdDate,
-
+      inspectionOfficerCol,
+      creationName,
       status,
-      // For dynamic columns by role or active tab
-      // ...ternary(isEqual(roleId, userWiseRole.admin), ['extra'], []),
-      // ...ternary(isEqual(type, tabKeys.quote), ['extra2'], []),
     ]
   }, [type, status, roleId])
 

@@ -16,8 +16,16 @@ const {
   GENERATE_MASTER_SHEET,
 } = API_ROUTES
 
+const withDefaultPageSize = params => {
+  const userParams = params || ''
+  if (/[?&]pageSize=/.test(userParams)) {
+    return userParams.replace(/([?&]pageSize=)[^&]*/, (_, key) => `${key}10`)
+  }
+  return `${userParams}${userParams.includes('?') ? '&' : '?'}pageSize=10`
+}
+
 const getUserList = async ({ params }) => {
-  const response = await getMethod(GET_USER({ params }))
+  const response = await getMethod(GET_USER({ params:withDefaultPageSize(params) }))
   return response?.data
 }
 const getBuildingList = async ({ params }) => {

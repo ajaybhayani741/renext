@@ -5,7 +5,7 @@ import { setPopupMessageModel } from '../../../redux/app/reducer'
 import { apiParams, nameParam } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
 import debounce from '../../../utils/debounce'
-import { entries, notEqual, ternary } from '../../../utils/javascript'
+import { entries, isEqual, notEqual, ternary } from '../../../utils/javascript'
 import { addAssociateApi, searchUserApi } from '../user.api'
 
 const userTable = ({
@@ -30,6 +30,8 @@ const userTable = ({
     data: null,
   })
   const { hostel } = userWiseRole
+  const [searchBy, setSearchBy] = useState('name')
+  const searchByRef = useRef('name')
 
   const handleView = data => {
     setViewModel({ open: true, userDetails: data })
@@ -39,28 +41,53 @@ const userTable = ({
     const { value } = e.target
     if (!value?.trim()) return setSearchResult({ loader: false, data: null })
     searchValue.current = value
-    apiCall({ pageNo: 1, value })
+    apiCall({ pageNo: 1, value, searchBy: searchByRef.current })
   }, 500)
 
-  const apiCall = useCallback(async ({ pageNo, value }) => {
-    setSearchResult(pre => ({ ...pre, loader: true }))
-    let params = `${pageNo}?${nameParam({
-      roleId: payload?.roleId,
-      searchByEmail,
-    })}=${value}`
-    entries(searchPayload ? searchPayload : payload)?.forEach(
-      ([key, value]) => {
-        if (value) {
-          params += `&${key}=${value}`
-        }
-      },
-    )
-    const result = await searchUserApi({ params })
-    setSearchResult({ loader: false, data: result?.data })
-  }, [])
+  const apiCall = useCallback(
+    async ({ pageNo, value, searchBy = searchByRef.current }) => {
+      setSearchResult(pre => ({ ...pre, loader: true }))
+      let params = `${pageNo}?`
+      if (isEqual(searchBy, 'mandal')) {
+        params += `mandal=${value}`
+      } else {
+        params += `${nameParam({
+          roleId: payload?.roleId,
+          searchByEmail,
+        })}=${value}`
+      }
+      entries(searchPayload ? searchPayload : payload)?.forEach(
+        ([key, value]) => {
+          if (value) {
+            params += `&${key}=${value}`
+          }
+        },
+      )
+      const result = await searchUserApi({ params })
+      setSearchResult({ loader: false, data: result?.data })
+    },
+    [],
+  )
 
   const handleSearchTableChange = pagination => {
-    apiCall({ pageNo: pagination.current, value: searchValue.current })
+    apiCall({
+      pageNo: pagination.current,
+      value: searchValue.current,
+      searchBy: searchByRef.current,
+    })
+  }
+
+  const handleSearchByChange = value => {
+    setSearchBy(value)
+    searchByRef.current = value
+    searchValue.current = null
+    setSearchResult({ loader: false, data: null })
+  }
+
+  const onMandalSearch = value => {
+    if (!value) return setSearchResult({ loader: false, data: null })
+    searchValue.current = value
+    apiCall({ pageNo: 1, value, searchBy: 'mandal' })
   }
 
   const handleCancel = () => {
@@ -130,6 +157,9 @@ const userTable = ({
     viewModel,
     isDesktop,
     searchResult,
+    searchBy,
+    handleSearchByChange,
+    onMandalSearch,
     onSearch,
     handleView,
     handleSearchTableChange,
@@ -147,3 +177,4 @@ const userTable = ({
 }
 
 export default userTable
+

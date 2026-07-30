@@ -29,7 +29,9 @@ function BasicInfo({ basicInfoData, otherDetail, userDetails, getEmailList }) {
                             ) : (
                               <>
                                 <span className="vertical-middle"> : </span>
-                                {value?.value || '-'}
+                                {value?.translateValue && value?.value
+                                  ? t(value.value)
+                                  : value?.value || '-'}
                               </>
                             )}
                           </td>
@@ -37,7 +39,9 @@ function BasicInfo({ basicInfoData, otherDetail, userDetails, getEmailList }) {
                           <td>
                             <>
                               <span className="vertical-middle"> : </span>
-                              {value?.value || '-'}
+                              {value?.translateValue && value?.value
+                                ? t(value.value)
+                                : value?.value || '-'}
                             </>
                           </td>
                         )}

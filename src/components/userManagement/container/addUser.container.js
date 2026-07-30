@@ -42,6 +42,7 @@ import {
   countriesList,
   hostelDepartmentOptions,
   inspectionOfficerDesignationOptions,
+  mandalSpecialOfficerDesignation,
   roleIdByPath,
   userFormByRoleId,
   userFormFields,
@@ -124,7 +125,7 @@ const addUser = ({
         fetchData()
       }
     }
-    if (formRoleId !== inspectionOfficer) {
+    if (!include([inspectionOfficer, mandalSpecialOfficer], formRoleId)) {
       const updatedForm = { ...userForm }
       delete updatedForm.designation
       setUserForm(updatedForm)
@@ -196,6 +197,9 @@ const addUser = ({
         !include(designationOptions, editInfo?.data?.designation)
       const formData = setFormData(userForm, {
         ...editInfo?.data,
+        ...(isEqual(formRoleId, mandalSpecialOfficer)
+          ? { designation: mandalSpecialOfficerDesignation }
+          : {}),
         ...(hasCustomDepartment
           ? {
               departmentName: 'OTHER',
@@ -231,15 +235,17 @@ const addUser = ({
                 editInfo?.data?.roleId,
               )
                 ? {
-                    profile: { ...profile },
+                    ...(!isEqual(editInfo?.data?.roleId, hostel) && {
+                      profile: { ...profile },
+                    }),
                     deleteBtn: {
                       inputType: 'button',
                       type: 'primary',
                       className: 'bg-danger',
                       children: t('btn_Delete'),
                       onClick: handleDeletePopup,
-                      md: 12,
-                      xs: 12,
+                      md: 24,
+                      xs: 24,
                       colClassName: 'text-end',
                     },
                   }
@@ -608,6 +614,9 @@ const addUser = ({
       return setPopup({ open: true, message: checkErrorArr?.find(err => err) })
     }
     let data = form.getFieldValue()
+    if (isEqual(formRoleId, mandalSpecialOfficer)) {
+      data.designation = mandalSpecialOfficerDesignation
+    }
     if (isEqual(data?.departmentName, 'OTHER')) {
       data.departmentName = data?.customDepartmentName
     }
@@ -851,3 +860,5 @@ const addUser = ({
 }
 
 export default addUser
+
+
