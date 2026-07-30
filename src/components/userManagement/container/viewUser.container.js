@@ -3,7 +3,10 @@ import { childUsers, userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
 import { userChildrenList } from '../../layout/sidebar.description'
-import { inspectionOfficerMandalOptions } from '../user.description'
+import {
+  hostelTypeOptions,
+  inspectionOfficerMandalOptions,
+} from '../user.description'
 
 const viewUser = ({ userDetails }) => {
   const {
@@ -21,6 +24,7 @@ const viewUser = ({ userDetails }) => {
     employeeId,
     companyCode,
     storeCode,
+    typeOfHostel,
   } = {
     ...userDetails,
   }
@@ -28,6 +32,9 @@ const viewUser = ({ userDetails }) => {
   const mandalLabel =
     inspectionOfficerMandalOptions.find(option => option.value === mandal)
       ?.label || mandal
+  const hostelTypeLabel =
+    hostelTypeOptions.find(option => option.value === typeOfHostel)?.label ||
+    typeOfHostel
   const currentUser = userChildrenList.find(val => isEqual(val.userId, roleId))
   const userListView = currentUser?.userView
   const loginUserRoleId = JSON.parse(getItem('userData'))?.roleId
@@ -113,6 +120,15 @@ const viewUser = ({ userDetails }) => {
           {
             label: 'mso_Mandal',
             value: mandalLabel,
+          },
+        ]
+      : []),
+    ...(isEqual(roleId, hostel)
+      ? [
+          {
+            label: 'hostel_TypeOfHostel',
+            value: hostelTypeLabel,
+            translateValue: true,
           },
         ]
       : []),
