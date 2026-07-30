@@ -45,9 +45,9 @@ const SettingsTableCard = ({
                       onChange={handleSelectChange}
                       checked={include(selectedIds, item?.id)}
                     >
-                      {`${t('ID')} : ${item?.id}`}
+                      {/* {`${t('ID')} : ${item?.id}`} */}
                     </ANTDCheckbox>,
-                    `${t('ID')} : ${item?.id}`,
+                    // `${t('ID')} : ${item?.id}`,
                   )}
                 </>
               }

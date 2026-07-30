@@ -231,6 +231,8 @@ const inspectionOfficerMandalOptions = [
   { label: 'Pembi', value: 'PEMBI' },
 ]
 
+const mandalSpecialOfficerDesignation = 'Mandal special officer (MSO)'
+
 const inspectionOfficerDesignationOptions = [
   // 'inspectionOfficer_Designation_Tahsildar',
   'inspectionOfficer_Designation_MAO',
@@ -252,8 +254,8 @@ const hostelDepartmentOptions = [
 ]
 
 const hostelTypeOptions = [
-  { label: 'hostel_ResidentialHostel', value: 'RESIDENTIAL_HOSTEL' },
-  { label: 'hostel_NonResidentialHostel', value: 'NON_RESIDENTIAL_HOSTEL' },
+  { label: 'hostel_ResidentialSchool', value: 'RESIDENTIAL_HOSTEL' },
+  { label: 'user_Hostel', value: 'NON_RESIDENTIAL_HOSTEL' },
 ]
 
 const inspectionOfficerForm = (t, formValues) => ({
@@ -295,6 +297,11 @@ const inspectionOfficerForm = (t, formValues) => ({
 const mandalSpecialOfficerForm = formValues => ({
   profile: addUserForm.profile,
   lastName: addUserForm.lastName,
+  designation: {
+    ...addUserForm.designation,
+    initialValue: mandalSpecialOfficerDesignation,
+    disabled: true,
+  },
   mandal: {
     label: 'mso_Mandal',
     validateTrigger: 'onChange',
@@ -336,15 +343,6 @@ const hostelForm = (t, formValues) => ({
     md: 24,
     xs: 24,
   },
-  mandal: {
-    label: 'mso_Mandal',
-    validateTrigger: 'onChange',
-    inputType: 'select',
-    required: true,
-    options: inspectionOfficerMandalOptions,
-    md: 24,
-    xs: 24,
-  },
   typeOfHostel: {
     label: 'hostel_TypeOfHostel',
     validateTrigger: 'onChange',
@@ -354,6 +352,15 @@ const hostelForm = (t, formValues) => ({
       label: t(label),
       value,
     })),
+    md: 24,
+    xs: 24,
+  },
+  mandal: {
+    label: 'mso_Mandal',
+    validateTrigger: 'onChange',
+    inputType: 'select',
+    required: true,
+    options: inspectionOfficerMandalOptions,
     md: 24,
     xs: 24,
   },
@@ -426,4 +433,7 @@ export {
   hostelDepartmentOptions,
   hostelTypeOptions,
   inspectionOfficerDesignationOptions,
+  mandalSpecialOfficerDesignation,
 }
+
+

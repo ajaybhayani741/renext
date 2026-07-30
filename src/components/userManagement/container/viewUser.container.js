@@ -10,7 +10,6 @@ import {
 
 const viewUser = ({ userDetails }) => {
   const {
-    id,
     businessName,
     emailId,
     phoneNumber,
@@ -24,6 +23,7 @@ const viewUser = ({ userDetails }) => {
     employeeId,
     companyCode,
     storeCode,
+    departmentName,
     typeOfHostel,
   } = {
     ...userDetails,
@@ -74,11 +74,11 @@ const viewUser = ({ userDetails }) => {
   }
 
   const basicInfoData = [
-    {
-      label: 'user_ID',
-      value: id,
-      hidden: include([inspectionOfficer, hostel], loginUserRoleId),
-    },
+    // {
+    //   label: 'user_ID',
+    //   value: id,
+    //   hidden: include([inspectionOfficer, hostel], loginUserRoleId),
+    // },
     {
       label: isEqual(roleId, storeOwner)
         ? 'job_CompanyName'
@@ -106,12 +106,11 @@ const viewUser = ({ userDetails }) => {
       value: ternary(roleId, lastName, name),
       hidden: include([store], roleId),
     },
-    ...(isEqual(roleId, inspectionOfficer)
+    ...(include([inspectionOfficer, mandalSpecialOfficer], roleId)
       ? [
           {
             label: 'user_Designation',
             value: designation,
-            hidden: !isEqual(roleId, inspectionOfficer),
           },
         ]
       : []),
@@ -129,6 +128,10 @@ const viewUser = ({ userDetails }) => {
             label: 'hostel_TypeOfHostel',
             value: hostelTypeLabel,
             translateValue: true,
+        },
+         {
+            label: 'hostel_DepartmentUnit',
+            value: departmentName,
           },
         ]
       : []),
@@ -193,3 +196,6 @@ const viewUser = ({ userDetails }) => {
 }
 
 export default viewUser
+
+
+

@@ -54,10 +54,10 @@ const UnassignedHostels = () => {
         }
         showAssignInspectionOfficer={true}
         columnFilter={[
-          'user_Image',
           'user_Name',
-          'user_Address',
-          'user_Contact',
+          'mso_Mandal',
+          'hostel_TypeOfHostel',
+          'hostel_DepartmentUnit',
           'user_LastInspectionDate',
           'txt_Action',
         ]}
