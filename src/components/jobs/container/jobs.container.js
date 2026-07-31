@@ -182,7 +182,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
       hostelContact: hostelContactCol,
       inspectionOfficer: inspectionOfficerCol,
       mandal,
-      creationName,
+      createdDate
     } = columnKeys
 
     return [
@@ -190,7 +190,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
       mandal,
       hostelContactCol,
       inspectionOfficerCol,
-      creationName,
+      createdDate,
       status,
     ]
   }, [type, status, roleId])
