@@ -42,7 +42,6 @@ import {
   countriesList,
   hostelDepartmentOptions,
   inspectionOfficerDesignationOptions,
-  mandalSpecialOfficerDesignation,
   roleIdByPath,
   userFormByRoleId,
   userFormFields,
@@ -197,9 +196,6 @@ const addUser = ({
         !include(designationOptions, editInfo?.data?.designation)
       const formData = setFormData(userForm, {
         ...editInfo?.data,
-        ...(isEqual(formRoleId, mandalSpecialOfficer)
-          ? { designation: mandalSpecialOfficerDesignation }
-          : {}),
         ...(hasCustomDepartment
           ? {
               departmentName: 'OTHER',
@@ -614,9 +610,6 @@ const addUser = ({
       return setPopup({ open: true, message: checkErrorArr?.find(err => err) })
     }
     let data = form.getFieldValue()
-    if (isEqual(formRoleId, mandalSpecialOfficer)) {
-      data.designation = mandalSpecialOfficerDesignation
-    }
     if (isEqual(data?.departmentName, 'OTHER')) {
       data.departmentName = data?.customDepartmentName
     }
@@ -860,5 +853,4 @@ const addUser = ({
 }
 
 export default addUser
-
 
