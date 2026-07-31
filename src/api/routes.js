@@ -192,6 +192,7 @@ const API_ROUTES = {
   DASHBOARD_VARIATION_HOSTELS: ({ pageNo }) =>
     `/dashboard-management/v1/food-provisions-variation/hostels/${pageNo}`,
   DASHBOARD_PHOTOS: ({ pageNo }) => `/dashboard-management/v1/photos/${pageNo}`,
+  DASHBOARD_METRICS: `/dashboard-management/v1/metrics`,
   GET_LOCATION_ADDRESS: `/job-management/v1/lat-long-address`,
   GENERATE_MASTER_SHEET: `/job-management/v1/userreports`,
 }

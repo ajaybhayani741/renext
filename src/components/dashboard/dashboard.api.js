@@ -73,6 +73,7 @@ const {
   DASHBOARD_VARIATION_BAR_CHART,
   DASHBOARD_VARIATION_HOSTELS,
   DASHBOARD_PHOTOS,
+  DASHBOARD_METRICS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -546,6 +547,11 @@ const getDashboardPhotosApi = async ({ pageNo, params }) => {
   return response?.data
 }
 
+const getDashboardMetricsApi = async () => {
+  const response = await getMethod(DASHBOARD_METRICS)
+  return response?.data
+}
+
 export {
   getDiscrepanciesApi,
   getShiftReportApi,
@@ -617,4 +623,5 @@ export {
   getVariationBarChartApi,
   getVariationHostelsApi,
   getDashboardPhotosApi,
+  getDashboardMetricsApi,
 }

@@ -21,6 +21,7 @@ const cardKeys = {
   // conductionMeetings: 'conduction-meetings',
   feedback: 'feedback',
   photos: 'photos',
+  metrics: 'metrics',
   administrationGovernance: 'administration-governance',
   foodNutrition: 'food-nutrition',
   accommodation: 'accommodation',
@@ -331,6 +332,10 @@ const cardList = [
 */
 
 const cardList = [
+  {
+    label: 'dash_Metrics',
+    key: cardKeys.metrics,
+  },
   {
     label: 'Administration & Governance',
     key: cardKeys.administrationGovernance,
