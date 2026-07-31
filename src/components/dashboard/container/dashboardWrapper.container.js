@@ -41,7 +41,13 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
   // )
 
   const showVariationValueColumn = isEqual(title, 'job_Variation')
-
+  const isMetricsOverview = isEqual(
+    selectedColumn?.reportChartType,
+    'DASHBOARD_METRICS_OVERVIEW',
+  )
+  const hideActionColumn =
+    isMetricsOverview &&
+    isEqual(selectedColumn?.categoryValue, 'YET_TO_BE_ASSIGNED_THIS_WEEK')
   const columns = [
     {
       title: '',
@@ -88,12 +94,19 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
       title: t('txt_Action'),
       key: 'viewJob',
       width: 120,
+      hidden: hideActionColumn,
       render: rowData => {
+        const disableViewJob =
+          isMetricsOverview &&
+          isEqual(selectedColumn?.categoryValue, 'TOTAL_HOSTELS_ONBOARDED') &&
+          !rowData?.jobId
+
         return (
           <ANTDButton
             type="primary"
             size="small"
             onClick={() => handleHostelClick(rowData)}
+            disabled={disableViewJob}
           >
             {t('txt_ViewJob')}
           </ANTDButton>

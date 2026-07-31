@@ -65,6 +65,7 @@ const CommonPieChart = ({
             category: item.category,
             categoryValue: item.categoryValue,
             filterValue: item.filterValue,
+            label: item.label,
           })),
         },
       ],
