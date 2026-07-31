@@ -11,6 +11,7 @@ import HostelAuthorityDashboard from './HostelAuthorityDashboard'
 import HostelInfraRoomsDashboard from './HostelInfraRoomsDashboard'
 import HostelInfraSanitationDashboard from './HostelInfraSanitationDashboard'
 import MedicalCareDashboard from './MedicalCareDashboard'
+import MetricsDashboard from './MetricsDashboard'
 import PhotosDashboard from './PhotosDashboard'
 import RecordMaintenanceDashboard from './RecordMaintenanceDashboard'
 import SafetySecurityDashboard from './SafetySecurityDashboard'
@@ -33,6 +34,8 @@ const DashboardView = () => {
 
   const getDashboardComponent = type => {
     switch (type) {
+      case cardKeys.metrics:
+        return <MetricsDashboard />
       case cardKeys.administrationGovernance:
         return <AdministrationGovernanceDashboard />
       case cardKeys.foodNutrition:
@@ -96,7 +99,7 @@ const DashboardView = () => {
             : t('job_Dashboard')
         }
         subtitle={currentData?.label ? t(currentData.label) : ''}
-        action={<FiscalYearSelect setDefault={false} className="ml-auto" />}
+        action={isEqual(params?.type,cardKeys.metrics) ? null : <FiscalYearSelect setDefault={false} className="ml-auto" />}
       />
       <motion.div
         className="dashboard-view-content"
