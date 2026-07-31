@@ -299,8 +299,8 @@ const mandalSpecialOfficerForm = formValues => ({
   lastName: addUserForm.lastName,
   designation: {
     ...addUserForm.designation,
-    initialValue: mandalSpecialOfficerDesignation,
-    disabled: true,
+    // initialValue: mandalSpecialOfficerDesignation,
+    // disabled: true,
   },
   mandal: {
     label: 'mso_Mandal',
