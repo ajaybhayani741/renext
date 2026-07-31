@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 
+import DashboardWrapper from './DashboardWrapper'
 import useTranslations from '../../../hooks/useTranslations'
+import { userWiseRole } from '../../../utils/constant'
+import { getUserList } from '../../userManagement/user.api'
+import { inspectionOfficerMandalOptions } from '../../userManagement/user.description'
 import {
   getDashboardMetricsApi,
   getDashboardMetricsHostelsApi,
 } from '../dashboard.api'
-import DashboardWrapper from './DashboardWrapper'
 import CommonPieChart from '../shared/CommonPieChart'
 import StatsCard from '../shared/StatsCard'
 
@@ -30,7 +33,9 @@ const MetricsSection = ({
           value={item?.value || 0}
           index={startIndex + index}
           onValueClick={
-            item?.metric && onValueClick ? () => onValueClick(item) : undefined
+            (item?.metric || item?.userRoleId) && onValueClick
+              ? () => onValueClick(item)
+              : undefined
           }
         />
       ))}
@@ -64,6 +69,8 @@ const MetricsDashboard = () => {
     chartData: null,
   })
   const [hostelsData, setHostelsData] = useState({})
+  const isInspectionOfficerModal =
+    selectedColumn?.listType === 'inspectionOfficer'
 
   useEffect(() => {
     const loadMetrics = async () => {
@@ -83,6 +90,32 @@ const MetricsDashboard = () => {
     return response?.data
   }
 
+  const getInspectionOfficers = async ({ pageNo = 1 }) => {
+    const response = await getUserList({
+      params: `${pageNo}?roleId=${userWiseRole.inspectionOfficer}`,
+    })
+
+    return response?.data
+  }
+
+  const openInspectionOfficerModal = async ({ label }) => {
+    setHostelsData(prev => ({ ...prev, loader: true }))
+    const respData = await getInspectionOfficers({ pageNo: 1 })
+
+    setHostelsData(
+      respData ? { ...respData, loader: false } : { loader: false },
+    )
+    setSelectedColumn({
+      selected: true,
+      chartData: {
+        category: 'dash_MetricsInspectionOfficer',
+        type: t(label),
+      },
+      title: label,
+      listType: 'inspectionOfficer',
+      modalTitle: true,
+    })
+  }
   const openHostelsModal = async ({ metric, label, type }) => {
     if (!metric) return
 
@@ -107,12 +140,16 @@ const MetricsDashboard = () => {
   }
 
   const handleMetricValueClick = item => {
+    if (item?.userRoleId) {
+      openInspectionOfficerModal({ label: item?.label })
+      return
+    }
+
     openHostelsModal({
       metric: item?.metric,
       label: item?.label,
     })
   }
-
   const handlePieChartClick = ({ e }) => {
     const point = e?.point
 
@@ -134,16 +171,17 @@ const MetricsDashboard = () => {
   const handleTableChange = async ({ current }) => {
     setHostelsData(prev => ({ ...prev, loader: true }))
 
-    const respData = await getMetricHostels({
-      metric: selectedColumn?.categoryValue,
-      pageNo: current,
-    })
+    const respData = isInspectionOfficerModal
+      ? await getInspectionOfficers({ pageNo: current })
+      : await getMetricHostels({
+          metric: selectedColumn?.categoryValue,
+          pageNo: current,
+        })
 
     setHostelsData(
       respData ? { ...respData, loader: false } : { loader: false },
     )
   }
-
   const hostelMetrics = [
     {
       label: 'dash_TotalHostelsOnboarded',
@@ -176,6 +214,7 @@ const MetricsDashboard = () => {
     {
       label: 'dash_TotalInspectionOfficersOnboarded',
       value: metricsData?.totalInspectionOfficersOnboarded,
+      userRoleId: userWiseRole.inspectionOfficer,
     },
     {
       label: 'dash_IOsCompletedAtLeastOneInspectionCurrentWeek',
@@ -184,6 +223,43 @@ const MetricsDashboard = () => {
     {
       label: 'dash_IOsCompletedAtLeastOneInspectionLastWeek',
       value: metricsData?.inspectionOfficersCompletedAtLeastOneThisWeek,
+    },
+  ]
+
+  const inspectionOfficerColumns = [
+    {
+      title: '',
+      key: 'id',
+      render: (_, __, index) => {
+        return ((hostelsData?.pageNo || 1) - 1) * 10 + index + 1
+      },
+    },
+    {
+      title: t('user_Name'),
+      key: 'user_Name',
+      render: rowData => rowData?.lastName || rowData?.name || '-',
+    },
+    {
+      title: t('user_Designation'),
+      dataIndex: 'designation',
+      key: 'designation',
+      render: rowData => rowData || '-',
+    },
+    {
+      title: t('mso_Mandal'),
+      key: 'mso_Mandal',
+      render: rowData =>
+        inspectionOfficerMandalOptions.find(
+          option => option.value === rowData?.mandal,
+        )?.label ||
+        rowData?.mandal ||
+        '-',
+    },
+    {
+      title: t('user_Contact'),
+      dataIndex: 'phoneNumber',
+      key: 'user_Contact',
+      render: rowData => rowData || '-',
     },
   ]
 
@@ -215,6 +291,9 @@ const MetricsDashboard = () => {
     <DashboardWrapper
       {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
       hideExportButton
+      modalColumns={isInspectionOfficerModal ? inspectionOfficerColumns : null}
+      modalDataKey={isInspectionOfficerModal ? 'list' : 'hostels'}
+      showPaginationOnSinglePage={isInspectionOfficerModal}
     >
       <div className="dashboard-module-surface metrics-dashboard-surface">
         <div className="metrics-sections-grid">

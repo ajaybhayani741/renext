@@ -22,14 +22,20 @@ const DashboardWrapper = ({
   handleTableChange = null,
   hostelsData,
   hideExportButton = false,
+  modalColumns = null,
+  modalDataKey = 'hostels',
+  showPaginationOnSinglePage = false,
 }) => {
   const { t } = useTranslations()
-  const { hostels, loader, pageNo, lastPage } = hostelsData || {}
+  const { loader, pageNo, lastPage } = hostelsData || {}
+  const modalList = hostelsData?.[modalDataKey]
   const pageSize = 10
+  const totalRecords =
+    hostelsData?.totalCount || hostelsData?.fullCount || lastPage * pageSize
   const jobType = tabKeys?.inspection
 
   const {
-    columns,
+    columns: defaultColumns,
     jobModel,
     handleCloseJobModel,
     onGenerateReport,
@@ -77,10 +83,14 @@ const DashboardWrapper = ({
             )}
             <ANTDTable
               loading={loader || jobModel?.loader}
-              columns={columns}
+              columns={modalColumns || defaultColumns}
               dataSource={
-                length(hostels)
-                  ? hostels
+                length(modalList)
+                  ? modalList.map((item, ind) => ({
+                      ...item,
+                      key:
+                        item?.key || item?.id || (pageNo - 1) * pageSize + ind,
+                    }))
                   : length(selectedColumn?.list)
                     ? selectedColumn?.list?.map((item, ind) => ({
                         ...item,
@@ -92,9 +102,9 @@ const DashboardWrapper = ({
                 lastFetched: pageNo,
                 current: pageNo,
                 pageSize: pageSize,
-                total: lastPage * pageSize,
+                total: totalRecords,
                 responsive: true,
-                hideOnSinglePage: true,
+                hideOnSinglePage: !showPaginationOnSinglePage,
               }}
               onChange={handleTableChange}
               size="small"
