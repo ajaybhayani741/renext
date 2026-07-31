@@ -21,6 +21,7 @@ const DashboardWrapper = ({
   chartClassName,
   handleTableChange = null,
   hostelsData,
+  hideExportButton = false,
 }) => {
   const { t } = useTranslations()
   const { hostels, loader, pageNo, lastPage } = hostelsData || {}
@@ -62,16 +63,18 @@ const DashboardWrapper = ({
             footer={false}
             width={850}
           >
-            <div className="text-end mb-5">
-              <ANTDButton
-                type="primary"
-                className="btn"
-                onClick={onGenerateReport}
-                loading={reportLoader}
-              >
-                {t('dash_ExportToExcel')}
-              </ANTDButton>
-            </div>
+            {!hideExportButton && (
+              <div className="text-end mb-5">
+                <ANTDButton
+                  type="primary"
+                  className="btn"
+                  onClick={onGenerateReport}
+                  loading={reportLoader}
+                >
+                  {t('dash_ExportToExcel')}
+                </ANTDButton>
+              </div>
+            )}
             <ANTDTable
               loading={loader || jobModel?.loader}
               columns={columns}
