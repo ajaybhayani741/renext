@@ -250,6 +250,7 @@ const hostelDepartmentOptions = [
   'hostel_DepartmentUnit_SCWelfare',
   'hostel_DepartmentUnit_STWelfare',
   'hostel_DepartmentUnit_MinorityDepartment',
+  'KGVB',
   'text_Other',
 ]
 
