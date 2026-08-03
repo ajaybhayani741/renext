@@ -239,6 +239,29 @@ const InspectionForm = ({
         />
       ),
     },
+      {
+      label: collapseItemHeader({
+        label: 'job_ElectricityLightingSection',
+        key: 'electricityLightingRequestDto',
+      }),
+      header: t('job_ElectricityLightingSection'),
+      key: 'electricityLightingRequestDto',
+      ...commonCollapseProps,
+      children: (
+        <InspectionFormField
+          {...{
+            attrList: electricityLightingAttr,
+            index,
+            name,
+            nestedKey: 'electricityLightingRequestDto',
+            showSaveBtn: include([...allPermissionRoles], roleId),
+            disabledAll: !include([...allPermissionRoles], roleId),
+            onSaveClick,
+            apiCall,
+          }}
+        />
+      ),
+    },
     {
       label: collapseItemHeader({
         label: 'job_SanitationDrainageSection',
@@ -254,29 +277,6 @@ const InspectionForm = ({
             index,
             name,
             nestedKey: 'sanitationDrainageRequestDto',
-            showSaveBtn: include([...allPermissionRoles], roleId),
-            disabledAll: !include([...allPermissionRoles], roleId),
-            onSaveClick,
-            apiCall,
-          }}
-        />
-      ),
-    },
-    {
-      label: collapseItemHeader({
-        label: 'job_ElectricityLightingSection',
-        key: 'electricityLightingRequestDto',
-      }),
-      header: t('job_ElectricityLightingSection'),
-      key: 'electricityLightingRequestDto',
-      ...commonCollapseProps,
-      children: (
-        <InspectionFormField
-          {...{
-            attrList: electricityLightingAttr,
-            index,
-            name,
-            nestedKey: 'electricityLightingRequestDto',
             showSaveBtn: include([...allPermissionRoles], roleId),
             disabledAll: !include([...allPermissionRoles], roleId),
             onSaveClick,

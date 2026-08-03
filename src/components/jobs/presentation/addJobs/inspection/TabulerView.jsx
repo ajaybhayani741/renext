@@ -1093,6 +1093,26 @@ const TabulerView = ({
               </>
             ),
           },
+            {
+            label: t('job_ElectricityLightingSection'),
+            key: 'electricityLightingRequestDto',
+            className: collapseClassName('electricityLightingRequestDto'),
+            style: collapseStyle('electricityLightingRequestDto'),
+            children: (
+              <>
+                {selectedUserTable('electricityLightingRequestDto')}
+                {collapseItemUI({
+                  fieldAttr: mapAttributeToTableAttr(
+                    electricityLightingAttrFn(),
+                  ),
+                  detailKey: 'electricityLightingRequestDto',
+                  showEdit: showEditPermission({
+                    section: 'electricityLightingRequestDto',
+                  }),
+                })}
+              </>
+            ),
+          },
           {
             label: t('job_SanitationDrainageSection'),
             key: 'sanitationDrainageRequestDto',
@@ -1108,26 +1128,6 @@ const TabulerView = ({
                   detailKey: 'sanitationDrainageRequestDto',
                   showEdit: showEditPermission({
                     section: 'sanitationDrainageRequestDto',
-                  }),
-                })}
-              </>
-            ),
-          },
-          {
-            label: t('job_ElectricityLightingSection'),
-            key: 'electricityLightingRequestDto',
-            className: collapseClassName('electricityLightingRequestDto'),
-            style: collapseStyle('electricityLightingRequestDto'),
-            children: (
-              <>
-                {selectedUserTable('electricityLightingRequestDto')}
-                {collapseItemUI({
-                  fieldAttr: mapAttributeToTableAttr(
-                    electricityLightingAttrFn(),
-                  ),
-                  detailKey: 'electricityLightingRequestDto',
-                  showEdit: showEditPermission({
-                    section: 'electricityLightingRequestDto',
                   }),
                 })}
               </>

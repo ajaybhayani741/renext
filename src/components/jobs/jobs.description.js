@@ -91,6 +91,7 @@ const columnKeys = {
   inspectionOfficerName: 'job_InspectionOfficerName',
   mandal: 'mso_Mandal',
   creationName: 'job_CreationName',
+  designation: 'mso_Designation'
 }
 
 const searchByKeys = {
@@ -447,6 +448,7 @@ const inspectionReportOptions = [
   { label: 'job_Satisfactory', value: 'SATISFACTORY' },
   { label: 'job_NeedsAttention', value: 'NEEDS_ATTENTION' },
   { label: 'job_Critical', value: 'CRITICAL' },
+  { label: 'job_NotApplicable', value: 'NOT_APPLICABLE' },
 ]
 
 export const APPROVED = 'APPROVED'

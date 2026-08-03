@@ -348,13 +348,13 @@ const cardList = [
     label: 'Accommodation',
     key: cardKeys.accommodation,
   },
+   {
+    label: 'Electricity & Lighting',
+    key: cardKeys.electricityLighting,
+  },
   {
     label: 'Sanitation & Drainage',
     key: cardKeys.sanitationDrainage,
-  },
-  {
-    label: 'Electricity & Lighting',
-    key: cardKeys.electricityLighting,
   },
   {
     label: 'Health & Medical Care',

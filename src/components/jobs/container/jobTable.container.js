@@ -13,6 +13,7 @@ import { addressFormat } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
 import { downloadReport } from '../../../utils/customFunctions'
 import { dateFormat } from '../../../utils/dateFormat'
+import { dayJs } from '../../../utils/dayjs'
 import { DownloadOutlined } from '../../../utils/icons'
 import { include, isEqual, length, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
@@ -150,22 +151,22 @@ const jobTable = ({
         },
         hidden: !handleSelectChange,
       },
-      {
-        title: '',
-        key: columnKeys.read,
-        render: rowData => {
-          return (
-            <div className="blink-btn">
-              {rowData?.read ? null : (
-                <div className="blink-btn">
-                  <ANTDButton>{t('txt_New')}</ANTDButton>
-                </div>
-              )}
-            </div>
-          )
-        },
-        hidden: isEqual(activeTab?.status, tabKeys.complete),
-      },
+      // {
+      //   title: '',
+      //   key: columnKeys.read,
+      //   render: rowData => {
+      //     return (
+      //       <div className="blink-btn">
+      //         {rowData?.read ? null : (
+      //           <div className="blink-btn">
+      //             <ANTDButton>{t('txt_New')}</ANTDButton>
+      //           </div>
+      //         )}
+      //       </div>
+      //     )
+      //   },
+      //   hidden: isEqual(activeTab?.status, tabKeys.complete),
+      // },
       {
         title: t('job_Id'),
         key: columnKeys.jobId,
@@ -181,11 +182,40 @@ const jobTable = ({
       //   },
       // },
       {
+        title: t('user_CreationDate'),
+        key: columnKeys.createdDate,
+        dataIndex: 'creationDate',
+        render: rowData => {
+          return <>{rowData ? dayJs(rowData).format('DD/MM/YYYY HH:mm A') : '-'}</>
+        },
+      },
+      {
         title: t('user_Hostel'),
         key: columnKeys.hostel,
         dataIndex: 'hostelInfo',
         ellipsis: true,
         render: rowData => rowData?.lastName || '-',
+      },
+       {
+        title: t('mso_Mandal'),
+        key: columnKeys.mandal,
+        dataIndex: 'hostelInfo',
+        ellipsis: true,
+        render: rowData => rowData?.mandal || '-',
+      },
+      {
+        title: t('user_InspectionOfficer'),
+        key: columnKeys.inspectionOfficer,
+        dataIndex: 'userInfo',
+        ellipsis: true,
+        render: rowData => rowData?.lastName || '-',
+      },
+      {
+        title: t('mso_Designation'),
+        key: columnKeys.designation,
+        dataIndex: 'userInfo',
+        ellipsis: true,
+        render: rowData => rowData?.designation || '-',
       },
       {
         title: t('user_HostelAddress'),
@@ -196,27 +226,15 @@ const jobTable = ({
           return addressFormat(rowData)
         },
       },
-      {
-        title: t('mso_Mandal'),
-        key: columnKeys.mandal,
-        dataIndex: 'hostelInfo',
-        ellipsis: true,
-        render: rowData => rowData?.mandal || '-',
-      },
-      {
-        title: t('user_Contact'),
-        key: columnKeys.hostelContact,
-        dataIndex: 'hostelInfo',
-        ellipsis: true,
-        render: rowData => rowData?.phoneNumber || '-',
-      },
-      {
-        title: t('user_InspectionOfficer'),
-        key: columnKeys.inspectionOfficer,
-        dataIndex: 'userInfo',
-        ellipsis: true,
-        render: rowData => rowData?.lastName || '-',
-      },
+     
+      // {
+      //   title: t('user_Contact'),
+      //   key: columnKeys.hostelContact,
+      //   dataIndex: 'hostelInfo',
+      //   ellipsis: true,
+      //   render: rowData => rowData?.phoneNumber || '-',
+      // },
+   
       {
         title: t('job_CreationName'),
         key: columnKeys.creationName,
@@ -231,14 +249,7 @@ const jobTable = ({
           rowData?.createdByUser?.businessName ||
           '-',
       },
-      {
-        title: t('user_CreationDate'),
-        key: columnKeys.createdDate,
-        dataIndex: 'creationDate',
-        render: rowData => {
-          return <>{rowData ? dateFormat(rowData)?.dmyDate : '-'}</>
-        },
-      },
+      
       {
         title: t('job_UpdatedDate'),
         key: columnKeys.updatedDate,
@@ -341,6 +352,7 @@ const jobTable = ({
           jobData?.createdByUser?.businessName,
       },
       { label: 'job_Status', value: jobData?.status },
+      { label: 'mso_Designation', value: jobData?.userInfo?.designation },
     ].filter(item => !item.hidden)
   }
 

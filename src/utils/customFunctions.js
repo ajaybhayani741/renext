@@ -102,7 +102,12 @@ const downloadReport = async (reportUrl, fileName, fileType) => {
     // Append the link to the document body
     document.body.appendChild(link)
     // Trigger a click event on the link to start the download
-    link.click()
+      link.click()
+      window.ReactNativeWebView.postMessage(JSON.stringify({
+        type: "DOWNLOAD",
+        url: link.href,
+        fileName: "inspection_assessment_report_329.pdf"
+      }));
     // Clean up: remove the link and revoke the Blob URL after download starts
     document.body.removeChild(link)
     URL.revokeObjectURL(blobUrl)
