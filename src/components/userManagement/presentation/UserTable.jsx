@@ -40,7 +40,7 @@ function UserTable({
   searchByEmail,
   isCardView,
   handleAssignInspectionOfficer,
-  handleAssignInspectionOfficerRandomly,
+  handleAssignToSelf,
   showAssignInspectionOfficer,
   columnFilter,
   showAssignHostel = true,
@@ -48,6 +48,7 @@ function UserTable({
   userKey,
   getUsersData = null,
   searchPayload = null,
+  tableScroll = null,
 }) {
   const {
     viewModel,
@@ -93,7 +94,7 @@ function UserTable({
     removeEditBtn,
     handleAssignHostelConfirmation,
     handleAssignInspectionOfficer,
-    handleAssignInspectionOfficerRandomly,
+    handleAssignToSelf,
     showAssignInspectionOfficer,
     handleAssignHostel,
     columnFilter,
@@ -226,6 +227,7 @@ function UserTable({
                 : false
             }
             onChange={handleTableChange}
+            scroll={tableScroll}
             className="user-table"
           />,
           <UserTableCard

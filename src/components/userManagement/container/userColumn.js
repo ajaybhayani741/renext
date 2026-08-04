@@ -31,7 +31,7 @@ const userColumns = ({
   removeEditBtn,
   handleAssignHostel,
   handleAssignInspectionOfficer,
-  handleAssignInspectionOfficerRandomly,
+  handleAssignToSelf,
   showAssignInspectionOfficer,
   columnFilter,
   userKey,
@@ -48,23 +48,17 @@ const userColumns = ({
     <div className="card-extra-buttons">
       {showAssignInspectionOfficer && (
         <>
-          {/* <ANTDButton
-            className="bg-assign-hostel-random"
-            onClick={() => handleAssignInspectionOfficerRandomly({ rowData })}
-          >
-            {t('user_AssignInspectionOfficerRandomly')}
-          </ANTDButton>
           <ANTDButton
             className="bg-assign-hostel"
             onClick={() => handleAssignInspectionOfficer({ rowData })}
           >
             {t('user_AssignInspectionOfficer')}
-          </ANTDButton> */}
+          </ANTDButton>
           <ANTDButton
-            className="bg-assign-hostel"
-            onClick={() => handleAssignInspectionOfficerRandomly({ rowData })}
+            className="bg-assign-hostel-random"
+            onClick={() => handleAssignToSelf({ rowData })}
           >
-            {t('job_assign')}
+            {t('user_AssignToSelf')}
           </ANTDButton>
         </>
       )}
@@ -94,6 +88,9 @@ const userColumns = ({
     {
       title: null,
       key: 'select',
+      width: 60,
+      fixed: 'left',
+      className: 'select-column',
       render: rowData => {
         const usersList = selectedUsers?.map(v => v?.id)
         return (
@@ -344,5 +341,4 @@ const userColumns = ({
 }
 
 export default userColumns
-
 

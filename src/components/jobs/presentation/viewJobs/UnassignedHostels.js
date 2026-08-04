@@ -22,14 +22,14 @@ const UnassignedHostels = () => {
     handleViewClick = () => {},
     handleTableChange,
     handleAssignInspectionOfficer,
-    handleAssignInspectionOfficerRandomly,
-    handleCloseAssignInspectionRandomModal,
+    handleAssignToSelf,
+    handleCloseAssignToSelfModal,
     handleCloseInspectionOfficerModal,
     inspectionOfficerData,
     handleInspectionOfficerTableChange,
     onAssignInspectionOfficer,
-    confirmAssignInspectionRandomModal,
-    // confirmAssignInspectionOfficer,
+    confirmAssignToSelfModal,
+    onAssignToSelf,
   } = unassignedHostels()
   return (
     <>
@@ -49,9 +49,7 @@ const UnassignedHostels = () => {
         isCardView={false}
         pagination={true}
         handleAssignInspectionOfficer={handleAssignInspectionOfficer}
-        handleAssignInspectionOfficerRandomly={
-          handleAssignInspectionOfficerRandomly
-        }
+        handleAssignToSelf={handleAssignToSelf}
         showAssignInspectionOfficer={true}
         columnFilter={[
           'user_Name',
@@ -83,19 +81,26 @@ const UnassignedHostels = () => {
               roleId: inspectionOfficer,
               relationType: userRelationKey.associate,
             }}
-            isSearch
             handleTableChange={handleInspectionOfficerTableChange}
             handleSelect={onAssignInspectionOfficer}
-            // multiSelect
+            columnFilter={[
+              'select',
+              'user_Name',
+              'designation',
+              'mso_Mandal',
+              'user_Contact',
+              'txt_Action',
+            ]}
+            tableScroll={{ x: 1050 }}
           />
         </ANTDModal>
       )}
-      {confirmAssignInspectionRandomModal?.open && (
+      {confirmAssignToSelfModal?.open && (
         <PopUpConfirm
-          isOpen={confirmAssignInspectionRandomModal?.open}
-          onCancelModel={handleCloseAssignInspectionRandomModal}
-          onAccept={onAssignInspectionOfficer}
-          onReject={handleCloseAssignInspectionRandomModal}
+          isOpen={confirmAssignToSelfModal?.open}
+          onCancelModel={handleCloseAssignToSelfModal}
+          onAccept={onAssignToSelf}
+          onReject={handleCloseAssignToSelfModal}
           description={t('msg_AreYouSureWantToAssign')}
         />
       )}

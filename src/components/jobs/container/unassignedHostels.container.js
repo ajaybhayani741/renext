@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import { setPopupMessageModel } from '../../../redux/app/reducer'
-import { apiParams } from '../../../utils'
 import { userWiseRole } from '../../../utils/constant'
 import { addAssociateApi, getUserList } from '../../userManagement/user.api'
 import { userRelationKey } from '../../userManagement/user.description'
@@ -18,12 +17,11 @@ const unassignedHostels = () => {
     list: [],
     loader: false,
   })
+  const [confirmAssignToSelfModal, setConfirmAssignToSelfModal] = useState({
+    open: false,
+    data: null,
+  })
   const userData = selector(state => state.user?.profile_details)
-
-  const [
-    confirmAssignInspectionRandomModal,
-    setConfirmAssignInspectionRandomModal,
-  ] = useState({ open: false, data: null })
   const { hostel, inspectionOfficer } = userWiseRole
 
   useEffect(() => {
@@ -53,31 +51,47 @@ const unassignedHostels = () => {
     getInspectionOfficerList({ pageNo: pagination?.current })
   }
 
-  const onAssignInspectionOfficer = async selectedUsers => {
-    setInspectionOfficerData(pre => ({ ...pre, loader: true }))
-    const payloadData = `?userId=${
-      userData?.id
-    }&associateUserId=${[confirmAssignInspectionRandomModal?.data?.id]}`
+  const associateHostel = async ({ userId, hostelId, onComplete }) => {
+    const payloadData = `?userId=${userId}&associateUserId=${hostelId}`
     const resp = await addAssociateApi({ params: payloadData })
-    if (resp?.data) {
-      dispatch(
-        setPopupMessageModel({
-          open: true,
-          message: 'msg_HostelAssignedSuccessfully',
-          success: true,
-        }),
-      )
+    const success = resp?.data?.success || resp?.data
+
+    dispatch(
+      setPopupMessageModel({
+        open: true,
+        message: success
+          ? resp?.data?.message || 'msg_HostelAssignedSuccessfully'
+          : resp?.data?.message || 'msg_SomethingWentWrong',
+        success: !!success,
+      }),
+    )
+
+    if (success) {
       hostelApiCall()
-    } else {
+    }
+
+    onComplete?.()
+  }
+
+  const onAssignInspectionOfficer = async selectedUsers => {
+    const selectedInspectionOfficer = selectedUsers?.[0]
+    if (!selectedInspectionOfficer?.id || !inspectionOfficerModal?.data?.id) {
       dispatch(
         setPopupMessageModel({
           open: true,
-          message: resp?.data?.message || 'msg_SomethingWentWrong',
+          message: 'msg_SelectUser',
           success: false,
         }),
       )
+      return
     }
-    handleCloseAssignInspectionRandomModal()
+
+    setInspectionOfficerData(pre => ({ ...pre, loader: true }))
+    await associateHostel({
+      userId: selectedInspectionOfficer?.id,
+      hostelId: inspectionOfficerModal?.data?.id,
+      onComplete: handleCloseInspectionOfficerModal,
+    })
   }
 
   const getInspectionOfficerList = async ({ pageNo }) => {
@@ -92,42 +106,32 @@ const unassignedHostels = () => {
     await getInspectionOfficerList({ pageNo: 1 })
   }
 
-  const handleAssignInspectionOfficerRandomly = ({ rowData } = {}) => {
-    setConfirmAssignInspectionRandomModal({ open: true, data: rowData })
+  const handleAssignToSelf = ({ rowData } = {}) => {
+    setConfirmAssignToSelfModal({ open: true, data: rowData })
   }
 
-  const handleCloseAssignInspectionRandomModal = () => {
-    setConfirmAssignInspectionRandomModal({ open: false, data: null })
+  const handleCloseAssignToSelfModal = () => {
+    setConfirmAssignToSelfModal({ open: false, data: null })
   }
 
-  const confirmAssignInspectionOfficer = async () => {
-    const payload = {
-      roleId: inspectionOfficer,
-      userId: confirmAssignInspectionRandomModal?.data?.id,
-      associateInspectionOfficer: true,
-    }
-    const resp = await addAssociateApi({
-      params: apiParams({ params: payload }),
-    })
-    if (resp?.data) {
+  const onAssignToSelf = async () => {
+    if (!userData?.id || !confirmAssignToSelfModal?.data?.id) {
       dispatch(
         setPopupMessageModel({
           open: true,
-          message: resp?.data?.message,
-          success: true,
-        }),
-      )
-      hostelApiCall()
-    } else {
-      dispatch(
-        setPopupMessageModel({
-          open: true,
-          message: resp?.data?.message || 'msg_SomethingWentWrong',
+          message: 'msg_SomethingWentWrong',
           success: false,
         }),
       )
+      handleCloseAssignToSelfModal()
+      return
     }
-    handleCloseAssignInspectionRandomModal()
+
+    await associateHostel({
+      userId: userData?.id,
+      hostelId: confirmAssignToSelfModal?.data?.id,
+      onComplete: handleCloseAssignToSelfModal,
+    })
   }
 
   return {
@@ -135,14 +139,14 @@ const unassignedHostels = () => {
     inspectionOfficerModal,
     handleTableChange,
     onAssignInspectionOfficer,
-    handleAssignInspectionOfficerRandomly,
-    handleCloseAssignInspectionRandomModal,
-    confirmAssignInspectionOfficer,
+    handleAssignToSelf,
+    handleCloseAssignToSelfModal,
+    onAssignToSelf,
     handleAssignInspectionOfficer,
     handleCloseInspectionOfficerModal,
     inspectionOfficerData,
     handleInspectionOfficerTableChange,
-    confirmAssignInspectionRandomModal,
+    confirmAssignToSelfModal,
   }
 }
 

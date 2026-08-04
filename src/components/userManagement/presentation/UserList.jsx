@@ -3,6 +3,7 @@ import '../user.scss'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDModal from '../../../shared/antd/ANTDModal'
+import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../utils/constant'
 import { isEqual, ternary } from '../../../utils/javascript'
 import userList from '../container/userList.container'
@@ -28,6 +29,10 @@ function UserList({
     modelTitle,
     associatedData,
     buildingInfo,
+    inspectionOfficerModal,
+    inspectionOfficerData,
+    confirmAssignToSelfModal,
+    showAssignInspectionOfficer,
     apiCall,
     setBuildingInfo,
     onAddAssociate,
@@ -36,10 +41,17 @@ function UserList({
     handleTableChange,
     handleNonAssociateUser,
     handleAssociatedTableChange,
+    handleAssignInspectionOfficer,
+    handleAssignToSelf,
+    handleCloseAssignToSelfModal,
+    handleCloseInspectionOfficerModal,
+    handleInspectionOfficerTableChange,
+    onAssignInspectionOfficer,
+    onAssignToSelf,
     modelData,
   } = userList({ payload, isBuilding })
   const { t } = useTranslations()
-  const { hostel } = userWiseRole
+  const { hostel, inspectionOfficer } = userWiseRole
 
   return (
     <div className={className}>
@@ -83,6 +95,9 @@ function UserList({
           payload,
           apiCall,
           showAssignHostel,
+          showAssignInspectionOfficer,
+          handleAssignInspectionOfficer,
+          handleAssignToSelf,
           handleAssignHostel: handleNonAssociateUser,
           userKey,
           getUsersData: apiCall,
@@ -119,6 +134,50 @@ function UserList({
             showAssignHostel={false}
           />
         </ANTDModal>
+      )}
+
+      {inspectionOfficerModal?.open && (
+        <ANTDModal
+          title={t('user_InspectionOfficer')}
+          centered
+          open={inspectionOfficerModal?.open}
+          onCancel={handleCloseInspectionOfficerModal}
+          footer={false}
+          width={1000}
+        >
+          <UserTable
+            className="mb-15"
+            userData={inspectionOfficerData}
+            payload={{
+              roleId: inspectionOfficer,
+              relationType: userRelationKey.nonAssociate,
+            }}
+            searchPayload={{
+              roleId: inspectionOfficer,
+              relationType: userRelationKey.associate,
+            }}
+            handleTableChange={handleInspectionOfficerTableChange}
+            handleSelect={onAssignInspectionOfficer}
+            columnFilter={[
+              'select',
+              'user_Name',
+              'designation',
+              'mso_Mandal',
+              'user_Contact',
+              'txt_Action',
+            ]}
+            tableScroll={{ x: 1050 }}
+          />
+        </ANTDModal>
+      )}
+      {confirmAssignToSelfModal?.open && (
+        <PopUpConfirm
+          isOpen={confirmAssignToSelfModal?.open}
+          onCancelModel={handleCloseAssignToSelfModal}
+          onAccept={onAssignToSelf}
+          onReject={handleCloseAssignToSelfModal}
+          description={t('msg_AreYouSureWantToAssign')}
+        />
       )}
       {buildingInfo?.flag && (
         <ANTDModal

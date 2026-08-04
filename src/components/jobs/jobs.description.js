@@ -1,5 +1,5 @@
 import { userWiseRole } from '../../utils/constant'
-import { isEqual, notEqual } from '../../utils/javascript'
+import { include, isEqual, notEqual } from '../../utils/javascript'
 
 const { admin, inspectionOfficer, districtCollector, mandalSpecialOfficer } =
   userWiseRole
@@ -25,8 +25,8 @@ const getJobTabList = roleId => {
     },
   ]
 
-  // Add unassign hostel tab for district collector and inspection officer
-  if (isEqual(roleId, inspectionOfficer)) {
+  // Add unassign hostel tab for inspection assignment roles
+  if (include([districtCollector, inspectionOfficer, mandalSpecialOfficer], roleId)) {
     baseStatusTabs.unshift({
       label: 'job_Unassign',
       key: unassignHostel,
@@ -495,3 +495,4 @@ export {
   booleanOptions,
   inspectionReportOptions,
 }
+
