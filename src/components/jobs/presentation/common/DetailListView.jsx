@@ -24,8 +24,11 @@ const DetailListView = ({ infoData, title = 'txt_Details' }) => {
                       <tbody>
                         {info?.map((value, index) => (
                           <tr key={index} className={value?.classNames}>
-                            <td>{t(value.label)}</td>
-                            <td>{`: ${value?.value || '-'}`}</td>
+                            <td className="basic-job-label">{t(value.label)}</td>
+                            <td className="basic-job-value">
+                              <span className="basic-job-separator">:</span>
+                              <span>{value?.value || '-'}</span>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -43,3 +46,4 @@ const DetailListView = ({ infoData, title = 'txt_Details' }) => {
 }
 
 export default DetailListView
+

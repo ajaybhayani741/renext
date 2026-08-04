@@ -333,26 +333,22 @@ const jobTable = ({
   }) => {
     return [
       // { label: 'job_Title', value: jobTitle },
+      {
+        label: 'user_CreationDate',
+        value: creationDate ? dayJs(creationDate).format('DD/MM/YYYY HH:mm A') : '-'
+      },
       { label: 'job_hostelName', value: hostelInfo?.lastName },
       { label: 'mso_Mandal', value: hostelInfo?.mandal },
-      { label: 'user_Contact', value: hostelInfo?.phoneNumber },
       {
         label: 'user_InspectionOfficer',
         value: jobData?.userInfo?.lastName ,
       },
       {
-        label: 'job_CreationName',
-        value:
-          jobData?.creationName ||
-          jobData?.createdByName ||
-          jobData?.creatorName ||
-          jobData?.createdBy?.lastName ||
-          jobData?.createdBy?.businessName ||
-          jobData?.createdByUser?.lastName ||
-          jobData?.createdByUser?.businessName,
+        label: 'mso_Designation',
+        value: jobData?.userInfo?.designation ,
       },
+ 
       { label: 'job_Status', value: jobData?.status },
-      { label: 'mso_Designation', value: jobData?.userInfo?.designation },
     ].filter(item => !item.hidden)
   }
 
