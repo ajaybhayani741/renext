@@ -1,5 +1,9 @@
-// import useRouter from '../../../hooks/useRouter'
+import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
+import {
+  INSPECTION_OFFICER,
+  USER_TXT,
+} from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import { addressFormat } from '../../../utils'
@@ -13,6 +17,7 @@ import {
   notEqual,
   ternary,
 } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
 import {
   hostelTypeOptions,
   inspectionOfficerMandalOptions,
@@ -37,12 +42,17 @@ const userColumns = ({
   userKey,
 }) => {
   const { t } = useTranslations()
-  // const { location } = useRouter()
-  // const userData = JSON.parse(getItem('userData'))
-  // const { roleId: loginUserRoleId } = { ...userData }
+  const userData = JSON.parse(getItem('userData') || '{}')
+  const { roleId: loginUserRoleId } = userData
+  const { location } = useRouter()
 
   const isChildUser = include(childUsers, roleId)
   const { inspectionOfficer, hostel, mandalSpecialOfficer } = userWiseRole
+  const showAssignHostelAction =
+    showAssignHostel &&
+    isEqual(roleId, inspectionOfficer) &&
+    isEqual(location.pathname, `${USER_TXT}/${INSPECTION_OFFICER}`) &&
+    isEqual(loginUserRoleId, mandalSpecialOfficer)
 
   const actionButtons = rowData => (
     <div className="card-extra-buttons">
@@ -62,17 +72,14 @@ const userColumns = ({
           </ANTDButton>
         </>
       )}
-      {/* {include(location.pathname, USER_TXT) &&
-        include([inspectionOfficer], roleId) &&
-        isEqual(loginUserRoleId, districtCollector) &&
-        showAssignHostel && (
-          <ANTDButton
-            className="bg-assign-hostel"
-            onClick={() => handleAssignHostel({ rowData, roleId: hostel })}
-          >
-            {t('user_AssignHostelRandomly')}
-          </ANTDButton>
-        )} */}
+      {showAssignHostelAction && (
+        <ANTDButton
+          className="bg-assign-hostel"
+          onClick={() => handleAssignHostel({ rowData, roleId: hostel })}
+        >
+          {t('user_AssignHostelRandomly')}
+        </ANTDButton>
+      )}
       <ANTDButton className="bg-view" onClick={() => handleView(rowData)}>
         {t('btn_View')}
       </ANTDButton>
@@ -149,7 +156,7 @@ const userColumns = ({
         return isBuilding ? rowData?.name : rowData?.lastName
       },
     },
-      {
+    {
       title: t('mso_Mandal'),
       key: 'mso_Mandal',
       render: rowData => {
@@ -161,8 +168,10 @@ const userColumns = ({
           '-'
         )
       },
-      hidden: !include([inspectionOfficer, hostel, mandalSpecialOfficer], roleId),
-      
+      hidden: !include(
+        [inspectionOfficer, hostel, mandalSpecialOfficer],
+        roleId,
+      ),
     },
     {
       title: t('hostel_TypeOfHostel'),
@@ -224,7 +233,10 @@ const userColumns = ({
         const { newDate } = rowData ? dateFormat(rowData) : {}
         return <>{newDate ? newDate : '-'}</>
       },
-      hidden: include([inspectionOfficer, hostel, mandalSpecialOfficer], roleId),
+      hidden: include(
+        [inspectionOfficer, hostel, mandalSpecialOfficer],
+        roleId,
+      ),
     },
     {
       title: t('user_LastInspectionDate'),
@@ -341,4 +353,3 @@ const userColumns = ({
 }
 
 export default userColumns
-

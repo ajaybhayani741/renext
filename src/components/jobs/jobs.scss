@@ -1415,4 +1415,61 @@
   }
 }
 
+.inspection-week-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
 
+  &__icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    background: #e9f1ff;
+    border: 1px solid rgba(37, 99, 235, 0.14);
+    flex: 0 0 24px;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      border-radius: 3px;
+      background: #2563eb;
+    }
+
+    &::before {
+      top: 7px;
+      height: 3px;
+    }
+
+    &::after {
+      top: 13px;
+      height: 5px;
+      background: #7c3aed;
+    }
+  }
+
+  &__text {
+    letter-spacing: 0;
+  }
+
+  @media screen and (max-width: 575px) {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0 !important;
+    margin-top: 8px;
+  }
+}
