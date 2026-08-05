@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { notifyMethod } from '../../../App'
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
+import { setFiscalYear } from '../../../redux/app/reducer'
 import { setJobActiveTab } from '../../../redux/jobs/reducer'
 import { userWiseRole } from '../../../utils/constant'
 import { downloadReport } from '../../../utils/customFunctions'
@@ -10,6 +11,10 @@ import debounce from '../../../utils/debounce'
 import { EVMasterSheet, RefurbishmentRequest } from '../../../utils/icons'
 import { include, isEqual, notEqual, values } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
+import {
+  getCurrentWeekDateRange,
+  isSameDateRange,
+} from '../../../utils/weekDateUtils'
 import { disAssociateApi } from '../../userManagement/user.api'
 import {
   addJobPostApi,
@@ -59,6 +64,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   const [masterSheetLoader, setMasterSheetLoader] = useState(false)
 
   const searchVal = useRef(null)
+  const inspectionWeekInitializedRef = useRef(false)
   const searchDraftRef = useRef('')
   const [searchInput, setSearchInput] = useState('')
   const userDetails = JSON.parse(getItem('userData'))
@@ -153,15 +159,38 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   }, [status, type])
 
   useEffect(() => {
-    if (fiscalYear) {
-      if (userView) {
-        return
-      }
-      if (type) {
-        apiCall()
-      }
+    if (userView || !fiscalYear || !isEqual(type, tabKeys.inspection)) return
+
+    const currentWeekRange = getCurrentWeekDateRange()
+    if (inspectionWeekInitializedRef.current) return
+    if (isSameDateRange(dateRange, currentWeekRange)) {
+      inspectionWeekInitializedRef.current = true
+      return
     }
-  }, [fiscalYear, status, type])
+
+    inspectionWeekInitializedRef.current = false
+    dispatch(
+      setFiscalYear({
+        dateRange: {
+          ...dateRange,
+          ...currentWeekRange,
+        },
+      }),
+    )
+  }, [dispatch, fiscalYear, type, dateRange?.from, dateRange?.to])
+
+  useEffect(() => {
+    if (!fiscalYear || userView || !type) return
+    if (
+      isEqual(type, tabKeys.inspection) &&
+      (!dateRange?.from ||
+        !dateRange?.to ||
+        !inspectionWeekInitializedRef.current)
+    ) {
+      return
+    }
+    apiCall()
+  }, [fiscalYear, status, type, dateRange?.from, dateRange?.to])
 
   useEffect(() => {
     if (fiscalYear && userView) {
@@ -169,6 +198,33 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     }
   }, [userView])
 
+  useEffect(() => {
+    if (userView || !isEqual(type, tabKeys.inspection)) return undefined
+
+    let timeoutId
+    const scheduleNextDateRefresh = () => {
+      const now = new Date()
+      const nextDate = new Date(now)
+      nextDate.setHours(24, 0, 0, 0)
+      timeoutId = window.setTimeout(() => {
+        const currentWeekRange = getCurrentWeekDateRange()
+        inspectionWeekInitializedRef.current = false
+        dispatch(
+          setFiscalYear({
+            dateRange: {
+              ...dateRange,
+              ...currentWeekRange,
+            },
+          }),
+        )
+        scheduleNextDateRefresh()
+      }, nextDate.getTime() - now.getTime())
+    }
+
+    scheduleNextDateRefresh()
+
+    return () => window.clearTimeout(timeoutId)
+  }, [dispatch, userView, type, dateRange])
   useEffect(() => {
     if (searchVal.current) {
       apiCall()
@@ -183,7 +239,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
       inspectionOfficer: inspectionOfficerCol,
       mandal,
       createdDate,
-      designation
+      designation,
     } = columnKeys
 
     return [
@@ -193,7 +249,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
       inspectionOfficerCol,
       createdDate,
       status,
-      designation
+      designation,
     ]
   }, [type, status, roleId])
 
@@ -224,8 +280,15 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   }))
 
   const apiCall = async (pageNo = 1, range) => {
-    const jobType = payloadType[userView ? userJobType : type]
+    const selectedType = userView ? userJobType : type
+    const jobType = payloadType[selectedType]
     if (!jobType) return
+
+    const isInspectionJob = isEqual(selectedType, tabKeys.inspection)
+    const selectedDateRange = range || dateRange
+    const shouldUseDateRange =
+      isInspectionJob && selectedDateRange?.from && selectedDateRange?.to
+
     const params = {
       jobType: jobType,
       fiscalYear,
@@ -237,17 +300,15 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
       [userJobType || type]: { ...pre?.[userJobType || type], loader: true },
     }))
     let resp
-    if (searchVal.current || range) {
+    if (searchVal.current || range || shouldUseDateRange) {
       if (searchVal.current) {
         params.searchTag = searchBy
         params.search = searchVal.current
       }
 
-      if (range) {
-        const from = range?.from
-        const to = range?.to
-        params.fromDate = from
-        params.toDate = to
+      if (range || shouldUseDateRange) {
+        params.fromDate = selectedDateRange?.from
+        params.toDate = selectedDateRange?.to
       }
       resp = await searchJobListApi({ params, pageNo })
     } else {
@@ -261,7 +322,6 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
       },
     }))
   }
-
   const apiCallRef = useRef(apiCall)
   apiCallRef.current = apiCall
 

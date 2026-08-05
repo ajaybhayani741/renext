@@ -157,12 +157,13 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
             )}
           {!isUnassignHostelTab && (
             <>
-                <div className="d-flex flex-end">
-                  <FiscalYearSelect
-                    onDateChange={(from, to) => apiCall(1, { from, to })}
-                    showRecentPresets
-                  />
-                </div>
+              <div className="d-flex flex-end">
+                <FiscalYearSelect
+                  onDateChange={(from, to) => apiCall(1, { from, to })}
+                  showRecentPresets
+                  showWeekCounter={isEqual(jobType, tabKeys.inspection)}
+                />
+              </div>
               {notEqual(roleId, inspectionOfficer) && (
                 <div className="d-flex flex-end mt-10 generate-master-sheet">
                   <ANTDButton

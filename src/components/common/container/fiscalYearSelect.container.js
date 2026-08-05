@@ -5,12 +5,14 @@ import useRedux from '../../../hooks/useRedux'
 import { setFiscalYear } from '../../../redux/app/reducer'
 import { calendarYearDate } from '../../../utils/customFunctions'
 import { dayJs, DISPLAY_DATE_FORMAT, formatDate } from '../../../utils/dayjs'
+import { getWeekCounterLabel } from '../../../utils/weekDateUtils'
 
 const fiscalYearSelect = ({
   onDateChange,
   setDefault = true,
   isDateRange,
   showRecentPresets = false,
+  showWeekCounter = false,
 } = {}) => {
   const { dispatch, selector } = useRedux()
   const { value, options, dateRange } = selector(
@@ -96,7 +98,11 @@ const fiscalYearSelect = ({
       : undefined,
   }
 
-  return { dateRangeProps, fiscalYearSelector }
+  const weekCounterLabel = showWeekCounter
+    ? getWeekCounterLabel({ from: dateRange?.from, inputFormat: saveFormat })
+    : ''
+
+  return { dateRangeProps, fiscalYearSelector, weekCounterLabel }
 }
 
 export default fiscalYearSelect

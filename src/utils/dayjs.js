@@ -1,11 +1,15 @@
 import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import isoWeek from 'dayjs/plugin/isoWeek'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 
 import { ternary } from './javascript'
 
 dayjs.extend(utc)
+dayjs.extend(customParseFormat)
 dayjs.extend(timezone)
+dayjs.extend(isoWeek)
 
 const DISPLAY_DATE_FORMAT = 'DD/MM/YYYY'
 
