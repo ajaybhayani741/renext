@@ -95,7 +95,7 @@ const columnKeys = {
 }
 
 const searchByKeys = {
-  jobId: 'JOB_ID',
+  mandal: 'MANDAL',
   inspectionOfficerName: 'INSPECTION_OFFICER_NAME',
   hostelName: 'HOSTEL_NAME',
   departmentUnit: 'DEPARTMENT',
@@ -104,7 +104,7 @@ const searchByKeys = {
 }
 
 const {
-  jobId,
+  mandal,
   inspectionOfficerName,
   hostelName,
   departmentUnit,
@@ -113,7 +113,7 @@ const {
 } = searchByKeys
 
 const searchByLabels = {
-  [jobId]: 'job_Id',
+  [mandal]: 'mso_Mandal',
   [inspectionOfficerName]: 'job_InspectionOfficerName',
   [hostelName]: 'job_hostelName',
   [departmentUnit]: 'hostel_DepartmentUnit',
@@ -464,6 +464,7 @@ export const jobTypeRoleSearchBy = (jobType, roleId) => {
   switch (jobType) {
     case tabKeys.inspection:
       return [
+        mandal,
         ...(notEqual(roleId, inspectionOfficer) ? [inspectionOfficerName] : []),
         hostelName,
         departmentUnit,
@@ -472,7 +473,7 @@ export const jobTypeRoleSearchBy = (jobType, roleId) => {
       ]
 
     default:
-      return [jobId]
+      return [mandal]
   }
 }
 
@@ -495,3 +496,4 @@ export {
   booleanOptions,
   inspectionReportOptions,
 }
+
