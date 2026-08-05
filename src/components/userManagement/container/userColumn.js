@@ -58,12 +58,12 @@ const userColumns = ({
     <div className="card-extra-buttons">
       {showAssignInspectionOfficer && (
         <>
-          <ANTDButton
+        {notEqual(loginUserRoleId, inspectionOfficer) && <ANTDButton
             className="bg-assign-hostel"
             onClick={() => handleAssignInspectionOfficer({ rowData })}
           >
             {t('user_AssignInspectionOfficer')}
-          </ANTDButton>
+          </ANTDButton>}
           <ANTDButton
             className="bg-assign-hostel-random"
             onClick={() => handleAssignToSelf({ rowData })}
