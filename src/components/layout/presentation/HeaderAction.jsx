@@ -6,7 +6,9 @@ import ANTDBadge from '../../../shared/antd/ANTDBadge'
 import header from '../container/header.container'
 
 const HeaderAction = () => {
-  const { notificationCount, onNotificationClick } = header()
+  const { notificationCount, onNotificationClick } = header({
+    fetchNotifications: true,
+  })
 
   return (
     <div className="header-actions d-flex align-center">

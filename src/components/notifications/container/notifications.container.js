@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
@@ -6,18 +6,22 @@ import { setNotificationList } from '../../../redux/app/reducer'
 import pathName from '../../../routing/pathName.constant'
 import { getNotificationsApi } from '../notification.api'
 
+const NOTIFICATIONS_CONTAINER_ID = 'notifications-scroll-container'
+
 const notifications = () => {
-  const infiniteRef = useRef(null)
   const { navigate } = useRouter()
   const { selector, dispatch } = useRedux()
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+  const [lastPage, setLastPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const notificationsList = selector(state => state.app.notificationsList)
 
-  const getNotification = async ({ pageNo = 1, append = false }) => {
-    if (isLoadingMore || (!hasMore && append)) return
+  const getNotification = async ({ pageNo = 1 }) => {
+    const append = pageNo > 1
+
+    if (append && !hasMore) return
 
     if (append) {
       setIsLoadingMore(true)
@@ -30,21 +34,17 @@ const notifications = () => {
       if (response?.data) {
         const responseData = response.data
         const newList = responseData?.list || []
-        const totalCount = responseData?.fullCount || 0
-        const currentListLength = notificationsList?.list?.length || 0
+        const responseLastPage = Number(responseData?.lastPage) || pageNo
+        const currentList = append ? notificationsList?.list || [] : []
         const notificationList =
-          pageNo === 1
-            ? responseData?.list
-            : [...notificationsList?.list, ...responseData?.list]
+          pageNo === 1 ? newList : [...currentList, ...newList]
 
         dispatch(
           setNotificationList({ ...responseData, list: notificationList }),
         )
 
-        // Check if there's more data to load
-        const hasMoreData = currentListLength + newList.length < totalCount
-        setHasMore(hasMoreData)
-        setCurrentPage(pageNo)
+        setLastPage(responseLastPage)
+        setHasMore(pageNo < responseLastPage)
       }
     } catch (error) {
     } finally {
@@ -56,36 +56,45 @@ const notifications = () => {
     }
   }
 
-  const handleScroll = () => {
-    if (!infiniteRef.current || isLoadingMore || !hasMore) return
+  const loadNextPage = () => {
+    setCurrentPage(pageNo =>
+      pageNo === currentPage && pageNo < lastPage ? pageNo + 1 : pageNo,
+    )
+  }
 
-    const container = infiniteRef.current
+  const handleScroll = event => {
+    if (loading || isLoadingMore || !hasMore) return
+
+    const container = event.currentTarget
     const scrollTop = container.scrollTop
     const scrollHeight = container.scrollHeight
     const clientHeight = container.clientHeight
 
     // Load more when user scrolls to within 100px of bottom
     if (scrollTop + clientHeight >= scrollHeight - 100) {
-      getNotification({ pageNo: currentPage + 1, append: true })
+      loadNextPage()
     }
   }
 
   useEffect(() => {
-    const container = infiniteRef.current
-    if (!container) return
+    getNotification({ pageNo: currentPage })
+  }, [currentPage])
 
-    container.addEventListener('scroll', handleScroll)
-    return () => {
-      container.removeEventListener('scroll', handleScroll)
-    }
-  }, [currentPage, hasMore, isLoadingMore, notificationsList])
-
-  // Initial load
   useEffect(() => {
-    // if (!notificationsList?.list || length(notificationsList?.list) === 0) {
-    getNotification({ pageNo: 1, append: false })
-    // }
-  }, [])
+    if (loading || isLoadingMore || !hasMore) return
+
+    const checkScroll = setTimeout(() => {
+      const container = document.getElementById(NOTIFICATIONS_CONTAINER_ID)
+      if (!container) return
+
+      const hasScroll = container.scrollHeight > container.clientHeight
+      if (!hasScroll) {
+        loadNextPage()
+      }
+    }, 0)
+
+    return () => clearTimeout(checkScroll)
+  }, [notificationsList?.list?.length, loading, isLoadingMore, hasMore])
 
   const handleNotificationClick = notification => {
     navigate(
@@ -99,9 +108,12 @@ const notifications = () => {
 
   return {
     notificationsList: notificationsList?.list,
-    infiniteRef,
     loading,
     isLoadingMore,
+    notificationContainerProps: {
+      id: NOTIFICATIONS_CONTAINER_ID,
+      onScroll: handleScroll,
+    },
     handleNotificationClick,
     getNotification,
   }
