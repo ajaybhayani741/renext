@@ -1,4 +1,9 @@
+import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
+import {
+  INSPECTION_OFFICER,
+  USER_TXT,
+} from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDCheckbox from '../../../shared/antd/ANTDCheckbox'
 import { addressFormat } from '../../../utils'
@@ -39,12 +44,14 @@ const userColumns = ({
   const { t } = useTranslations()
   const userData = JSON.parse(getItem('userData') || '{}')
   const { roleId: loginUserRoleId } = userData
+  const { location } = useRouter()
 
   const isChildUser = include(childUsers, roleId)
   const { inspectionOfficer, hostel, mandalSpecialOfficer } = userWiseRole
   const showAssignHostelAction =
     showAssignHostel &&
     isEqual(roleId, inspectionOfficer) &&
+    isEqual(location.pathname, `${USER_TXT}/${INSPECTION_OFFICER}`) &&
     isEqual(loginUserRoleId, mandalSpecialOfficer)
 
   const actionButtons = rowData => (

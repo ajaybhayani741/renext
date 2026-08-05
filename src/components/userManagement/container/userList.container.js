@@ -79,25 +79,26 @@ const userList = ({ payload, isBuilding }) => {
     apiCall({ pageNo: pagination.current })
   }
 
-  const associateApiCall = async ({ pageNo, roleId = null }) => {
+  const associateApiCall = async ({ pageNo, roleId = null, userId }) => {
     setAssociatedData(pre => ({ ...pre, loader: true }))
     // const districtCollectorId =
     //   isEqual(roleId || payload?.roleId, hostel) &&
     //   isEqual(loginUserRoleId?.roleId, districtCollector)
     //     ? loginUserRoleId?.id
     //     : null
-    const params = `${pageNo}?roleId=${roleId || payload?.roleId}&userId=${payload?.userId || loginUser?.id}&relationType=${userRelationKey.nonAssociate}`
+    const params = `${pageNo}?roleId=${roleId || payload?.roleId}&userId=${payload?.userId || userId || loginUser?.id}&relationType=${userRelationKey.nonAssociate}`
     const result = await getUserList({ params })
     setAssociatedData({ ...result?.data, loader: false })
   }
 
   const handleNonAssociateUser = async ({ rowData, roleId }) => {
+    console.log('rowData', rowData)
     if (isBuilding) {
       setBuildingInfo({ flag: true, data: {} })
     } else {
       setModel(true)
       setModelData({ roleId })
-      associateApiCall({ pageNo: 1, roleId })
+      associateApiCall({ pageNo: 1, roleId, userId: rowData?.id })
       rowData && setSelectedAssigneeUser(rowData)
     }
   }
@@ -109,7 +110,11 @@ const userList = ({ payload, isBuilding }) => {
   }
 
   const handleAssociatedTableChange = pagination => {
-    associateApiCall({ pageNo: pagination?.current, roleId: modelData?.roleId })
+    associateApiCall({
+      pageNo: pagination?.current,
+      roleId: modelData?.roleId,
+      userId: selectedAssigneeUser?.id,
+    })
   }
 
   const onAddAssociate = async selectedUsers => {
@@ -170,15 +175,15 @@ const userList = ({ payload, isBuilding }) => {
     const { data } = await addAssociateApi({ params: payloadData })
     const success = data?.success || data
 
-    dispatch(
-      setPopupMessageModel({
-        open: true,
-        message: success
-          ? data?.message || 'msg_HostelAssignedSuccessfully'
-          : data?.message || 'msg_SomethingWentWrong',
-        success: !!success,
-      }),
-    )
+    if (success) {
+      dispatch(
+        setPopupMessageModel({
+          open: true,
+          message: data?.message || 'msg_HostelAssignedSuccessfully',
+          success: true,
+        }),
+      )
+    }
 
     if (success) {
       apiCall({ pageNo: 1 })
