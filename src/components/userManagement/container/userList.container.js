@@ -92,7 +92,6 @@ const userList = ({ payload, isBuilding }) => {
   }
 
   const handleNonAssociateUser = async ({ rowData, roleId }) => {
-    console.log('rowData', rowData)
     if (isBuilding) {
       setBuildingInfo({ flag: true, data: {} })
     } else {
