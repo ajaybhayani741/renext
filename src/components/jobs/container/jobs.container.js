@@ -16,6 +16,7 @@ import {
   isSameDateRange,
 } from '../../../utils/weekDateUtils'
 import { disAssociateApi } from '../../userManagement/user.api'
+import { inspectionOfficerMandalOptions } from '../../userManagement/user.description'
 import {
   addJobPostApi,
   generateMasterSheetApi,
@@ -44,7 +45,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   )
   const activeTab = selector(state => state?.jobs?.activeTab)
   const { type, status } = { ...activeTab }
-  const [searchBy, setSearchBy] = useState(searchByKeys.jobId)
+  const [searchBy, setSearchBy] = useState(searchByKeys.mandal)
   const [columnFilters, setColumnFilters] = useState([])
   const [columnExportToExcel, setColumnExportToExcel] = useState([
     'job_SNo',
@@ -470,7 +471,9 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     }))
   }
 
-  const searchSelectOptions = []
+  const searchSelectOptions = isEqual(searchBy, searchByKeys.mandal)
+    ? inspectionOfficerMandalOptions
+    : []
 
   const handleDisAssociateModal = ({ rowData }) => {
     setDisAssociateHostel({ open: !disAssociateHostel?.open, data: rowData })
@@ -588,3 +591,4 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
 }
 
 export default jobs
+

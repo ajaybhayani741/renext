@@ -188,13 +188,14 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                 <ANTDColumn md={12} lg={12} xs={24}>
                   <Label text={t('txt_Search')} />
                   {include(
-                    [searchByKeys.recoverySource],
+                    [searchByKeys.recoverySource, searchByKeys.mandal],
                     searchByProps.value,
                   ) ? (
                     <ANTDSelect
                       className="w-100 mb-5"
                       value={searchInput || undefined}
                       options={searchSelectOptions}
+                      placeholder={t('mso_Mandal')}
                       onChange={val => onSearch({ target: val })}
                     />
                   ) : (
@@ -338,3 +339,4 @@ const validRoles = sidebarMenus.find(({ key }) =>
 )?.sidebar
 
 export default withRouteAuth(JobManagement, validRoles)
+
