@@ -96,7 +96,6 @@ const columnKeys = {
 
 const searchByKeys = {
   mandal: 'MANDAL',
-  jobId: 'JOB_ID',
   inspectionOfficerName: 'INSPECTION_OFFICER_NAME',
   hostelName: 'HOSTEL_NAME',
   departmentUnit: 'DEPARTMENT',
@@ -106,7 +105,6 @@ const searchByKeys = {
 
 const {
   mandal,
-  jobId,
   inspectionOfficerName,
   hostelName,
   departmentUnit,
@@ -116,7 +114,6 @@ const {
 
 const searchByLabels = {
   [mandal]: 'mso_Mandal',
-  [jobId]: 'job_Id',
   [inspectionOfficerName]: 'job_InspectionOfficerName',
   [hostelName]: 'job_hostelName',
   [departmentUnit]: 'hostel_DepartmentUnit',
@@ -476,7 +473,7 @@ export const jobTypeRoleSearchBy = (jobType, roleId) => {
       ]
 
     default:
-      return [jobId]
+      return [mandal]
   }
 }
 
