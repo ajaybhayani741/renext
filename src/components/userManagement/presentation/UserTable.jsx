@@ -20,6 +20,7 @@ import userTable from '../container/userTable.container'
 import { inspectionOfficerMandalOptions } from '../user.description'
 
 function UserTable({
+  roleId,
   isSearch = false,
   userData,
   customerInfo,
@@ -49,6 +50,7 @@ function UserTable({
   getUsersData = null,
   searchPayload = null,
   tableScroll = null,
+  showSearchBySection = true,
 }) {
   const {
     viewModel,
@@ -82,7 +84,7 @@ function UserTable({
     showAssignHostel,
     permission,
     handleView,
-    roleId: payload?.roleId,
+    roleId: roleId || payload?.roleId,
     selectedUsers: selectedList || selectedUsers,
     handleSelectChange: ternary(
       handleSelect,
@@ -150,7 +152,7 @@ function UserTable({
       {title && <h3 style={{ marginBottom: '12px' }}>{t(title)}</h3>}
       <>
         {ternary(
-          isSearch,
+          isSearch && showSearchBySection,
           showRoleSearch ? (
             <ANTDRow gutter={10}>
               <ANTDColumn md={12} lg={12} xs={24}>
@@ -208,7 +210,7 @@ function UserTable({
             rowClassName={rowClassNameFn && (record => rowClassNameFn(record))}
             loading={loader || searchResult.loader}
             columns={column}
-            size='medium'
+            size="medium"
             dataSource={
               list?.map(val => ({
                 ...val,

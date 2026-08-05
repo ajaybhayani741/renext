@@ -86,7 +86,7 @@ const userList = ({ payload, isBuilding }) => {
     //   isEqual(loginUserRoleId?.roleId, districtCollector)
     //     ? loginUserRoleId?.id
     //     : null
-    const params = `${pageNo}?roleId=${roleId || payload?.roleId}&userId=${ payload?.userId}&relationType=${userRelationKey.nonAssociate}`
+    const params = `${pageNo}?roleId=${roleId || payload?.roleId}&userId=${payload?.userId || loginUser?.id}&relationType=${userRelationKey.nonAssociate}`
     const result = await getUserList({ params })
     setAssociatedData({ ...result?.data, loader: false })
   }
@@ -143,7 +143,6 @@ const userList = ({ payload, isBuilding }) => {
       apiCall({ pageNo: 1 })
     }
   }
-
 
   const handleCloseInspectionOfficerModal = () => {
     setInspectionOfficerModal({ open: false, data: null })

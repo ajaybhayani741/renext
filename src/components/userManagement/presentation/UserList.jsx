@@ -127,11 +127,26 @@ function UserList({
                 ? userRelationKey.nonAssociate
                 : userRelationKey.associate,
             }}
+            roleId={modelData?.roleId || payload?.roleId}
             isSearch
             handleTableChange={handleAssociatedTableChange}
             handleSelect={onAddAssociate}
             multiSelect
             showAssignHostel={false}
+            showSearchBySection={false}
+            columnFilter={
+              isEqual(modelData?.roleId, hostel)
+                ? [
+                    'select',
+                    'user_Name',
+                    'mso_Mandal',
+                    'hostel_TypeOfHostel',
+                    'hostel_DepartmentUnit',
+                    'user_LastInspectionDate',
+                    'txt_Action',
+                  ]
+                : null
+            }
           />
         </ANTDModal>
       )}
