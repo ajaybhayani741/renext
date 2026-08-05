@@ -10,16 +10,22 @@ import { getItem, removeItem } from '../../../utils/localstorage'
 import { logoutApi } from '../../authentication/authentication.api'
 import { getNotificationsApi } from '../../notifications/notification.api'
 
-const header = () => {
-  const { navigate } = useRouter()
+const header = ({ fetchNotifications = false } = {}) => {
+  const { navigate, location } = useRouter()
   const { dispatch, selector } = useRedux()
   const profileDetails = selector(state => state.user?.profile_details)
   const notificationCount =
     selector(state => state.app.notificationsList?.unreadCount) || 0
 
   useEffect(() => {
+    if (
+      !fetchNotifications ||
+      location.pathname === pathName.NOTIFICATIONS
+    )
+      return
+
     getNotification()
-  }, [])
+  }, [fetchNotifications, location.pathname])
 
   const getNotification = async () => {
     const response = await getNotificationsApi({ pageNo: 1 })

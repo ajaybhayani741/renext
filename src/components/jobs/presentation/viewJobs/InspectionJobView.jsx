@@ -4,7 +4,7 @@ import useTranslations from '../../../../hooks/useTranslations'
 import ANTDForm, { useFormFn } from '../../../../shared/antd/ANTDForm'
 import { userWiseRole } from '../../../../utils/constant'
 import { modifyFileListKeys } from '../../../../utils/customFunctions'
-import { dayJs, DISPLAY_DATE_FORMAT } from '../../../../utils/dayjs'
+import { dayJs } from '../../../../utils/dayjs'
 import {
   entries,
   isArray,
@@ -36,13 +36,21 @@ const InspectionJobView = ({
   const infoData = {
     user_BasicInformation: [
       // { label: 'user_ID', value: data?.id },
-      { label: 'job_DateOfInspectionAndTime', value: data?.inspectionDate },
       {
         label: 'user_CreationDate',
-        value: data?.creationDate
-          ? dayJs(data?.creationDate).format(DISPLAY_DATE_FORMAT)
-          : '-',
+        value: data?.creationDate ? dayJs(data?.creationDate).format('DD/MM/YYYY HH:mm A') : '-'
       },
+      { label: 'job_hostelName', value: data?.hostelInfo?.lastName },
+      { label: 'mso_Mandal', value: data?.hostelInfo?.mandal },
+      {
+        label: 'user_InspectionOfficer',
+        value: data?.userInfo?.lastName ,
+      },
+      {
+        label: 'mso_Designation',
+        value: data?.userInfo?.designation ,
+      },
+      { label: 'job_DateOfInspectionAndTime', value: data?.inspectionDate },
       { label: 'job_Status', value: t(status[data?.status]) },
     ],
   }

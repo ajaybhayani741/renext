@@ -1,5 +1,5 @@
 import { userWiseRole } from '../../utils/constant'
-import { isEqual, notEqual } from '../../utils/javascript'
+import { include, isEqual, notEqual } from '../../utils/javascript'
 
 const { admin, inspectionOfficer, districtCollector, mandalSpecialOfficer } =
   userWiseRole
@@ -25,8 +25,8 @@ const getJobTabList = roleId => {
     },
   ]
 
-  // Add unassign hostel tab for district collector and inspection officer
-  if (isEqual(roleId, inspectionOfficer)) {
+  // Add unassign hostel tab for inspection assignment roles
+  if (include([inspectionOfficer, mandalSpecialOfficer], roleId)) {
     baseStatusTabs.unshift({
       label: 'job_Unassign',
       key: unassignHostel,
@@ -91,10 +91,11 @@ const columnKeys = {
   inspectionOfficerName: 'job_InspectionOfficerName',
   mandal: 'mso_Mandal',
   creationName: 'job_CreationName',
-  designation: 'mso_Designation'
+  designation: 'mso_Designation',
 }
 
 const searchByKeys = {
+  mandal: 'MANDAL',
   jobId: 'JOB_ID',
   inspectionOfficerName: 'INSPECTION_OFFICER_NAME',
   hostelName: 'HOSTEL_NAME',
@@ -104,6 +105,7 @@ const searchByKeys = {
 }
 
 const {
+  mandal,
   jobId,
   inspectionOfficerName,
   hostelName,
@@ -113,6 +115,7 @@ const {
 } = searchByKeys
 
 const searchByLabels = {
+  [mandal]: 'mso_Mandal',
   [jobId]: 'job_Id',
   [inspectionOfficerName]: 'job_InspectionOfficerName',
   [hostelName]: 'job_hostelName',
@@ -464,6 +467,7 @@ export const jobTypeRoleSearchBy = (jobType, roleId) => {
   switch (jobType) {
     case tabKeys.inspection:
       return [
+        mandal,
         ...(notEqual(roleId, inspectionOfficer) ? [inspectionOfficerName] : []),
         hostelName,
         departmentUnit,
@@ -495,3 +499,4 @@ export {
   booleanOptions,
   inspectionReportOptions,
 }
+

@@ -8,6 +8,7 @@ import { setPopupMessageModel } from '../../../redux/app/reducer'
 import { USER_TXT } from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual } from '../../../utils/javascript'
+import { getItem } from '../../../utils/localstorage'
 import { addAssociateApi, getUserList } from '../user.api'
 import { userRelationKey, userTranslationKey } from '../user.description'
 
@@ -23,9 +24,25 @@ const userList = ({ payload, isBuilding }) => {
   const [model, setModel] = useState(false)
   const [modelData, setModelData] = useState(null)
   const [selectedAssigneeUser, setSelectedAssigneeUser] = useState(null)
+  const [inspectionOfficerModal, setInspectionOfficerModal] = useState({
+    open: false,
+    data: null,
+  })
+  const [inspectionOfficerData, setInspectionOfficerData] = useState({
+    list: [],
+    loader: false,
+  })
+  const [confirmAssignToSelfModal, setConfirmAssignToSelfModal] = useState({
+    open: false,
+    data: null,
+  })
   const [buildingInfo, setBuildingInfo] = useState({ flag: false, data: {} })
   const modelTitle = userTranslationKey[payload?.roleId]
-  const { hostel, inspectionOfficer } = userWiseRole
+  const { hostel, inspectionOfficer, mandalSpecialOfficer } = userWiseRole
+  const loginUser = JSON.parse(getItem('userData') || '{}')
+  const showAssignInspectionOfficer =
+    isEqual(loginUser?.roleId, mandalSpecialOfficer) &&
+    isEqual(payload?.roleId, hostel)
 
   const apiCall = async ({ pageNo }) => {
     let params = `${pageNo}`
@@ -62,14 +79,14 @@ const userList = ({ payload, isBuilding }) => {
     apiCall({ pageNo: pagination.current })
   }
 
-  const associateApiCall = async ({ pageNo, roleId = null }) => {
+  const associateApiCall = async ({ pageNo, roleId = null, userId }) => {
     setAssociatedData(pre => ({ ...pre, loader: true }))
     // const districtCollectorId =
     //   isEqual(roleId || payload?.roleId, hostel) &&
     //   isEqual(loginUserRoleId?.roleId, districtCollector)
     //     ? loginUserRoleId?.id
     //     : null
-    const params = `${pageNo}?roleId=${roleId || payload?.roleId}&userId=${ payload?.userId}&relationType=${userRelationKey.nonAssociate}`
+    const params = `${pageNo}?roleId=${roleId || payload?.roleId}&userId=${payload?.userId || userId || loginUser?.id}&relationType=${userRelationKey.nonAssociate}`
     const result = await getUserList({ params })
     setAssociatedData({ ...result?.data, loader: false })
   }
@@ -80,7 +97,7 @@ const userList = ({ payload, isBuilding }) => {
     } else {
       setModel(true)
       setModelData({ roleId })
-      associateApiCall({ pageNo: 1, roleId })
+      associateApiCall({ pageNo: 1, roleId, userId: rowData?.id })
       rowData && setSelectedAssigneeUser(rowData)
     }
   }
@@ -92,7 +109,11 @@ const userList = ({ payload, isBuilding }) => {
   }
 
   const handleAssociatedTableChange = pagination => {
-    associateApiCall({ pageNo: pagination?.current, roleId: modelData?.roleId })
+    associateApiCall({
+      pageNo: pagination?.current,
+      roleId: modelData?.roleId,
+      userId: selectedAssigneeUser?.id,
+    })
   }
 
   const onAddAssociate = async selectedUsers => {
@@ -127,6 +148,94 @@ const userList = ({ payload, isBuilding }) => {
     }
   }
 
+  const handleCloseInspectionOfficerModal = () => {
+    setInspectionOfficerModal({ open: false, data: null })
+    setInspectionOfficerData({ list: [], loader: false })
+  }
+
+  const getInspectionOfficerList = async ({ pageNo }) => {
+    setInspectionOfficerData(pre => ({ ...pre, loader: true }))
+    const params = `${pageNo}?roleId=${inspectionOfficer}`
+    const result = await getUserList({ params })
+    setInspectionOfficerData({ ...result?.data, loader: false })
+  }
+
+  const handleInspectionOfficerTableChange = pagination => {
+    getInspectionOfficerList({ pageNo: pagination?.current })
+  }
+
+  const handleAssignInspectionOfficer = async ({ rowData }) => {
+    setInspectionOfficerModal({ open: true, data: rowData })
+    await getInspectionOfficerList({ pageNo: 1 })
+  }
+
+  const associateHostel = async ({ userId, hostelId, onComplete }) => {
+    const payloadData = `?userId=${userId}&associateUserId=${hostelId}`
+    const { data } = await addAssociateApi({ params: payloadData })
+    const success = data?.success || data
+
+    if (success) {
+      dispatch(
+        setPopupMessageModel({
+          open: true,
+          message: data?.message || 'msg_HostelAssignedSuccessfully',
+          success: true,
+        }),
+      )
+      apiCall({ pageNo: 1 })
+    }
+    onComplete?.()
+  }
+
+  const onAssignInspectionOfficer = async selectedUsers => {
+    const selectedInspectionOfficer = selectedUsers?.[0]
+    if (!selectedInspectionOfficer?.id || !inspectionOfficerModal?.data?.id) {
+      dispatch(
+        setPopupMessageModel({
+          open: true,
+          message: 'msg_SelectUser',
+          success: false,
+        }),
+      )
+      return
+    }
+
+    setInspectionOfficerData(pre => ({ ...pre, loader: true }))
+    await associateHostel({
+      userId: selectedInspectionOfficer?.id,
+      hostelId: inspectionOfficerModal?.data?.id,
+      onComplete: handleCloseInspectionOfficerModal,
+    })
+  }
+
+  const handleAssignToSelf = ({ rowData } = {}) => {
+    setConfirmAssignToSelfModal({ open: true, data: rowData })
+  }
+
+  const handleCloseAssignToSelfModal = () => {
+    setConfirmAssignToSelfModal({ open: false, data: null })
+  }
+
+  const onAssignToSelf = async () => {
+    if (!loginUser?.id || !confirmAssignToSelfModal?.data?.id) {
+      dispatch(
+        setPopupMessageModel({
+          open: true,
+          message: 'msg_SomethingWentWrong',
+          success: false,
+        }),
+      )
+      handleCloseAssignToSelfModal()
+      return
+    }
+
+    await associateHostel({
+      userId: loginUser?.id,
+      hostelId: confirmAssignToSelfModal?.data?.id,
+      onComplete: handleCloseAssignToSelfModal,
+    })
+  }
+
   const handleCancelEdit = () => {
     setBuildingInfo({ flag: false, data: {} })
   }
@@ -138,6 +247,10 @@ const userList = ({ payload, isBuilding }) => {
     modelTitle,
     associatedData,
     buildingInfo,
+    inspectionOfficerModal,
+    inspectionOfficerData,
+    confirmAssignToSelfModal,
+    showAssignInspectionOfficer,
     apiCall,
     setBuildingInfo,
     onAddAssociate,
@@ -146,6 +259,13 @@ const userList = ({ payload, isBuilding }) => {
     handleTableChange,
     handleNonAssociateUser,
     handleAssociatedTableChange,
+    handleAssignInspectionOfficer,
+    handleAssignToSelf,
+    handleCloseAssignToSelfModal,
+    handleCloseInspectionOfficerModal,
+    handleInspectionOfficerTableChange,
+    onAssignInspectionOfficer,
+    onAssignToSelf,
   }
 }
 

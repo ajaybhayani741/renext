@@ -39,9 +39,18 @@ const InspectionForm = ({
   const { selector } = useRedux()
   const isMobile = selector(state => state.app.isMobile)
 
-  const { districtHostelDepartment, inspectionOfficer, hostel } = userWiseRole
+  const {
+    districtHostelDepartment,
+    inspectionOfficer,
+    hostel,
+    mandalSpecialOfficer,
+  } = userWiseRole
 
-  const allPermissionRoles = [districtHostelDepartment, inspectionOfficer]
+  const allPermissionRoles = [
+    districtHostelDepartment,
+    inspectionOfficer,
+    mandalSpecialOfficer,
+  ]
 
   const {
     administrationAttrFn,

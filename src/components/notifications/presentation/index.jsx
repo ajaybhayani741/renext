@@ -11,16 +11,19 @@ const Notifications = () => {
   const { t } = useTranslations()
   const {
     notificationsList,
-    infiniteRef,
     loading = false,
     handleNotificationClick,
+    notificationContainerProps,
     isLoadingMore = false,
   } = notifications()
 
   return (
     <>
       <h2>{t('txt_Notifications')}</h2>
-      <div className="notifications-container mt-15" ref={infiniteRef}>
+      <div
+        className="notifications-container mt-15"
+        {...notificationContainerProps}
+      >
         <List>
           {notificationsList && length(notificationsList)
             ? notificationsList?.map(notification => {

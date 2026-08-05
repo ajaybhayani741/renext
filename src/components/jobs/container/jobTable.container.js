@@ -36,8 +36,9 @@ const jobTable = ({
   const { selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
   const userData = JSON.parse(getItem('userData'))
-  const { roleId } = { ...userData }
-  const { districtCollector, inspectionOfficer } = userWiseRole
+  const { roleId, id: loginUserId } = { ...userData }
+  const { districtCollector, inspectionOfficer, mandalSpecialOfficer } =
+    userWiseRole
   const activeTab = selector(state => state?.jobs?.activeTab)
   const isMobile = selector(state => state.app.isMobile)
   const [reportDownloadModal, setReportDownloadModal] = useState({
@@ -45,94 +46,99 @@ const jobTable = ({
     data: '',
   })
 
-  const actionButtons = rowData => (
-    <div className={!isMobile ? '' : 'mobile-action-buttons'}>
-      {isEqual(roleId, districtCollector) &&
-        isEqual(jobType, tabKeys.inspection) &&
-        isEqual(activeTab?.status, tabKeys.active) && (
-          <ANTDButton
-            className="bg-danger"
-            onClick={() => handleDisAssociateModal({ rowData })}
-          >
-            {t('btn_DisAssociate')}
-          </ANTDButton>
-        )}
-      <div className="mb-5" />
-      <ANTDButton className="bg-view" onClick={() => onViewClick(rowData?.id)}>
-        {t(
-          isEqual(activeTab?.status, tabKeys.complete)
-            ? 'job_ViewInspection'
-            : 'job_viewInspectionStatus',
-        )}
-      </ANTDButton>
-      <div className="mb-5" />
-      {checkEditPermission && checkEditPermission(rowData) && (
+  const navigateToEditJob = ({ rowData, restart = false }) => {
+    navigate(
+      pathName.EDIT_JOB.replace(':jobId', rowData?.id).replace(
+        ':jobType',
+        jobType,
+      ),
+      { state: { status: rowData?.status, ...(restart && { restart: true }) } },
+    )
+  }
+
+  const actionButtons = rowData => {
+    const isAssignedMsoRow =
+      isEqual(roleId, mandalSpecialOfficer) &&
+      isEqual(activeTab?.status, tabKeys.active) &&
+      isEqual(rowData?.userId, loginUserId)
+
+    return (
+      <div className={!isMobile ? '' : 'mobile-action-buttons'}>
+        {isEqual(roleId, districtCollector) &&
+          isEqual(jobType, tabKeys.inspection) &&
+          isEqual(activeTab?.status, tabKeys.active) && (
+            <ANTDButton
+              className="bg-danger"
+              onClick={() => handleDisAssociateModal({ rowData })}
+            >
+              {t('btn_DisAssociate')}
+            </ANTDButton>
+          )}
+        <div className="mb-5" />
         <ANTDButton
-          className="bg-start"
-          onClick={() => {
-            navigate(
-              pathName.EDIT_JOB.replace(':jobId', rowData?.id).replace(
-                ':jobType',
-                jobType,
-              ),
-              { state: { status: rowData?.status } },
-            )
-          }}
+          className="bg-view"
+          onClick={() => onViewClick(rowData?.id)}
         >
           {t(
-            roleId === inspectionOfficer
-              ? rowData?.latitude || rowData?.longitude
-                ? 'job_EditInspection'
-                : 'job_startInspectionJob'
-              : 'btn_Edit',
+            isEqual(activeTab?.status, tabKeys.complete)
+              ? 'job_ViewInspection'
+              : 'job_viewInspectionStatus',
           )}
         </ANTDButton>
-      )}
-      <div className="mb-5" />
-      {isEqual(activeTab?.status, tabKeys.active) &&
-        isEqual(roleId, inspectionOfficer) && (
+        <div className="mb-5" />
+        {(isAssignedMsoRow ||
+          (checkEditPermission && checkEditPermission(rowData))) && (
           <ANTDButton
-            className="bg-assign-hostel"
-            onClick={() => {
-              navigate(
-                pathName.EDIT_JOB.replace(':jobId', rowData?.id).replace(
-                  ':jobType',
-                  jobType,
-                ),
-                { state: { status: rowData?.status, restart: true } },
-              )
-            }}
+            className="bg-start"
+            onClick={() => navigateToEditJob({ rowData })}
           >
-            {t('job_RestartInspection')}
+            {t(
+              include([inspectionOfficer, mandalSpecialOfficer], roleId)
+                ? rowData?.latitude || rowData?.longitude
+                  ? 'job_EditInspection'
+                  : 'job_startInspectionJob'
+                : 'btn_Edit',
+            )}
           </ANTDButton>
         )}
-      {isEqual(activeTab?.status, tabKeys.complete) &&
-        isEqual(jobType, tabKeys.inspection) &&
-        include([districtCollector, inspectionOfficer], roleId) && (
-          <ANTDButton
-            className="download-btn"
-            onClick={() => {
-              handleDownloadReportModal(rowData)
-            }}
-          >
-            {t('btn_Download')} <DownloadOutlined />
-          </ANTDButton>
-        )}
-      <div className="mb-5" />
-      {isEqual(activeTab?.status, tabKeys.complete) &&
-        isEqual(jobType, tabKeys.inspection) &&
-        isEqual(roleId, districtCollector) && (
-          <>
+        <div className="mb-5" />
+        {isEqual(activeTab?.status, tabKeys.active) &&
+          (isAssignedMsoRow || isEqual(roleId, inspectionOfficer)) && (
             <ANTDButton
-              className="bg-revert"
-              onClick={() => handleRevertJobModal({ rowData })}
+              className="bg-assign-hostel"
+              onClick={() => navigateToEditJob({ rowData, restart: true })}
             >
-              {t('job_Revert')}
+              {t('job_RestartInspection')}
             </ANTDButton>
-          </>
-        )}
-    </div>
-  )
+          )}
+        {isEqual(activeTab?.status, tabKeys.complete) &&
+          isEqual(jobType, tabKeys.inspection) &&
+          include([districtCollector, inspectionOfficer], roleId) && (
+            <ANTDButton
+              className="download-btn"
+              onClick={() => {
+                handleDownloadReportModal(rowData)
+              }}
+            >
+              {t('btn_Download')} <DownloadOutlined />
+            </ANTDButton>
+          )}
+        <div className="mb-5" />
+        {isEqual(activeTab?.status, tabKeys.complete) &&
+          isEqual(jobType, tabKeys.inspection) &&
+          isEqual(roleId, districtCollector) && (
+            <>
+              <ANTDButton
+                className="bg-revert"
+                onClick={() => handleRevertJobModal({ rowData })}
+              >
+                {t('job_Revert')}
+              </ANTDButton>
+            </>
+          )}
+      </div>
+    )
+  }
 
   const allColumns = useMemo(
     () => [
@@ -186,7 +192,9 @@ const jobTable = ({
         key: columnKeys.createdDate,
         dataIndex: 'creationDate',
         render: rowData => {
-          return <>{rowData ? dayJs(rowData).format('DD/MM/YYYY HH:mm A') : '-'}</>
+          return (
+            <>{rowData ? dayJs(rowData).format('DD/MM/YYYY HH:mm A') : '-'}</>
+          )
         },
       },
       {
@@ -196,7 +204,7 @@ const jobTable = ({
         ellipsis: true,
         render: rowData => rowData?.lastName || '-',
       },
-       {
+      {
         title: t('mso_Mandal'),
         key: columnKeys.mandal,
         dataIndex: 'hostelInfo',
@@ -226,7 +234,7 @@ const jobTable = ({
           return addressFormat(rowData)
         },
       },
-     
+
       // {
       //   title: t('user_Contact'),
       //   key: columnKeys.hostelContact,
@@ -234,7 +242,7 @@ const jobTable = ({
       //   ellipsis: true,
       //   render: rowData => rowData?.phoneNumber || '-',
       // },
-   
+
       {
         title: t('job_CreationName'),
         key: columnKeys.creationName,
@@ -249,7 +257,7 @@ const jobTable = ({
           rowData?.createdByUser?.businessName ||
           '-',
       },
-      
+
       {
         title: t('job_UpdatedDate'),
         key: columnKeys.updatedDate,
@@ -333,26 +341,24 @@ const jobTable = ({
   }) => {
     return [
       // { label: 'job_Title', value: jobTitle },
+      {
+        label: 'user_CreationDate',
+        value: creationDate
+          ? dayJs(creationDate).format('DD/MM/YYYY HH:mm A')
+          : '-',
+      },
       { label: 'job_hostelName', value: hostelInfo?.lastName },
       { label: 'mso_Mandal', value: hostelInfo?.mandal },
-      { label: 'user_Contact', value: hostelInfo?.phoneNumber },
       {
         label: 'user_InspectionOfficer',
-        value: jobData?.userInfo?.lastName ,
+        value: jobData?.userInfo?.lastName,
       },
       {
-        label: 'job_CreationName',
-        value:
-          jobData?.creationName ||
-          jobData?.createdByName ||
-          jobData?.creatorName ||
-          jobData?.createdBy?.lastName ||
-          jobData?.createdBy?.businessName ||
-          jobData?.createdByUser?.lastName ||
-          jobData?.createdByUser?.businessName,
+        label: 'mso_Designation',
+        value: jobData?.userInfo?.designation,
       },
+
       { label: 'job_Status', value: jobData?.status },
-      { label: 'mso_Designation', value: jobData?.userInfo?.designation },
     ].filter(item => !item.hidden)
   }
 

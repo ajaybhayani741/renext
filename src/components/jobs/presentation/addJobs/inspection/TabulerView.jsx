@@ -207,7 +207,11 @@ const TabulerView = ({
   const locationRef = useRef(null)
   const userData = JSON.parse(getItem('userData'))
   const { roleId } = { ...userData }
-  const { districtHostelDepartment, inspectionOfficer } = userWiseRole
+  const {
+    districtHostelDepartment,
+    inspectionOfficer,
+    mandalSpecialOfficer,
+  } = userWiseRole
 
   const { onFileUploadOrRemove } = jobContext()
   const [editLogModel, setEditLogModel] = useState({ open: false })
@@ -699,7 +703,11 @@ const TabulerView = ({
     }
   }
 
-  const allPermissionRoles = [districtHostelDepartment, inspectionOfficer]
+  const allPermissionRoles = [
+    districtHostelDepartment,
+    inspectionOfficer,
+    mandalSpecialOfficer,
+  ]
 
   const showEditPermission = ({ section }) => {
     if (notEqual(data?.status, 'RECOVERY_COMPLETED')) return false
