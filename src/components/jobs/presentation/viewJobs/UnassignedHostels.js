@@ -37,6 +37,7 @@ const UnassignedHostels = () => {
         <h2 className="page-title">{t('job_UnassignedHostels')}</h2>
       ) : null}
       <UserTable
+        className="unassigned-hostel-list"
         userData={hostelData}
         handleTableChange={handleTableChange}
         handleView={handleViewClick}
@@ -109,3 +110,4 @@ const UnassignedHostels = () => {
 }
 
 export default UnassignedHostels
+
