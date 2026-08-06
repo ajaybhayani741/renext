@@ -41,6 +41,9 @@ const jobTable = ({
     userWiseRole
   const activeTab = selector(state => state?.jobs?.activeTab)
   const isMobile = selector(state => state.app.isMobile)
+  const isCompletedInspectionJob =
+    isEqual(jobType, tabKeys.inspection) &&
+    isEqual(activeTab?.status, tabKeys.complete)
   const [reportDownloadModal, setReportDownloadModal] = useState({
     open: false,
     data: '',
@@ -198,6 +201,14 @@ const jobTable = ({
         },
       },
       {
+        title: t('job_CompletionDate'),
+        key: columnKeys.completionDate,
+        dataIndex: 'modificationDate',
+        render: rowData => {
+          return <>{rowData ? dayJs(rowData).format('DD/MM/YYYY HH:mm A') : '-'}</>
+        },
+      },
+      {
         title: t('user_Hostel'),
         key: columnKeys.hostel,
         dataIndex: 'hostelInfo',
@@ -313,7 +324,7 @@ const jobTable = ({
         render: actionButtons,
       },
     ],
-    [onViewClick, selectedJobs],
+    [onViewClick, selectedJobs, isCompletedInspectionJob],
   )
 
   const columns = ternary(
@@ -342,10 +353,16 @@ const jobTable = ({
     return [
       // { label: 'job_Title', value: jobTitle },
       {
-        label: 'user_CreationDate',
-        value: creationDate
-          ? dayJs(creationDate).format('DD/MM/YYYY HH:mm A')
-          : '-',
+        label: isCompletedInspectionJob
+          ? 'job_CompletionDate'
+          : 'user_CreationDate',
+        value: isCompletedInspectionJob
+          ? modificationDate
+            ? dateFormat(modificationDate)?.dmyDate
+            : '-'
+          : creationDate
+            ? dayJs(creationDate).format('DD/MM/YYYY HH:mm A')
+            : '-',
       },
       { label: 'job_hostelName', value: hostelInfo?.lastName },
       { label: 'mso_Mandal', value: hostelInfo?.mandal },
@@ -394,3 +411,4 @@ const jobTable = ({
 }
 
 export default jobTable
+

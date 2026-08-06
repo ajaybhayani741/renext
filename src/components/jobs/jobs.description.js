@@ -82,6 +82,7 @@ const columnKeys = {
   jobTitle: 'job_Title',
   createdDate: 'user_CreationDate',
   updatedDate: 'job_UpdatedDate',
+  completionDate: 'job_CompletionDate',
   status: 'job_Status',
   hostel: 'user_Hostel',
   hostelAddress: 'user_HostelAddress',

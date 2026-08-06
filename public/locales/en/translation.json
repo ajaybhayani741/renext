@@ -123,7 +123,7 @@
   "msg_SelectUser": "Please select user",
   "btn_Next": "Next",
   "btn_Previous": "Previous",
-  "job_CompletionDate": "Job Completion Date",
+  "job_CompletionDate": "Completion Date",
   "job_ManagementNumberOptional": "Management Number (Optional)",
   "btn_Save": "Save",
   "job_SelectCustomer": "Select Customer",
@@ -878,3 +878,4 @@
   "dash_IOsCompletedAtLeastOneInspectionCurrentWeek": "IOs completed at least one inspection in the current week",
   "dash_IOsCompletedAtLeastOneInspectionLastWeek": "IOs completed at least one inspection in the last week"
 }
+
