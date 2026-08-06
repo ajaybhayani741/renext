@@ -481,6 +481,15 @@
   border-radius: 10px;
   overflow: hidden;
 
+  @media screen and (max-width: 768px) {
+    border: 1px solid var(--color-primary-light) !important;
+    border-radius: 4px !important;
+
+    .ant-card-head {
+      border-bottom: 1px solid var(--color-primary-light) !important;
+    }
+  }
+
   .ant-card {
     overflow: visible;
   }
@@ -812,3 +821,4 @@
     }
   }
 }
+

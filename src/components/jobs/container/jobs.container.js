@@ -234,22 +234,24 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
 
   const currentColumns = useMemo(() => {
     const {
-      status,
+      status: jobStatus,
       hostel: hostelCol,
       hostelContact: hostelContactCol,
       inspectionOfficer: inspectionOfficerCol,
       mandal,
       createdDate,
+      completionDate,
       designation,
     } = columnKeys
-
     return [
       hostelCol,
       mandal,
       hostelContactCol,
       inspectionOfficerCol,
-      createdDate,
-      status,
+      ...(isEqual(type, tabKeys.inspection) && isEqual(status, tabKeys.complete)
+        ? [completionDate]
+        : [createdDate]),
+      jobStatus,
       designation,
     ]
   }, [type, status, roleId])

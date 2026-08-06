@@ -50,7 +50,7 @@ const InspectionJobView = ({
         label: 'mso_Designation',
         value: data?.userInfo?.designation ,
       },
-      { label: 'job_DateOfInspectionAndTime', value: data?.inspectionDate },
+      { label: 'job_CompletionDate', value: data?.modificationDate ? dayJs(data?.modificationDate).format('DD/MM/YYYY HH:mm A') : '-' },
       { label: 'job_Status', value: t(status[data?.status]) },
     ],
   }
