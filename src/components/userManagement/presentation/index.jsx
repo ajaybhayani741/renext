@@ -29,21 +29,15 @@ const UserManagement = () => {
 
   return (
     <div>
-      <div
-        className="d-flex align-items-center space-between"
-        style={{ flexWrap: 'wrap', gap: '10px' }}
-      >
+      <div className="user-management-header d-flex align-items-center space-between">
         <h2 className="page-title" style={{ margin: 0 }}>
           {t(userTitle)}
         </h2>
-        <div
-          className="text-end d-flex justify-content-end"
-          style={{ gap: '10px' }}
-        >
+        <div className="user-management-actions text-end d-flex justify-content-end">
           {isEqual(defaultPayload?.roleId, hostel) ? (
             <>
               {/* <FiscalYearSelect className="ml-auto mb-10" setDefault={false} /> */}
-              <div className="d-flex justify-content-end">
+              <div className="user-management-request-actions d-flex justify-content-end">
                 <ANTDButton
                   type="primary"
                   className="btn"
@@ -54,7 +48,7 @@ const UserManagement = () => {
                 </ANTDButton>
                 <ANTDButton
                   type="primary"
-                  className="btn mx-3"
+                  className="btn"
                   onClick={onViewPreviousRequests}
                 >
                   {t('job_ViewPreviousRequests')}
@@ -63,7 +57,11 @@ const UserManagement = () => {
             </>
           ) : null}
           {permission && (
-            <ANTDButton type="primary" className="btn" onClick={handleAdd}>
+            <ANTDButton
+              type="primary"
+              className="btn user-management-add-action"
+              onClick={handleAdd}
+            >
               {`${t('btn_Add')}${include([hostel, inspectionOfficer], pathRoleId) ? ` ${t(userTitle)}` : ''} `}
             </ANTDButton>
           )}

@@ -175,6 +175,58 @@
   margin-bottom: 15px;
 }
 
+.user-management-header {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.user-management-actions,
+.user-management-request-actions {
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+}
+
+.user-management-actions {
+  flex: 1 1 auto;
+  margin-left: auto;
+}
+
+@media screen and (max-width: 576px) {
+  .user-management-header {
+    align-items: flex-start !important;
+  }
+
+  .user-management-actions,
+  .user-management-request-actions {
+    justify-content: flex-start !important;
+    width: 100%;
+  }
+
+  .user-management-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-left: 0;
+  }
+
+  .user-management-request-actions {
+    display: contents !important;
+  }
+
+  .user-management-actions .ant-btn {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 34px;
+    margin: 0 !important;
+    padding: 6px 8px !important;
+    white-space: normal;
+  }
+
+  .user-management-add-action {
+    grid-column: 1 / -1;
+  }
+}
 .content-title-wrapper {
   display: flex;
   align-items: center;
