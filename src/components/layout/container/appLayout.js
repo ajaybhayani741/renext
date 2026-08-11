@@ -1,10 +1,11 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
 
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import { setDeviceStatus, setMobileStatus } from '../../../redux/app/reducer'
+import { setJobActiveTab } from '../../../redux/jobs/reducer'
 import pathName, {
   DASHBOARD_TXT,
   USER_TXT,
@@ -18,6 +19,7 @@ import {
   notEqual,
 } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
+import { tabKeys } from '../../jobs/jobs.description'
 import { sidebarMenus } from '../sidebar.description'
 
 const appLayout = () => {
@@ -33,6 +35,12 @@ const appLayout = () => {
   const defaultOpenKeys = [`/${activeItem1.split('/')?.[1]}`]
   const [collapsed, setCollapsed] = useState(false)
   const { districtCollector, inspectionOfficer, mandalSpecialOfficer } = userWiseRole
+
+  useEffect(() => {
+    if (isEqual(location.pathname, pathName.JOBS)) {
+      dispatch(setJobActiveTab({ status: tabKeys.active }))
+    }
+  }, [dispatch, location.pathname])
 
   const removeAddFromLastPath = () => {
     let url = ''
@@ -153,6 +161,9 @@ const appLayout = () => {
   }
 
   const handleMenu = e => {
+    if (isEqual(e?.key, pathName.JOBS)) {
+      dispatch(setJobActiveTab({ status: tabKeys.active }))
+    }
     navigate(e?.key)
     !isDesktop && toggleMenu && setToggleMenu(false)
   }

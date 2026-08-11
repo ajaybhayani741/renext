@@ -51,6 +51,8 @@ function UserTable({
   searchPayload = null,
   tableScroll = null,
   showSearchBySection = true,
+  viewDepth = 0,
+  maxViewDepth = 2,
 }) {
   const {
     viewModel,
@@ -78,6 +80,7 @@ function UserTable({
     searchByEmail,
     getUsersData,
     searchPayload,
+    userData,
   })
 
   const { column, actionButtons, cardViewFn } = userColumns({
@@ -101,6 +104,7 @@ function UserTable({
     handleAssignHostel,
     columnFilter,
     userKey,
+    showViewAction: viewDepth < maxViewDepth,
   })
   const { t } = useTranslations()
   const { inspectionOfficer, mandalSpecialOfficer } = userWiseRole
@@ -129,10 +133,12 @@ function UserTable({
             open: viewModel?.open,
             userDetails: viewModel?.userDetails,
             handleCancel,
+            viewDepth: viewDepth + 1,
+            maxViewDepth,
           }}
         />
       ),
-    [viewModel?.open],
+    [viewModel?.open, viewModel?.userDetails, viewDepth, maxViewDepth],
   )
   return (
     <div className={className}>
@@ -229,7 +235,7 @@ function UserTable({
                 : false
             }
             onChange={handleTableChange}
-            scroll={tableScroll}
+            scroll={tableScroll || { x: 'max-content' }}
             className="user-table"
           />,
           <UserTableCard
@@ -285,3 +291,5 @@ function UserTable({
 }
 
 export default UserTable
+
+

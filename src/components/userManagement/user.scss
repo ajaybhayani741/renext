@@ -874,3 +874,26 @@
   }
 }
 
+
+.view-user-details-modal {
+  .ant-modal-body {
+    max-height: calc(100vh - 170px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .user-table {
+    .ant-table-wrapper,
+    .ant-spin-nested-loading,
+    .ant-spin-container,
+    .ant-table,
+    .ant-table-container {
+      min-width: 0;
+    }
+
+    .ant-table-content,
+    .ant-table-body {
+      overflow-x: auto !important;
+    }
+  }
+}

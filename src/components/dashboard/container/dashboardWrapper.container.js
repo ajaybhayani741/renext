@@ -108,7 +108,7 @@ const dashboardWrapper = ({ title, pageNo, jobType, selectedColumn }) => {
             onClick={() => handleHostelClick(rowData)}
             disabled={disableViewJob}
           >
-            {t('txt_ViewJob')}
+            {t('btn_View')}
           </ANTDButton>
         )
       },

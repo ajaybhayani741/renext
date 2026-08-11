@@ -1,7 +1,9 @@
 import useTranslations from '../../../hooks/useTranslations'
+import ANTDButton from '../../../shared/antd/ANTDButton'
 import { ANTDDateRange } from '../../../shared/antd/ANTDDatePicker'
 import ANTDSelect from '../../../shared/antd/ANTDSelect'
 import fiscalYearSelect from '../container/fiscalYearSelect.container'
+import './FiscalYearSelect.scss'
 
 const FiscalYearSelect = ({
   onDateChange,
@@ -11,41 +13,70 @@ const FiscalYearSelect = ({
   isDateRange = true,
   showRecentPresets = false,
   showWeekCounter = false,
+  showDateShortcutButtons = false,
 }) => {
   const { t } = useTranslations()
-  const { dateRangeProps, fiscalYearSelector, weekCounterLabel } =
-    fiscalYearSelect({
-      onDateChange,
-      setDefault,
-      isDateRange,
-      showRecentPresets,
-      showWeekCounter,
-    })
+  const {
+    dateRangeProps,
+    fiscalYearSelector,
+    weekCounterLabel,
+    dateShortcutButtons,
+  } = fiscalYearSelect({
+    onDateChange,
+    setDefault,
+    isDateRange,
+    showRecentPresets,
+    showWeekCounter,
+    showDateShortcutButtons,
+  })
 
   return (
-    <div className={`flex items-center gap-4 flex-wrap ${className}`}>
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-slate-500 font-medium whitespace-nowrap">
+    <div className={`fiscal-filter-bar ${className}`}>
+      <div className="fiscal-filter-bar__group fiscal-filter-bar__group--year">
+        <span className="fiscal-filter-bar__label">
           {t('txt_FiscalYear')}:
         </span>
         <ANTDSelect
           {...fiscalYearSelector}
-          className="min-w-[100px]"
+          className="fiscal-filter-bar__select"
           size="middle"
         />
       </div>
+
       {showDateRange && (
-        <div className="flex items-center">
-          <ANTDDateRange {...dateRangeProps} size="middle" />
+        <>
+          <div className="fiscal-filter-bar__group">
+            <ANTDDateRange {...dateRangeProps} size="middle" />
+          </div>
+
+          {dateShortcutButtons?.length > 0 && (
+            <div className="fiscal-filter-bar__group">
+              <div className="fiscal-filter-bar__shortcuts">
+                {dateShortcutButtons.map(({ label, onClick, active }) => (
+                  <ANTDButton
+                    key={label}
+                    onClick={onClick}
+                    size="middle"
+                    className={`fiscal-filter-bar__shortcut-btn ${
+                      active ? 'fiscal-filter-bar__shortcut-btn--active' : ''
+                    }`}
+                  >
+                    {label}
+                  </ANTDButton>
+                ))}
+              </div>
+            </div>
+          )}
+
           {showWeekCounter && weekCounterLabel && (
-            <span className="inspection-week-counter ml-5">
-              <span className="inspection-week-counter__icon" />
-              <span className="inspection-week-counter__text">
+            <div className="fiscal-filter-bar__group fiscal-filter-bar__group--chip">
+              <span className="fiscal-filter-bar__week-chip">
+                <span className="fiscal-filter-bar__week-chip-dot" />
                 {weekCounterLabel}
               </span>
-            </span>
+            </div>
           )}
-        </div>
+        </>
       )}
     </div>
   )

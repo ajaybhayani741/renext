@@ -45,6 +45,20 @@ import { APPROVED, PENDING } from '../../../jobs.description'
 import EditLogTable from '../../common/EditLogTable'
 import JobUserSelect from '../../common/JobUserSelect'
 
+const defaultActiveCollapseKeys = [
+  'hostelAdministrationRequestDto',
+  'foodNutritionRequestDto',
+  'accommodationRequestDto',
+  'electricityLightingRequestDto',
+  'sanitationDrainageRequestDto',
+  'healthMedicalCareRequestDto',
+  'educationAcademicEnvironmentRequestDto',
+  'safetySecurityRequestDto',
+  'studentFeedbackRequestDto',
+  'overallAssessmentRequestDto',
+  'inspectingOfficerFeedbackRequestDto',
+]
+
 const CellRender = ({
   record,
   rowData,
@@ -798,7 +812,7 @@ const TabulerView = ({
     <ANTDForm initialValues={{}} form={form} onValuesChange={onValuesChange}>
       <ANTDCollapse
         bordered={false}
-        defaultActiveKey={highlightSection ? [highlightSection] : undefined}
+        defaultActiveKey={defaultActiveCollapseKeys}
         onChange={onFileUploadCollapse}
         items={[
           // {

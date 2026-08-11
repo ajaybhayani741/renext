@@ -35,7 +35,13 @@ import ViewJob from './viewJobs'
 import UnassignedHostels from './viewJobs/UnassignedHostels'
 import ViewPreviousRequest from './viewJobs/ViewPreviousRequest'
 
-const JobManagement = ({ userView = false, userId, userJobType }) => {
+const JobManagement = ({
+  userView = false,
+  userId,
+  userJobType,
+  viewDepth = 0,
+  maxViewDepth = 2,
+}) => {
   const {
     t,
     data,
@@ -80,6 +86,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
   const visibleTabEntries = entries(tabList)?.filter(([key]) =>
     notEqual(key, 'type'),
   )
+  const showTableActions = viewDepth < maxViewDepth
 
   return (
     <>
@@ -94,6 +101,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
           handleDisAssociateModal={handleDisAssociateModal}
           handleRevertJobModal={handleRevertJobModal}
           userView={userView}
+          showActionColumn={showTableActions}
         />
       ) : (
         <>
@@ -161,6 +169,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                 <FiscalYearSelect
                   onDateChange={(from, to) => apiCall(1, { from, to })}
                   showRecentPresets
+                  showDateShortcutButtons={isEqual(jobType, tabKeys.inspection)}
                   showWeekCounter={isEqual(jobType, tabKeys.inspection)}
                 />
               </div>
@@ -229,6 +238,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
               jobType={jobType}
               handleDisAssociateModal={handleDisAssociateModal}
               handleRevertJobModal={handleRevertJobModal}
+              showActionColumn={showTableActions}
             />
           )}
         </>
@@ -339,4 +349,5 @@ const validRoles = sidebarMenus.find(({ key }) =>
 )?.sidebar
 
 export default withRouteAuth(JobManagement, validRoles)
+
 
