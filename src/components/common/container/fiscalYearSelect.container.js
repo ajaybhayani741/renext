@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import useRedux from '../../../hooks/useRedux'
 import { setFiscalYear } from '../../../redux/app/reducer'
@@ -19,6 +20,7 @@ const fiscalYearSelect = ({
   showWeekCounter = false,
   showDateShortcutButtons = false,
 } = {}) => {
+  const {t} = useTranslation()
   const { dispatch, selector } = useRedux()
   const { value, options, dateRange } = selector(
     state => state?.app?.fiscalYear,
@@ -91,18 +93,18 @@ const fiscalYearSelect = ({
   const shortcutRanges = showDateShortcutButtons
     ? [
         {
-          label: 'LAST WEEK',
+          label: 'job_lastWeek',
           range: getLastWeekDateRange(),
         },
         {
-          label: 'Current Month',
+          label: 'job_CurrentMonth',
           range: getCurrentMonthDateRange(),
         },
       ]
     : []
 
   const dateShortcutButtons = shortcutRanges.map(({ label, range }) => ({
-    label,
+    label: t(label),
     active: isActiveShortcut(range),
     onClick: () => handleDateShortcutClick(range),
   }))

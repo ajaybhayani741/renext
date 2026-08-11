@@ -17,6 +17,8 @@ const ViewUser = ({
   hasAction,
   handleCancel,
   editButtons,
+  viewDepth = 0,
+  maxViewDepth = 2,
 }) => {
   const {
     otherDetail,
@@ -100,6 +102,8 @@ const ViewUser = ({
                           userView={true}
                           userId={userDetails?.id}
                           userJobType={v?.payload?.jobType}
+                          viewDepth={viewDepth}
+                          maxViewDepth={maxViewDepth}
                         />
                       ) : (
                         <UserList
@@ -112,6 +116,8 @@ const ViewUser = ({
                           className="mb-15"
                           showAssignHostel={false}
                           userKey={key}
+                          viewDepth={viewDepth}
+                          maxViewDepth={maxViewDepth}
                         />
                       )}
                     </Fragment>
@@ -134,6 +140,7 @@ const ViewUser = ({
           onCancel={handleCancel}
           footer={false}
           width={1000}
+          className="view-user-details-modal"
         >
           {viewDetails()}
         </ANTDModal>
@@ -145,3 +152,5 @@ const ViewUser = ({
 }
 
 export default memo(ViewUser)
+
+

@@ -876,6 +876,8 @@
   "dash_HostelInspectionOverview": "Hostel Inspection Overview",
   "dash_TotalInspectionOfficersOnboarded": "Total Inspection officers Onboarded",
   "dash_IOsCompletedAtLeastOneInspectionCurrentWeek": "IOs completed at least one inspection in the current week",
-  "dash_IOsCompletedAtLeastOneInspectionLastWeek": "IOs completed at least one inspection in the last week"
+  "dash_IOsCompletedAtLeastOneInspectionLastWeek": "IOs completed at least one inspection in the last week",
+  "job_lastWeek": "last Week",
+  "job_CurrentMonth": "Current Month"
 }
 

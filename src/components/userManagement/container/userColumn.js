@@ -40,6 +40,7 @@ const userColumns = ({
   showAssignInspectionOfficer,
   columnFilter,
   userKey,
+  showViewAction = true,
 }) => {
   const { t } = useTranslations()
   const userData = JSON.parse(getItem('userData') || '{}')
@@ -80,9 +81,11 @@ const userColumns = ({
           {t('user_AssignHostelRandomly')}
         </ANTDButton>
       )}
-      <ANTDButton className="bg-view" onClick={() => handleView(rowData)}>
-        {t('btn_View')}
-      </ANTDButton>
+      {showViewAction && (
+        <ANTDButton className="bg-view" onClick={() => handleView(rowData)}>
+          {t('btn_View')}
+        </ANTDButton>
+      )}
       {!removeEditBtn && (permission || isBuilding) && (
         <ANTDButton className="bg-edit" onClick={() => handleEdit(rowData)}>
           {t('btn_Edit')}
@@ -254,7 +257,7 @@ const userColumns = ({
       render: rowData => {
         return <>{actionButtons(rowData)}</>
       },
-      hidden: isEqual(userKey, 'user_AssignedHostelsForInspection'),
+      hidden: isEqual(userKey, 'user_AssignedHostelsForInspection') || !showViewAction,
     },
   ]
 
@@ -353,3 +356,5 @@ const userColumns = ({
 }
 
 export default userColumns
+
+

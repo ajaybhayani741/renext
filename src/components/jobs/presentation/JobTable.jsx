@@ -27,6 +27,7 @@ const JobTable = ({
   handleDisAssociateModal,
   handleRevertJobModal,
   userView,
+  showActionColumn = true,
 }) => {
   const { selector } = useRedux()
   const {
@@ -49,6 +50,7 @@ const JobTable = ({
     handleDisAssociateModal,
     handleRevertJobModal,
     userView,
+    showActionColumn,
   })
   const pageSize = 10
   const { list, pageNo, lastPage, loader } = { ...tableData }
@@ -105,7 +107,7 @@ const JobTable = ({
                         <ANTDButton>{t('txt_New')}</ANTDButton>
                       </div>
                     )}
-                    {actionButtons(item)}
+                    {showActionColumn && actionButtons(item)}
                   </div>
                 }
               >
@@ -243,3 +245,4 @@ const JobTable = ({
 }
 
 export default JobTable
+

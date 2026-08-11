@@ -22,6 +22,8 @@ function UserList({
   className,
   showAssignHostel = true,
   userKey,
+  viewDepth = 0,
+  maxViewDepth = 2,
 }) {
   const {
     model,
@@ -101,6 +103,8 @@ function UserList({
           handleAssignHostel: handleNonAssociateUser,
           userKey,
           getUsersData: apiCall,
+          viewDepth,
+          maxViewDepth,
         }}
       />
 
@@ -220,3 +224,4 @@ function UserList({
 }
 
 export default UserList
+

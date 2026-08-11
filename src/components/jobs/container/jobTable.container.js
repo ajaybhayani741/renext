@@ -30,6 +30,7 @@ const jobTable = ({
   handleDisAssociateModal,
   handleRevertJobModal,
   userView,
+  showActionColumn = true,
 }) => {
   const { t } = useTranslations()
   const { navigate } = useRouter()
@@ -322,9 +323,18 @@ const jobTable = ({
         className: 'job-action-column',
         fixed: 'right',
         render: actionButtons,
+        hidden: !showActionColumn,
       },
     ],
-    [onViewClick, selectedJobs, isCompletedInspectionJob],
+    [
+      onViewClick,
+      selectedJobs,
+      isCompletedInspectionJob,
+      showActionColumn,
+      activeTab?.status,
+      roleId,
+      loginUserId,
+    ],
   )
 
   const columns = ternary(
@@ -334,7 +344,9 @@ const jobTable = ({
       return include(
         [
           ...displayColKeys,
-          ...(readyOnly ? [] : [columnKeys.action, columnKeys.read]),
+          ...(readyOnly || !showActionColumn
+            ? []
+            : [columnKeys.action, columnKeys.read]),
         ],
         col.key,
       )
@@ -411,4 +423,5 @@ const jobTable = ({
 }
 
 export default jobTable
+
 
