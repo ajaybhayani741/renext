@@ -1,11 +1,11 @@
 $border-color: #e2e8f0;
 $label-color: #64748b;
-$text-muted: #64748b;
-$text-strong: #334155;
-$accent: #4f46e5;
+$text-muted: #475569;
+$text-strong: #1e293b;
+$accent: #3730a3;
 $accent-bg: #eef2ff;
 $accent-dot: #6366f1;
-$segment-bg: #f1f5f9;
+$segment-bg: #e2e8f0;
 $radius-lg: 12px;
 $radius-md: 8px;
 $radius-full: 9999px;
@@ -98,7 +98,7 @@ $breakpoint-md: 768px;
   &__shortcut-btn {
     border: 0 !important;
     box-shadow: none !important;
-    background: transparent !important;
+    background: #bddbff !important;
     color: $text-muted !important;
     font-size: 13px;
     font-weight: 500;
@@ -108,12 +108,13 @@ $breakpoint-md: 768px;
     transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
+      background: #94a3b8 !important;
       color: $text-strong !important;
     }
 
     &--active {
-      background: #fff !important;
-      color: $accent !important;
+      background: var(--color-primary) !important;
+      color: var(--color-white) !important;
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08) !important;
     }
   }
@@ -137,7 +138,7 @@ $breakpoint-md: 768px;
     background: $accent-dot;
   }
 
-  @media (max-width: $breakpoint-md - 1px) {
+  @media (max-width: $breakpoint-md) {
     align-items: flex-start;
 
     &__group {
@@ -170,5 +171,6 @@ $breakpoint-md: 768px;
     }
   }
 }
+
 
 
