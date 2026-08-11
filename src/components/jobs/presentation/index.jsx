@@ -161,6 +161,7 @@ const JobManagement = ({ userView = false, userId, userJobType }) => {
                 <FiscalYearSelect
                   onDateChange={(from, to) => apiCall(1, { from, to })}
                   showRecentPresets
+                  showDateShortcutButtons={isEqual(jobType, tabKeys.inspection)}
                   showWeekCounter={isEqual(jobType, tabKeys.inspection)}
                 />
               </div>

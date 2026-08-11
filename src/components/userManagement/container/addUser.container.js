@@ -53,6 +53,7 @@ const addUser = ({
   handleCancelEdit,
   userRoleId,
   successCallback,
+  apiCall,
 }) => {
   const form = useFormFn()
   const { params, navigate, location } = useRouter()
@@ -570,7 +571,10 @@ const addUser = ({
         setItem('userData', JSON.stringify(profileResponse?.data?.data))
       }
     }
-    if (isEqual(`/${pathName?.[1]}`, USER_TXT)) {
+    const refreshInlineList = apiCall && handleCancelEdit
+    if (refreshInlineList) {
+      handleCancelEdit(true)
+    } else if (isEqual(`/${pathName?.[1]}`, USER_TXT)) {
       navigate(`${USER_TXT}/${userType}`, {
         state: { renderUserAPI: true },
       })
@@ -579,7 +583,7 @@ const addUser = ({
 
     notifyMethod.success({ message: 'msg_UserUpdatedSuccessfully' })
     form.resetFields()
-    editInfo?.flag && handleCancelEdit()
+    editInfo?.flag && !refreshInlineList && handleCancelEdit()
   }
 
   const createEmailPayload = (emailArr = []) => {

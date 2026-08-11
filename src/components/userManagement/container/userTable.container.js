@@ -14,6 +14,7 @@ const userTable = ({
   searchByEmail,
   getUsersData = null,
   searchPayload,
+  userData,
 }) => {
   const [viewModel, setViewModel] = useState({ open: false, userDetails: null })
   const searchValue = useRef(null)
@@ -111,8 +112,11 @@ const userTable = ({
   const handleCancelEdit = (updateList = false) => {
     if (updateList && getUsersData) {
       searchValue?.current
-        ? apiCall({ pageNo: 1, value: searchValue?.current })
-        : getUsersData({ pageNo: 1 })
+        ? apiCall({
+            pageNo: searchResult?.data?.pageNo || 1,
+            value: searchValue?.current,
+          })
+        : getUsersData({ pageNo: userData?.pageNo || 1 })
     }
     setEditInfo({ flag: false, data: {} })
   }

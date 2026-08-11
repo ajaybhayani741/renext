@@ -5,7 +5,11 @@ import useRedux from '../../../hooks/useRedux'
 import { setFiscalYear } from '../../../redux/app/reducer'
 import { calendarYearDate } from '../../../utils/customFunctions'
 import { dayJs, DISPLAY_DATE_FORMAT, formatDate } from '../../../utils/dayjs'
-import { getWeekCounterLabel } from '../../../utils/weekDateUtils'
+import {
+  getCurrentMonthDateRange,
+  getLastWeekDateRange,
+  getWeekCounterLabel,
+} from '../../../utils/weekDateUtils'
 
 const fiscalYearSelect = ({
   onDateChange,
@@ -13,6 +17,7 @@ const fiscalYearSelect = ({
   isDateRange,
   showRecentPresets = false,
   showWeekCounter = false,
+  showDateShortcutButtons = false,
 } = {}) => {
   const { dispatch, selector } = useRedux()
   const { value, options, dateRange } = selector(
@@ -68,6 +73,40 @@ const fiscalYearSelect = ({
     return [end.subtract(days - 1, 'day'), end]
   }
 
+  const handleDateShortcutClick = range => {
+    dispatch(
+      setFiscalYear({
+        dateRange: {
+          ...dateRange,
+          ...range,
+        },
+      }),
+    )
+    onDateChange && onDateChange(range.from, range.to)
+  }
+
+  const isActiveShortcut = range =>
+    dateRange?.from === range?.from && dateRange?.to === range?.to
+
+  const shortcutRanges = showDateShortcutButtons
+    ? [
+        {
+          label: 'LAST WEEK',
+          range: getLastWeekDateRange(),
+        },
+        {
+          label: 'Current Month',
+          range: getCurrentMonthDateRange(),
+        },
+      ]
+    : []
+
+  const dateShortcutButtons = shortcutRanges.map(({ label, range }) => ({
+    label,
+    active: isActiveShortcut(range),
+    onClick: () => handleDateShortcutClick(range),
+  }))
+
   const fiscalYearSelector = {
     width: '100%',
     value: value,
@@ -102,7 +141,13 @@ const fiscalYearSelect = ({
     ? getWeekCounterLabel({ from: dateRange?.from, inputFormat: saveFormat })
     : ''
 
-  return { dateRangeProps, fiscalYearSelector, weekCounterLabel }
+  return {
+    dateRangeProps,
+    fiscalYearSelector,
+    weekCounterLabel,
+    dateShortcutButtons,
+  }
 }
 
 export default fiscalYearSelect
+

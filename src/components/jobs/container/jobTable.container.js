@@ -196,7 +196,7 @@ const jobTable = ({
         dataIndex: 'creationDate',
         render: rowData => {
           return (
-            <>{rowData ? dayJs(rowData).format('DD/MM/YYYY HH:mm A') : '-'}</>
+            <>{rowData ? dayJs(rowData).format('DD/MM/YYYY') : '-'}</>
           )
         },
       },
@@ -205,7 +205,7 @@ const jobTable = ({
         key: columnKeys.completionDate,
         dataIndex: 'modificationDate',
         render: rowData => {
-          return <>{rowData ? dayJs(rowData).format('DD/MM/YYYY HH:mm A') : '-'}</>
+          return <>{rowData ? dayJs(rowData).format('DD/MM/YYYY') : '-'}</>
         },
       },
       {

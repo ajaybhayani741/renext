@@ -1487,3 +1487,40 @@
   }
 }
 
+
+.fiscal-date-range-wrap {
+  row-gap: 8px;
+
+  .date-shortcut-btn {
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border-color: rgba(79, 70, 229, 0.28);
+    background: #fff;
+    color: #4338ca;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+
+    &:hover,
+    &:focus {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      background: #f6f7ff;
+    }
+  }
+
+  @media screen and (max-width: 575px) {
+    width: 100%;
+
+    .ant-picker-range {
+      width: 100%;
+    }
+
+    .date-shortcut-btn {
+      flex: 1 1 calc(50% - 4px);
+      min-width: 138px;
+    }
+  }
+}

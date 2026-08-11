@@ -12,6 +12,24 @@ export const getCurrentWeekDateRange = (format = SAVE_DATE_FORMAT) => {
   }
 }
 
+export const getLastWeekDateRange = (format = SAVE_DATE_FORMAT) => {
+  const lastWeek = dayJs().subtract(1, 'week')
+
+  return {
+    from: lastWeek.startOf('isoWeek').format(format),
+    to: lastWeek.endOf('isoWeek').format(format),
+  }
+}
+
+export const getCurrentMonthDateRange = (format = SAVE_DATE_FORMAT) => {
+  const today = dayJs()
+
+  return {
+    from: today.startOf('month').format(format),
+    to: today.endOf('month').format(format),
+  }
+}
+
 export const getISOWeekNumber = (date, inputFormat = SAVE_DATE_FORMAT) => {
   const parsedDate =
     typeof date === 'string' ? formatDate(date, inputFormat) : dayJs(date)

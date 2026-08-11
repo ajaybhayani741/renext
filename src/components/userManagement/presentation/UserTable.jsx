@@ -78,6 +78,7 @@ function UserTable({
     searchByEmail,
     getUsersData,
     searchPayload,
+    userData,
   })
 
   const { column, actionButtons, cardViewFn } = userColumns({
