@@ -333,10 +333,6 @@ const cardList = [
 
 const cardList = [
   {
-    label: 'dash_Metrics',
-    key: cardKeys.metrics,
-  },
-  {
     label: 'Administration & Governance',
     key: cardKeys.administrationGovernance,
   },

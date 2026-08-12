@@ -93,7 +93,7 @@ const home = () => {
     return roleData
   }, [roleId, loginUserDetails])
 
-  return { homeData }
+  return { homeData, roleId }
 }
 
 export default home

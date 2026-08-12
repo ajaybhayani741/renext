@@ -1,6 +1,7 @@
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
-import {
+import pathName, {
+  HOSTEL,
   INSPECTION_OFFICER,
   USER_TXT,
 } from '../../../routing/pathName.constant'
@@ -48,7 +49,13 @@ const userColumns = ({
   const { location } = useRouter()
 
   const isChildUser = include(childUsers, roleId)
-  const { inspectionOfficer, hostel, mandalSpecialOfficer } = userWiseRole
+  const { districtCollector, inspectionOfficer, hostel, mandalSpecialOfficer } =
+    userWiseRole
+  const isDistrictCollector = isEqual(loginUserRoleId, districtCollector)
+  const showAssignmentAction =
+    showAssignInspectionOfficer &&
+    (!isDistrictCollector ||
+      include([`${USER_TXT}/${HOSTEL}`, pathName.JOBS], location.pathname))
   const showAssignHostelAction =
     showAssignHostel &&
     isEqual(roleId, inspectionOfficer) &&
@@ -57,20 +64,28 @@ const userColumns = ({
 
   const actionButtons = rowData => (
     <div className="card-extra-buttons">
-      {showAssignInspectionOfficer && (
+      {showAssignmentAction && (
         <>
-        {notEqual(loginUserRoleId, inspectionOfficer) && <ANTDButton
-            className="bg-assign-hostel"
-            onClick={() => handleAssignInspectionOfficer({ rowData })}
-          >
-            {t('user_AssignInspectionOfficer')}
-          </ANTDButton>}
-          <ANTDButton
-            className="bg-assign-hostel-random"
-            onClick={() => handleAssignToSelf({ rowData })}
-          >
-            {t('user_AssignToSelf')}
-          </ANTDButton>
+          {notEqual(loginUserRoleId, inspectionOfficer) && (
+            <ANTDButton
+              className="bg-assign-hostel"
+              onClick={() => handleAssignInspectionOfficer({ rowData })}
+            >
+              {t(
+                isDistrictCollector
+                  ? 'user_AssignIOAndMSO'
+                  : 'user_AssignInspectionOfficer',
+              )}
+            </ANTDButton>
+          )}
+          {!isDistrictCollector && (
+            <ANTDButton
+              className="bg-assign-hostel-random"
+              onClick={() => handleAssignToSelf({ rowData })}
+            >
+              {t('user_AssignToSelf')}
+            </ANTDButton>
+          )}
         </>
       )}
       {showAssignHostelAction && (
@@ -257,7 +272,9 @@ const userColumns = ({
       render: rowData => {
         return <>{actionButtons(rowData)}</>
       },
-      hidden: isEqual(userKey, 'user_AssignedHostelsForInspection') || !showViewAction,
+      hidden:
+        isEqual(userKey, 'user_AssignedHostelsForInspection') ||
+        !showViewAction,
     },
   ]
 
@@ -356,5 +373,3 @@ const userColumns = ({
 }
 
 export default userColumns
-
-

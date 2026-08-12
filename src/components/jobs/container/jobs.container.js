@@ -181,7 +181,13 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   }, [dispatch, fiscalYear, type, dateRange?.from, dateRange?.to])
 
   useEffect(() => {
-    if (!fiscalYear || userView || !type) return
+    if (
+      !fiscalYear ||
+      userView ||
+      !type ||
+      isEqual(status, tabKeys.unassignHostel)
+    )
+      return
     if (
       isEqual(type, tabKeys.inspection) &&
       (!dateRange?.from ||
@@ -283,6 +289,8 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   }))
 
   const apiCall = async (pageNo = 1, range) => {
+    if (!userView && isEqual(status, tabKeys.unassignHostel)) return
+
     const selectedType = userView ? userJobType : type
     const jobType = payloadType[selectedType]
     if (!jobType) return
@@ -593,4 +601,3 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
 }
 
 export default jobs
-

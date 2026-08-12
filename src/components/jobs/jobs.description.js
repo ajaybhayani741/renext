@@ -26,7 +26,12 @@ const getJobTabList = roleId => {
   ]
 
   // Add unassign hostel tab for inspection assignment roles
-  if (include([inspectionOfficer, mandalSpecialOfficer], roleId)) {
+  if (
+    include(
+      [districtCollector, inspectionOfficer, mandalSpecialOfficer],
+      roleId,
+    )
+  ) {
     baseStatusTabs.unshift({
       label: 'job_Unassign',
       key: unassignHostel,
@@ -497,4 +502,3 @@ export {
   booleanOptions,
   inspectionReportOptions,
 }
-

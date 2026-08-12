@@ -3,6 +3,7 @@ import '../user.scss'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDModal from '../../../shared/antd/ANTDModal'
+import ANTDTab from '../../../shared/antd/ANTDTab'
 import PopUpConfirm from '../../../shared/PopUpConfirm'
 import { userWiseRole } from '../../../utils/constant'
 import { isEqual, ternary } from '../../../utils/javascript'
@@ -33,6 +34,7 @@ function UserList({
     buildingInfo,
     inspectionOfficerModal,
     inspectionOfficerData,
+    mandalSpecialOfficerData,
     confirmAssignToSelfModal,
     showAssignInspectionOfficer,
     apiCall,
@@ -48,12 +50,16 @@ function UserList({
     handleCloseAssignToSelfModal,
     handleCloseInspectionOfficerModal,
     handleInspectionOfficerTableChange,
+    handleMandalSpecialOfficerTableChange,
     onAssignInspectionOfficer,
     onAssignToSelf,
     modelData,
   } = userList({ payload, isBuilding })
   const { t } = useTranslations()
-  const { hostel, inspectionOfficer } = userWiseRole
+  const { districtCollector, hostel, inspectionOfficer, mandalSpecialOfficer } =
+    userWiseRole
+  const loginUser = JSON.parse(localStorage.getItem('userData') || '{}')
+  const isDistrictCollector = isEqual(loginUser?.roleId, districtCollector)
 
   return (
     <div className={className}>
@@ -157,36 +163,57 @@ function UserList({
 
       {inspectionOfficerModal?.open && (
         <ANTDModal
-          title={t('user_InspectionOfficer')}
+          title={
+            isDistrictCollector
+              ? t('user_AssignIOAndMSO')
+              : t('user_InspectionOfficer')
+          }
           centered
           open={inspectionOfficerModal?.open}
           onCancel={handleCloseInspectionOfficerModal}
           footer={false}
           width={1000}
         >
-          <UserTable
-            className="mb-15"
-            userData={inspectionOfficerData}
-            payload={{
-              roleId: inspectionOfficer,
-              relationType: userRelationKey.nonAssociate,
-            }}
-            searchPayload={{
-              roleId: inspectionOfficer,
-              relationType: userRelationKey.associate,
-            }}
-            handleTableChange={handleInspectionOfficerTableChange}
-            handleSelect={onAssignInspectionOfficer}
-            columnFilter={[
-              'select',
-              'user_Name',
-              'designation',
-              'mso_Mandal',
-              'user_Contact',
-              'txt_Action',
-            ]}
-            tableScroll={{ x: 1050 }}
-          />
+          {isDistrictCollector ? (
+            <ANTDTab
+              centered
+              className="assignment-user-tabs"
+              destroyOnHidden
+              items={[
+                {
+                  key: inspectionOfficer,
+                  label: t('user_InspectionOfficer'),
+                  children: (
+                    <AssignmentUserTable
+                      roleId={inspectionOfficer}
+                      userData={inspectionOfficerData}
+                      handleTableChange={handleInspectionOfficerTableChange}
+                      handleSelect={onAssignInspectionOfficer}
+                    />
+                  ),
+                },
+                {
+                  key: mandalSpecialOfficer,
+                  label: t('user_MandalSpecialOfficer'),
+                  children: (
+                    <AssignmentUserTable
+                      roleId={mandalSpecialOfficer}
+                      userData={mandalSpecialOfficerData}
+                      handleTableChange={handleMandalSpecialOfficerTableChange}
+                      handleSelect={onAssignInspectionOfficer}
+                    />
+                  ),
+                },
+              ]}
+            />
+          ) : (
+            <AssignmentUserTable
+              roleId={inspectionOfficer}
+              userData={inspectionOfficerData}
+              handleTableChange={handleInspectionOfficerTableChange}
+              handleSelect={onAssignInspectionOfficer}
+            />
+          )}
         </ANTDModal>
       )}
       {confirmAssignToSelfModal?.open && (
@@ -223,5 +250,29 @@ function UserList({
   )
 }
 
-export default UserList
+const AssignmentUserTable = ({
+  roleId,
+  userData,
+  handleTableChange,
+  handleSelect,
+}) => (
+  <UserTable
+    className="assignment-user-table"
+    userData={userData}
+    payload={{ roleId, relationType: userRelationKey.nonAssociate }}
+    searchPayload={{ roleId, relationType: userRelationKey.associate }}
+    handleTableChange={handleTableChange}
+    handleSelect={handleSelect}
+    columnFilter={[
+      'select',
+      'user_Name',
+      'designation',
+      'mso_Mandal',
+      'user_Contact',
+      'txt_Action',
+    ]}
+    tableScroll={{ x: 1050 }}
+  />
+)
 
+export default UserList
