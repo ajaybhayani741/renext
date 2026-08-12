@@ -9,17 +9,28 @@ const CommonPieChart = ({
   handleChartClick,
   name,
   showValueLabels = false,
+  compact = false,
 }) => {
   const options = useMemo(
     () => ({
       chart: {
         type: 'pie',
         backgroundColor: 'transparent',
+        ...(compact && {
+          height: 360,
+          spacing: [0, 0, 0, 0],
+        }),
       },
       title: { text: '' },
       credits: false,
       legend: {
         enabled: true,
+        ...(compact && {
+          margin: 0,
+          padding: 0,
+          itemMarginTop: 0,
+          itemMarginBottom: 2,
+        }),
       },
       tooltip: {
         pointFormat: showValueLabels
@@ -70,7 +81,7 @@ const CommonPieChart = ({
         },
       ],
     }),
-    [data, handleChartClick, name, showValueLabels, size],
+    [compact, data, handleChartClick, name, showValueLabels, size],
   )
 
   return <HightChart options={options} title={title} />

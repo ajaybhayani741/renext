@@ -1672,8 +1672,8 @@
 
 .metrics-sections-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
   align-items: start;
 
   @media screen and (max-width: 767px) {
@@ -1681,14 +1681,27 @@
   }
 }
 
+.metrics-hostel-card {
+  .metrics-section-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+    gap: 16px;
+    align-items: start;
+
+    @media screen and (max-width: 767px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
 .metrics-sections-column {
   display: grid;
-  gap: 24px;
+  gap: 14px;
   min-width: 0;
 }
 
 .metrics-section-card {
-  padding: 24px;
+  padding: 16px;
   border-radius: 24px;
   background: #ffffff;
   border: 1px solid rgba(15, 23, 42, 0.08);
@@ -1696,7 +1709,7 @@
 }
 
 .metrics-section-header {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 
   h2 {
     margin: 0;
@@ -1710,16 +1723,25 @@
 .metrics-tiles-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 16px;
+  gap: 10px;
+
+  .dashboard-stat-card {
+    min-height: 68px;
+    padding: 10px 14px;
+  }
+
+  .dashboard-stat-value {
+    font-size: 26px;
+  }
 }
 
 .metrics-pie-chart-card {
   margin: 0;
-  padding: 24px;
-  border-radius: 24px;
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  padding: 8px 16px;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: none;
 
   .chart-card {
     margin-bottom: 0 !important;
@@ -1733,7 +1755,7 @@
 }
 
 .metrics-pie-chart-title {
-  margin: 0 0 16px;
+  margin: 0 0 4px;
   color: #0f172a;
   font-size: 18px;
   font-weight: 700;
