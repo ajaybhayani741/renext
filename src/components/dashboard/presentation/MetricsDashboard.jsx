@@ -25,25 +25,30 @@ const MetricsSection = ({
   startIndex = 0,
   onValueClick,
   t,
+  children,
+  className = '',
 }) => (
-  <section className="metrics-section-card">
+  <section className={`metrics-section-card ${className}`}>
     <div className="metrics-section-header">
       <h2>{t(title)}</h2>
     </div>
-    <div className="metrics-tiles-grid">
-      {items.map((item, index) => (
-        <StatsCard
-          key={item?.label}
-          label={t(item?.label)}
-          value={item?.value || 0}
-          index={startIndex + index}
-          onValueClick={
-            (item?.metric || item?.userRoleId) && onValueClick
-              ? () => onValueClick(item)
-              : undefined
-          }
-        />
-      ))}
+    <div className="metrics-section-content">
+      <div className="metrics-tiles-grid">
+        {items.map((item, index) => (
+          <StatsCard
+            key={item?.label}
+            label={t(item?.label)}
+            value={item?.value || 0}
+            index={startIndex + index}
+            onValueClick={
+              (item?.metric || item?.userRoleId) && onValueClick
+                ? () => onValueClick(item)
+                : undefined
+            }
+          />
+        ))}
+      </div>
+      {children}
     </div>
   </section>
 )
@@ -61,6 +66,7 @@ const MetricsPieChart = ({ data, onPieChartClick, t }) => (
       }))}
       size="70%"
       showValueLabels={true}
+      compact
       handleChartClick={onPieChartClick}
       name="dash_HostelInspectionOverview"
     />
@@ -77,8 +83,7 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
     chartData: null,
   })
   const [hostelsData, setHostelsData] = useState({})
-  const isInspectionOfficerModal =
-    selectedColumn?.listType === 'inspectionOfficer'
+  const isUserListModal = selectedColumn?.listType === 'user'
 
   useEffect(() => {
     const loadMetrics = async () => {
@@ -98,17 +103,17 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
     return response?.data
   }
 
-  const getInspectionOfficers = async ({ pageNo = 1 }) => {
+  const getUsersByRole = async ({ pageNo = 1, roleId }) => {
     const response = await getUserList({
-      params: `${pageNo}?roleId=${userWiseRole.inspectionOfficer}`,
+      params: `${pageNo}?roleId=${roleId}`,
     })
 
     return response?.data
   }
 
-  const openInspectionOfficerModal = async ({ label }) => {
+  const openUserListModal = async ({ label, userRoleId, category }) => {
     setHostelsData(prev => ({ ...prev, loader: true }))
-    const respData = await getInspectionOfficers({ pageNo: 1 })
+    const respData = await getUsersByRole({ pageNo: 1, roleId: userRoleId })
 
     setHostelsData(
       respData ? { ...respData, loader: false } : { loader: false },
@@ -116,11 +121,12 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
     setSelectedColumn({
       selected: true,
       chartData: {
-        category: 'dash_MetricsInspectionOfficer',
+        category,
         type: t(label),
       },
       title: label,
-      listType: 'inspectionOfficer',
+      listType: 'user',
+      userRoleId,
       modalTitle: true,
     })
   }
@@ -149,7 +155,11 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
 
   const handleMetricValueClick = item => {
     if (item?.userRoleId) {
-      openInspectionOfficerModal({ label: item?.label })
+      openUserListModal({
+        label: item?.label,
+        userRoleId: item?.userRoleId,
+        category: item?.category,
+      })
       return
     }
 
@@ -173,8 +183,7 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
         dispatch(
           setJobActiveTab({
             status,
-            type:
-              status === tabKeys.unassignHostel ? null : tabKeys.inspection,
+            type: status === tabKeys.unassignHostel ? null : tabKeys.inspection,
           }),
         )
         navigate(pathName.JOBS, { state: { preserveJobTab: true } })
@@ -200,8 +209,11 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
   const handleTableChange = async ({ current }) => {
     setHostelsData(prev => ({ ...prev, loader: true }))
 
-    const respData = isInspectionOfficerModal
-      ? await getInspectionOfficers({ pageNo: current })
+    const respData = isUserListModal
+      ? await getUsersByRole({
+          pageNo: current,
+          roleId: selectedColumn?.userRoleId,
+        })
       : await getMetricHostels({
           metric: selectedColumn?.categoryValue,
           pageNo: current,
@@ -244,6 +256,7 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
       label: 'dash_TotalInspectionOfficersOnboarded',
       value: metricsData?.totalInspectionOfficersOnboarded,
       userRoleId: userWiseRole.inspectionOfficer,
+      category: 'dash_MetricsInspectionOfficer',
     },
     {
       label: 'dash_IOsCompletedAtLeastOneInspectionCurrentWeek',
@@ -252,6 +265,15 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
     {
       label: 'dash_IOsCompletedAtLeastOneInspectionLastWeek',
       value: metricsData?.inspectionOfficersCompletedAtLeastOneThisWeek,
+    },
+  ]
+
+  const mandalSpecialOfficerMetrics = [
+    {
+      label: 'dash_TotalMandalSpecialOfficersOnboarded',
+      value: metricsData?.totalMsoOnboarded,
+      userRoleId: userWiseRole.mandalSpecialOfficer,
+      category: 'user_MandalSpecialOfficer',
     },
   ]
 
@@ -320,19 +342,26 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
     <DashboardWrapper
       {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
       hideExportButton
-      modalColumns={isInspectionOfficerModal ? inspectionOfficerColumns : null}
-      modalDataKey={isInspectionOfficerModal ? 'list' : 'hostels'}
-      showPaginationOnSinglePage={isInspectionOfficerModal}
+      modalColumns={isUserListModal ? inspectionOfficerColumns : null}
+      modalDataKey={isUserListModal ? 'list' : 'hostels'}
+      showPaginationOnSinglePage={isUserListModal}
     >
       <div className="dashboard-module-surface metrics-dashboard-surface">
         <div className="metrics-sections-grid">
           <div className="metrics-sections-column">
             <MetricsSection
+              className="metrics-hostel-card"
               title="dash_MetricsHostel"
               items={hostelMetrics}
               onValueClick={handleMetricValueClick}
               t={t}
-            />
+            >
+              <MetricsPieChart
+                data={hostelPieChartData}
+                onPieChartClick={handlePieChartClick}
+                t={t}
+              />
+            </MetricsSection>
             <MetricsSection
               title="dash_MetricsInspectionOfficer"
               items={inspectionOfficerMetrics}
@@ -340,12 +369,16 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
               onValueClick={handleMetricValueClick}
               t={t}
             />
+            {/* {navigatePieChartToInspection && ( */}
+            <MetricsSection
+              title="user_MandalSpecialOfficer"
+              items={mandalSpecialOfficerMetrics}
+              startIndex={hostelMetrics.length}
+              onValueClick={handleMetricValueClick}
+              t={t}
+            />
+            {/* )} */}
           </div>
-          <MetricsPieChart
-            data={hostelPieChartData}
-            onPieChartClick={handlePieChartClick}
-            t={t}
-          />
         </div>
       </div>
     </DashboardWrapper>
