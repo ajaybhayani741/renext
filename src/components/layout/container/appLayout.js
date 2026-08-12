@@ -34,13 +34,20 @@ const appLayout = () => {
   const activeItem1 = location.pathname
   const defaultOpenKeys = [`/${activeItem1.split('/')?.[1]}`]
   const [collapsed, setCollapsed] = useState(false)
-  const { districtCollector, inspectionOfficer, mandalSpecialOfficer } = userWiseRole
+  const { districtCollector, inspectionOfficer, mandalSpecialOfficer } =
+    userWiseRole
+  const defaultJobStatus = isEqual(roleId, districtCollector)
+    ? tabKeys.complete
+    : tabKeys.active
 
   useEffect(() => {
-    if (isEqual(location.pathname, pathName.JOBS)) {
-      dispatch(setJobActiveTab({ status: tabKeys.active }))
+    if (
+      isEqual(location.pathname, pathName.JOBS) &&
+      !location.state?.preserveJobTab
+    ) {
+      dispatch(setJobActiveTab({ status: defaultJobStatus }))
     }
-  }, [dispatch, location.pathname])
+  }, [defaultJobStatus, dispatch, location.pathname, location.state])
 
   const removeAddFromLastPath = () => {
     let url = ''
@@ -99,7 +106,8 @@ const appLayout = () => {
         ) {
           const { key, label, Icon, disabled } = menu
           const menuLabel =
-            isEqual(roleIdToFilter, inspectionOfficer) && isEqual(key, pathName.JOBS)
+            isEqual(roleIdToFilter, inspectionOfficer) &&
+            isEqual(key, pathName.JOBS)
               ? 'job_Inspection'
               : label
           const filteredMenu = {
@@ -162,7 +170,7 @@ const appLayout = () => {
 
   const handleMenu = e => {
     if (isEqual(e?.key, pathName.JOBS)) {
-      dispatch(setJobActiveTab({ status: tabKeys.active }))
+      dispatch(setJobActiveTab({ status: defaultJobStatus }))
     }
     navigate(e?.key)
     !isDesktop && toggleMenu && setToggleMenu(false)

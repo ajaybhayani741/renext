@@ -3,7 +3,11 @@ import { useEffect, useState } from 'react'
 import useRedux from '../../../hooks/useRedux'
 import { setPopupMessageModel } from '../../../redux/app/reducer'
 import { userWiseRole } from '../../../utils/constant'
-import { addAssociateApi, getUserList } from '../../userManagement/user.api'
+import {
+  addAssociateApi,
+  getUserList,
+  searchUserApi,
+} from '../../userManagement/user.api'
 import { userRelationKey } from '../../userManagement/user.description'
 
 const unassignedHostels = () => {
@@ -17,12 +21,17 @@ const unassignedHostels = () => {
     list: [],
     loader: false,
   })
+  const [mandalSpecialOfficerData, setMandalSpecialOfficerData] = useState({
+    list: [],
+    loader: false,
+  })
   const [confirmAssignToSelfModal, setConfirmAssignToSelfModal] = useState({
     open: false,
     data: null,
   })
   const userData = selector(state => state.user?.profile_details)
-  const { hostel, inspectionOfficer } = userWiseRole
+  const { districtCollector, hostel, inspectionOfficer, mandalSpecialOfficer } =
+    userWiseRole
 
   useEffect(() => {
     hostelApiCall()
@@ -45,10 +54,21 @@ const unassignedHostels = () => {
   const handleCloseInspectionOfficerModal = () => {
     setInspectionOfficerModal({ open: false, data: null })
     setInspectionOfficerData({ list: [], loader: false })
+    setMandalSpecialOfficerData({ list: [], loader: false })
   }
 
   const handleInspectionOfficerTableChange = pagination => {
-    getInspectionOfficerList({ pageNo: pagination?.current })
+    getInspectionOfficerList({
+      pageNo: pagination?.current,
+      mandal: inspectionOfficerModal?.data?.mandal,
+    })
+  }
+
+  const handleMandalSpecialOfficerTableChange = pagination => {
+    getMandalSpecialOfficerList({
+      pageNo: pagination?.current,
+      mandal: inspectionOfficerModal?.data?.mandal,
+    })
   }
 
   const associateHostel = async ({ userId, hostelId, onComplete }) => {
@@ -94,16 +114,41 @@ const unassignedHostels = () => {
     })
   }
 
-  const getInspectionOfficerList = async ({ pageNo }) => {
+  const getInspectionOfficerList = async ({ pageNo, mandal }) => {
     setInspectionOfficerData(pre => ({ ...pre, loader: true }))
-    const params = `${pageNo}?roleId=${inspectionOfficer}`
-    const result = await getUserList({ params })
+    const isDistrictCollector = userData?.roleId === districtCollector
+    const params = isDistrictCollector
+      ? `${pageNo}?mandal=${encodeURIComponent(mandal || '')}&roleId=${inspectionOfficer}`
+      : `${pageNo}?roleId=${inspectionOfficer}`
+    const result = await (isDistrictCollector ? searchUserApi : getUserList)({
+      params,
+    })
     setInspectionOfficerData({ ...result?.data, loader: false })
+  }
+
+  const getMandalSpecialOfficerList = async ({ pageNo, mandal }) => {
+    setMandalSpecialOfficerData(pre => ({ ...pre, loader: true }))
+    const isDistrictCollector = userData?.roleId === districtCollector
+    const params = isDistrictCollector
+      ? `${pageNo}?mandal=${encodeURIComponent(mandal || '')}&roleId=${mandalSpecialOfficer}`
+      : `${pageNo}?roleId=${mandalSpecialOfficer}`
+    const result = await (isDistrictCollector ? searchUserApi : getUserList)({
+      params,
+    })
+    setMandalSpecialOfficerData({ ...result?.data, loader: false })
   }
 
   const handleAssignInspectionOfficer = async ({ rowData }) => {
     setInspectionOfficerModal({ open: true, data: rowData })
-    await getInspectionOfficerList({ pageNo: 1 })
+    const requests = [
+      getInspectionOfficerList({ pageNo: 1, mandal: rowData?.mandal }),
+    ]
+    if (userData?.roleId === districtCollector) {
+      requests.push(
+        getMandalSpecialOfficerList({ pageNo: 1, mandal: rowData?.mandal }),
+      )
+    }
+    await Promise.all(requests)
   }
 
   const handleAssignToSelf = ({ rowData } = {}) => {
@@ -146,6 +191,8 @@ const unassignedHostels = () => {
     handleCloseInspectionOfficerModal,
     inspectionOfficerData,
     handleInspectionOfficerTableChange,
+    mandalSpecialOfficerData,
+    handleMandalSpecialOfficerTableChange,
     confirmAssignToSelfModal,
   }
 }

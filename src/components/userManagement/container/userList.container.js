@@ -9,7 +9,7 @@ import { USER_TXT } from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
 import { entries, include, isEqual } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
-import { addAssociateApi, getUserList } from '../user.api'
+import { addAssociateApi, getUserList, searchUserApi } from '../user.api'
 import { userRelationKey, userTranslationKey } from '../user.description'
 
 const userList = ({ payload, isBuilding }) => {
@@ -32,16 +32,21 @@ const userList = ({ payload, isBuilding }) => {
     list: [],
     loader: false,
   })
+  const [mandalSpecialOfficerData, setMandalSpecialOfficerData] = useState({
+    list: [],
+    loader: false,
+  })
   const [confirmAssignToSelfModal, setConfirmAssignToSelfModal] = useState({
     open: false,
     data: null,
   })
   const [buildingInfo, setBuildingInfo] = useState({ flag: false, data: {} })
   const modelTitle = userTranslationKey[payload?.roleId]
-  const { hostel, inspectionOfficer, mandalSpecialOfficer } = userWiseRole
+  const { districtCollector, hostel, inspectionOfficer, mandalSpecialOfficer } =
+    userWiseRole
   const loginUser = JSON.parse(getItem('userData') || '{}')
   const showAssignInspectionOfficer =
-    isEqual(loginUser?.roleId, mandalSpecialOfficer) &&
+    include([districtCollector, mandalSpecialOfficer], loginUser?.roleId) &&
     isEqual(payload?.roleId, hostel)
 
   const apiCall = async ({ pageNo }) => {
@@ -151,22 +156,58 @@ const userList = ({ payload, isBuilding }) => {
   const handleCloseInspectionOfficerModal = () => {
     setInspectionOfficerModal({ open: false, data: null })
     setInspectionOfficerData({ list: [], loader: false })
+    setMandalSpecialOfficerData({ list: [], loader: false })
   }
 
-  const getInspectionOfficerList = async ({ pageNo }) => {
+  const getInspectionOfficerList = async ({ pageNo, mandal }) => {
     setInspectionOfficerData(pre => ({ ...pre, loader: true }))
-    const params = `${pageNo}?roleId=${inspectionOfficer}`
-    const result = await getUserList({ params })
+    const isDistrictCollector = isEqual(loginUser?.roleId, districtCollector)
+    const params = isDistrictCollector
+      ? `${pageNo}?mandal=${encodeURIComponent(mandal || '')}&roleId=${inspectionOfficer}`
+      : `${pageNo}?roleId=${inspectionOfficer}`
+    const result = await (isDistrictCollector ? searchUserApi : getUserList)({
+      params,
+    })
     setInspectionOfficerData({ ...result?.data, loader: false })
   }
 
   const handleInspectionOfficerTableChange = pagination => {
-    getInspectionOfficerList({ pageNo: pagination?.current })
+    getInspectionOfficerList({
+      pageNo: pagination?.current,
+      mandal: inspectionOfficerModal?.data?.mandal,
+    })
+  }
+
+  const getMandalSpecialOfficerList = async ({ pageNo, mandal }) => {
+    setMandalSpecialOfficerData(pre => ({ ...pre, loader: true }))
+    const isDistrictCollector = isEqual(loginUser?.roleId, districtCollector)
+    const params = isDistrictCollector
+      ? `${pageNo}?mandal=${encodeURIComponent(mandal || '')}&roleId=${mandalSpecialOfficer}`
+      : `${pageNo}?roleId=${mandalSpecialOfficer}`
+    const result = await (isDistrictCollector ? searchUserApi : getUserList)({
+      params,
+    })
+    setMandalSpecialOfficerData({ ...result?.data, loader: false })
+  }
+
+  const handleMandalSpecialOfficerTableChange = pagination => {
+    getMandalSpecialOfficerList({
+      pageNo: pagination?.current,
+      mandal: inspectionOfficerModal?.data?.mandal,
+    })
   }
 
   const handleAssignInspectionOfficer = async ({ rowData }) => {
     setInspectionOfficerModal({ open: true, data: rowData })
-    await getInspectionOfficerList({ pageNo: 1 })
+    const requests = [
+      getInspectionOfficerList({ pageNo: 1, mandal: rowData?.mandal }),
+    ]
+    if (isEqual(loginUser?.roleId, districtCollector)) {
+      requests.push(
+        getMandalSpecialOfficerList({ pageNo: 1, mandal: rowData?.mandal }),
+      )
+    }
+    await Promise.all(requests)
   }
 
   const associateHostel = async ({ userId, hostelId, onComplete }) => {
@@ -249,6 +290,7 @@ const userList = ({ payload, isBuilding }) => {
     buildingInfo,
     inspectionOfficerModal,
     inspectionOfficerData,
+    mandalSpecialOfficerData,
     confirmAssignToSelfModal,
     showAssignInspectionOfficer,
     apiCall,
@@ -264,6 +306,7 @@ const userList = ({ payload, isBuilding }) => {
     handleCloseAssignToSelfModal,
     handleCloseInspectionOfficerModal,
     handleInspectionOfficerTableChange,
+    handleMandalSpecialOfficerTableChange,
     onAssignInspectionOfficer,
     onAssignToSelf,
   }

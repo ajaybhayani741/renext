@@ -395,6 +395,26 @@
   }
 }
 
+.assignment-user-tabs {
+  > .ant-tabs-nav .ant-tabs-nav-wrap {
+    justify-content: center;
+  }
+
+  .assignment-user-table {
+    .submit-btn {
+      margin-bottom: 0 !important;
+    }
+
+    .user-table-card {
+      margin-top: 0 !important;
+    }
+
+    .user-table {
+      margin-top: 8px;
+    }
+  }
+}
+
 .view-user-modal {
   .basic-info-table {
     width: 100%;

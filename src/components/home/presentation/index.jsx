@@ -2,13 +2,19 @@ import ButtonLinkBox from './ButtonLinkBox'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
 import ANTDRow from '../../../shared/antd/ANTDRow'
-import { entries, values } from '../../../utils/javascript'
+import { userWiseRole } from '../../../utils/constant'
+import { entries, isEqual, values } from '../../../utils/javascript'
+import MetricsDashboard from '../../dashboard/presentation/MetricsDashboard'
 import home from '../container/home.container'
 import '../home.scss'
 
 function Home() {
   const { t } = useTranslations()
-  const { homeData } = home()
+  const { homeData, roleId } = home()
+
+  if (isEqual(roleId, userWiseRole.districtCollector)) {
+    return <MetricsDashboard navigatePieChartToInspection />
+  }
 
   return (
     <div>

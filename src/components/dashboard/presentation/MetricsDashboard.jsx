@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react'
 
+import '../dashboard.scss'
+
 import DashboardWrapper from './DashboardWrapper'
 import useMandalDetails from '../../../hooks/useMandalDetails'
+import useRedux from '../../../hooks/useRedux'
+import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
+import { setJobActiveTab } from '../../../redux/jobs/reducer'
+import pathName from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
+import { tabKeys } from '../../jobs/jobs.description'
 import { getUserList } from '../../userManagement/user.api'
 import {
   getDashboardMetricsApi,
@@ -12,15 +19,7 @@ import {
 import CommonPieChart from '../shared/CommonPieChart'
 import StatsCard from '../shared/StatsCard'
 
-const MetricsSection = ({
-  title,
-  items,
-  startIndex = 0,
-  onValueClick,
-  onPieChartClick,
-  t,
-  pieChartData = [],
-}) => (
+const MetricsSection = ({ title, items, startIndex = 0, onValueClick, t }) => (
   <section className="metrics-section-card">
     <div className="metrics-section-header">
       <h2>{t(title)}</h2>
@@ -40,30 +39,32 @@ const MetricsSection = ({
         />
       ))}
     </div>
-    {pieChartData.length ? (
-      <div className="metrics-pie-chart-card">
-        <h3 className="metrics-pie-chart-title">
-          {t('dash_HostelInspectionOverview')}
-        </h3>
-        <CommonPieChart
-          data={pieChartData.map(item => ({
-            ...item,
-            name: t(item.name),
-            category: t('dash_HostelInspectionOverview'),
-          }))}
-          size="70%"
-          showValueLabels={true}
-          handleChartClick={onPieChartClick}
-          name="dash_HostelInspectionOverview"
-        />
-      </div>
-    ) : null}
   </section>
 )
 
-const MetricsDashboard = () => {
-  const mandalDetails = useMandalDetails()
+const MetricsPieChart = ({ data, onPieChartClick, t }) => (
+  <section className="metrics-pie-chart-card">
+    <h3 className="metrics-pie-chart-title">
+      {t('dash_HostelInspectionOverview')}
+    </h3>
+    <CommonPieChart
+      data={data.map(item => ({
+        ...item,
+        name: t(item.name),
+        category: t('dash_HostelInspectionOverview'),
+      }))}
+      size="70%"
+      showValueLabels={true}
+      handleChartClick={onPieChartClick}
+      name="dash_HostelInspectionOverview"
+    />
+  </section>
+)
+
+const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
   const { t } = useTranslations()
+  const { dispatch } = useRedux()
+  const { navigate } = useRouter()
   const [metricsData, setMetricsData] = useState(null)
   const [selectedColumn, setSelectedColumn] = useState({
     selected: false,
@@ -72,6 +73,7 @@ const MetricsDashboard = () => {
   const [hostelsData, setHostelsData] = useState({})
   const isInspectionOfficerModal =
     selectedColumn?.listType === 'inspectionOfficer'
+  const mandalDetails = useMandalDetails()
 
   useEffect(() => {
     const loadMetrics = async () => {
@@ -153,6 +155,26 @@ const MetricsDashboard = () => {
   }
   const handlePieChartClick = ({ e }) => {
     const point = e?.point
+
+    if (navigatePieChartToInspection) {
+      const statusByMetric = {
+        INSPECTED_THIS_WEEK: tabKeys.complete,
+        ACTIVE_INSPECTION_THIS_WEEK: tabKeys.active,
+        YET_TO_BE_ASSIGNED_THIS_WEEK: tabKeys.unassignHostel,
+      }
+      const status = statusByMetric[point?.filterValue]
+
+      if (status) {
+        dispatch(
+          setJobActiveTab({
+            status,
+            type: status === tabKeys.unassignHostel ? null : tabKeys.inspection,
+          }),
+        )
+        navigate(pathName.JOBS, { state: { preserveJobTab: true } })
+      }
+      return
+    }
 
     openHostelsModal({
       metric: point?.filterValue,
@@ -296,19 +318,24 @@ const MetricsDashboard = () => {
     >
       <div className="dashboard-module-surface metrics-dashboard-surface">
         <div className="metrics-sections-grid">
-          <MetricsSection
-            title="dash_MetricsHostel"
-            items={hostelMetrics}
-            onValueClick={handleMetricValueClick}
+          <div className="metrics-sections-column">
+            <MetricsSection
+              title="dash_MetricsHostel"
+              items={hostelMetrics}
+              onValueClick={handleMetricValueClick}
+              t={t}
+            />
+            <MetricsSection
+              title="dash_MetricsInspectionOfficer"
+              items={inspectionOfficerMetrics}
+              startIndex={hostelMetrics.length}
+              onValueClick={handleMetricValueClick}
+              t={t}
+            />
+          </div>
+          <MetricsPieChart
+            data={hostelPieChartData}
             onPieChartClick={handlePieChartClick}
-            t={t}
-            pieChartData={hostelPieChartData}
-          />
-          <MetricsSection
-            title="dash_MetricsInspectionOfficer"
-            items={inspectionOfficerMetrics}
-            startIndex={hostelMetrics.length}
-            onValueClick={handleMetricValueClick}
             t={t}
           />
         </div>
