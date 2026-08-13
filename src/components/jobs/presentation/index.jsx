@@ -47,6 +47,7 @@ const JobManagement = ({
     data,
     tabList,
     jobModel,
+    isDesktop,
     activeTab,
     columnFilters,
     searchByProps,
@@ -82,7 +83,9 @@ const JobManagement = ({
   const isUnassignHostelTab = isEqual(status, tabKeys.unassignHostel)
   const userData = JSON.parse(getItem('userData') || '{}')
   const { roleId } = userData || {}
-  const { inspectionOfficer } = userWiseRole
+  const { inspectionOfficer, mandalSpecialOfficer } = userWiseRole
+  const hideMobileInspectionFilters =
+    !isDesktop && include([inspectionOfficer, mandalSpecialOfficer], roleId)
   const visibleTabEntries = entries(tabList)?.filter(([key]) =>
     notEqual(key, 'type'),
   )
@@ -169,7 +172,10 @@ const JobManagement = ({
                 <FiscalYearSelect
                   onDateChange={(from, to) => apiCall(1, { from, to })}
                   showRecentPresets
-                  showDateShortcutButtons={isEqual(jobType, tabKeys.inspection)}
+                  showDateShortcutButtons={
+                    isEqual(jobType, tabKeys.inspection) &&
+                    !hideMobileInspectionFilters
+                  }
                   showWeekCounter={isEqual(jobType, tabKeys.inspection)}
                 />
               </div>
@@ -189,34 +195,36 @@ const JobManagement = ({
                   </ANTDButton>
                 </div>
               )}
-              <ANTDRow gutter={10} className="mt-5">
-                <ANTDColumn md={12} lg={12} xs={24}>
-                  <Label text={t('job_SearchBy')} />
-                  <ANTDSelect className="w-100 mb-5" {...searchByProps} />
-                </ANTDColumn>
-                <ANTDColumn md={12} lg={12} xs={24}>
-                  <Label text={t('txt_Search')} />
-                  {include(
-                    [searchByKeys.recoverySource, searchByKeys.mandal],
-                    searchByProps.value,
-                  ) ? (
-                    <ANTDSelect
-                      className="w-100 mb-5"
-                      value={searchInput || undefined}
-                      options={searchSelectOptions}
-                      placeholder={t('mso_Mandal')}
-                      onChange={val => onSearch({ target: val })}
-                    />
-                  ) : (
-                    <ANTDSearch
-                      className="mb-5"
-                      value={searchInput}
-                      placeholder={t('user_Name')}
-                      onChange={onSearch}
-                    />
-                  )}
-                </ANTDColumn>
-              </ANTDRow>
+              {!hideMobileInspectionFilters && (
+                <ANTDRow gutter={10} className="mt-5">
+                  <ANTDColumn md={12} lg={12} xs={24}>
+                    <Label text={t('job_SearchBy')} />
+                    <ANTDSelect className="w-100 mb-5" {...searchByProps} />
+                  </ANTDColumn>
+                  <ANTDColumn md={12} lg={12} xs={24}>
+                    <Label text={t('txt_Search')} />
+                    {include(
+                      [searchByKeys.recoverySource, searchByKeys.mandal],
+                      searchByProps.value,
+                    ) ? (
+                      <ANTDSelect
+                        className="w-100 mb-5"
+                        value={searchInput || undefined}
+                        options={searchSelectOptions}
+                        placeholder={t('mso_Mandal')}
+                        onChange={val => onSearch({ target: val })}
+                      />
+                    ) : (
+                      <ANTDSearch
+                        className="mb-5"
+                        value={searchInput}
+                        placeholder={t('user_Name')}
+                        onChange={onSearch}
+                      />
+                    )}
+                  </ANTDColumn>
+                </ANTDRow>
+              )}
 
               {/* {isDesktop && (
                 <>
@@ -349,5 +357,3 @@ const validRoles = sidebarMenus.find(({ key }) =>
 )?.sidebar
 
 export default withRouteAuth(JobManagement, validRoles)
-
-
