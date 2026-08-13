@@ -376,6 +376,7 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
               startIndex={hostelMetrics.length}
               onValueClick={handleMetricValueClick}
               t={t}
+              className="mb-5"
             />
             {/* )} */}
           </div>

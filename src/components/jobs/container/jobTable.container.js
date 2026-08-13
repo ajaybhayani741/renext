@@ -17,6 +17,7 @@ import { dayJs } from '../../../utils/dayjs'
 import { DownloadOutlined } from '../../../utils/icons'
 import { include, isEqual, length, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
+import { inspectionOfficerMandalOptions } from '../../userManagement/user.description'
 import { columnKeys, jobStatusList, tabKeys } from '../jobs.description'
 
 const jobTable = ({
@@ -68,7 +69,8 @@ const jobTable = ({
 
     return (
       <div className={!isMobile ? '' : 'mobile-action-buttons'}>
-        {isEqual(roleId, districtCollector) &&
+        {(isEqual(roleId, districtCollector) ||
+          isEqual(roleId, mandalSpecialOfficer)) &&
           isEqual(jobType, tabKeys.inspection) &&
           isEqual(activeTab?.status, tabKeys.active) && (
             <ANTDButton
@@ -196,9 +198,7 @@ const jobTable = ({
         key: columnKeys.createdDate,
         dataIndex: 'creationDate',
         render: rowData => {
-          return (
-            <>{rowData ? dayJs(rowData).format('DD/MM/YYYY') : '-'}</>
-          )
+          return <>{rowData ? dayJs(rowData).format('DD/MM/YYYY') : '-'}</>
         },
       },
       {
@@ -221,7 +221,12 @@ const jobTable = ({
         key: columnKeys.mandal,
         dataIndex: 'hostelInfo',
         ellipsis: true,
-        render: rowData => rowData?.mandal || '-',
+        render: rowData =>
+          inspectionOfficerMandalOptions.find(
+            option => option.value === rowData?.mandal,
+          )?.label ||
+          rowData?.mandal ||
+          '-',
       },
       {
         title: t('user_InspectionOfficer'),
@@ -423,5 +428,3 @@ const jobTable = ({
 }
 
 export default jobTable
-
-

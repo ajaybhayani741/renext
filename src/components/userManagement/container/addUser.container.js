@@ -4,7 +4,7 @@ import { notifyMethod } from '../../../App'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import { profileDetails } from '../../../redux/user_management/reducer'
-import { USER_TXT } from '../../../routing/pathName.constant'
+import pathName, { USER_TXT } from '../../../routing/pathName.constant'
 import { useFormFn } from '../../../shared/antd/ANTDForm'
 import { getBase64 } from '../../../utils'
 import configData from '../../../utils/config'
@@ -83,6 +83,10 @@ const addUser = ({
   })
   const userDetails = JSON.parse(getItem('userData'))
   const { roleId, id: loginUserId } = { ...userDetails }
+  const isProfileImageOnlyEdit =
+    isEqual(location.pathname, pathName.PROFILE) &&
+    isEqual(editInfo?.data?.id, loginUserId) &&
+    include([inspectionOfficer, mandalSpecialOfficer], roleId)
   const formField =
     userFormByRoleId(t, form.getFieldValue())?.[formRoleId] ||
     (include(childUsers, formRoleId) ? childUserFormFields : userFormFields)
@@ -831,9 +835,21 @@ const addUser = ({
     }
   }
 
+  const editableUserForm = isProfileImageOnlyEdit
+    ? entries(userForm).reduce(
+        (formFields, [key, attributes]) => ({
+          ...formFields,
+          [key]: isEqual(key, 'profile')
+            ? attributes
+            : { ...attributes, disabled: true },
+        }),
+        {},
+      )
+    : userForm
+
   return {
     form,
-    userForm,
+    userForm: editableUserForm,
     handleValuesChange,
     onFinish,
     currentUserDescription,
@@ -857,4 +873,3 @@ const addUser = ({
 }
 
 export default addUser
-
