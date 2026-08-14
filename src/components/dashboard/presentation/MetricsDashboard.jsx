@@ -346,7 +346,13 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
       showPaginationOnSinglePage={isUserListModal}
     >
       <div className="dashboard-module-surface metrics-dashboard-surface">
-        <div className="metrics-sections-grid">
+        <div
+          className={`metrics-sections-grid ${
+            navigatePieChartToInspection
+              ? 'metrics-sections-grid--district-home'
+              : ''
+          }`}
+        >
           <div className="metrics-sections-column">
             <MetricsSection
               className="metrics-hostel-card"
@@ -355,11 +361,13 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
               onValueClick={handleMetricValueClick}
               t={t}
             >
-              <MetricsPieChart
-                data={hostelPieChartData}
-                onPieChartClick={handlePieChartClick}
-                t={t}
-              />
+              {!navigatePieChartToInspection && (
+                <MetricsPieChart
+                  data={hostelPieChartData}
+                  onPieChartClick={handlePieChartClick}
+                  t={t}
+                />
+              )}
             </MetricsSection>
             <MetricsSection
               title="dash_MetricsInspectionOfficer"
@@ -378,6 +386,13 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
             />
             {/* )} */}
           </div>
+          {navigatePieChartToInspection && (
+            <MetricsPieChart
+              data={hostelPieChartData}
+              onPieChartClick={handlePieChartClick}
+              t={t}
+            />
+          )}
         </div>
       </div>
     </DashboardWrapper>
