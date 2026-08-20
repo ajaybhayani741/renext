@@ -3,6 +3,7 @@ import React, { useMemo } from 'react'
 import AddUser from './AddUser'
 import UserTableCard from './UserTableCard'
 import ViewUser from './ViewUser'
+import useMandalDetails from '../../../hooks/useMandalDetails'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDColumn from '../../../shared/antd/ANTDColumn'
@@ -17,7 +18,6 @@ import { childUsers, userWiseRole } from '../../../utils/constant'
 import { include, isEqual, ternary } from '../../../utils/javascript'
 import userColumns from '../container/userColumn'
 import userTable from '../container/userTable.container'
-import { inspectionOfficerMandalOptions } from '../user.description'
 
 function UserTable({
   roleId,
@@ -54,6 +54,7 @@ function UserTable({
   viewDepth = 0,
   maxViewDepth = 2,
 }) {
+  const mandalDetails = useMandalDetails()
   const {
     viewModel,
     isDesktop,
@@ -176,7 +177,7 @@ function UserTable({
                   <ANTDSelect
                     className="w-100 mb-5"
                     placeholder={t('mso_Mandal')}
-                    options={inspectionOfficerMandalOptions}
+                    options={mandalDetails}
                     onChange={onMandalSearch}
                     allowClear
                   />
@@ -291,5 +292,4 @@ function UserTable({
 }
 
 export default UserTable
-
 

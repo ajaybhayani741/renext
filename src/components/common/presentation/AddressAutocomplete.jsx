@@ -72,6 +72,7 @@ const AddressAutocomplete = ({
           latitude: geometry.location.lat(),
           longitude: geometry.location.lng(),
           state: getComponent(['administrative_area_level_1']),
+          district: getComponent(['administrative_area_level_3']),
           city: getCity(),
           pincode: getComponent(['postal_code']),
           country: components.find(c => c.types.includes('country'))?.long_name,

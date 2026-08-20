@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import '../dashboard.scss'
 
 import DashboardWrapper from './DashboardWrapper'
+import useMandalDetails from '../../../hooks/useMandalDetails'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
@@ -11,7 +12,6 @@ import pathName from '../../../routing/pathName.constant'
 import { userWiseRole } from '../../../utils/constant'
 import { tabKeys } from '../../jobs/jobs.description'
 import { getUserList } from '../../userManagement/user.api'
-import { inspectionOfficerMandalOptions } from '../../userManagement/user.description'
 import {
   getDashboardMetricsApi,
   getDashboardMetricsHostelsApi,
@@ -74,6 +74,7 @@ const MetricsPieChart = ({ data, onPieChartClick, t }) => (
 )
 
 const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
+  const mandalDetails = useMandalDetails()
   const { t } = useTranslations()
   const { dispatch } = useRedux()
   const { navigate } = useRouter()
@@ -300,7 +301,7 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
       title: t('mso_Mandal'),
       key: 'mso_Mandal',
       render: rowData =>
-        inspectionOfficerMandalOptions.find(
+        mandalDetails.find(
           option => option.value === rowData?.mandal,
         )?.label ||
         rowData?.mandal ||

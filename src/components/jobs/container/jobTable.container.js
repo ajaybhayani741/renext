@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 
 import { notifyMethod } from '../../../App'
+import useMandalDetails from '../../../hooks/useMandalDetails'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
@@ -17,7 +18,6 @@ import { dayJs } from '../../../utils/dayjs'
 import { DownloadOutlined } from '../../../utils/icons'
 import { include, isEqual, length, ternary } from '../../../utils/javascript'
 import { getItem } from '../../../utils/localstorage'
-import { inspectionOfficerMandalOptions } from '../../userManagement/user.description'
 import { columnKeys, jobStatusList, tabKeys } from '../jobs.description'
 
 const jobTable = ({
@@ -34,6 +34,7 @@ const jobTable = ({
   showActionColumn = true,
 }) => {
   const { t } = useTranslations()
+  const mandalDetails = useMandalDetails()
   const { navigate } = useRouter()
   const { selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
@@ -222,7 +223,7 @@ const jobTable = ({
         dataIndex: 'hostelInfo',
         ellipsis: true,
         render: rowData =>
-          inspectionOfficerMandalOptions.find(
+          mandalDetails.find(
             option => option.value === rowData?.mandal,
           )?.label ||
           rowData?.mandal ||

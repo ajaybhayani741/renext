@@ -880,5 +880,6 @@
   "job_lastWeek": "Last Week",
   "job_CurrentMonth": "Current Month",
   "user_AssignIOAndMSO": "Assign IO & MSO",
-  "dash_TotalMandalSpecialOfficersOnboarded": "Total Mandal Special officers Onboarded"
+  "dash_TotalMandalSpecialOfficersOnboarded": "Total Mandal Special officers Onboarded",
+  "user_District": "District"
 }

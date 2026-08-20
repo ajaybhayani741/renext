@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { Fragment, memo } from 'react'
 
+import useMandalDetails from '../../../hooks/useMandalDetails'
 import useTranslations from '../../../hooks/useTranslations'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import { childUsers, userWiseRole } from '../../../utils/constant'
@@ -20,6 +21,7 @@ const ViewUser = ({
   viewDepth = 0,
   maxViewDepth = 2,
 }) => {
+  const mandalDetails = useMandalDetails()
   const {
     otherDetail,
     userListView,
@@ -28,6 +30,7 @@ const ViewUser = ({
     getEmailList,
   } = viewUser({
     userDetails,
+    mandalDetails,
   })
 
   const { hostel, inspectionOfficer } = userWiseRole
@@ -152,5 +155,4 @@ const ViewUser = ({
 }
 
 export default memo(ViewUser)
-
 

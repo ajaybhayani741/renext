@@ -1,3 +1,4 @@
+import useMandalDetails from '../../../hooks/useMandalDetails'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import pathName, {
@@ -21,7 +22,6 @@ import {
 import { getItem } from '../../../utils/localstorage'
 import {
   hostelTypeOptions,
-  inspectionOfficerMandalOptions,
 } from '../user.description'
 // import { getItem } from '../../../utils/localstorage'
 
@@ -44,6 +44,7 @@ const userColumns = ({
   showViewAction = true,
 }) => {
   const { t } = useTranslations()
+  const mandalDetails = useMandalDetails()
   const userData = JSON.parse(getItem('userData') || '{}')
   const { roleId: loginUserRoleId } = userData
   const { location } = useRouter()
@@ -179,7 +180,7 @@ const userColumns = ({
       key: 'mso_Mandal',
       render: rowData => {
         return (
-          inspectionOfficerMandalOptions.find(
+          mandalDetails.find(
             option => option.value === rowData?.mandal,
           )?.label ??
           rowData?.mandal ??

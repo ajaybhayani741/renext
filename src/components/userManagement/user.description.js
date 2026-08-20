@@ -209,28 +209,6 @@ const addUserForm = {
   ...commonWithUserNamePassword,
 }
 
-const inspectionOfficerMandalOptions = [
-  { label: 'Basar', value: 'BASAR' },
-  { label: 'Bhainsa', value: 'BHAINSA' },
-  { label: 'Kubeer', value: 'KUBEER' },
-  { label: 'Kuntala', value: 'KUNTALA' },
-  { label: 'Lokeshwaram', value: 'LOKESHWARAM' },
-  { label: 'Mudhole', value: 'MUDHOLE' },
-  { label: 'Tanoor', value: 'TANOOR' },
-  { label: 'Nirmal (Urban)', value: 'NIRMAL_URBAN' },
-  { label: 'Nirmal (Rural)', value: 'NIRMAL_RURAL' },
-  { label: 'Dilawarpur', value: 'DILAWARPUR' },
-  { label: 'Laxmanchanda', value: 'LAXMANCHANDA' },
-  { label: 'Narsapur-G', value: 'NARSAPUR_G' },
-  { label: 'Sarangapur', value: 'SARANGPUR' },
-  { label: 'Soan', value: 'SOAN' },
-  { label: 'Dasturabad', value: 'DASTURABAD' },
-  { label: 'Kaddam Peddur', value: 'KADDAM_PEDDUR' },
-  { label: 'Khanapur', value: 'KHANAPUR' },
-  { label: 'Mamada', value: 'MAMADA' },
-  { label: 'Pembi', value: 'PEMBI' },
-]
-
 const mandalSpecialOfficerDesignation = 'Mandal special officer (MSO)'
 
 const inspectionOfficerDesignationOptions = [
@@ -259,7 +237,21 @@ const hostelTypeOptions = [
   { label: 'user_Hostel', value: 'NON_RESIDENTIAL_HOSTEL' },
 ]
 
-const inspectionOfficerForm = (t, formValues) => ({
+const mandalField = options => {
+  return {
+    mandal: {
+      label: 'mso_Mandal',
+      validateTrigger: 'onChange',
+      inputType: 'select',
+      required: true,
+      options,
+      md: 24,
+      xs: 24,
+    },
+  }
+}
+
+const inspectionOfficerForm = (t, formValues, mandals) => ({
   profile: addUserForm.profile,
   lastName: addUserForm.lastName,
   designation: {
@@ -280,22 +272,14 @@ const inspectionOfficerForm = (t, formValues) => ({
     md: 24,
     xs: 24,
   },
-  mandal: {
-    label: 'mso_Mandal',
-    validateTrigger: 'onChange',
-    inputType: 'select',
-    required: true,
-    options: inspectionOfficerMandalOptions,
-    md: 24,
-    xs: 24,
-  },
+  ...mandalField(mandals),
   phoneNumber: {
     ...commonForm.phoneNumber,
     required: true,
   },
 })
 
-const mandalSpecialOfficerForm = formValues => ({
+const mandalSpecialOfficerForm = mandals => ({
   profile: addUserForm.profile,
   lastName: addUserForm.lastName,
   designation: {
@@ -303,15 +287,7 @@ const mandalSpecialOfficerForm = formValues => ({
     // initialValue: mandalSpecialOfficerDesignation,
     // disabled: true,
   },
-  mandal: {
-    label: 'mso_Mandal',
-    validateTrigger: 'onChange',
-    inputType: 'select',
-    required: true,
-    options: inspectionOfficerMandalOptions,
-    md: 24,
-    xs: 24,
-  },
+  ...mandalField(mandals),
   phoneNumber: {
     ...commonForm.phoneNumber,
     required: true,
@@ -324,7 +300,7 @@ const mandalSpecialOfficerForm = formValues => ({
   // },
 })
 
-const hostelForm = (t, formValues) => ({
+const hostelForm = (t, formValues, mandals) => ({
   lastName: addUserForm.lastName,
   departmentName: {
     label: 'hostel_DepartmentUnit',
@@ -348,7 +324,7 @@ const hostelForm = (t, formValues) => ({
     label: 'hostel_TypeOfHostel',
     validateTrigger: 'onChange',
     inputType: 'select',
-    required:true,
+    required: true,
     options: hostelTypeOptions.map(({ label, value }) => ({
       label: t(label),
       value,
@@ -356,15 +332,7 @@ const hostelForm = (t, formValues) => ({
     md: 24,
     xs: 24,
   },
-  mandal: {
-    label: 'mso_Mandal',
-    validateTrigger: 'onChange',
-    inputType: 'select',
-    required: true,
-    options: inspectionOfficerMandalOptions,
-    md: 24,
-    xs: 24,
-  },
+  ...mandalField(mandals),
   address: {
     ...commonForm.address,
     required: true,
@@ -399,11 +367,35 @@ const addBuildingForm = {
 const { ...userFormFields } = addUserForm
 const { businessName, ...childUserFormFields } = userFormFields
 
-const userFormByRoleId = (t, formValues) => {
+const districtCollectorForm = Object.entries(childUserFormFields).reduce(
+  (fields, [key, attributes]) => ({
+    ...fields,
+    ...(key === 'city'
+      ? {
+          district: {
+            label: 'user_District',
+            validateTrigger: 'onChange',
+            inputType: 'input',
+            required: true,
+            disabled: true,
+            md: 8,
+            xs: 24,
+          },
+        }
+      : {}),
+    [key]: ['city', 'state'].includes(key)
+      ? { ...attributes, md: 8 }
+      : attributes,
+  }),
+  {},
+)
+
+const userFormByRoleId = (t, formValues, mandals = []) => {
   return {
-    [inspectionOfficer]: inspectionOfficerForm(t, formValues),
-    [mandalSpecialOfficer]: mandalSpecialOfficerForm(t, formValues),
-    [hostel]: hostelForm(t, formValues),
+    [districtCollector]: districtCollectorForm,
+    [inspectionOfficer]: inspectionOfficerForm(t, formValues, mandals),
+    [mandalSpecialOfficer]: mandalSpecialOfficerForm(mandals),
+    [hostel]: hostelForm(t, formValues, mandals),
   }
 }
 
@@ -430,11 +422,8 @@ export {
   userFormFields,
   childUserFormFields,
   countriesList,
-  inspectionOfficerMandalOptions,
   hostelDepartmentOptions,
   hostelTypeOptions,
   inspectionOfficerDesignationOptions,
   mandalSpecialOfficerDesignation,
 }
-
-
