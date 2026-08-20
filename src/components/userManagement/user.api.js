@@ -13,6 +13,7 @@ const {
   GET_BUILDING,
   ADD_BUILDING,
   USER_VALIDATION,
+  GET_MANDALS,
   GENERATE_MASTER_SHEET,
 } = API_ROUTES
 
@@ -25,7 +26,9 @@ const withDefaultPageSize = params => {
 }
 
 const getUserList = async ({ params }) => {
-  const response = await getMethod(GET_USER({ params:withDefaultPageSize(params) }))
+  const response = await getMethod(
+    GET_USER({ params: withDefaultPageSize(params) }),
+  )
   return response?.data
 }
 const getBuildingList = async ({ params }) => {
@@ -86,6 +89,13 @@ const getPreviousExportRequestsApi = async ({ pageNo, params }) => {
   return response?.data
 }
 
+const getMandalsApi = async ({ district }) => {
+  const response = await getMethod(GET_MANDALS, {
+    params: { district },
+  })
+  return response?.data
+}
+
 export {
   getUserList,
   addNewUserApi,
@@ -100,4 +110,5 @@ export {
   updateBuildingApi,
   userValidationApi,
   getPreviousExportRequestsApi,
+  getMandalsApi,
 }

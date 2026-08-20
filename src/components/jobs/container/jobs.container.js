@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { notifyMethod } from '../../../App'
+import useMandalDetails from '../../../hooks/useMandalDetails'
 import useRedux from '../../../hooks/useRedux'
 import useTranslations from '../../../hooks/useTranslations'
 import { setFiscalYear } from '../../../redux/app/reducer'
@@ -16,7 +17,6 @@ import {
   isSameDateRange,
 } from '../../../utils/weekDateUtils'
 import { disAssociateApi } from '../../userManagement/user.api'
-import { inspectionOfficerMandalOptions } from '../../userManagement/user.description'
 import {
   addJobPostApi,
   generateMasterSheetApi,
@@ -36,6 +36,7 @@ import {
 } from '../jobs.description'
 
 const jobs = ({ userView = false, userId, userJobType } = {}) => {
+  const mandalDetails = useMandalDetails()
   const { inspectionOfficer } = userWiseRole
   const { t } = useTranslations()
   const { dispatch, selector } = useRedux()
@@ -474,7 +475,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
   }
 
   const searchSelectOptions = isEqual(searchBy, searchByKeys.mandal)
-    ? inspectionOfficerMandalOptions
+    ? mandalDetails
     : []
 
   const handleDisAssociateModal = ({ rowData }) => {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import DashboardWrapper from './DashboardWrapper'
+import useMandalDetails from '../../../hooks/useMandalDetails'
 import useTranslations from '../../../hooks/useTranslations'
 import { userWiseRole } from '../../../utils/constant'
 import { getUserList } from '../../userManagement/user.api'
-import { inspectionOfficerMandalOptions } from '../../userManagement/user.description'
 import {
   getDashboardMetricsApi,
   getDashboardMetricsHostelsApi,
@@ -62,6 +62,7 @@ const MetricsSection = ({
 )
 
 const MetricsDashboard = () => {
+  const mandalDetails = useMandalDetails()
   const { t } = useTranslations()
   const [metricsData, setMetricsData] = useState(null)
   const [selectedColumn, setSelectedColumn] = useState({
@@ -249,9 +250,7 @@ const MetricsDashboard = () => {
       title: t('mso_Mandal'),
       key: 'mso_Mandal',
       render: rowData =>
-        inspectionOfficerMandalOptions.find(
-          option => option.value === rowData?.mandal,
-        )?.label ||
+        mandalDetails.find(option => option.value === rowData?.mandal)?.label ||
         rowData?.mandal ||
         '-',
     },

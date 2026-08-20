@@ -102,12 +102,14 @@ const downloadReport = async (reportUrl, fileName, fileType) => {
     // Append the link to the document body
     document.body.appendChild(link)
     // Trigger a click event on the link to start the download
-      link.click()
-      window.ReactNativeWebView.postMessage(JSON.stringify({
-        type: "DOWNLOAD",
+    link.click()
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        type: 'DOWNLOAD',
         url: reportUrl,
-        fileName: "inspection_assessment_report_329.pdf"
-      }));
+        fileName: 'inspection_assessment_report_329.pdf',
+      }),
+    )
     // Clean up: remove the link and revoke the Blob URL after download starts
     document.body.removeChild(link)
     URL.revokeObjectURL(blobUrl)
@@ -211,6 +213,11 @@ const calendarYearDate = year => {
   return { startDate, endDate }
 }
 
+const formatDistrict = district =>
+  typeof district === 'string'
+    ? district.trim().toUpperCase().replace(/[\s-]+/g, '_')
+    : ''
+
 export {
   b64toFile,
   fieldContactFormat,
@@ -223,4 +230,5 @@ export {
   getLocation,
   modifyFileListKeys,
   calendarYearDate,
+  formatDistrict,
 }

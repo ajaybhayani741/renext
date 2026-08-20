@@ -3,12 +3,16 @@ import { useEffect, useRef, useState } from 'react'
 import { notifyMethod } from '../../../App'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
-import { profileDetails } from '../../../redux/user_management/reducer'
+import {
+  profileDetails,
+  setMandalDetails,
+} from '../../../redux/user_management/reducer'
 import { USER_TXT } from '../../../routing/pathName.constant'
 import { useFormFn } from '../../../shared/antd/ANTDForm'
 import { getBase64 } from '../../../utils'
 import configData from '../../../utils/config'
 import { childUsers, userWiseRole } from '../../../utils/constant'
+import { formatDistrict } from '../../../utils/customFunctions'
 import { formatDate } from '../../../utils/dayjs'
 import debounce from '../../../utils/debounce'
 import {
@@ -32,6 +36,7 @@ import {
 } from '../addressData'
 import {
   addNewUserApi,
+  getMandalsApi,
   getUserList,
   getUserProfileApi,
   updateUserApi,
@@ -57,7 +62,7 @@ const addUser = ({
 }) => {
   const form = useFormFn()
   const { params, navigate, location } = useRouter()
-  const { dispatch } = useRedux()
+  const { dispatch, selector } = useRedux()
   const { country } = configData
   const {
     admin,
@@ -83,8 +88,11 @@ const addUser = ({
   })
   const userDetails = JSON.parse(getItem('userData'))
   const { roleId, id: loginUserId } = { ...userDetails }
+  const district = formatDistrict(userDetails?.district)
+  const mandalList = selector(state => state.user?.mandalDetails?.[district])
+
   const formField =
-    userFormByRoleId(t, form.getFieldValue())?.[formRoleId] ||
+    userFormByRoleId(t, form.getFieldValue(), mandalList)?.[formRoleId] ||
     (include(childUsers, formRoleId) ? childUserFormFields : userFormFields)
   const normalizedFormField = { ...formField }
   if (
@@ -104,6 +112,37 @@ const addUser = ({
   const initialEditData = useRef({})
   const [currentAddress, setCurrentAddress] = useState('')
   const checkErrors = useRef({})
+
+  useEffect(() => {
+    if (
+      !isEqual(roleId, districtCollector) ||
+      !include([inspectionOfficer, mandalSpecialOfficer, hostel], formRoleId) ||
+      !district ||
+      mandalList
+    ) {
+      return
+    }
+
+    const getMandals = async () => {
+      const response = await getMandalsApi({ district })
+      dispatch(
+        setMandalDetails({ district, mandals: response?.data?.list || [] }),
+      )
+    }
+
+    getMandals()
+  }, [district, formRoleId, mandalList, roleId])
+
+  useEffect(() => {
+    if (!mandalList) return
+    setUserForm(prev => ({
+      ...prev,
+      mandal: {
+        ...prev?.mandal,
+        options: mandalList,
+      },
+    }))
+  }, [mandalList])
 
   useEffect(() => {
     if (currentUserDescription?.parent) {
@@ -530,10 +569,14 @@ const addUser = ({
       const isOtherDepartment = isEqual(e?.departmentName, 'OTHER')
       if (isEqual(formRoleId, hostel)) {
         updatedForm =
-          userFormByRoleId(t, {
-            ...updatedFormData,
-            departmentName: e?.departmentName,
-          })?.[formRoleId] || updatedForm
+          userFormByRoleId(
+            t,
+            {
+              ...updatedFormData,
+              departmentName: e?.departmentName,
+            },
+            mandalList,
+          )?.[formRoleId] || updatedForm
       }
       if (!isOtherDepartment) {
         updatedFormData.customDepartmentName = undefined
@@ -542,10 +585,14 @@ const addUser = ({
       const isOtherDesignation = isEqual(e?.designation, 'OTHER')
       if (isEqual(formRoleId, inspectionOfficer)) {
         updatedForm =
-          userFormByRoleId(t, {
-            ...updatedFormData,
-            designation: e?.designation,
-          })?.[formRoleId] || updatedForm
+          userFormByRoleId(
+            t,
+            {
+              ...updatedFormData,
+              designation: e?.designation,
+            },
+            mandalList,
+          )?.[formRoleId] || updatedForm
       }
       if (!isOtherDesignation) {
         updatedFormData.customDesignation = undefined
@@ -638,6 +685,9 @@ const addUser = ({
     }
     if (isEqual(data?.designation, 'OTHER')) {
       data.designation = data?.customDesignation
+    }
+    if (!data?.district) {
+      data.district = userDetails?.district
     }
     const emailObj = createEmailPayload(data?.emailId)
     data = { ...data, ...emailObj, country: countriesList?.[data?.country] }
@@ -845,6 +895,9 @@ const addUser = ({
           city: googleAddress?.city,
           state: googleAddress?.state,
           country: googleAddress?.country,
+          ...(editInfo?.data?.id && isEqual(formRoleId, districtCollector)
+            ? {}
+            : { district: googleAddress?.district }),
         })
       }
     }

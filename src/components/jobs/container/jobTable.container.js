@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 
 import { notifyMethod } from '../../../App'
+import useMandalDetails from '../../../hooks/useMandalDetails'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
@@ -33,6 +34,7 @@ const jobTable = ({
   showActionColumn = true,
 }) => {
   const { t } = useTranslations()
+  const mandalDetails = useMandalDetails()
   const { navigate } = useRouter()
   const { selector } = useRedux()
   const isDesktop = selector(state => state.app.isDesktop)
@@ -196,9 +198,7 @@ const jobTable = ({
         key: columnKeys.createdDate,
         dataIndex: 'creationDate',
         render: rowData => {
-          return (
-            <>{rowData ? dayJs(rowData).format('DD/MM/YYYY') : '-'}</>
-          )
+          return <>{rowData ? dayJs(rowData).format('DD/MM/YYYY') : '-'}</>
         },
       },
       {
@@ -221,7 +221,11 @@ const jobTable = ({
         key: columnKeys.mandal,
         dataIndex: 'hostelInfo',
         ellipsis: true,
-        render: rowData => rowData?.mandal || '-',
+        render: rowData =>
+          mandalDetails.find(option => option.value === rowData?.mandal)
+            ?.label ||
+          rowData?.mandal ||
+          '-',
       },
       {
         title: t('user_InspectionOfficer'),
@@ -423,5 +427,3 @@ const jobTable = ({
 }
 
 export default jobTable
-
-

@@ -5,10 +5,9 @@ import { getItem } from '../../../utils/localstorage'
 import { userChildrenList } from '../../layout/sidebar.description'
 import {
   hostelTypeOptions,
-  inspectionOfficerMandalOptions,
 } from '../user.description'
 
-const viewUser = ({ userDetails }) => {
+const viewUser = ({ userDetails, mandalDetails }) => {
   const {
     businessName,
     emailId,
@@ -30,8 +29,7 @@ const viewUser = ({ userDetails }) => {
   }
   const parentData = parent || parentDetails
   const mandalLabel =
-    inspectionOfficerMandalOptions.find(option => option.value === mandal)
-      ?.label || mandal
+    mandalDetails.find(option => option.value === mandal)?.label || mandal
   const hostelTypeLabel =
     hostelTypeOptions.find(option => option.value === typeOfHostel)?.label ||
     typeOfHostel
@@ -196,6 +194,5 @@ const viewUser = ({ userDetails }) => {
 }
 
 export default viewUser
-
 
 

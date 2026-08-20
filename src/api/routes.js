@@ -197,5 +197,6 @@ const API_ROUTES = {
     `/dashboard-management/v1/metrics/hostels/${pageNo}`,
   GET_LOCATION_ADDRESS: `/job-management/v1/lat-long-address`,
   GENERATE_MASTER_SHEET: `/job-management/v1/userreports`,
+  GET_MANDALS: `/user-management/v1/mandals`,
 }
 export default API_ROUTES
