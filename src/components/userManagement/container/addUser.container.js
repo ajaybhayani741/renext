@@ -294,7 +294,9 @@ const addUser = ({
                     },
                   }
                 : {}),
-              ...userFormByRoleId(t, form.getFieldValue())?.[formRoleId],
+              ...userFormByRoleId(t, form.getFieldValue(), mandalList)?.[
+                formRoleId
+              ],
               ...(isCredentialUser && {
                 username: {
                   ...prevForm.username,
@@ -895,7 +897,9 @@ const addUser = ({
           city: googleAddress?.city,
           state: googleAddress?.state,
           country: googleAddress?.country,
-          ...(editInfo?.data?.id && isEqual(formRoleId, districtCollector)
+          ...(editInfo?.data?.id &&
+          isEqual(formRoleId, districtCollector) &&
+          editInfo?.data?.district
             ? {}
             : { district: googleAddress?.district }),
         })
