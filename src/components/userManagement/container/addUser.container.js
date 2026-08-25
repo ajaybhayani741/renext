@@ -882,7 +882,9 @@ const addUser = ({
           city: googleAddress?.city,
           state: googleAddress?.state,
           country: googleAddress?.country,
-          ...(editInfo?.data?.id && isEqual(formRoleId, districtCollector)
+          ...(editInfo?.data?.id &&
+          isEqual(formRoleId, districtCollector) &&
+          editInfo?.data?.district
             ? {}
             : { district: googleAddress?.district }),
         })
