@@ -220,7 +220,11 @@ const addUser = ({
         ...formData,
       }
       setUserForm(prevForm => {
-        const { profile, username, password, ...editForm } = prevForm || {}
+        const { profile, ...editForm } = prevForm || {}
+        const isCredentialUser = include(
+          [inspectionOfficer, mandalSpecialOfficer],
+          editInfo?.data?.roleId,
+        )
         return isEqual(roleId, districtCollector) &&
           include(
             [inspectionOfficer, hostel, mandalSpecialOfficer],
@@ -248,8 +252,14 @@ const addUser = ({
                   }
                 : {}),
               ...userFormByRoleId(t, form.getFieldValue())?.[formRoleId],
-              // username: { ...prevForm.username, disabled: true },
-              // password: { ...prevForm.password, required: false },
+              ...(isCredentialUser && {
+                username: {
+                  ...prevForm.username,
+                  disabled: true,
+                  required: false,
+                },
+                password: { ...prevForm.password },
+              }),
             }
           : {
               ...(profile ? { profile: { ...profile } } : {}),
@@ -270,6 +280,10 @@ const addUser = ({
                   },
                 }),
               ...editForm,
+              ...(isCredentialUser && {
+                username: { ...prevForm.username, disabled: true },
+                password: { ...prevForm.password },
+              }),
             }
       })
     }
@@ -857,4 +871,3 @@ const addUser = ({
 }
 
 export default addUser
-
