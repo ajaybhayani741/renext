@@ -98,12 +98,14 @@ const addUser = ({
   const formField =
     userFormByRoleId(t, form.getFieldValue(), mandalList)?.[formRoleId] ||
     (include(childUsers, formRoleId) ? childUserFormFields : userFormFields)
-  const normalizedFormField = {
-    ...formField,
-    // city: {
-    //   ...formField.city,
-    //   label: 'mso_Mandal',
-    // },
+  const normalizedFormField = { ...formField }
+  if (
+    editInfo?.data?.id &&
+    !isEqual(roleId, districtCollector) &&
+    include([inspectionOfficer, mandalSpecialOfficer], formRoleId)
+  ) {
+    delete normalizedFormField.username
+    delete normalizedFormField.password
   }
 
   const [userForm, setUserForm] = useState(
@@ -263,7 +265,11 @@ const addUser = ({
         ...formData,
       }
       setUserForm(prevForm => {
-        const { profile, username, password, ...editForm } = prevForm || {}
+        const { profile, ...editForm } = prevForm || {}
+        const isCredentialUser = include(
+          [inspectionOfficer, mandalSpecialOfficer],
+          editInfo?.data?.roleId,
+        )
         return isEqual(roleId, districtCollector) &&
           include(
             [inspectionOfficer, hostel, mandalSpecialOfficer],
@@ -290,11 +296,15 @@ const addUser = ({
                     },
                   }
                 : {}),
-              ...userFormByRoleId(t, form.getFieldValue(), mandalList)?.[
-                formRoleId
-              ],
-              // username: { ...prevForm.username, disabled: true },
-              // password: { ...prevForm.password, required: false },
+              ...userFormByRoleId(t, form.getFieldValue())?.[formRoleId],
+              ...(isCredentialUser && {
+                username: {
+                  ...prevForm.username,
+                  disabled: true,
+                  required: false,
+                },
+                password: { ...prevForm.password, required: false },
+              }),
             }
           : {
               ...(profile ? { profile: { ...profile } } : {}),
@@ -315,6 +325,10 @@ const addUser = ({
                   },
                 }),
               ...editForm,
+              ...(isCredentialUser && isEqual(roleId, districtCollector) && {
+                username: { ...prevForm.username, disabled: true },
+                password: { ...prevForm.password, required: false },
+              }),
             }
       })
     }
@@ -894,12 +908,15 @@ const addUser = ({
 
   const editableUserForm = isProfileImageOnlyEdit
     ? entries(userForm).reduce(
-        (formFields, [key, attributes]) => ({
-          ...formFields,
-          [key]: isEqual(key, 'profile')
-            ? attributes
-            : { ...attributes, disabled: true },
-        }),
+        (formFields, [key, attributes]) =>
+          include(['username', 'password'], key)
+            ? formFields
+            : {
+                ...formFields,
+                [key]: isEqual(key, 'profile')
+                  ? attributes
+                  : { ...attributes, disabled: true },
+              },
         {},
       )
     : userForm

@@ -277,6 +277,12 @@ const inspectionOfficerForm = (t, formValues, mandals) => ({
     ...commonForm.phoneNumber,
     required: true,
   },
+  username: {
+    ...commonWithUserNamePassword.username,
+  },
+  password: {
+    ...commonWithUserNamePassword.password,
+  },
 })
 
 const mandalSpecialOfficerForm = mandals => ({
@@ -292,12 +298,12 @@ const mandalSpecialOfficerForm = mandals => ({
     ...commonForm.phoneNumber,
     required: true,
   },
-  // username: {
-  //   ...commonWithUserNamePassword.username,
-  // },
-  // password: {
-  //   ...commonWithUserNamePassword.password,
-  // },
+  username: {
+    ...commonWithUserNamePassword.username,
+  },
+  password: {
+    ...commonWithUserNamePassword.password,
+  },
 })
 
 const hostelForm = (t, formValues, mandals) => ({
