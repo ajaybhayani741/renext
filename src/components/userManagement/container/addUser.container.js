@@ -301,7 +301,7 @@ const addUser = ({
                   disabled: true,
                   required: false,
                 },
-                password: { ...prevForm.password },
+                password: { ...prevForm.password, required: false },
               }),
             }
           : {
@@ -325,7 +325,7 @@ const addUser = ({
               ...editForm,
               ...(isCredentialUser && {
                 username: { ...prevForm.username, disabled: true },
-                password: { ...prevForm.password },
+                password: { ...prevForm.password, required: false },
               }),
             }
       })
