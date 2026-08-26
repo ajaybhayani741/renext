@@ -101,8 +101,10 @@ const addUser = ({
   const normalizedFormField = { ...formField }
   if (
     editInfo?.data?.id &&
-    !isEqual(roleId, districtCollector) &&
-    include([inspectionOfficer, mandalSpecialOfficer], formRoleId)
+    ((!isEqual(roleId, districtCollector) &&
+      include([inspectionOfficer, mandalSpecialOfficer], formRoleId)) ||
+      (isEqual(roleId, districtCollector) &&
+        isEqual(districtCollector, formRoleId)))
   ) {
     delete normalizedFormField.username
     delete normalizedFormField.password
@@ -296,7 +298,9 @@ const addUser = ({
                     },
                   }
                 : {}),
-              ...userFormByRoleId(t, form.getFieldValue())?.[formRoleId],
+              ...userFormByRoleId(t, form.getFieldValue(), mandalList)?.[
+                formRoleId
+              ],
               ...(isCredentialUser && {
                 username: {
                   ...prevForm.username,
