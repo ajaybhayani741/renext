@@ -88,6 +88,7 @@ const addUser = ({
     (include(childUsers, formRoleId) ? childUserFormFields : userFormFields)
   const normalizedFormField = { ...formField }
   if (
+    editInfo?.data?.id &&
     !isEqual(roleId, districtCollector) &&
     include([inspectionOfficer, mandalSpecialOfficer], formRoleId)
   ) {
@@ -281,10 +282,11 @@ const addUser = ({
                   },
                 }),
               ...editForm,
-              ...(isCredentialUser && {
-                username: { ...prevForm.username, disabled: true },
-                password: { ...prevForm.password, required: false },
-              }),
+              ...(isCredentialUser &&
+                isEqual(roleId, districtCollector) && {
+                  username: { ...prevForm.username, disabled: true },
+                  password: { ...prevForm.password, required: false },
+                }),
             }
       })
     }
