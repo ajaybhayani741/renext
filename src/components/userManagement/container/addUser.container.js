@@ -218,7 +218,7 @@ const addUser = ({
             } else if (isEqual('formUpload', value?.inputType)) {
               formValues[key] = modifyFileKeys(fieldValue)
             } else if (isEqual('emailId', key)) {
-              formValues[key] = getEmailList(data)
+              formValues[key] = value?.addMore ? getEmailList(data) : fieldValue
             } else {
               formValues[key] = fieldValue
             }
@@ -655,7 +655,8 @@ const addUser = ({
   }
 
   const createEmailPayload = (emailArr = []) => {
-    return emailArr.reduce(
+    const emails = Array.isArray(emailArr) ? emailArr : [emailArr]
+    return emails.reduce(
       (obj, email, index) => ({
         ...obj,
         [`emailId${index ? index : ''}`]: email,
