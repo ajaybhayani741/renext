@@ -277,11 +277,6 @@ const inspectionOfficerForm = (t, formValues, mandals) => ({
     ...commonForm.phoneNumber,
     required: true,
   },
-  emailId: {
-    ...commonForm.emailId,
-    addMore: false,
-    required: true,
-  },
   username: {
     ...commonWithUserNamePassword.username,
   },
@@ -301,11 +296,6 @@ const mandalSpecialOfficerForm = mandals => ({
   ...mandalField(mandals),
   phoneNumber: {
     ...commonForm.phoneNumber,
-    required: true,
-  },
-  emailId: {
-    ...commonForm.emailId,
-    addMore: false,
     required: true,
   },
   username: {

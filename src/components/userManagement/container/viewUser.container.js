@@ -137,7 +137,10 @@ const viewUser = ({ userDetails, mandalDetails }) => {
       label: 'user_Email',
       value: emailId,
       type: 'email',
-      hidden: isEqual(roleId, hostel),
+      hidden: include(
+        [inspectionOfficer, mandalSpecialOfficer, hostel],
+        roleId,
+      ),
     },
     { label: 'user_Contact', value: phoneNumber },
     {
@@ -191,4 +194,5 @@ const viewUser = ({ userDetails, mandalDetails }) => {
 }
 
 export default viewUser
+
 
