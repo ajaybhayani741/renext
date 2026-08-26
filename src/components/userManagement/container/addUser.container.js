@@ -86,12 +86,13 @@ const addUser = ({
   const formField =
     userFormByRoleId(t, form.getFieldValue())?.[formRoleId] ||
     (include(childUsers, formRoleId) ? childUserFormFields : userFormFields)
-  const normalizedFormField = {
-    ...formField,
-    // city: {
-    //   ...formField.city,
-    //   label: 'mso_Mandal',
-    // },
+  const normalizedFormField = { ...formField }
+  if (
+    !isEqual(roleId, districtCollector) &&
+    include([inspectionOfficer, mandalSpecialOfficer], formRoleId)
+  ) {
+    delete normalizedFormField.username
+    delete normalizedFormField.password
   }
 
   const [userForm, setUserForm] = useState(
