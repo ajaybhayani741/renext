@@ -511,164 +511,71 @@ const inspection = ({
         ? fieldAttr.required(sectionData)
         : fieldAttr?.required
 
-    const getVisibleFieldKeys = (formAttr, sectionData = {}) => {
+    const isFieldFilled = (fieldValue, fieldType) => {
+      if (isEqual(fieldType, 'formUpload')) {
+        return fieldValue?.fileList
+          ? length(fieldValue.fileList) > 0
+          : length(fieldValue) > 0
+      }
+      if (isArray(fieldValue)) return length(fieldValue) > 0
       return (
-        entries(formAttr)
-          ?.filter(([_, value]) => {
-            if (!value?.label || !value?.inputType) return false
-            if (!isRequiredField(value, sectionData)) return false
-            const isHidden = isEqual(typeof value?.hidden, 'function')
-              ? value.hidden(sectionData)
-              : value?.hidden
-            return !isHidden
-          })
-          ?.map(([key]) => key) || []
+        fieldValue !== null && fieldValue !== undefined && fieldValue !== ''
       )
     }
 
-    const inspectionJobData = [
-      ...getVisibleFieldKeys(
-        administrationAttrFn(),
-        sectionDetails?.hostelAdministrationRequestDto,
-      ),
-      ...getVisibleFieldKeys(
-        foodNutritionAttrFn(),
-        sectionDetails?.foodNutritionRequestDto,
-      ),
-      ...getVisibleFieldKeys(
-        accommodationAttrFn(),
-        sectionDetails?.accommodationRequestDto,
-      ),
-      ...getVisibleFieldKeys(
-        sanitationDrainageAttrFn(),
-        sectionDetails?.sanitationDrainageRequestDto,
-      ),
-      ...getVisibleFieldKeys(
-        electricityLightingAttrFn(),
-        sectionDetails?.electricityLightingRequestDto,
-      ),
-      ...getVisibleFieldKeys(
-        healthMedicalCareAttrFn(),
-        sectionDetails?.healthMedicalCareRequestDto,
-      ),
-      ...getVisibleFieldKeys(
+    const sections = [
+      ['hostelAdministrationRequestDto', administrationAttrFn()],
+      ['foodNutritionRequestDto', foodNutritionAttrFn()],
+      ['accommodationRequestDto', accommodationAttrFn()],
+      ['sanitationDrainageRequestDto', sanitationDrainageAttrFn()],
+      ['electricityLightingRequestDto', electricityLightingAttrFn()],
+      ['healthMedicalCareRequestDto', healthMedicalCareAttrFn()],
+      [
+        'educationAcademicEnvironmentRequestDto',
         educationAcademicEnvironmentAttrFn(),
-        sectionDetails?.educationAcademicEnvironmentRequestDto,
-      ),
-      ...getVisibleFieldKeys(
-        safetySecurityAttrFn(),
-        sectionDetails?.safetySecurityRequestDto,
-      ),
-      ...getVisibleFieldKeys(
-        studentFeedbackAttrFn(),
-        sectionDetails?.studentFeedbackRequestDto,
-      ),
-      ...getVisibleFieldKeys(
-        overallAssessmentAttrFn(),
-        sectionDetails?.overallAssessmentAttrFn,
-      ),
-      ...getVisibleFieldKeys(
+      ],
+      ['safetySecurityRequestDto', safetySecurityAttrFn()],
+      ['studentFeedbackRequestDto', studentFeedbackAttrFn()],
+      ['overallAssessmentRequestDto', overallAssessmentAttrFn()],
+      [
+        'inspectingOfficerFeedbackRequestDto',
         inspectingOfficerFeedbackAttrFn(),
-        sectionDetails?.inspectingOfficerFeedbackAttrFn,
-      ),
-      // ...getVisibleFieldKeys(
-      //   hostelInfraRoomsAttrFn(),
-      //   sectionDetails?.hostelInfraRoomsRequestDto,
-      // ),
-      // ...getVisibleFieldKeys(
-      //   hostelInfraSanitationAttrFn(),
-      //   sectionDetails?.hostelInfraSanitationRequestDto,
-      // ),
-      // ...getVisibleFieldKeys(
-      //   medicalCareAttrFn(),
-      //   sectionDetails?.medicalCareRequestDto,
-      // ),
-      // ...getVisibleFieldKeys(
-      //   educationFacilitiesAttrFn(),
-      //   sectionDetails?.educationFacilitiesRequestDto,
-      // ),
-      // ...getVisibleFieldKeys(
-      //   foodProvisionAttrFn(),
-      //   sectionDetails?.foodProvisionRequestDto,
-      // ),
-      // ...getVisibleFieldKeys(
-      //   safetyAndSecurityAttrFn(),
-      //   sectionDetails?.safetyAndSecurityRequestDto,
-      // ),
-      // ...getVisibleFieldKeys(
-      //   conductionMeetingsAttrFn(),
-      //   sectionDetails?.conductionMeetingsRequestDto,
-      // ),
-      // ...getVisibleFieldKeys(
-      //   feedbackAttrFn(),
-      //   sectionDetails?.feedbackRequestDto,
-      // ),
-      ...getVisibleFieldKeys(findingsAttrFn(), formData?.findingsRequestDto),
-      // ...getVisibleFieldKeys(
-      //   curricularActivitiesAttrFn(),
-      //   sectionDetails?.activitiesRequestDto,
-      // ),
+      ],
     ]
 
-    const jobData = {
-      locationInspection: formData?.locationInspection,
-      inspectionDate: formData?.inspectionDate,
-      ...inspectionJobData?.reduce((acc, key) => {
-        acc[key] =
-          formData?.findingsRequestDto?.[key] ??
-          values(sectionDetails)?.reduce(
-            (nestedAcc, curr) => ({ ...nestedAcc, ...curr }),
-            {},
-          )?.[key]
-        return acc
-      }, {}),
-    }
+    // Step 1 mandatory fields: inspection date/time and captured location.
+    const mandatoryFields = [
+      { value: formData?.inspectionDate },
+      { value: formData?.locationInspection },
+    ]
 
-    const totalFieldCount = keys(jobData)?.length
-    const filledFieldCount =
-      keys(jobData)?.filter(key => {
-        const fieldValue = jobData?.[key]
-        const sectionAttr =
-          administrationAttrFn()?.[key] ||
-          foodNutritionAttrFn()?.[key] ||
-          accommodationAttrFn()?.[key] ||
-          sanitationDrainageAttrFn()?.[key] ||
-          electricityLightingAttrFn()?.[key] ||
-          healthMedicalCareAttrFn()?.[key] ||
-          educationAcademicEnvironmentAttrFn()?.[key] ||
-          safetySecurityAttrFn()?.[key] ||
-          studentFeedbackAttrFn()?.[key] ||
-          overallAssessmentAttrFn()?.[key] ||
-          inspectingOfficerFeedbackAttrFn()?.[key] ||
-          // hostelInfraRoomsAttrFn()?.[key] ||
-          // hostelInfraSanitationAttrFn()?.[key] ||
-          // medicalCareAttrFn()?.[key] ||
-          // educationFacilitiesAttrFn()?.[key] ||
-          // foodProvisionAttrFn()?.[key] ||
-          // safetyAndSecurityAttrFn()?.[key] ||
-          // conductionMeetingsAttrFn()?.[key] ||
-          // feedbackAttrFn()?.[key] ||
-          findingsAttrFn()?.[key] ||
-          // curricularActivitiesAttrFn()?.[key] ||
-          {}
-        const fieldType = sectionAttr?.inputType
+    // Step 2: all mandatory, visible fields from every inspection section.
+    sections.forEach(([sectionKey, formAttr]) => {
+      const sectionData = sectionDetails?.[sectionKey] || {}
+      entries(formAttr)?.forEach(([fieldKey, fieldAttr]) => {
+        if (!fieldAttr?.label || !fieldAttr?.inputType) return
+        if (include(fieldAttr?.maskedForRole, roleId)) return
+        if (!isRequiredField(fieldAttr, sectionData)) return
 
-        if (isEqual(fieldType, 'formUpload')) {
-          return fieldValue?.fileList
-            ? length(fieldValue.fileList) > 0
-            : length(fieldValue) > 0
-        }
+        const isHidden = isEqual(typeof fieldAttr?.hidden, 'function')
+          ? fieldAttr.hidden(sectionData)
+          : fieldAttr?.hidden
+        if (isHidden) return
 
-        if (isArray(fieldValue)) {
-          return length(fieldValue) > 0
-        }
+        mandatoryFields.push({
+          value: sectionData?.[fieldKey],
+          fieldType: fieldAttr?.inputType,
+        })
+      })
+    })
 
-        return (
-          fieldValue !== null && fieldValue !== undefined && fieldValue !== ''
-        )
-      })?.length || 0
-
-    const percentage = Math.round((filledFieldCount / totalFieldCount) * 100)
+    const totalFieldCount = mandatoryFields.length
+    const filledFieldCount = mandatoryFields.filter(({ value, fieldType }) =>
+      isFieldFilled(value, fieldType),
+    ).length
+    const percentage = totalFieldCount
+      ? Math.round((filledFieldCount / totalFieldCount) * 99)
+      : 0
     return { percentage }
   }
 
@@ -691,6 +598,10 @@ const inspection = ({
     const latLng = formData.locationInspection
       ? formData.locationInspection?.split(',')
       : []
+    let progressPercentage = countProgressPercentage({ formData })?.percentage
+    if (fromNotification) progressPercentage = 0
+    else if (isComplete) progressPercentage = 100
+
     const payload = {
       id: jobId || currentJobId,
       jobType: payloadType?.[tabKeys?.inspection],
@@ -699,9 +610,7 @@ const inspection = ({
       latitude: latLng?.[0] ? parseFloat(latLng?.[0]) : null,
       longitude: latLng?.[1] ? parseFloat(latLng?.[1]) : null,
       stepNumber: location?.state?.restart ? 1 : current + 1,
-      progressPercentage: fromNotification
-        ? 0
-        : countProgressPercentage({ formData })?.percentage,
+      progressPercentage,
       restartJob: !!location?.state?.restart,
     }
 
@@ -1518,5 +1427,3 @@ const inspection = ({
 }
 
 export default inspection
-
-
