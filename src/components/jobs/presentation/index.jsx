@@ -167,7 +167,11 @@ const JobManagement = ({
             <>
               <div className="d-flex flex-end">
                 <FiscalYearSelect
-                  onDateChange={(from, to) => apiCall(1, { from, to })}
+                  onDateChange={
+                    isEqual(jobType, tabKeys.inspection)
+                      ? undefined
+                      : (from, to) => apiCall(1, { from, to })
+                  }
                   showRecentPresets
                   showDateShortcutButtons={isEqual(jobType, tabKeys.inspection)}
                   showWeekCounter={isEqual(jobType, tabKeys.inspection)}

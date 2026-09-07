@@ -191,9 +191,7 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
       return
     if (
       isEqual(type, tabKeys.inspection) &&
-      (!dateRange?.from ||
-        !dateRange?.to ||
-        !inspectionWeekInitializedRef.current)
+      !inspectionWeekInitializedRef.current
     ) {
       return
     }
@@ -299,7 +297,9 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
     const isInspectionJob = isEqual(selectedType, tabKeys.inspection)
     const selectedDateRange = range || dateRange
     const shouldUseDateRange =
-      isInspectionJob && selectedDateRange?.from && selectedDateRange?.to
+      (isInspectionJob || range) &&
+      selectedDateRange?.from &&
+      selectedDateRange?.to
 
     const params = {
       jobType: jobType,
@@ -312,13 +312,13 @@ const jobs = ({ userView = false, userId, userJobType } = {}) => {
       [userJobType || type]: { ...pre?.[userJobType || type], loader: true },
     }))
     let resp
-    if (searchVal.current || range || shouldUseDateRange) {
+    if (searchVal.current || shouldUseDateRange) {
       if (searchVal.current) {
         params.searchTag = searchBy
         params.search = searchVal.current
       }
 
-      if (range || shouldUseDateRange) {
+      if (shouldUseDateRange) {
         params.fromDate = selectedDateRange?.from
         params.toDate = selectedDateRange?.to
       }

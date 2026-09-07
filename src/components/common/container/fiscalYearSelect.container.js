@@ -8,6 +8,7 @@ import { calendarYearDate } from '../../../utils/customFunctions'
 import { dayJs, DISPLAY_DATE_FORMAT, formatDate } from '../../../utils/dayjs'
 import {
   getCurrentMonthDateRange,
+  getCurrentWeekDateRange,
   getLastWeekDateRange,
   getWeekCounterLabel,
 } from '../../../utils/weekDateUtils'
@@ -76,15 +77,18 @@ const fiscalYearSelect = ({
   }
 
   const handleDateShortcutClick = range => {
+    const nextRange = isActiveShortcut(range)
+      ? getCurrentWeekDateRange()
+      : range
     dispatch(
       setFiscalYear({
         dateRange: {
           ...dateRange,
-          ...range,
+          ...nextRange,
         },
       }),
     )
-    onDateChange && onDateChange(range.from, range.to)
+    onDateChange && onDateChange(nextRange.from, nextRange.to)
   }
 
   const isActiveShortcut = range =>
@@ -152,4 +156,3 @@ const fiscalYearSelect = ({
 }
 
 export default fiscalYearSelect
-

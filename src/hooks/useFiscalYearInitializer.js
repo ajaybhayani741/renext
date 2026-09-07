@@ -10,7 +10,7 @@ import { getItem } from '../utils/localstorage'
 
 const useFiscalYearInitializer = () => {
   const { dispatch, selector } = useRedux()
-  const { value, options, dateRange } = selector(
+  const { value, options } = selector(
     state => state?.app?.fiscalYear,
   )
   const userExists = getItem('userExists')
@@ -18,14 +18,8 @@ const useFiscalYearInitializer = () => {
 
   useEffect(() => {
     if (!userExists || !authToken) return
-    // Only initialize once and only if data is not already available
-    if (
-      options &&
-      options.length > 0 &&
-      value &&
-      dateRange?.from &&
-      dateRange?.to
-    ) {
+    // An empty date filter is valid after a shortcut is deselected.
+    if (options?.length > 0 && value) {
       return
     }
 
@@ -56,16 +50,10 @@ const useFiscalYearInitializer = () => {
     }
 
     initializeFiscalYear()
-  }, [dispatch, options, value, dateRange, userExists, authToken])
+  }, [dispatch, options, value, userExists, authToken])
 
   return {
-    isInitialized: !!(
-      options &&
-      options.length > 0 &&
-      value &&
-      dateRange?.from &&
-      dateRange?.to
-    ),
+    isInitialized: !!(options?.length > 0 && value),
   }
 }
 
