@@ -75,6 +75,7 @@ const {
   DASHBOARD_PHOTOS,
   DASHBOARD_METRICS,
   DASHBOARD_METRICS_HOSTELS,
+  DASHBOARD_METRICS_MANDALS,
 } = API_ROUTES
 
 const getShiftReportApi = async ({ params }) => {
@@ -560,6 +561,13 @@ const getDashboardMetricsHostelsApi = async ({ pageNo = 1, params }) => {
   return response?.data
 }
 
+const getDashboardMetricsMandalsApi = async ({ pageNo = 1, params }) => {
+  const response = await getMethod(DASHBOARD_METRICS_MANDALS({ pageNo }), {
+    params,
+  })
+  return response?.data
+}
+
 export {
   getDiscrepanciesApi,
   getShiftReportApi,
@@ -633,4 +641,5 @@ export {
   getDashboardPhotosApi,
   getDashboardMetricsApi,
   getDashboardMetricsHostelsApi,
+  getDashboardMetricsMandalsApi,
 }

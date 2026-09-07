@@ -881,5 +881,12 @@
   "job_CurrentMonth": "Current Month",
   "user_AssignIOAndMSO": "Assign IO & MSO",
   "dash_TotalMandalSpecialOfficersOnboarded": "Total Mandal Special officers Onboarded",
-  "user_District": "District"
+  "dash_FullyMandalInspectionCompleted": "Fully Mandal Inspection completed",
+  "dash_PartiallyMandalInspectionCompleted": "Partially Mandal inspection completed",
+  "dash_MandalName": "Mandal Name",
+  "dash_TotalInspectionsCompleted": "Total Inspections Completed",
+  "dash_CompletedCount": "Completed Count",
+  "dash_PendingHostelsCount": "Pending Hostels Count",
+  "user_District": "District",
+  "dash_MandalWiseInspectionOverview": "Mandal-wise Inspection Overview"
 }

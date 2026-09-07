@@ -67,7 +67,7 @@ const DashboardWrapper = ({
             open={selectedColumn?.selected}
             onCancel={handleCloseModal}
             footer={false}
-            width={850}
+            width={selectedColumn?.listType === 'pendingHostels' ? 520 : 850}
           >
             {!hideExportButton && (
               <div className="text-end mb-5">
@@ -81,34 +81,52 @@ const DashboardWrapper = ({
                 </ANTDButton>
               </div>
             )}
-            <ANTDTable
-              loading={loader || jobModel?.loader}
-              columns={modalColumns || defaultColumns}
-              dataSource={
-                length(modalList)
-                  ? modalList.map((item, ind) => ({
-                      ...item,
-                      key:
-                        item?.key || item?.id || (pageNo - 1) * pageSize + ind,
-                    }))
-                  : length(selectedColumn?.list)
-                    ? selectedColumn?.list?.map((item, ind) => ({
+            {selectedColumn?.listType === 'pendingHostels' ? (
+              length(modalList) ? (
+                <ul className="pending-hostels-list">
+                  {modalList.map(hostel => (
+                    <li key={`hostel?.id `}>
+                      {hostel?.lastName || hostel?.hostelName || '-'}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="pending-hostels-list-empty">
+                  {t('txt_NoData')}
+                </div>
+              )
+            ) : (
+              <ANTDTable
+                loading={loader || jobModel?.loader}
+                columns={modalColumns || defaultColumns}
+                dataSource={
+                  length(modalList)
+                    ? modalList.map((item, ind) => ({
                         ...item,
-                        key: (pageNo - 1) * pageSize + ind,
+                        key:
+                          item?.key ||
+                          item?.id ||
+                          (pageNo - 1) * pageSize + ind,
                       }))
-                    : []
-              }
-              pagination={{
-                lastFetched: pageNo,
-                current: pageNo,
-                pageSize: pageSize,
-                total: totalRecords,
-                responsive: true,
-                hideOnSinglePage: !showPaginationOnSinglePage,
-              }}
-              onChange={handleTableChange}
-              size="small"
-            ></ANTDTable>
+                    : length(selectedColumn?.list)
+                      ? selectedColumn?.list?.map((item, ind) => ({
+                          ...item,
+                          key: (pageNo - 1) * pageSize + ind,
+                        }))
+                      : []
+                }
+                pagination={{
+                  lastFetched: pageNo,
+                  current: pageNo,
+                  pageSize: pageSize,
+                  total: totalRecords,
+                  responsive: true,
+                  hideOnSinglePage: !showPaginationOnSinglePage,
+                }}
+                onChange={handleTableChange}
+                size="small"
+              ></ANTDTable>
+            )}
           </ANTDModal>
         )}
       </div>

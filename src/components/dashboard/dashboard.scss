@@ -1683,14 +1683,7 @@
 
 .metrics-hostel-card {
   .metrics-section-content {
-    display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-    gap: 16px;
-    align-items: start;
-
-    @media screen and (max-width: 767px) {
-      grid-template-columns: 1fr;
-    }
+    display: block;
   }
 }
 
@@ -1714,7 +1707,7 @@
     display: block;
   }
 
-  > .metrics-pie-chart-card {
+  > .metrics-pie-charts-grid {
     grid-column: 1 / -1;
   }
 
@@ -1769,7 +1762,18 @@
   }
 }
 
+.metrics-pie-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+
+  @media screen and (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+}
+
 .metrics-pie-chart-card {
+  min-width: 0;
   margin: 0;
   padding: 8px 16px;
   border-radius: 16px;
@@ -2499,6 +2503,26 @@
   height: 48px;
   color: #a3a9b4 !important;
   text-align: center !important;
+}
+
+.pending-hostels-list {
+  margin: 0;
+  padding-left: 24px;
+
+  li {
+    padding: 8px 4px;
+    border-bottom: 1px solid #eef0f4;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.pending-hostels-list-empty {
+  padding: 16px;
+  color: #a3a9b4;
+  text-align: center;
 }
 
 @media (max-width: 575px) {
