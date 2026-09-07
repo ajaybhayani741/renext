@@ -9,15 +9,21 @@ import useRouter from '../../../hooks/useRouter'
 import useTranslations from '../../../hooks/useTranslations'
 import { setJobActiveTab } from '../../../redux/jobs/reducer'
 import pathName from '../../../routing/pathName.constant'
+import ANTDButton from '../../../shared/antd/ANTDButton'
+import ANTDModal from '../../../shared/antd/ANTDModal'
 import { userWiseRole } from '../../../utils/constant'
 import { tabKeys } from '../../jobs/jobs.description'
 import { getUserList } from '../../userManagement/user.api'
 import {
   getDashboardMetricsApi,
   getDashboardMetricsHostelsApi,
+  getDashboardMetricsMandalsApi,
 } from '../dashboard.api'
 import CommonPieChart from '../shared/CommonPieChart'
 import StatsCard from '../shared/StatsCard'
+
+const isMandalInspectionMetric = metric =>
+  ['FULLY_COMPLETED', 'PARTIALLY_COMPLETED'].includes(metric)
 
 const MetricsSection = ({
   title,
@@ -53,22 +59,25 @@ const MetricsSection = ({
   </section>
 )
 
-const MetricsPieChart = ({ data, onPieChartClick, t }) => (
+const MetricsPieChart = ({
+  data,
+  onPieChartClick,
+  t,
+  title = 'dash_HostelInspectionOverview',
+}) => (
   <section className="metrics-pie-chart-card">
-    <h3 className="metrics-pie-chart-title">
-      {t('dash_HostelInspectionOverview')}
-    </h3>
+    <h3 className="metrics-pie-chart-title">{t(title)}</h3>
     <CommonPieChart
       data={data.map(item => ({
         ...item,
         name: t(item.name),
-        category: t('dash_HostelInspectionOverview'),
+        category: t(title),
       }))}
       size="70%"
       showValueLabels={true}
       compact
       handleChartClick={onPieChartClick}
-      name="dash_HostelInspectionOverview"
+      name={title}
     />
   </section>
 )
@@ -85,6 +94,9 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
   const [hostelsData, setHostelsData] = useState({})
   const mandalDetails = useMandalDetails()
   const isUserListModal = selectedColumn?.listType === 'user'
+  const isMandalInspectionModal =
+    selectedColumn?.listType === 'mandalInspection'
+  const [pendingHostelsModal, setPendingHostelsModal] = useState(null)
 
   useEffect(() => {
     const loadMetrics = async () => {
@@ -95,13 +107,24 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
     loadMetrics()
   }, [])
 
-  const getMetricHostels = async ({ metric, pageNo = 1 }) => {
-    const response = await getDashboardMetricsHostelsApi({
+  const getMetricDetails = async ({ metric, pageNo = 1 }) => {
+    const getMetricsApi = isMandalInspectionMetric(metric)
+      ? getDashboardMetricsMandalsApi
+      : getDashboardMetricsHostelsApi
+    const response = await getMetricsApi({
       pageNo,
       params: { metric },
     })
 
-    return response?.data
+    const data = response?.data
+    if (isMandalInspectionMetric(metric) && data) {
+      return {
+        ...data,
+        mandals: data.mandals ?? data.list ?? [],
+      }
+    }
+
+    return data
   }
 
   const getUsersByRole = async ({ pageNo = 1, roleId }) => {
@@ -135,7 +158,7 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
     if (!metric) return
 
     setHostelsData(prev => ({ ...prev, loader: true }))
-    const respData = await getMetricHostels({ metric })
+    const respData = await getMetricDetails({ metric })
 
     setHostelsData(
       respData ? { ...respData, loader: false } : { loader: false },
@@ -150,6 +173,9 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
       categoryValue: metric,
       title: label,
       reportChartType: 'DASHBOARD_METRICS_OVERVIEW',
+      listType: isMandalInspectionMetric(metric)
+        ? 'mandalInspection'
+        : 'hostel',
       modalTitle: true,
     })
   }
@@ -200,6 +226,7 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
   }
 
   const handleCloseModal = () => {
+    setPendingHostelsModal(null)
     setSelectedColumn({
       selected: false,
       chartData: null,
@@ -215,7 +242,7 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
           pageNo: current,
           roleId: selectedColumn?.userRoleId,
         })
-      : await getMetricHostels({
+      : await getMetricDetails({
           metric: selectedColumn?.categoryValue,
           pageNo: current,
         })
@@ -276,6 +303,16 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
       userRoleId: userWiseRole.mandalSpecialOfficer,
       category: 'user_MandalSpecialOfficer',
     },
+    {
+      label: 'dash_FullyMandalInspectionCompleted',
+      value: metricsData?.fullyMandalInspectionCompletedCount,
+      metric: 'FULLY_COMPLETED',
+    },
+    {
+      label: 'dash_PartiallyMandalInspectionCompleted',
+      value: metricsData?.partiallyMandalInspectionCompletedCount,
+      metric: 'PARTIALLY_COMPLETED',
+    },
   ]
 
   const inspectionOfficerColumns = [
@@ -313,6 +350,84 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
     },
   ]
 
+  const renderCount = value => value ?? '-'
+  const renderMandalName = rowData =>
+    mandalDetails.find(
+      option =>
+        option.value === (rowData?.mandalId ?? rowData?.mandal) ||
+        option.label === (rowData?.mandalName ?? rowData?.mandal),
+    )?.label ||
+    rowData?.mandalName ||
+    rowData?.mandal ||
+    '-'
+
+  const openPendingHostelsModal = rowData => {
+    const pendingHostels = Array.isArray(rowData?.hostels)
+      ? rowData?.hostels
+      : []
+    const normalizedHostels = pendingHostels.map(hostel =>
+      typeof hostel === 'string' ? { hostelName: hostel } : hostel,
+    )
+    setPendingHostelsModal({
+      hostels: normalizedHostels,
+      mandalName: renderMandalName(rowData),
+    })
+  }
+
+  const mandalInspectionColumns = [
+    {
+      title: t('dash_MandalName'),
+      key: 'mandalName',
+      render: renderMandalName,
+    },
+    {
+      title: t('dash_TotalHostelsOnboarded'),
+      key: 'totalHostelsOnboarded',
+      dataIndex: 'totalHostelsOnboarded',
+      render: rowData => renderCount(rowData || 0),
+    },
+    ...(selectedColumn?.categoryValue === 'FULLY_COMPLETED'
+      ? [
+          {
+            title: t('dash_TotalInspectionsCompleted'),
+            key: 'totalInspectionsCompleted',
+            render: rowData =>
+              renderCount(
+                rowData?.totalInspectionsCompleted ??
+                  rowData?.totalInspectionCompleted ??
+                  rowData?.completedCount,
+              ),
+          },
+        ]
+      : [
+          {
+            title: t('dash_CompletedCount'),
+            key: 'completedCount',
+            dataIndex: 'totalInspectionsCompleted',
+            render: rowData => renderCount(rowData || 0),
+          },
+          {
+            title: t('dash_PendingHostelsCount'),
+            key: 'pendingHostelsCount',
+            render: rowData => {
+              const pendingCount = renderCount(
+                rowData?.pendingHostelsCount ?? rowData?.pendingHostelCount,
+              )
+
+              return (
+                <ANTDButton
+                  type="link"
+                  className="p-0"
+                  onClick={() => openPendingHostelsModal(rowData)}
+                >
+                  {pendingCount}
+                </ANTDButton>
+              )
+            },
+          },
+        ]),
+  ]
+
   const hostelPieChartData = [
     {
       name: 'dash_TotalHostelsInspectedThisWeek',
@@ -337,14 +452,58 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
     },
   ]
 
+  const mandalPieChartData = mandalSpecialOfficerMetrics
+    .filter(item => item.metric)
+    .map(item => ({
+      name: item.label,
+      label: item.label,
+      value: item.value ?? 0,
+      filterValue: item.metric,
+      color: item.metric === 'FULLY_COMPLETED' ? '#5BB764' : '#F59E0B',
+    }))
+
   return (
     <DashboardWrapper
       {...{ handleCloseModal, selectedColumn, handleTableChange, hostelsData }}
       hideExportButton
-      modalColumns={isUserListModal ? inspectionOfficerColumns : null}
-      modalDataKey={isUserListModal ? 'list' : 'hostels'}
+      modalColumns={
+        isUserListModal
+          ? inspectionOfficerColumns
+          : isMandalInspectionModal
+            ? mandalInspectionColumns
+            : null
+      }
+      modalDataKey={
+        isUserListModal
+          ? 'list'
+          : isMandalInspectionModal
+            ? 'mandals'
+            : 'hostels'
+      }
       showPaginationOnSinglePage={isUserListModal}
     >
+      <ANTDModal
+        title={`${t('dash_PendingHostelsCount')} (${pendingHostelsModal?.mandalName || ''})`}
+        centered
+        open={!!pendingHostelsModal}
+        onCancel={() => setPendingHostelsModal(null)}
+        footer={false}
+        width={520}
+        zIndex={1100}
+        styles={{ body: { maxHeight: '60vh', overflowY: 'auto' } }}
+      >
+        {pendingHostelsModal?.hostels?.length ? (
+          <ul className="pending-hostels-list">
+            {pendingHostelsModal.hostels.map((hostel, index) => (
+              <li key={hostel?.id ?? index}>
+                {hostel?.lastName || hostel?.hostelName || hostel?.name || '-'}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="pending-hostels-list-empty">{t('txt_NoData')}</div>
+        )}
+      </ANTDModal>
       <div className="dashboard-module-surface metrics-dashboard-surface">
         <div
           className={`metrics-sections-grid ${
@@ -360,15 +519,7 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
               items={hostelMetrics}
               onValueClick={handleMetricValueClick}
               t={t}
-            >
-              {!navigatePieChartToInspection && (
-                <MetricsPieChart
-                  data={hostelPieChartData}
-                  onPieChartClick={handlePieChartClick}
-                  t={t}
-                />
-              )}
-            </MetricsSection>
+            />
             <MetricsSection
               title="dash_MetricsInspectionOfficer"
               items={inspectionOfficerMetrics}
@@ -376,7 +527,6 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
               onValueClick={handleMetricValueClick}
               t={t}
             />
-            {/* {navigatePieChartToInspection && ( */}
             <MetricsSection
               title="user_MandalSpecialOfficer"
               items={mandalSpecialOfficerMetrics}
@@ -384,15 +534,26 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
               onValueClick={handleMetricValueClick}
               t={t}
             />
-            {/* )} */}
           </div>
-          {navigatePieChartToInspection && (
+          <div className="metrics-pie-charts-grid">
             <MetricsPieChart
               data={hostelPieChartData}
               onPieChartClick={handlePieChartClick}
               t={t}
             />
-          )}
+            <MetricsPieChart
+              title="dash_MandalWiseInspectionOverview"
+              data={mandalPieChartData}
+              onPieChartClick={({ e }) =>
+                openHostelsModal({
+                  metric: e?.point?.filterValue,
+                  label: e?.point?.label,
+                  type: e?.point?.name,
+                })
+              }
+              t={t}
+            />
+          </div>
         </div>
       </div>
     </DashboardWrapper>
