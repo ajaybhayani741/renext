@@ -221,11 +221,8 @@ const TabulerView = ({
   const locationRef = useRef(null)
   const userData = JSON.parse(getItem('userData'))
   const { roleId } = { ...userData }
-  const {
-    districtHostelDepartment,
-    inspectionOfficer,
-    mandalSpecialOfficer,
-  } = userWiseRole
+  const { districtHostelDepartment, inspectionOfficer, mandalSpecialOfficer } =
+    userWiseRole
 
   const { onFileUploadOrRemove } = jobContext()
   const [editLogModel, setEditLogModel] = useState({ open: false })
@@ -808,8 +805,27 @@ const TabulerView = ({
     return attrList
   }
 
+  const inspectionWasMadeDuringAttr = {
+    inspectionWasMadeDuring: {
+      label: 'job_InspectionWasMadeDuring',
+      inputType: 'select',
+      options: [
+        { label: 'job_Breakfast', value: 'BREAKFAST' },
+        { label: 'job_Lunch', value: 'LUNCH' },
+        { label: 'job_Dinner', value: 'DINNER' },
+      ],
+      editable: false,
+    },
+  }
+
   return (
     <ANTDForm initialValues={{}} form={form} onValuesChange={onValuesChange}>
+      {dataViewUI({
+        details: data,
+        detailKey: 'inspectionWasMadeDuring',
+        attributes: inspectionWasMadeDuringAttr,
+        showEdit: false,
+      })}
       <ANTDCollapse
         bordered={false}
         defaultActiveKey={defaultActiveCollapseKeys}
@@ -1115,7 +1131,7 @@ const TabulerView = ({
               </>
             ),
           },
-            {
+          {
             label: t('job_ElectricityLightingSection'),
             key: 'electricityLightingRequestDto',
             className: collapseClassName('electricityLightingRequestDto'),
@@ -1176,7 +1192,9 @@ const TabulerView = ({
           {
             label: t('job_EducationAcademicEnvironmentSection'),
             key: 'educationAcademicEnvironmentRequestDto',
-            className: collapseClassName('educationAcademicEnvironmentRequestDto'),
+            className: collapseClassName(
+              'educationAcademicEnvironmentRequestDto',
+            ),
             style: collapseStyle('educationAcademicEnvironmentRequestDto'),
             children: (
               <>
@@ -1281,6 +1299,3 @@ const TabulerView = ({
 }
 
 export default TabulerView
-
-
-

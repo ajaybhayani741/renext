@@ -239,6 +239,7 @@ const inspection = ({
     }
 
     const inspectionDetails = {
+      inspectionWasMadeDuring: editData?.inspectionWasMadeDuring,
       hostelAdministrationRequestDto: {
         ...formValueFromResponse(editData, administrationAttrFn()),
       },
@@ -547,6 +548,7 @@ const inspection = ({
     const mandatoryFields = [
       { value: formData?.inspectionDate },
       { value: formData?.locationInspection },
+      { value: sectionDetails?.inspectionWasMadeDuring },
     ]
 
     // Step 2: all mandatory, visible fields from every inspection section.
@@ -616,6 +618,7 @@ const inspection = ({
 
     const inspectionDetails = formData?.inspectionList?.[0]
     Object.assign(payload, {
+      inspectionWasMadeDuring: inspectionDetails?.inspectionWasMadeDuring,
       ...payloadConverter(
         inspectionDetails?.hostelAdministrationRequestDto,
         administrationAttrFn(),

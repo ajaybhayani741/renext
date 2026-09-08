@@ -1366,6 +1366,41 @@
     .ant-form-item-label {
       margin-top: 0;
     }
+
+    .inspection-made-during-field {
+      margin: 12px 0 16px;
+      padding: 12px 14px 4px;
+      border: 1px solid #d9e2f3;
+      border-radius: 6px;
+      background-color: #f8fbff;
+
+      .ant-form-item {
+        margin-bottom: 8px;
+        align-items: center;
+      }
+
+      .ant-form-item-label {
+        font-weight: 600;
+        text-align: left;
+        display: flex;
+        align-items: center;
+      }
+
+      .ant-form-item-control {
+        justify-content: center;
+      }
+
+      .ant-radio-group {
+        gap: 8px 18px;
+        align-items: center;
+      }
+
+      .ant-radio-wrapper {
+        margin-right: 0;
+        margin-bottom: 8px;
+        align-items: center;
+      }
+    }
   }
 
   .recycle-job-station {
@@ -1486,7 +1521,6 @@
     }
   }
 }
-
 
 .fiscal-date-range-wrap {
   row-gap: 8px;
