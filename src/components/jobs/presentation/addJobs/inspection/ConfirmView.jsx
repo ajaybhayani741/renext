@@ -40,6 +40,7 @@ const ConfirmView = ({
       studentFeedbackRequestDto,
       overallAssessmentRequestDto,
       inspectingOfficerFeedbackRequestDto,
+      inspectionWasMadeDuring,
       // hostelInfraRoomsRequestDto,
       // hostelInfraSanitationRequestDto,
       // medicalCareRequestDto,
@@ -82,6 +83,7 @@ const ConfirmView = ({
 
     return {
       hostel: selectedUsers?.[hostel]?.[index],
+      inspectionWasMadeDuring,
 
       hostelAdministrationRequestDto: mapKeyValue(
         inspectionFormFieldsAttr?.administrationAttrFn(),
@@ -179,10 +181,7 @@ const ConfirmView = ({
     >
       <h2 className="content-title mb-15">{t('job_Preview')}</h2>
       <ANTDDivider />
-      <ANTDRow
-        align="center"
-        className="date-management-number"
-      >
+      <ANTDRow align="center" className="date-management-number">
         <ANTDColumn md={24} lg={12} sm={24} xs={24}>
           <ANTDFormItem
             label={t('job_DateOfInspectionAndTime')}
@@ -223,4 +222,3 @@ const ConfirmView = ({
 }
 
 export default ConfirmView
-

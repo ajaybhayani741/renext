@@ -888,5 +888,9 @@
   "dash_CompletedCount": "Completed Count",
   "dash_PendingHostelsCount": "Pending Hostels Count",
   "user_District": "District",
-  "dash_MandalWiseInspectionOverview": "Mandal-wise Inspection Overview"
+  "dash_MandalWiseInspectionOverview": "Mandal-wise Inspection Overview",
+  "job_InspectionWasMadeDuring": "Inspection was made during:",
+  "job_Breakfast": "Breakfast",
+  "job_Lunch": "Lunch",
+  "job_Dinner": "Dinner"
 }

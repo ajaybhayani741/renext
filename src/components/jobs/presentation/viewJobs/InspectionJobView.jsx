@@ -30,27 +30,34 @@ const InspectionJobView = ({
 
   const { inspectionOfficer } = userWiseRole
   const status = {
-    JOB_REQUEST_INPROGRESS: "job_Inprogress",
-    JOB_COMPLETED: "job_Complete"
+    JOB_REQUEST_INPROGRESS: 'job_Inprogress',
+    JOB_COMPLETED: 'job_Complete',
   }
   const infoData = {
     user_BasicInformation: [
       // { label: 'user_ID', value: data?.id },
       {
         label: 'user_CreationDate',
-        value: data?.creationDate ? dayJs(data?.creationDate).format('DD/MM/YYYY HH:mm A') : '-'
+        value: data?.creationDate
+          ? dayJs(data?.creationDate).format('DD/MM/YYYY HH:mm A')
+          : '-',
       },
       { label: 'job_hostelName', value: data?.hostelInfo?.lastName },
       { label: 'mso_Mandal', value: data?.hostelInfo?.mandal },
       {
         label: 'user_InspectionOfficer',
-        value: data?.userInfo?.lastName ,
+        value: data?.userInfo?.lastName,
       },
       {
         label: 'mso_Designation',
-        value: data?.userInfo?.designation ,
+        value: data?.userInfo?.designation,
       },
-      { label: 'job_CompletionDate', value: data?.modificationDate ? dayJs(data?.modificationDate).format('DD/MM/YYYY HH:mm A') : '-' },
+      {
+        label: 'job_CompletionDate',
+        value: data?.modificationDate
+          ? dayJs(data?.modificationDate).format('DD/MM/YYYY HH:mm A')
+          : '-',
+      },
       { label: 'job_Status', value: t(status[data?.status]) },
     ],
   }
@@ -123,6 +130,7 @@ const InspectionJobView = ({
     }
     const inspectionValues = {
       hostel: data?.hostelInfo,
+      inspectionWasMadeDuring: data?.inspectionWasMadeDuring,
       hostelAdministrationRequestDto: mapKeyValue(administrationAttrFn(), data),
       foodNutritionRequestDto: mapKeyValue(foodNutritionAttrFn(), data),
       accommodationRequestDto: mapKeyValue(accommodationAttrFn(), data),

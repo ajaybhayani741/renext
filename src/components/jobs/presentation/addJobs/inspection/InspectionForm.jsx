@@ -248,7 +248,7 @@ const InspectionForm = ({
         />
       ),
     },
-      {
+    {
       label: collapseItemHeader({
         label: 'job_ElectricityLightingSection',
         key: 'electricityLightingRequestDto',
@@ -703,6 +703,25 @@ const InspectionForm = ({
           onUserClear,
           readOnly: params?.jobId,
         }}
+      />
+      <InspectionFormField
+        attrList={{
+          inspectionWasMadeDuring: {
+            label: 'job_InspectionWasMadeDuring',
+            inputType: 'RADIO_BUTTON',
+            required: true,
+            xs: 24,
+            options: [
+              { label: 'job_Breakfast', value: 'BREAKFAST' },
+              { label: 'job_Lunch', value: 'LUNCH' },
+              { label: 'job_Dinner', value: 'DINNER' },
+            ],
+          },
+        }}
+        index={index}
+        name={name}
+        className="inspection-made-during-field"
+        disabledAll={!include(allPermissionRoles, roleId)}
       />
       <ANTDCollapse
         bordered={false}
