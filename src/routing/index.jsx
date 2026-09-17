@@ -1,8 +1,8 @@
 import { lazy, memo } from 'react'
 import { Navigate, useRoutes } from 'react-router-dom'
 
+import PrivacyPolicy from './NewPrivacyPolicy'
 import pathName, { DASHBOARD_TXT, HOSTEL } from './pathName.constant'
-import PrivacyPolicy from './PrivacyPolicy'
 import ProtectedRoute from './PrivateRoute'
 import DashboardView from '../components/dashboard/presentation/DashboardView'
 import IccPortal from '../components/icc/presentation/IccPortal'
