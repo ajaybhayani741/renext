@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react'
 import '../dashboard.scss'
 
 import DashboardWrapper from './DashboardWrapper'
+import { notifyMethod } from '../../../App'
+import ExcelIcon from '../../../assets/excel.png'
+import PdfIcon from '../../../assets/pdfIcon.png'
 import useMandalDetails from '../../../hooks/useMandalDetails'
 import useRedux from '../../../hooks/useRedux'
 import useRouter from '../../../hooks/useRouter'
@@ -12,9 +15,12 @@ import pathName from '../../../routing/pathName.constant'
 import ANTDButton from '../../../shared/antd/ANTDButton'
 import ANTDModal from '../../../shared/antd/ANTDModal'
 import { userWiseRole } from '../../../utils/constant'
+import { downloadReport } from '../../../utils/customFunctions'
+import { DownloadOutlined } from '../../../utils/icons'
 import { tabKeys } from '../../jobs/jobs.description'
 import { getUserList } from '../../userManagement/user.api'
 import {
+  getChartReportApi,
   getDashboardMetricsApi,
   getDashboardMetricsHostelsApi,
   getDashboardMetricsMandalsApi,
@@ -97,6 +103,8 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
   const isMandalInspectionModal =
     selectedColumn?.listType === 'mandalInspection'
   const [pendingHostelsModal, setPendingHostelsModal] = useState(null)
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false)
+  const [reportLoader, setReportLoader] = useState(false)
 
   useEffect(() => {
     const loadMetrics = async () => {
@@ -226,12 +234,38 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
   }
 
   const handleCloseModal = () => {
+    setDownloadModalOpen(false)
     setPendingHostelsModal(null)
     setSelectedColumn({
       selected: false,
       chartData: null,
     })
     setHostelsData({})
+  }
+
+  const isMandalSpecialOfficerModal =
+    selectedColumn?.userRoleId === userWiseRole.mandalSpecialOfficer
+
+  const handleDownloadReport = async fileType => {
+    const payload = {
+      chartType: 'MANDAL_INSPECTION_REPORT',
+      format: fileType,
+    }
+
+    try {
+      setReportLoader(true)
+      const response = await getChartReportApi({ payload })
+      const fileUrl = response?.data?.dmsDetails?.fileUrl
+      const fileName = response?.data?.dmsDetails?.fileName
+
+      notifyMethod.success({
+        message: t('msg_ReportGeneratingAndDownloading'),
+      })
+      setDownloadModalOpen(false)
+      if (fileUrl) downloadReport(fileUrl, fileName, fileType)
+    } finally {
+      setReportLoader(false)
+    }
   }
 
   const handleTableChange = async ({ current }) => {
@@ -481,7 +515,56 @@ const MetricsDashboard = ({ navigatePieChartToInspection = false }) => {
             : 'hostels'
       }
       showPaginationOnSinglePage={isUserListModal}
+      modalHeaderAction={
+        isMandalSpecialOfficerModal ? (
+          <div className="metrics-modal-toolbar">
+            <ANTDButton
+              type="primary"
+              className="btn metrics-download-button"
+              icon={<DownloadOutlined />}
+              onClick={() => setDownloadModalOpen(true)}
+            >
+              {t('btn_Download')}
+            </ANTDButton>
+          </div>
+        ) : null
+      }
     >
+      <ANTDModal
+        title={t('dash_DownloadReport')}
+        centered
+        open={downloadModalOpen}
+        onCancel={() => setDownloadModalOpen(false)}
+        footer={false}
+        width={360}
+        className="metrics-report-download-modal"
+        maskClosable={!reportLoader}
+        closable={!reportLoader}
+      >
+        <p className="metrics-report-download-help">
+          {t('dash_SelectReportFormat')}
+        </p>
+        <div className="metrics-report-format-options">
+          <button
+            type="button"
+            className="metrics-report-format-option"
+            disabled={reportLoader}
+            onClick={() => handleDownloadReport('EXCEL')}
+          >
+            <img src={ExcelIcon} alt={t('user_Excel')} />
+            <span>{t('user_Excel')}</span>
+          </button>
+          <button
+            type="button"
+            className="metrics-report-format-option"
+            disabled={reportLoader}
+            onClick={() => handleDownloadReport('PDF')}
+          >
+            <img src={PdfIcon} alt={t('txt_PDF')} />
+            <span>{t('txt_PDF')}</span>
+          </button>
+        </div>
+      </ANTDModal>
       <ANTDModal
         title={`${t('dash_PendingHostelsCount')} (${pendingHostelsModal?.mandalName || ''})`}
         centered
