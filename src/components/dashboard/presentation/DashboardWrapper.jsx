@@ -25,6 +25,7 @@ const DashboardWrapper = ({
   modalColumns = null,
   modalDataKey = 'hostels',
   showPaginationOnSinglePage = false,
+  modalHeaderAction = null,
 }) => {
   const { t } = useTranslations()
   const { loader, pageNo, lastPage } = hostelsData || {}
@@ -69,18 +70,19 @@ const DashboardWrapper = ({
             footer={false}
             width={selectedColumn?.listType === 'pendingHostels' ? 520 : 850}
           >
-            {!hideExportButton && (
-              <div className="text-end mb-5">
-                <ANTDButton
-                  type="primary"
-                  className="btn"
-                  onClick={onGenerateReport}
-                  loading={reportLoader}
-                >
-                  {t('dash_ExportToExcel')}
-                </ANTDButton>
-              </div>
-            )}
+            {modalHeaderAction ||
+              (!hideExportButton && (
+                <div className="text-end mb-5">
+                  <ANTDButton
+                    type="primary"
+                    className="btn"
+                    onClick={onGenerateReport}
+                    loading={reportLoader}
+                  >
+                    {t('dash_ExportToExcel')}
+                  </ANTDButton>
+                </div>
+              ))}
             {selectedColumn?.listType === 'pendingHostels' ? (
               length(modalList) ? (
                 <ul className="pending-hostels-list">

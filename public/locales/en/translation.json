@@ -892,5 +892,8 @@
   "job_InspectionWasMadeDuring": "Inspection was made during:",
   "job_Breakfast": "Breakfast",
   "job_Lunch": "Lunch",
-  "job_Dinner": "Dinner"
+  "job_Dinner": "Dinner",
+  "dash_DownloadReport": "Download Report",
+  "dash_SelectReportFormat": "Select a report format to download",
+  "msg_ReportGeneratingAndDownloading": "Your report is being generated and will download shortly."
 }
